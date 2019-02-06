@@ -1,14 +1,10 @@
 <mat-card>
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
-    <p>
-
-      <mat-card-title>Foods</mat-card-title>
-    </p>
-
+    <mat-card-title>ລາຍການອາຫານທັງໝົດ</mat-card-title>
+    <mat-card-subtitle>ຈັດຕາມປະເພດ</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-
     <div class="form-group row">
       <div class="col col-sm-12 col-md-10">
         <input type="text" class="form-control" placeholder="ຄົ້ນຫາ...">
@@ -16,8 +12,6 @@
       <div class="col col-sm-12 col-md-2">
         <button mat-raised-button color="primary" style="width: 100%;" (click)="openAddFood()">Add new</button>
       </div>
-
-
     </div>
     <div>
       <table class="table table-bordered table-hover">
@@ -39,7 +33,8 @@
         </thead>
         <tbody>
           <tr *ngFor="let food of foods |async">
-            <td class="text-center align-middle"><img src="{{ food.food_photo }}" class="foodPhoto"></td>
+            <td class="text-center align-middle"><img src="{{ food.food_photo }}" class="foodPhoto shadow" (click)="openViewFood(food)"
+                style="cursor: pointer; width: 300px;"></td>
             <td class="text-left align-middle" (click)="openViewFood(food)" style="cursor: pointer; width: 300px;">{{
               food.foodId }}</td>
             <td class="text-left align-middle">{{ food.food_name }}</td>

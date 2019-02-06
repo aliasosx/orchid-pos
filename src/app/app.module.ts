@@ -22,6 +22,7 @@ import { PosComponent } from './pages/pos/pos.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AddFoodComponent } from './dialog/add-food/add-food.component';
 import { ViewFoodComponent } from './dialogs/view-food/view-food.component';
+import { AddFoodCategoryComponent } from './dialogs/add-food-category/add-food-category.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ViewFoodComponent } from './dialogs/view-food/view-food.component';
     PosComponent,
     SettingsComponent,
     AddFoodComponent,
-    ViewFoodComponent
+    ViewFoodComponent,
+    AddFoodCategoryComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +50,7 @@ import { ViewFoodComponent } from './dialogs/view-food/view-food.component';
   entryComponents: [
     AddFoodComponent,
     ViewFoodComponent,
+    AddFoodCategoryComponent,
   ]
   ,
   providers: [],

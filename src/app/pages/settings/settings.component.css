@@ -1,0 +1,17 @@
+.gridImg{
+  max-width: 150px;
+  cursor: pointer;
+}
+.mainrow {
+  align-content: center;
+  text-align: center;
+}
+.textTitle{
+  position: relative;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+.item-grid {
+  max-width: 450px;
+  margin-left: 20px;
+}

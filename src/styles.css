@@ -3,5 +3,5 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 * {
-font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif, 'Phetsarath OT';
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'phetsarath-ot', 'Open Sans Condensed';
 }

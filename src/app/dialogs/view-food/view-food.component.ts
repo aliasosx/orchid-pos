@@ -88,6 +88,7 @@ export class ViewFoodComponent implements OnInit {
   updateFood() {
     this.saveDisabled = true;
     if (this.addFoodForm.valid) {
+      this.addFoodForm.get('food_photo').setValue(this.photoSrc);
       this.db.collection('foods').doc(this.data.id).update(this.addFoodForm.value);
       this.dialogRef.close('success');
     } else {

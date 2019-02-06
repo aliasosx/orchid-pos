@@ -35,10 +35,10 @@ export class FoodsComponent implements OnInit {
     }));
   }
   openAddFood() {
-    const dialogRef = this.dialog.open(AddFoodComponent, { width: '800px' });
+    const dialogRef = this.dialog.open(AddFoodComponent, { width: '900px' });
   }
   openViewFood(food) {
-    const dialogRef = this.dialog.open(ViewFoodComponent, { width: '800px', data: food });
+    const dialogRef = this.dialog.open(ViewFoodComponent, { width: '900px', data: food });
   }
   deleteFood(food) {
     swal({

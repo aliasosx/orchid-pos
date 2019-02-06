@@ -14,7 +14,11 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule } from '@angular/material';
+import {
+  MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
+  MatCardModule, MatFormFieldModule, MatProgressBarModule,
+  MatSnackBarModule,
+} from '@angular/material';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { FoodsComponent } from './pages/foods/foods.component';
 import { ProductsComponent } from './pages/products/products.component';
@@ -46,6 +50,7 @@ import { AddFoodCategoryComponent } from './dialogs/add-food-category/add-food-c
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
+    MatSnackBarModule,
   ],
   entryComponents: [
     AddFoodComponent,

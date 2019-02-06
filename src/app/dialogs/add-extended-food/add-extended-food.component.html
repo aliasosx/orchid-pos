@@ -1,0 +1,41 @@
+<p class="h4">
+  ເພີ່ມອາຫານຍ່ອຍ
+</p>
+<form [formGroup]="formAddSubFood">
+  <mat-card>
+    <mat-card-content>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="extendedFoodName">ປະເພດອາຫານຍ່ອຍ</label>
+          <select class="form-control" id="extendedFoodName" formControlName="extendedFoodName">
+            <option *ngFor="let extendedFoodType of extendedFoodTypes | async" value="{{ extendedFoodType.extendedFoodName_lao }}">{{
+              extendedFoodType.extendedFoodName_lao }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="cost">ຕົ້ນທຶນ</label>
+          <input type="number" class="form-control" formArrayName="cost">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="price">ລາຄາຂາຍ</label>
+          <input type="number" class="form-control" formArrayName="price">
+        </div>
+        <div class="form-group col-md-6">
+          <button mat-flat-button color="primary" style="top:33px;width: 100px;">Add</button></div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-content>
+      <table class="tables table-bordered table-hover">
+        <thead>
+          <th>refno</th>
+          <th>extendedFoodName_lao</th>
+          <th>Cost</th>
+          <th>Price</th>
+        </thead>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+</form>

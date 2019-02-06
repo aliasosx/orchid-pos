@@ -10,6 +10,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Currency } from 'src/app/interfaces/currency';
 import { FoodCategory } from 'src/app/interfaces/foodCategory';
+import { ExtendedFoodType } from 'src/app/interfaces/extendedFoodType';
 
 @Component({
   selector: 'app-add-food',
@@ -23,8 +24,8 @@ export class AddFoodComponent implements OnInit {
     this.kitchensRef = db.collection<Kitchen>('kitchens');
     this.categoriesRef = db.collection<FoodCategory>('food_categories');
     this.foodsRef = db.collection<Food>('foods');
+    this.extendedFoodTypesRef = db.collection<ExtendedFoodType>('extendedFoodTypes');
   }
-
 
   addFoodForm: FormGroup;
   showAlert = "hidden";
@@ -41,7 +42,12 @@ export class AddFoodComponent implements OnInit {
   categoriesRef: AngularFirestoreCollection<FoodCategory>;
   categories: Observable<any[]>;
 
+  extendedFoodTypesRef: AngularFirestoreCollection<ExtendedFoodType>;
+  extendedFoodTypes: Observable<any[]>;
+
   foodsRef: AngularFirestoreCollection<Food>;
+
+  extendedFoods: any[];
 
   ngOnInit() {
     const uuid1 = uuid.v1();;
@@ -65,9 +71,11 @@ export class AddFoodComponent implements OnInit {
     });
 
     // Load startup
+
     this.Currencies = this.currenciesRef.valueChanges();
     this.kitchens = this.kitchensRef.valueChanges();
     this.categories = this.categoriesRef.valueChanges();
+    this.extendedFoodTypes = this.extendedFoodTypesRef.valueChanges();
 
   }
   uploadPhoto(event) {
@@ -82,9 +90,8 @@ export class AddFoodComponent implements OnInit {
       });
       uploadTask.then((snapshot: firebase.storage.UploadTaskSnapshot) => {
         snapshot.ref.getDownloadURL().then(url => {
-          this.photoSrc = url; // Image url
-          //console.log(url);
-        })
+          this.photoSrc = url;
+        });
       });
     }
   }
@@ -99,6 +106,5 @@ export class AddFoodComponent implements OnInit {
       this.saveDisabled = false;
       return;
     }
-
   }
 }

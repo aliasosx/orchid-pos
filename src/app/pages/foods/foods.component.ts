@@ -1,11 +1,12 @@
 import { ViewFoodComponent } from './../../dialogs/view-food/view-food.component';
-import { AddFoodComponent } from './../../dialog/add-food/add-food.component';
+import { AddFoodComponent } from './../../dialogs/add-food/add-food.component';
 import { Observable } from 'rxjs';
 import { Food } from 'src/app/interfaces/food';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material';
 import { map } from 'rxjs/operators';
+import { AddExtendedFoodComponent } from 'src/app/dialogs/add-extended-food/add-extended-food.component';
 
 declare var swal: any;
 
@@ -54,6 +55,9 @@ export class FoodsComponent implements OnInit {
         return;
       }
     });
+  }
+  openAddExtendedFood(food) {
+    const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });
   }
 }
 

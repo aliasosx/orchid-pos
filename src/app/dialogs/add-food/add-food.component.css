@@ -7,3 +7,7 @@
 .hidden {
   display: none;
 }
+.btnSave {
+  position: relative;
+  width: 100%;
+}

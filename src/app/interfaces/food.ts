@@ -9,7 +9,9 @@ export interface Food {
   currency: string;
   parent_food: number;
   is_childFood: boolean;
+  extenedFoods?: any;
   kitchen: string;
+  extendedFoodType?: any;
   userName: string;
   enabled: boolean;
   createdAt: Date;

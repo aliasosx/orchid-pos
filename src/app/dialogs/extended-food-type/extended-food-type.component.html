@@ -1,0 +1,42 @@
+<p class="h4">
+  ເພີ່ມປະເພດອາຫານຍ່ອຍ
+</p>
+<form [formGroup]="extendedFoodTypeForm">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="extendedFoodName">ປະເພດອາຫານຍ່ອຍ ພາສາອັງກິດ</label>
+      <input type="text" class="form-control" formControlName="extendedFoodName" id="extendedFoodName" required>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="extendedFoodName_lao">ປະເພດອາຫານຍ່ອຍ ພາສາ ລາວ</label>
+      <input type="text" class="form-control" formControlName="extendedFoodName_lao" id="extendedFoodName_lao" required>
+    </div>
+    <div class="form-group col-md-12 text-right">
+      <button mat-flat-button color="primary" style="width: 100px; margin-right: 5px;" (click)="addNewExtendedFoodType()">Add
+        new</button>
+      <button mat-flat-button color="warn" style="width: 100px;">Update</button>
+    </div>
+  </div>
+</form>
+<div>
+  <table class="table  table-bordered table-hover">
+    <thead>
+      <th class="text-left">ປະເພດອາຫານ ພາສາອັງກິດ</th>
+      <th class="text-left">ປະເພດອາຫານ ພາສາ ລາວ</th>
+      <th class="text-left"></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ext of extendedFoodTypes | async">
+        <td class="text-left">{{ ext.extendedFoodName }}</td>
+        <td class="text-left">{{ ext.extendedFoodName_lao }}</td>
+        <td class="text-center"><img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer"
+            (click)="deleteExtendedFoodType(ext)"></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td [colSpan]="3"></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

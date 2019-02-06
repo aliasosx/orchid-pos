@@ -56,14 +56,11 @@
           <label for="parent_food">ປະເພດ</label>
           <select class="form-control" id="parent_food" required formControlName="parent_food">
             <option value="common">common</option>
-            <option value="parental">parental Food</option>
-            <option value="child">child food</option>
+            <option value="master">master Food</option>
           </select>
         </div>
-      </div>
-      <div class="row">
-        <div class="col col-md-12">
-          <button mat-raised-button color="primary" (click)="createFood() " [disabled]="saveDisabled" style="width: 100%;">Save</button>
+        <div class="form-group col-md-12">
+          <button mat-raised-button color="primary" (click)="createFood()" [disabled]="saveDisabled" class="btnSave">Save</button>
         </div>
       </div>
     </div>

@@ -43,7 +43,9 @@
             <td class="text-center align-middle">{{ food.price |number }}</td>
             <td class="text-center align-middle">{{ food.currency }}</td>
             <td class="text-center align-middle">{{ food.food_category }}</td>
-            <td class="text-center align-middle">{{ food.parent_food }}</td>
+            <td class="text-center align-middle"><img src="../../../assets/icons/baseline-add_circle_outline-24px.svg"
+                style="cursor: pointer;" (click)="openAddExtendedFood(food)">
+            </td>
             <td class="text-center align-middle">{{ food.is_childFood }}</td>
             <td class="text-center align-middle">{{ food.kitchen }}</td>
             <td class="text-center align-middle">

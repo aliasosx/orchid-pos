@@ -17,16 +17,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
-  MatSnackBarModule,
+  MatSnackBarModule, MatStepperModule
 } from '@angular/material';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { FoodsComponent } from './pages/foods/foods.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { PosComponent } from './pages/pos/pos.component';
 import { SettingsComponent } from './pages/settings/settings.component';
-import { AddFoodComponent } from './dialog/add-food/add-food.component';
+import { AddFoodComponent } from './dialogs/add-food/add-food.component';
 import { ViewFoodComponent } from './dialogs/view-food/view-food.component';
 import { AddFoodCategoryComponent } from './dialogs/add-food-category/add-food-category.component';
+import { ExtendedFoodTypeComponent } from './dialogs/extended-food-type/extended-food-type.component';
+import { AddExtendedFoodComponent } from './dialogs/add-extended-food/add-extended-food.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { AddFoodCategoryComponent } from './dialogs/add-food-category/add-food-c
     SettingsComponent,
     AddFoodComponent,
     ViewFoodComponent,
-    AddFoodCategoryComponent
+    AddFoodCategoryComponent,
+    ExtendedFoodTypeComponent,
+    AddExtendedFoodComponent
   ],
   imports: [
     BrowserModule,
@@ -50,12 +54,14 @@ import { AddFoodCategoryComponent } from './dialogs/add-food-category/add-food-c
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
-    MatSnackBarModule,
+    MatSnackBarModule, MatStepperModule,
   ],
   entryComponents: [
     AddFoodComponent,
     ViewFoodComponent,
     AddFoodCategoryComponent,
+    ExtendedFoodTypeComponent,
+    AddExtendedFoodComponent,
   ]
   ,
   providers: [],

@@ -1,0 +1,19 @@
+.example-header-image {
+  background-image: url('../../../assets/icons/baseline-fastfood-24px.svg');
+  background-size: cover;
+}
+.spaceDiv {
+  margin-left: 5px;
+}
+.table {
+  border-radius: 2px;
+}
+.product_detail {
+  margin-top: 10px;
+}
+.foodPhoto {
+  max-width: 100px;
+}
+.topDiv {
+margin-top: 50px;
+}

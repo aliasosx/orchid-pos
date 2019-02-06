@@ -1,0 +1,67 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <p>
+
+      <mat-card-title>Foods</mat-card-title>
+    </p>
+
+  </mat-card-header>
+  <mat-card-content>
+
+    <div class="form-group row">
+      <div class="col col-sm-12 col-md-10">
+        <input type="text" class="form-control" placeholder="ຄົ້ນຫາ...">
+      </div>
+      <div class="col col-sm-12 col-md-2">
+        <button mat-raised-button color="primary" style="width: 100%;" (click)="openAddFood()">Add new</button>
+      </div>
+
+
+    </div>
+    <div>
+      <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" class="text-center">ຮູບ</th>
+            <th scope="col" class="text-center">ລະຫັດ</th>
+            <th scope="col" class="text-center">ອາຫານ</th>
+            <th scope="col" class="text-center">ອາຫານ ພາສາອັງກິດ</th>
+            <th scope="col" class="text-center">ຕົ້ນທືນ</th>
+            <th scope="col" class="text-center">ລາຄາຂາຍ</th>
+            <th scope="col" class="text-center">ສະກຸນ</th>
+            <th scope="col" class="text-center">ໝວດ</th>
+            <th scope="col" class="text-center">ປະເພດ</th>
+            <th scope="col" class="text-center">ອາຫານຍ່ອຍ</th>
+            <th scope="col" class="text-center">ຫ້ອງຄົວ</th>
+            <th scope="col" class="text-center">ແກ້ໄຂ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let food of foods |async">
+            <td class="text-center align-middle"><img src="{{ food.food_photo }}" class="foodPhoto"></td>
+            <td class="text-left align-middle" (click)="openViewFood(food)" style="cursor: pointer; width: 300px;">{{
+              food.foodId }}</td>
+            <td class="text-left align-middle">{{ food.food_name }}</td>
+            <td class="text-left align-middle">{{ food.food_name_en }}</td>
+            <td class="text-center align-middle">{{ food.cost |number }}</td>
+            <td class="text-center align-middle">{{ food.price |number }}</td>
+            <td class="text-center align-middle">{{ food.currency }}</td>
+            <td class="text-center align-middle">{{ food.food_category }}</td>
+            <td class="text-center align-middle">{{ food.parent_food }}</td>
+            <td class="text-center align-middle">{{ food.is_childFood }}</td>
+            <td class="text-center align-middle">{{ food.kitchen }}</td>
+            <td class="text-center align-middle">
+              <div class="row">
+                <div class="col col-md-6 text-center"><button mat-flat-button color="primary" style="width: 100%;"
+                    (click)="openViewFood(food)">ແກ້ໄຂ</button></div>
+                <div class="col col-md-6 text-center"><button mat-flat-button color="warn" style="width: 100%;" (click)="deleteFood(food)">
+                    ລຶບ</button></div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>

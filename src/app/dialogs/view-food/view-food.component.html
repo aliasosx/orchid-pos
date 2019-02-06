@@ -1,0 +1,68 @@
+<h1 mat-dialog-title>ອາຫານ</h1>
+<form [formGroup]="addFoodForm">
+  <div class="row">
+    <div class="col col-md-4">
+      <img [src]="photoSrc" (click)="fileinput.click()" class="photoDiv shadow p-3 mb-5 bg-white">
+      <input type="file" (change)="uploadPhoto($event.target.files)" #fileinput style="display: none;">
+      <mat-progress-bar color="primary" mode="determinate" [value]="progressBarValue">
+      </mat-progress-bar>
+    </div>
+    <div class="col col-md-8">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="foodId">ລະຫັດອາຫານ</label>
+          <input type="text" class="form-control" id="foodId" readonly formControlName="foodId" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="food_name">ອາຫານ</label>
+          <input type="text" class="form-control" id="food_name" formControlName="food_name" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="food_name_en">ອາຫານ ພາສາອັງກິດ</label>
+          <input type="text" class="form-control" id="food_name_en" formControlName="food_name_en" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="food_category">ຈັດໃນໝວດ</label>
+          <select class="form-control" id="food_category" required formControlName="food_category">
+            <option value="" disabled>-----------</option>
+            <option *ngFor="let c of categories |async" value="{{ c.foodCategoryNameLao }}">{{ c.foodCategoryNameLao }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="kitchenName">ຫ້ອງຄົວ</label>
+          <select class="form-control" id="kitchenName" required formControlName="kitchen">
+            <option value="" disabled>-----------</option>
+            <option *ngFor="let k of kitchens |async" value="{{ k.kitchenName }}">{{ k.kitchenName }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="cost">ຕົ້ນທືນ</label>
+          <input type="number" class="form-control" id="cost" formControlName="cost" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="price">ລາຄາຂາຍ</label>
+          <input type="number" class="form-control" id="price" formControlName="price" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="currency">ສະກູນ</label>
+          <select class="form-control" id="currency" required formControlName="currency">
+            <option *ngFor="let c of Currencies |async" value="{{ c.currencyName }}">{{ c.currencyName }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="parent_food">ປະເພດ</label>
+          <select class="form-control" id="parent_food" required formControlName="parent_food">
+            <option value="common">common</option>
+            <option value="parental">parental Food</option>
+            <option value="child">child food</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-md-12">
+          <button mat-raised-button color="primary" (click)="updateFood()" [disabled]="saveDisabled" style="width: 100%;">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Food } from 'src/app/interfaces/food';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { AddExtendedFoodComponent } from 'src/app/dialogs/add-extended-food/add-extended-food.component';
 
@@ -18,7 +18,7 @@ declare var swal: any;
 })
 export class FoodsComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar) {
     this.foodsRef = db.collection('foods');
   }
 
@@ -58,7 +58,14 @@ export class FoodsComponent implements OnInit {
     });
   }
   openAddExtendedFood(food) {
-    const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });
+    console.log(food.extendedFoods.length);
+    if (food.extendedFoods.length == 0) {
+      const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });
+    } else {
+      this.snackbarRef.open('Already have member, please use Other', 'Ok', { duration: 2000, verticalPosition: 'top' });
+      return;
+    }
+
   }
   openViewExtendedFood(food) {
     const dialogRef = this.dialog.open(ViewExtendedFoodComponent, { width: '800px', data: food });

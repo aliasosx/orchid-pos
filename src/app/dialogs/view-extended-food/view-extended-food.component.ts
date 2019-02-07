@@ -52,4 +52,26 @@ export class ViewExtendedFoodComponent implements OnInit {
   removeExtenedFoodList(extendedFoodList) {
 
   }
+  addExtendedFoodToMaster() {
+    this.extendedFoodLists.push(this.formAddSubFood.value);
+    if (this.extendedFoodLists) {
+      let extendedFoods = {
+        extendedFoods: this.extendedFoodLists
+      };
+      this.FoodsRef.doc(this.data.id).update(extendedFoods).then(() => {
+        //this.dialogRef.close('success');
+        this.snackbarRef.open('added complete', 'Ok', { duration: 1000 });
+      }).catch((err) => {
+        this.snackbarRef.open(err, 'Fail', { duration: 1000 });
+        return;
+      });
+    } else {
+      this.snackbarRef.open('Some value required not complete', 'Fail', { duration: 1000 });
+      return;
+    }
+
+  }
+  addExtendedFood() {
+    this.extendedFoodLists.push(this.formAddSubFood.value);
+  }
 }

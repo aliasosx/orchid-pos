@@ -58,9 +58,9 @@
             </thead>
         <tbody>
           <tr *ngFor="let extFood of food.extendedFoods">
-            <td class="text-center align-left">{{ extFood.extendedFoodName }}</td>
-            <td class="text-center align-middle">{{ extFood.cost |number}}</td>
-            <td class="text-center align-middle">{{ extFood.price |number}}</td>
+            <td class="text-left align-left">{{ extFood.extendedFoodName }}</td>
+            <td class="text-right align-middle">{{ extFood.cost |number}}</td>
+            <td class="text-right align-middle">{{ extFood.price |number}}</td>
           </tr>
         </tbody>
       </table>

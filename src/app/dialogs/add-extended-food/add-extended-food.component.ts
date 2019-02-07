@@ -59,11 +59,11 @@ export class AddExtendedFoodComponent implements OnInit {
       this.FoodsRef.doc(this.data.id).update(extendedFoods).then(() => {
         this.dialogRef.close('success');
       }).catch((err) => {
-        this.snackbarRef.open(err, 'Fail', { duration: 1000 });
+        this.snackbarRef.open(err, 'Fail', { duration: 2000, verticalPosition: 'top' });
         return;
       });
     } else {
-      this.snackbarRef.open('Some value required not complete', 'Fail', { duration: 1000 });
+      this.snackbarRef.open('Some value required not complete', 'Fail', { duration: 2000, verticalPosition: 'top' });
       return;
     }
 

@@ -26,7 +26,8 @@
         </div>
         <div class="form-group col-md-2">
           <label for="addBtn">ເພີ່ມ</label>
-          <button mat-flat-button color="primary" class="form-control" id="addBtn">Add</button>
+          <button mat-flat-button color="primary" class="form-control" id="addBtn"
+            (click)="addExtendedFoodToMaster()">Add</button>
         </div>
       </div>
     </mat-card-content>
@@ -61,12 +62,15 @@
       </table>
     </mat-card-content>
     <mat-card-footer>
-      <div class="row">
+      <!--
+        <div class="row">
         <div class="col col-md-12 text-right">
-          <button mat-flat-button color="warn"
-            style="margin-bottom: 5px;margin-right: 15px;width: 110px;">Update</button>
+          <button mat-flat-button color="warn" style="margin-bottom: 5px;margin-right: 15px;width: 110px;"
+            (click)="addExtendedFoodToMaster()">Update</button>
         </div>
       </div>
+      -->
+
     </mat-card-footer>
   </mat-card>
 </form>

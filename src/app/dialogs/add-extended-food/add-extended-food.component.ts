@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Food } from 'src/app/interfaces/food';
 import { ExtendedFoodType } from 'src/app/interfaces/extendedFoodType';
 import { Observable } from 'rxjs';
@@ -14,8 +14,10 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class AddExtendedFoodComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<AddExtendedFoodComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<AddExtendedFoodComponent>, private snackbarRef: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     this.extendedFoodTypesRef = db.collection('extendedFoodTypes');
+    this.FoodsRef = db.collection<Food>('foods');
   }
 
   FoodsRef: AngularFirestoreCollection<Food>;
@@ -23,13 +25,15 @@ export class AddExtendedFoodComponent implements OnInit {
   extendedFoodTypes: Observable<any[]>;
 
   formAddSubFood: FormGroup;
+  extendedFoodLists: any = [];
 
   ngOnInit() {
     console.log(this.data);
     this.formAddSubFood = new FormGroup({
       'extendedFoodName': new FormControl(),
       'cost': new FormControl(0),
-      'price': new FormControl(0)
+      'price': new FormControl(0),
+      'noted': new FormControl(),
     });
 
     this.extendedFoodTypes = this.extendedFoodTypesRef.snapshotChanges().pipe(map(change => {
@@ -40,4 +44,29 @@ export class AddExtendedFoodComponent implements OnInit {
       })
     }));
   }
+  addExtendedFood() {
+    this.extendedFoodLists.push(this.formAddSubFood.value);
+  }
+  removeExtenedFoodList() {
+
+  }
+  // Update extended Food to master Food
+  addExtendedFoodToMaster() {
+    if (this.extendedFoodLists) {
+      let extendedFoods = {
+        extendedFoods: this.extendedFoodLists
+      };
+      this.FoodsRef.doc(this.data.id).update(extendedFoods).then(() => {
+        this.dialogRef.close('success');
+      }).catch((err) => {
+        this.snackbarRef.open(err, 'Fail', { duration: 1000 });
+        return;
+      });
+    } else {
+      this.snackbarRef.open('Some value required not complete', 'Fail', { duration: 1000 });
+      return;
+    }
+
+  }
+
 }

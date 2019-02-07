@@ -9,7 +9,7 @@ export interface Food {
   currency: string;
   parent_food: number;
   is_childFood: boolean;
-  extenedFoods?: any;
+  extendedFoods?: any;
   kitchen: string;
   extendedFoodType?: any;
   userName: string;

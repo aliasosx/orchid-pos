@@ -25,8 +25,8 @@
             <th scope="col" class="text-center">ສະກຸນ</th>
             <th scope="col" class="text-center">ໝວດ</th>
             <th scope="col" class="text-center">ປະເພດ</th>
-            <th scope="col" class="text-center">ອາຫານຍ່ອຍ</th>
             <th scope="col" class="text-center">ຫ້ອງຄົວ</th>
+            <th scope="col" class="text-center">ອາຫານຍ່ອຍ</th>
             <th scope="col" class="text-center">ແກ້ໄຂ</th>
           </tr>
         </thead>
@@ -47,19 +47,38 @@
             <ng-template #normalFood>
               <td class="text-center align-middle">{{ food.parent_food }}</td>
             </ng-template>
-            <td class="text-center align-middle">{{ food.is_childFood }}</td>
             <td class="text-center align-middle">{{ food.kitchen }}</td>
-            <td class="text-center align-middle">
-              <div class="row">
-                <div class="col col-md-6 text-center"><button mat-flat-button color="primary" style="width: 100%;"
-                    (click)="openViewFood(food)">ແກ້ໄຂ</button></div>
-                <div class="col col-md-6 text-center"><button mat-flat-button color="warn" style="width: 100%;"
-                    (click)="deleteFood(food)">
-                    ລຶບ</button></div>
-              </div>
-            </td>
+            <td class="text-center align-middle" *ngIf="food.parent_food == 'master'; else childFood"
+              (click)="openViewExtendedFood(food)">
+              <table class="table table-bordered" style="width: 100%;margin: 0;">
+                <thead class="thead-light">
+            <th class="text-center align-middle">ອາຫານ</th>
+            <th class="text-center align-middle">ຕົ້ນທືນ</th>
+            <th class="text-center align-middle">ລາຄາຂາຍ</th>
+            </thead>
+        <tbody>
+          <tr *ngFor="let extFood of food.extendedFoods">
+            <td class="text-center align-left">{{ extFood.extendedFoodName }}</td>
+            <td class="text-center align-middle">{{ extFood.cost |number}}</td>
+            <td class="text-center align-middle">{{ extFood.price |number}}</td>
           </tr>
         </tbody>
+      </table>
+      </td>
+      <ng-template #childFood>
+        <td></td>
+      </ng-template>
+      <td class="text-center align-middle">
+        <div class="row">
+          <div class="col col-md-6 text-center"><button mat-flat-button color="primary" style="width: 100%;"
+              (click)="openViewFood(food)">ແກ້ໄຂ</button></div>
+          <div class="col col-md-6 text-center"><button mat-flat-button color="warn" style="width: 100%;"
+              (click)="deleteFood(food)">
+              ລຶບ</button></div>
+        </div>
+      </td>
+      </tr>
+      </tbody>
       </table>
     </div>
   </mat-card-content>

@@ -62,12 +62,15 @@ export class AddFoodComponent implements OnInit {
       price: new FormControl(0),
       currency: new FormControl('KIP'),
       parent_food: new FormControl(false),
+      extendedFoods: new FormControl(),
       is_childFood: new FormControl(false),
       kitchen: new FormControl(),
       userName: new FormControl('administrator'),
       enabled: new FormControl(true),
+      noted: new FormControl(),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
+
     });
 
     // Load startup

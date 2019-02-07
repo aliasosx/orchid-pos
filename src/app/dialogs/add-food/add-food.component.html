@@ -28,7 +28,8 @@
           <label for="food_category">ຈັດໃນໝວດ</label>
           <select class="form-control" id="food_category" required formControlName="food_category">
             <option value="" disabled>-----------</option>
-            <option *ngFor="let c of categories |async" value="{{ c.foodCategoryNameLao }}">{{ c.foodCategoryNameLao }}</option>
+            <option *ngFor="let c of categories |async" value="{{ c.foodCategoryNameLao }}">{{ c.foodCategoryNameLao }}
+            </option>
           </select>
         </div>
         <div class="form-group col-md-6">
@@ -59,8 +60,13 @@
             <option value="master">master Food</option>
           </select>
         </div>
+        <div class="form-group col-md-6">
+          <label for="noted">ໝາຍເຫດ</label>
+          <input type="text" class="form-control" id="noted" formControlName="noted">
+        </div>
         <div class="form-group col-md-12">
-          <button mat-raised-button color="primary" (click)="createFood()" [disabled]="saveDisabled" class="btnSave">Save</button>
+          <button mat-raised-button color="primary" (click)="createFood()" [disabled]="saveDisabled"
+            class="btnSave">Save</button>
         </div>
       </div>
     </div>

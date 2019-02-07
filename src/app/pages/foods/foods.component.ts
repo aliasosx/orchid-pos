@@ -1,3 +1,4 @@
+import { ViewExtendedFoodComponent } from './../../dialogs/view-extended-food/view-extended-food.component';
 import { ViewFoodComponent } from './../../dialogs/view-food/view-food.component';
 import { AddFoodComponent } from './../../dialogs/add-food/add-food.component';
 import { Observable } from 'rxjs';
@@ -58,6 +59,9 @@ export class FoodsComponent implements OnInit {
   }
   openAddExtendedFood(food) {
     const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });
+  }
+  openViewExtendedFood(food) {
+    const dialogRef = this.dialog.open(ViewExtendedFoodComponent, { width: '800px', data: food });
   }
 }
 

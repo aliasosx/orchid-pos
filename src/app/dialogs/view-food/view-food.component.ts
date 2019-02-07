@@ -58,6 +58,8 @@ export class ViewFoodComponent implements OnInit {
       enabled: new FormControl(true),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
+      extendedFoods: new FormControl(),
+      noted: new FormControl(),
     });
     // Load startup
     this.Currencies = this.currenciesRef.valueChanges();

@@ -18,7 +18,6 @@
         <thead class="thead-light">
           <tr>
             <th scope="col" class="text-center">ຮູບ</th>
-            <th scope="col" class="text-center">ລະຫັດ</th>
             <th scope="col" class="text-center">ອາຫານ</th>
             <th scope="col" class="text-center">ອາຫານ ພາສາອັງກິດ</th>
             <th scope="col" class="text-center">ຕົ້ນທືນ</th>
@@ -33,26 +32,29 @@
         </thead>
         <tbody>
           <tr *ngFor="let food of foods |async">
-            <td class="text-center align-middle"><img src="{{ food.food_photo }}" class="foodPhoto shadow" (click)="openViewFood(food)"
-                style="cursor: pointer; width: 300px;"></td>
-            <td class="text-left align-middle" (click)="openViewFood(food)" style="cursor: pointer; width: 300px;">{{
-              food.foodId }}</td>
+            <td class="text-center align-middle"><img src="{{ food.food_photo }}" class="foodPhoto shadow"
+                (click)="openViewFood(food)" style="cursor: pointer; width: 300px;"></td>
             <td class="text-left align-middle">{{ food.food_name }}</td>
             <td class="text-left align-middle">{{ food.food_name_en }}</td>
             <td class="text-center align-middle">{{ food.cost |number }}</td>
             <td class="text-center align-middle">{{ food.price |number }}</td>
             <td class="text-center align-middle">{{ food.currency }}</td>
             <td class="text-center align-middle">{{ food.food_category }}</td>
-            <td class="text-center align-middle"><img src="../../../assets/icons/baseline-add_circle_outline-24px.svg"
-                style="cursor: pointer;" (click)="openAddExtendedFood(food)">
+            <td class="text-center align-middle" *ngIf="food.parent_food == 'master'; else normalFood"><img
+                src="../../../assets/icons/baseline-add_circle_outline-24px.svg" style="cursor: pointer;"
+                (click)="openAddExtendedFood(food)">
             </td>
+            <ng-template #normalFood>
+              <td class="text-center align-middle">{{ food.parent_food }}</td>
+            </ng-template>
             <td class="text-center align-middle">{{ food.is_childFood }}</td>
             <td class="text-center align-middle">{{ food.kitchen }}</td>
             <td class="text-center align-middle">
               <div class="row">
                 <div class="col col-md-6 text-center"><button mat-flat-button color="primary" style="width: 100%;"
                     (click)="openViewFood(food)">ແກ້ໄຂ</button></div>
-                <div class="col col-md-6 text-center"><button mat-flat-button color="warn" style="width: 100%;" (click)="deleteFood(food)">
+                <div class="col col-md-6 text-center"><button mat-flat-button color="warn" style="width: 100%;"
+                    (click)="deleteFood(food)">
                     ລຶບ</button></div>
               </div>
             </td>

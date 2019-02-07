@@ -25,7 +25,7 @@ export class AddExtendedFoodComponent implements OnInit {
   formAddSubFood: FormGroup;
 
   ngOnInit() {
-
+    console.log(this.data);
     this.formAddSubFood = new FormGroup({
       'extendedFoodName': new FormControl(),
       'cost': new FormControl(0),

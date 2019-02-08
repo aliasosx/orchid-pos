@@ -1,9 +1,11 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span *ngFor="let RestaurantInfo of RestaurantInfos | async">{{ RestaurantInfo.restaurantName }} {{
+<div class="topbar-Container">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span *ngFor="let RestaurantInfo of RestaurantInfos | async">{{ RestaurantInfo.restaurantName }} {{
       RestaurantInfo.slogan }} </span>
-    <span class="example-spacer"></span>
-    <button mat-flat-button color="primary" *ngFor="let menu of menus |async" routerLink="{{ menu.menuLink }}">{{
+      <span class="example-spacer"></span>
+      <button mat-flat-button color="primary" *ngFor="let menu of menus |async" routerLink="{{ menu.menuLink }}">{{
       menu.menuName }}</button>
-  </mat-toolbar-row>
-</mat-toolbar>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>

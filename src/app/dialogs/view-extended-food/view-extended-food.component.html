@@ -1,5 +1,5 @@
 <p class="h4">
-  ເພີ່ມອາຫານຍ່ອຍ
+  ເພີ່ມອາຫານ {{ data.food_name }}
 </p>
 <form [formGroup]="formAddSubFood">
   <mat-card>
@@ -45,13 +45,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let extendedFoodList of extendedFoodLists" (click)="updateFood(extendedFoodList)">
-            <td class="text-left">{{ extendedFoodList.extendedFoodName }}</td>
+          <tr *ngFor="let extendedFoodList of extendedFoodLists">
+            <td class="text-left" (click)="updateFood(extendedFoodList)">{{ extendedFoodList.extendedFoodName }}</td>
             <td class="text-right">{{ extendedFoodList.cost |number }}</td>
             <td class="text-right">{{ extendedFoodList.price | number}}</td>
             <td class="text-left">{{ extendedFoodList.noted }}</td>
             <td class="text-center"><img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer"
-                (click)="removeExtenedFoodList(extendedFoodList)"></td>
+                (click)="removeitem(extendedFoodList)"></td>
           </tr>
         </tbody>
         <tfoot>
@@ -62,15 +62,6 @@
       </table>
     </mat-card-content>
     <mat-card-footer>
-      <!--
-        <div class="row">
-        <div class="col col-md-12 text-right">
-          <button mat-flat-button color="warn" style="margin-bottom: 5px;margin-right: 15px;width: 110px;"
-            (click)="addExtendedFoodToMaster()">Update</button>
-        </div>
-      </div>
-      -->
-
     </mat-card-footer>
   </mat-card>
 </form>

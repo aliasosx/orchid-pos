@@ -27,7 +27,7 @@ export class FoodsComponent implements OnInit {
 
   ngOnInit() {
     this.foods = this.db.collection('foods', ref => {
-      return ref.orderBy('foodId', 'asc');
+      return ref.orderBy('food_name', 'asc');
     }).snapshotChanges().pipe(map(changes => {
       return changes.map(a => {
         const data = a.payload.doc.data() as Food;
@@ -58,12 +58,18 @@ export class FoodsComponent implements OnInit {
     });
   }
   openAddExtendedFood(food) {
-    console.log(food.extendedFoods.length);
-    if (food.extendedFoods.length == 0) {
+    console.log(food.extendedFoods);
+    try {
+      if (food.extendedFoods.length == 0) {
+        const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });
+      } else if (food.extendedFoods == null) {
+        const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });
+      } else {
+        this.snackbarRef.open('Already have member, please use Other', 'Ok', { duration: 2000, verticalPosition: 'top' });
+        return;
+      }
+    } catch (err) {
       const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });
-    } else {
-      this.snackbarRef.open('Already have member, please use Other', 'Ok', { duration: 2000, verticalPosition: 'top' });
-      return;
     }
 
   }

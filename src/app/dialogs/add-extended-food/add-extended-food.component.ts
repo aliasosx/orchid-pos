@@ -47,9 +47,6 @@ export class AddExtendedFoodComponent implements OnInit {
   addExtendedFood() {
     this.extendedFoodLists.push(this.formAddSubFood.value);
   }
-  removeExtenedFoodList() {
-
-  }
   // Update extended Food to master Food
   addExtendedFoodToMaster() {
     if (this.extendedFoodLists) {
@@ -66,7 +63,12 @@ export class AddExtendedFoodComponent implements OnInit {
       this.snackbarRef.open('Some value required not complete', 'Fail', { duration: 2000, verticalPosition: 'top' });
       return;
     }
-
+  }
+  removeitem(doc) {
+    this.extendedFoodLists.forEach((item, index) => {
+      //if (item === doc) this.extendedFoodLists.splice(index, 1);
+      console.log(item + ' - ' + index);
+    });
   }
 
 }

@@ -30,6 +30,7 @@ export class ViewExtendedFoodComponent implements OnInit {
   extendedFoodLists: any = [];
 
   ngOnInit() {
+    console.log(this.data);
     this.formAddSubFood = new FormGroup({
       'extendedFoodName': new FormControl(),
       'cost': new FormControl(0),
@@ -73,5 +74,22 @@ export class ViewExtendedFoodComponent implements OnInit {
   }
   addExtendedFood() {
     this.extendedFoodLists.push(this.formAddSubFood.value);
+  }
+  removeitem(doc) {
+    this.extendedFoodLists.forEach((item, index) => {
+      if (item.extendedFoodName === doc.extendedFoodName) {
+        this.extendedFoodLists.splice(index, 1);
+      }
+    });
+    let extendedFoods = {
+      extendedFoods: this.extendedFoodLists
+    };
+    this.FoodsRef.doc(this.data.id).update(extendedFoods).then(() => {
+      //this.dialogRef.close('success');
+      this.snackbarRef.open('removed complete', 'Ok', { duration: 1000 });
+    }).catch((err) => {
+      this.snackbarRef.open(err, 'Fail', { duration: 1000 });
+      return;
+    });
   }
 }

@@ -1,3 +1,28 @@
-<p>
-  pos works!
-</p>
+<div class="row container-row">
+  <div class="col col-md-8">
+    <mat-tab-group mat-stretch-tabs class="mat-tabBody">
+      <mat-tab *ngFor="let foodCategory of FoodCategories |async" label="{{ foodCategory.foodCategoryNameLao }}">
+        <div class="row main-container">
+          <div class="col col-sm-12 col-md-3 shadow p-3 mb-5 bg-white rounded item text-center"
+            *ngFor="let food of foods | async">
+            <div class="pricetag">
+              <span class="h4" *ngIf="food.price != 0; else choosePrice">{{ food.price | number}}</span>
+              <ng-template #choosePrice>
+                <span class="h4">ເລືອກ</span>
+              </ng-template>
+            </div>
+            <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail">
+            <div class="title align-middle">
+              <span class="h6 font-weight-light">{{ food.food_name }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="col col-md-4 payment-div">
+    <mat-card>
+      <mat-card-header class="h4">ອາຫານທີ່ເລືອກໄວ້</mat-card-header>
+    </mat-card>
+  </div>
+</div>

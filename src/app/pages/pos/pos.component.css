@@ -1,0 +1,50 @@
+.container-row {
+  margin-top: 10px;
+}
+.item {
+  margin-left: 10px;
+  margin-top: 10px;
+  max-width: 200px;
+  min-width: 100px;
+  min-height: 200px;
+  overflow: hidden;
+  cursor: pointer;
+  align-items: center;
+}
+.title {
+  position: absolute;
+  bottom: 10px;
+  border-radius: 3px;
+  left: 3px;
+  opacity: 0.8;
+  width: 90%;
+  text-align: center;
+  height: 30px;
+  vertical-align: middle;
+  background-color: rgb(16, 17, 17);
+  color: white;
+  opacity: 0.5;
+}
+.pricetag {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background-color: black;
+  color: white;
+  border-radius: 3px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  opacity: 0.7;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+}
+.main-container {
+  height: 100%;
+  overflow: auto;
+}
+.mat-tabBody {
+  max-height: 800px;
+}
+.payment-div {
+  margin-right: 10px;
+}

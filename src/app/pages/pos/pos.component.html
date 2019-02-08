@@ -1,29 +1,36 @@
 <div class="container-fluid">
   <mat-card class="col col-md-12">
     <mat-card-content>
-      <div class="col col-md-7">
-        <mat-tab-group class="mat-tabBody">
-          <mat-tab *ngFor="let foodCategory of FoodCategories |async" label="{{ foodCategory.foodCategoryNameLao }}">
-            <div class="row main-container">
-              <div class="col col-sm-12 col-md-3 shadow p-3 mb-5 bg-white rounded item text-center"
-                *ngFor="let food of foods | async">
-                <div class="pricetag">
-                  <span class="h4" *ngIf="food.price != 0; else choosePrice">{{ food.price | number}}</span>
-                  <ng-template #choosePrice>
-                    <span class="h4">ເລືອກ</span>
-                  </ng-template>
-                </div>
-                <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail">
-                <div class="title align-middle">
-                  <span class="h6 font-weight-light">{{ food.food_name }}</span>
+      <div class="row">
+        <div class="col col-md-7">
+          <mat-tab-group class="mat-tabBody">
+            <mat-tab *ngFor="let foodCategory of FoodCategories |async" label="{{ foodCategory.foodCategoryNameLao }}">
+              <div class="row main-container">
+                <div class="col col-sm-12 col-md-3 shadow p-3 mb-5 bg-white rounded item text-center"
+                  *ngFor="let food of foods | async">
+                  <div class="pricetag">
+                    <span class="h4" *ngIf="food.price != 0; else choosePrice">{{ food.price | number}}</span>
+                    <ng-template #choosePrice>
+                      <span class="h4">ເລືອກ</span>
+                    </ng-template>
+                  </div>
+                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail">
+                  <div class="title align-middle">
+                    <span class="h6 font-weight-light">{{ food.food_name }}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
-      </div>
-      <div class="col col-md-5">
-
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+        <div class="col col-md-5">
+          <mat-card>
+            <mat-card-header><span class="h4">Payment</span></mat-card-header>
+            <mat-card-content>
+              JJJJJJ
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>

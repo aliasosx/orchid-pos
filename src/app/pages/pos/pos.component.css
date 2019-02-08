@@ -1,6 +1,3 @@
-.container-row {
-  margin-top: 10px;
-}
 .item {
   margin-left: 10px;
   margin-top: 10px;
@@ -44,7 +41,4 @@
 }
 .mat-tabBody {
   max-height: 800px;
-}
-.payment-div {
-  margin-right: 10px;
 }

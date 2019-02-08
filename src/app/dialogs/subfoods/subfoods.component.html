@@ -1,0 +1,29 @@
+<h1 mat-dialog-title class="text-center">ເລືອກອາຫານ</h1>
+
+<form [formGroup]="subFoodsForm">
+  <mat-card>
+    <mat-card-content>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="subFood">ປະເພດອາຫານຍ່ອຍ</label>
+          <select class="form-control" id="subFood" formControlName="subFood" (change)="selectedFood($event.target.value)"
+            required>
+            <option *ngFor="let subFood of extendedFoodList" value="{{ subFood.extendedFoodName }}">{{
+              subFood.extendedFoodName }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="quantity">ຈຳນວນ</label>
+          <input type="number" step="1" class="form-control text-right" formControlName="quantity" required>
+        </div>
+
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div class="form-group col-md-12">
+        <button mat-flat-button color="primary" style="width: 100%;" (click)="addFood()" [disabled]="btnDisable">ເລືອກ</button>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+
+</form>

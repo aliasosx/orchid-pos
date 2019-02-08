@@ -6,15 +6,14 @@
           <mat-tab-group class="mat-tabBody">
             <mat-tab *ngFor="let foodCategory of FoodCategories |async" label="{{ foodCategory.foodCategoryNameLao }}">
               <div class="row main-container">
-                <div class="col col-sm-12 col-md-3 shadow p-3 mb-5 bg-white rounded item text-center"
-                  *ngFor="let food of foods | async">
+                <div class="col col-sm-12 col-md-3 shadow p-3 mb-5 bg-white rounded item text-center" *ngFor="let food of foods | async">
                   <div class="pricetag">
                     <span class="h4" *ngIf="food.price != 0; else choosePrice">{{ food.price | number}}</span>
                     <ng-template #choosePrice>
                       <span class="h4">ເລືອກ</span>
                     </ng-template>
                   </div>
-                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail">
+                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail" (click)="foodChoosed(food)">
                   <div class="title align-middle">
                     <span class="h6 font-weight-light">{{ food.food_name }}</span>
                   </div>
@@ -25,9 +24,41 @@
         </div>
         <div class="col col-md-5">
           <mat-card>
-            <mat-card-header><span class="h4">Payment</span></mat-card-header>
+            <mat-card-header><span class="h4">ອາຫານທີ່ເລຶອກໄວ້</span></mat-card-header>
             <mat-card-content>
-              JJJJJJ
+              <mat-list>
+                <mat-list-item>
+                  <div class="row" style="width: 100%;">
+                    <div class="col col-md-3 text-left">ອາຫານ</div>
+                    <div class="col col-md-2 text-right">ຈຳນວນ</div>
+                    <div class="col col-md-2 text-right">ລາຄາ</div>
+                    <div class="col col-md-2 text-right">ລວມ</div>
+                    <div class="col col-md-2 text-left">Note</div>
+                    <div class="col col-md-1 text-right"></div>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item *ngFor="let cart of carts | async">
+                  <div class="row" style="width: 100%;">
+                    <div class="col col-md-3 text-left">{{ cart.food }} {{ cart.subFood }}</div>
+                    <div class="col col-md-2 text-right">{{ cart.quantity | number }}</div>
+                    <div class="col col-md-2 text-right">{{ cart.price | number }}</div>
+                    <div class="col col-md-2 text-right"> {{ cart.total | number }}</div>
+                    <div class="col col-md-2 text-left">{{ cart.note }}</div>
+                    <div class="col col-md-1 text-right"><img src="../../../assets/icons/baseline-delete-24px.svg"
+                        style="position: absolute; right:5px; cursor: pointer;" (click)="removeFromlist(cart)"></div>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div class="row">
+                    <div class="col col-md-9 text-right h5" style="position: absolute; right:320px;">ຍອດລວມ</div>
+                    <div class="
+                      col col-md-3 text-right h5" style="position: absolute; right:200px;">{{
+                      total | number }}</div>
+                  </div>
+                </mat-list-item>
+              </mat-list>
             </mat-card-content>
           </mat-card>
         </div>

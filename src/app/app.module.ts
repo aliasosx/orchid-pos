@@ -17,7 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
-  MatSnackBarModule, MatStepperModule, MatTabsModule
+  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDivider, MatDividerModule, MatListModule
 } from '@angular/material';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { FoodsComponent } from './pages/foods/foods.component';
@@ -30,6 +30,7 @@ import { AddFoodCategoryComponent } from './dialogs/add-food-category/add-food-c
 import { ExtendedFoodTypeComponent } from './dialogs/extended-food-type/extended-food-type.component';
 import { AddExtendedFoodComponent } from './dialogs/add-extended-food/add-extended-food.component';
 import { ViewExtendedFoodComponent } from './dialogs/view-extended-food/view-extended-food.component';
+import { SubfoodsComponent } from './dialogs/subfoods/subfoods.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { ViewExtendedFoodComponent } from './dialogs/view-extended-food/view-ext
     AddFoodCategoryComponent,
     ExtendedFoodTypeComponent,
     AddExtendedFoodComponent,
-    ViewExtendedFoodComponent
+    ViewExtendedFoodComponent,
+    SubfoodsComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,7 @@ import { ViewExtendedFoodComponent } from './dialogs/view-extended-food/view-ext
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
-    MatSnackBarModule, MatStepperModule, MatTabsModule,
+    MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule
   ],
   entryComponents: [
     AddFoodComponent,
@@ -65,6 +67,7 @@ import { ViewExtendedFoodComponent } from './dialogs/view-extended-food/view-ext
     ExtendedFoodTypeComponent,
     AddExtendedFoodComponent,
     ViewExtendedFoodComponent,
+    SubfoodsComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],

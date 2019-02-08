@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { SubfoodsComponent } from 'src/app/dialogs/subfoods/subfoods.component';
 import { Cart } from 'src/app/interfaces/cart';
+import { AddNoteComponent } from 'src/app/dialogs/add-note/add-note.component';
 
 @Component({
   selector: 'app-pos',
@@ -53,6 +54,7 @@ export class PosComponent implements OnInit {
         return data;
       });
     }));
+    this.totalCalculation();
   }
   openSubFood(food) {
     const dialogRef = this.dialog.open(SubfoodsComponent, {
@@ -63,13 +65,10 @@ export class PosComponent implements OnInit {
       if (feedBack) {
         this.foodCartList.push(feedBack);
         this.addCartsToDb(feedBack);
-        this.totalCalculation();
       } else {
-        this.totalCalculation();
         return;
       }
     });
-    this.totalCalculation();
   }
   foodChoosed(food) {
     if (food.price == 0) {
@@ -81,10 +80,10 @@ export class PosComponent implements OnInit {
         'quantity': 1,
         'total': food.price * 1
       }
-      this.foodCartList.push(item);
       this.addCartsToDb(item);
     }
     this.totalCalculation();
+
   }
   removeFromlist(food) {
     if (food) {
@@ -95,18 +94,52 @@ export class PosComponent implements OnInit {
   }
   totalCalculation() {
     this.total = 0;
-    this.carts.subscribe(f => {
-      f.forEach(element => {
-        if (element.total > 0) {
-          this.total += element.total;
-        }
-      });
+    this.db.collection<Cart>('carts').get().subscribe(f => {
+      f.forEach(item => {
+        this.total += item.data().total;
+      })
     });
+
   }
   addCartsToDb(cart) {
     if (cart) {
+      /*
+      this.db.collection<Cart>('carts', ref => {
+        return ref.where('food', '==', cart.food)
+      }).get().subscribe(c => {
+        c.forEach(item => {
+
+        });
+      });
+
+      */
+
       this.cartsRef.add(cart).then(() => {
       });
+      this.totalCalculation();
+
     }
+
   }
+  addnote(cart) {
+    const dialogRef = this.dialog.open(AddNoteComponent, {
+      width: '600px'
+    });
+
+    dialogRef.afterClosed().subscribe((note) => {
+      if (note) {
+        if (cart) {
+          cart['note'] = note.note;
+          this.cartsRef.doc(cart.id).update(cart).then(() => {
+
+          });
+        } else {
+          return;
+        }
+      } else {
+        return;
+      }
+    });
+  }
+
 }

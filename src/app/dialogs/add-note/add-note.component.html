@@ -1,0 +1,8 @@
+<h1 mat-dialog-title class="text-center h4">ເພີ່ມຄຳສັ້ງ</h1>
+<form [formGroup]="addNoteForm">
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <input type="text" step="1" class="form-control text-left" formControlName="note" required (keydown.enter)="addNote()">
+    </div>
+  </div>
+</form>

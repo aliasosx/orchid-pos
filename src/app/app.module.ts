@@ -31,6 +31,7 @@ import { ExtendedFoodTypeComponent } from './dialogs/extended-food-type/extended
 import { AddExtendedFoodComponent } from './dialogs/add-extended-food/add-extended-food.component';
 import { ViewExtendedFoodComponent } from './dialogs/view-extended-food/view-extended-food.component';
 import { SubfoodsComponent } from './dialogs/subfoods/subfoods.component';
+import { AddNoteComponent } from './dialogs/add-note/add-note.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { SubfoodsComponent } from './dialogs/subfoods/subfoods.component';
     ExtendedFoodTypeComponent,
     AddExtendedFoodComponent,
     ViewExtendedFoodComponent,
-    SubfoodsComponent
+    SubfoodsComponent,
+    AddNoteComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +70,7 @@ import { SubfoodsComponent } from './dialogs/subfoods/subfoods.component';
     AddExtendedFoodComponent,
     ViewExtendedFoodComponent,
     SubfoodsComponent,
+    AddNoteComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],

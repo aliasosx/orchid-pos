@@ -24,44 +24,64 @@
         </div>
         <div class="col col-md-5">
           <mat-card>
-            <mat-card-header><span class="h4">ອາຫານທີ່ເລຶອກໄວ້</span></mat-card-header>
+            <mat-card-title>ອາຫານທີ່ເລຶອກໄວ້ </mat-card-title>
             <mat-card-content>
               <mat-list>
                 <mat-list-item>
                   <div class="row" style="width: 100%;">
                     <div class="col col-md-3 text-left">ອາຫານ</div>
                     <div class="col col-md-2 text-right">ຈຳນວນ</div>
-                    <div class="col col-md-2 text-right">ລາຄາ</div>
-                    <div class="col col-md-2 text-right">ລວມ</div>
-                    <div class="col col-md-2 text-left">Note</div>
+                    <div class="col col-md-2 text-center">ລາຄາ</div>
+                    <div class="col col-md-2 text-center">ລວມ</div>
+                    <div class="col col-md-2 text-center">Note</div>
                     <div class="col col-md-1 text-right"></div>
                   </div>
                 </mat-list-item>
                 <mat-divider></mat-divider>
-                <mat-list-item *ngFor="let cart of carts | async">
-                  <div class="row" style="width: 100%;">
-                    <div class="col col-md-3 text-left">{{ cart.food }} {{ cart.subFood }}</div>
-                    <div class="col col-md-2 text-right">{{ cart.quantity | number }}</div>
-                    <div class="col col-md-2 text-right">{{ cart.price | number }}</div>
-                    <div class="col col-md-2 text-right"> {{ cart.total | number }}</div>
-                    <div class="col col-md-2 text-left">{{ cart.note }}</div>
-                    <div class="col col-md-1 text-right"><img src="../../../assets/icons/baseline-delete-24px.svg"
-                        style="position: absolute; right:5px; cursor: pointer;" (click)="removeFromlist(cart)"></div>
-                  </div>
-                </mat-list-item>
+                <div class="listDiv">
+                  <mat-list-item *ngFor="let cart of carts | async">
+                    <div class="row" style="width: 100%;">
+                      <div class="col col-md-3 text-left">{{ cart.food }} {{ cart.subFood }}</div>
+                      <div class="col col-md-2 text-right">{{ cart.quantity | number }}</div>
+                      <div class="col col-md-2 text-right">{{ cart.price | number }}</div>
+                      <div class="col col-md-2 text-right"> {{ cart.total | number }}</div>
+                      <div class="col col-md-2 text-left">{{ cart.note }}</div>
+                      <div class="col col-md-1 text-right">
+                        <img src="../../../assets/icons/baseline-note-24px.svg" style="position: absolute; right:30px; cursor: pointer;"
+                          (click)="addnote(cart)">
+                        <img src="../../../assets/icons/baseline-delete-24px.svg" style="position: absolute; right:1px; cursor: pointer;"
+                          (click)="removeFromlist(cart)">
+                      </div>
+                    </div>
+                  </mat-list-item>
+                </div>
                 <mat-divider></mat-divider>
                 <mat-list-item>
                   <div class="row">
-                    <div class="col col-md-9 text-right h5" style="position: absolute; right:320px;">ຍອດລວມ</div>
+                    <div class="col col-md-9 text-right h5" style="position: absolute; right:150px;">ຍອດລວມ</div>
                     <div class="
-                      col col-md-3 text-right h5" style="position: absolute; right:200px;">{{
+                      col col-md-3 text-right h5" style="position: absolute; right:10px;">{{
                       total | number }}</div>
                   </div>
                 </mat-list-item>
               </mat-list>
             </mat-card-content>
           </mat-card>
+          <mat-card class="paymentCard">
+            <mat-card-title>Payment</mat-card-title>
+            <mat-card-content>
+              <div class="row">
+                <div class="col col-md-6">
+                  <button mat-flat-button color="primary" style="width: 100%;">Cash</button>
+                </div>
+                <div class="col col-md-6">
+                  <button mat-flat-button color="primary" style="width: 100%;">Bank</button>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
         </div>
       </div>
     </mat-card-content>
+
   </mat-card>

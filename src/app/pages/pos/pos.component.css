@@ -42,3 +42,12 @@
 .mat-tabBody {
   max-height: 800px;
 }
+.paymentCard {
+  position: absolute;
+  bottom: 10px;
+  width: 97%;
+}
+.listDiv {
+  max-height: 500px;
+  overflow:auto;
+}

@@ -25,7 +25,7 @@ export class SubfoodsComponent implements OnInit {
   // extendedFoods
   extendedFoodList: any;
   subFoodsForm: FormGroup;
-
+  username: string = 'administrator';
   ngOnInit() {
     // load food data
     /*
@@ -45,6 +45,7 @@ export class SubfoodsComponent implements OnInit {
       'price': new FormControl(0),
       'quantity': new FormControl(1),
       'total': new FormControl(0),
+      'username': new FormControl(this.username),
     });
     this.extendedFoodList = this.data.extendedFoods;
   }

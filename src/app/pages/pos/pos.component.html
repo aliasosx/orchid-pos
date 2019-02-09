@@ -6,14 +6,16 @@
           <mat-tab-group class="mat-tabBody">
             <mat-tab *ngFor="let foodCategory of FoodCategories |async" label="{{ foodCategory.foodCategoryNameLao }}">
               <div class="row main-container">
-                <div class="col col-sm-12 col-md-3 shadow p-3 mb-5 bg-white rounded item text-center" *ngFor="let food of foods | async">
+                <div class="col col-sm-12 col-md-3 shadow p-3 mb-5 bg-white rounded item text-center"
+                  *ngFor="let food of foods | async">
                   <div class="pricetag">
-                    <span class="h4" *ngIf="food.price != 0; else choosePrice">{{ food.price | number}}</span>
+                    <span class="h5" *ngIf="food.price != 0; else choosePrice">{{ food.price | number}}</span>
                     <ng-template #choosePrice>
-                      <span class="h4">ເລືອກ</span>
+                      <span class="h4" style="color: orange;">ເລືອກ</span>
                     </ng-template>
                   </div>
-                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail" (click)="foodChoosed(food)">
+                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail"
+                    (click)="foodChoosed(food)">
                   <div class="title align-middle">
                     <span class="h6 font-weight-light">{{ food.food_name }}</span>
                   </div>
@@ -47,10 +49,10 @@
                       <div class="col col-md-2 text-right"> {{ cart.total | number }}</div>
                       <div class="col col-md-2 text-left">{{ cart.note }}</div>
                       <div class="col col-md-1 text-right">
-                        <img src="../../../assets/icons/baseline-note-24px.svg" style="position: absolute; right:30px; cursor: pointer;"
-                          (click)="addnote(cart)">
-                        <img src="../../../assets/icons/baseline-delete-24px.svg" style="position: absolute; right:1px; cursor: pointer;"
-                          (click)="removeFromlist(cart)">
+                        <img src="../../../assets/icons/baseline-note-24px.svg"
+                          style="position: absolute; right:30px; cursor: pointer;" (click)="addnote(cart)">
+                        <img src="../../../assets/icons/baseline-delete-24px.svg"
+                          style="position: absolute; right:1px; cursor: pointer;" (click)="removeFromlist(cart)">
                       </div>
                     </div>
                   </mat-list-item>

@@ -18,15 +18,29 @@
   text-align: center;
   height: 30px;
   vertical-align: middle;
-  background-color: rgb(16, 17, 17);
+  background-color: black;
   color: white;
-  opacity: 0.5;
+  opacity: 0.7;
 }
 .pricetag {
   position: absolute;
   top: 5px;
   right: 10px;
   background-color: black;
+  color: white;
+  border-radius: 3px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'phetsarath ot';
+  opacity: 0.7;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+}
+
+.pricetagOption {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background-color: rgb(247, 119, 34);
   color: white;
   border-radius: 3px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'phetsarath ot';

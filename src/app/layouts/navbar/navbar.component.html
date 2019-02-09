@@ -4,7 +4,8 @@
       <span *ngFor="let RestaurantInfo of RestaurantInfos | async">{{ RestaurantInfo.restaurantName }} {{
       RestaurantInfo.slogan }} </span>
       <span class="example-spacer"></span>
-      <button mat-flat-button color="primary" *ngFor="let menu of menus |async" routerLink="{{ menu.menuLink }}">{{
+      <button mat-flat-button color="primary" class="matbtn" *ngFor="let menu of menus |async"
+        routerLink="{{ menu.menuLink }}">{{
       menu.menuName }}</button>
     </mat-toolbar-row>
   </mat-toolbar>

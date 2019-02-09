@@ -57,6 +57,7 @@ export class PosComponent implements OnInit {
         return data;
       });
     }));
+
     this.totalCalculation();
   }
   openSubFood(food) {
@@ -78,6 +79,7 @@ export class PosComponent implements OnInit {
       this.openSubFood(food);
     } else {
       let item = {
+        'id': food.id,
         'food': food.food_name,
         'price': food.price,
         'quantity': 1,
@@ -105,23 +107,31 @@ export class PosComponent implements OnInit {
     });
 
   }
-  addCartsToDb(cart) {
-    if (cart) {
-      /*
+  addCartsToDb(food) {
+    //Check cart item exist
+    //console.log(food);
+    if (food) {
       this.db.collection<Cart>('carts', ref => {
-        return ref.where('food', '==', cart.food)
-      }).get().subscribe(c => {
-        c.forEach(item => {
+        return ref.where('food', '==', food.food)
+      }).get().subscribe((item) => {
+        if (!item.empty) {
+          item.docs.forEach(doc => {
+            let cart = doc.data();
+            cart['quantity'] = doc.data().quantity + 1;
+            cart['total'] = doc.data().price * cart.quantity;
+            this.db.collection('carts').doc(doc.id).update(cart).then(() => {
 
-        });
+            });
+          });
+        } else {
+          // add new item
+          if (food) {
+            this.cartsRef.add(food).then(() => {
+            });
+            this.totalCalculation();
+          }
+        }
       });
-
-      */
-
-      this.cartsRef.add(cart).then(() => {
-      });
-      this.totalCalculation();
-
     }
 
   }

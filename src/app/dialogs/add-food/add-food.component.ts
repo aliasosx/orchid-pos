@@ -50,7 +50,7 @@ export class AddFoodComponent implements OnInit {
   extendedFoods: any[];
 
   ngOnInit() {
-    const uuid1 = uuid.v1();;
+    const uuid1 = uuid.v1();
     //console.log(uuid1);
     this.addFoodForm = new FormGroup({
       foodId: new FormControl(uuid1),

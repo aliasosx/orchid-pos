@@ -4,10 +4,12 @@ import { Observable } from 'rxjs';
 import { FoodCategory } from './../../interfaces/foodCategory';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { SubfoodsComponent } from 'src/app/dialogs/subfoods/subfoods.component';
 import { Cart } from 'src/app/interfaces/cart';
 import { AddNoteComponent } from 'src/app/dialogs/add-note/add-note.component';
+import { PaymentCashComponent } from 'src/app/dialogs/payment-cash/payment-cash.component';
+import { PaymentBanksChannelComponent } from 'src/app/dialogs/payment-banks-channel/payment-banks-channel.component';
 
 @Component({
   selector: 'app-pos',
@@ -16,7 +18,7 @@ import { AddNoteComponent } from 'src/app/dialogs/add-note/add-note.component';
 })
 export class PosComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar) {
     this.foodCategoriesRef = db.collection<FoodCategory>('food_categories', ref => {
       return ref.orderBy('foodCategoryNameLao', 'desc');
     });
@@ -88,8 +90,6 @@ export class PosComponent implements OnInit {
       }
       this.addCartsToDb(item);
     }
-    this.totalCalculation();
-
   }
   removeFromlist(food) {
     if (food) {
@@ -108,8 +108,6 @@ export class PosComponent implements OnInit {
 
   }
   addCartsToDb(food) {
-    //Check cart item exist
-    //console.log(food);
     if (food) {
       this.db.collection<Cart>('carts', ref => {
         return ref.where('food', '==', food.food)
@@ -120,7 +118,7 @@ export class PosComponent implements OnInit {
             cart['quantity'] = doc.data().quantity + 1;
             cart['total'] = doc.data().price * cart.quantity;
             this.db.collection('carts').doc(doc.id).update(cart).then(() => {
-
+              this.totalCalculation();
             });
           });
         } else {
@@ -133,7 +131,6 @@ export class PosComponent implements OnInit {
         }
       });
     }
-
   }
   addnote(cart) {
     const dialogRef = this.dialog.open(AddNoteComponent, {
@@ -145,7 +142,6 @@ export class PosComponent implements OnInit {
         if (cart) {
           cart['note'] = note.note;
           this.cartsRef.doc(cart.id).update(cart).then(() => {
-
           });
         } else {
           return;
@@ -155,5 +151,25 @@ export class PosComponent implements OnInit {
       }
     });
   }
+  openPaymentCash() {
+    const dialogCashRef = this.dialog.open(PaymentCashComponent, {
+      width: '800px',
+      data: {
+        total: this.total
+      }
+    });
+  }
+  opentBanksChannel(total) {
+    console.log(total)
+    const dialogCashRef = this.dialog.open(PaymentBanksChannelComponent, {
+      width: '800px',
+      data: {
+        total: this.total
+      }
+    });
+  }
 
+  selectedTabFilter(e) {
+
+  }
 }

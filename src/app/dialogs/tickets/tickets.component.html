@@ -1,0 +1,41 @@
+<p>
+  All Tickets
+</p>
+<form [formGroup]="ticketForm">
+  <div class="form-row">
+    <div class="form-group col-md-10">
+      <label for="subFood">Ticket</label>
+      <input type="number" class="form-control" required formControlName="ticket">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="subFood">Ticket</label>
+      <button mat-flat-button color="primary" style="width: 100%;" (click)="addNewTicket()">ເລືອກ</button>
+    </div>
+  </div>
+</form>
+<mat-card>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>
+        <div class="row">
+          <div class="col col-md-6 text-center align-middle">Ticket</div>
+          <div class="col col-md-6 text-center align-middle">Used</div>
+        </div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <div class="listDiv">
+        <mat-list-item *ngFor="let ticket of tickets |async">
+          <div class="row">
+            <div class="col col-md-6 text-left align-middle">{{ ticket.ticket }}</div>
+            <div class="col col-md-6 text-right align-middle" *ngIf="ticket.used == false; else usedTicket"><img
+                src="../../../assets/icons/Tick_Mark_Dark-512.png" style="width: 25px;"></div>
+          </div>
+          <ng-template #usedTicket>
+            <img src="../../../assets/icons/256-256-ec140ce32ea8619e2b1dce4fad3b0d48-cross.png" style="width: 25px;">
+          </ng-template>
+        </mat-list-item>
+      </div>
+
+    </mat-list>
+  </mat-card-content>
+</mat-card>

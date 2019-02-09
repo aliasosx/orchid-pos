@@ -1,0 +1,9 @@
+* {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif,'phetsarath ot';
+}
+.payment-text {
+  color: purple;
+}
+.qrDiv {
+  margin-top: 20px;
+}

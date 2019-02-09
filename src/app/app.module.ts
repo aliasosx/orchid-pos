@@ -32,6 +32,9 @@ import { AddExtendedFoodComponent } from './dialogs/add-extended-food/add-extend
 import { ViewExtendedFoodComponent } from './dialogs/view-extended-food/view-extended-food.component';
 import { SubfoodsComponent } from './dialogs/subfoods/subfoods.component';
 import { AddNoteComponent } from './dialogs/add-note/add-note.component';
+import { PaymentCashComponent } from './dialogs/payment-cash/payment-cash.component';
+import { PaymentBanksChannelComponent } from './dialogs/payment-banks-channel/payment-banks-channel.component';
+import { TicketsComponent } from './dialogs/tickets/tickets.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,10 @@ import { AddNoteComponent } from './dialogs/add-note/add-note.component';
     AddExtendedFoodComponent,
     ViewExtendedFoodComponent,
     SubfoodsComponent,
-    AddNoteComponent
+    AddNoteComponent,
+    PaymentCashComponent,
+    PaymentBanksChannelComponent,
+    TicketsComponent
   ],
   imports: [
     BrowserModule,
@@ -71,6 +77,9 @@ import { AddNoteComponent } from './dialogs/add-note/add-note.component';
     ViewExtendedFoodComponent,
     SubfoodsComponent,
     AddNoteComponent,
+    PaymentCashComponent,
+    PaymentBanksChannelComponent,
+    TicketsComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],

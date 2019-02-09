@@ -1,12 +1,14 @@
 .item {
-  margin-left: 10px;
+  margin-left: 5px;
   margin-top: 10px;
   max-width: 200px;
   min-width: 100px;
   min-height: 200px;
+  max-height: 100px;
   overflow: hidden;
   cursor: pointer;
   align-items: center;
+  border-radius: 5px;
 }
 .title {
   position: absolute;

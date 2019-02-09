@@ -21,11 +21,15 @@ export class PosComponent implements OnInit {
       return ref.orderBy('foodCategoryNameLao', 'desc');
     });
     this.foodsRef = db.collection<Food>('foods');
-    this.cartsRef = db.collection<Cart>('carts');
+    this.cartsRef = db.collection<Cart>('carts', ref => {
+      return ref.where('username', '==', this.username);
+    });
   }
 
   foodCategoriesRef: AngularFirestoreCollection<FoodCategory>;
   FoodCategories: Observable<any[]>;
+
+  username: string = 'administrator';
 
   foodsRef: AngularFirestoreCollection<Food>;
   foods: Observable<any[]>;
@@ -39,7 +43,6 @@ export class PosComponent implements OnInit {
 
   ngOnInit() {
     this.FoodCategories = this.foodCategoriesRef.valueChanges();
-
     this.foods = this.foodsRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data();
@@ -78,7 +81,8 @@ export class PosComponent implements OnInit {
         'food': food.food_name,
         'price': food.price,
         'quantity': 1,
-        'total': food.price * 1
+        'total': food.price * 1,
+        'username': 'administrator'
       }
       this.addCartsToDb(item);
     }

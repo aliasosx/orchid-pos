@@ -43,6 +43,8 @@ export class PosComponent implements OnInit {
   itemSelected: any = [];
   total: number = 0;
 
+  disablePaymentBtn = false;
+
   ngOnInit() {
     this.FoodCategories = this.foodCategoriesRef.valueChanges();
     this.foods = this.foodsRef.snapshotChanges().pipe(map(change => {
@@ -152,15 +154,16 @@ export class PosComponent implements OnInit {
     });
   }
   openPaymentCash() {
-    const dialogCashRef = this.dialog.open(PaymentCashComponent, {
-      width: '800px',
-      data: {
-        total: this.total
-      }
-    });
+    if (this.total > 0) {
+      const dialogCashRef = this.dialog.open(PaymentCashComponent, {
+        width: '800px',
+        data: {
+          total: this.total
+        }
+      });
+    }
   }
   opentBanksChannel(total) {
-    console.log(total)
     const dialogCashRef = this.dialog.open(PaymentBanksChannelComponent, {
       width: '800px',
       data: {

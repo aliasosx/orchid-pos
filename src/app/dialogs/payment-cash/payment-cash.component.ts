@@ -77,9 +77,15 @@ export class PaymentCashComponent implements OnInit {
   paymentProcess() {
     this.paymentBtnDisabled = true;
     if (this.orderForm.valid) {
-      this.db.collection('orders').add(this.orderForm.value).then(() => {
-        // update ticket status
-        this.dialogRef.close('success');
+      this.db.collection('orders').add(this.orderForm.value).then((res) => {
+        // clear cart
+        console.log(this.cartRef)
+        this.carts.subscribe(cart => {
+          cart.forEach(doc => {
+            console.log(doc);
+          })
+        });
+        //this.dialogRef.close('success');
       });
     } else {
       this.paymentBtnDisabled = false;

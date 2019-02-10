@@ -15,27 +15,36 @@
 </form>
 <mat-card>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item>
-        <div class="row">
-          <div class="col col-md-6 text-center align-middle">Ticket</div>
-          <div class="col col-md-6 text-center align-middle">Used</div>
-        </div>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <div class="listDiv">
-        <mat-list-item *ngFor="let ticket of tickets |async">
-          <div class="row">
-            <div class="col col-md-6 text-left align-middle">{{ ticket.ticket }}</div>
-            <div class="col col-md-6 text-right align-middle" *ngIf="ticket.used == false; else usedTicket"><img
-                src="../../../assets/icons/Tick_Mark_Dark-512.png" style="width: 25px;"></div>
-          </div>
-          <ng-template #usedTicket>
-            <img src="../../../assets/icons/256-256-ec140ce32ea8619e2b1dce4fad3b0d48-cross.png" style="width: 25px;">
-          </ng-template>
-        </mat-list-item>
-      </div>
+    <mat-divider></mat-divider>
+    <div class="table-responsive" style="max-height: 200px;">
+      <table class="table table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" class="text-center">Ticket</th>
+            <th scope="col" class="text-center">Enabled</th>
+            <th scope="col" class="text-center">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ticket of tickets |async">
+            <td class="text-left">{{ ticket.ticket }}</td>
+            <td class="text-center" *ngIf="ticket.used == false ; else usedTicket">
+              <img src="../../../assets/icons/baseline-check_circle_outline-24px.svg" style="cursor: pointer;">
+            </td>
+            <ng-template #usedTicket>
+              <td class="text-center">
+                <img src="../../../assets/icons/256-256-ec140ce32ea8619e2b1dce4fad3b0d48-cross.png"
+                  style="width: 25px;cursor: pointer;">
+              </td>
 
-    </mat-list>
+            </ng-template>
+            <td class="text-center">
+              <img src="../../../assets/icons/baseline-delete-24px.svg" style="width: 25px;cursor: pointer;">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </mat-card-content>
 </mat-card>

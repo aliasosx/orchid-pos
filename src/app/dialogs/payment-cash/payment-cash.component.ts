@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Cart } from 'src/app/interfaces/cart';
@@ -8,6 +8,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Ticket } from 'src/app/interfaces/ticket';
 
 import * as uuid from 'uuid';
+import { PaymentType } from 'src/app/interfaces/paymentType';
 
 @Component({
   selector: 'app-payment-cash',
@@ -22,6 +23,9 @@ export class PaymentCashComponent implements OnInit {
     this.ticketsRef = db.collection<Ticket>('tickets', ref => {
       return ref.where('used', '==', false).orderBy('ticket', 'asc');
     });
+    this.paymentTypesRef = db.collection<PaymentType>('paymentTypes', ref => {
+      return ref.where('enabled', '==', true);
+    });
   }
   username: string = 'administrator';
   cartRef: AngularFirestoreCollection<Cart>;
@@ -33,6 +37,10 @@ export class PaymentCashComponent implements OnInit {
   ticketsRef: AngularFirestoreCollection<Ticket>;
   tickets: Observable<any[]>;
   foodList: any = [];
+
+  paymentTypesRef: AngularFirestoreCollection<PaymentType>;
+  paymentTypes: Observable<any[]>;
+
 
   ngOnInit() {
     const uuid1 = uuid.v1();
@@ -63,6 +71,13 @@ export class PaymentCashComponent implements OnInit {
         this.foodList.push(element);
       })
     });
+
+    this.paymentTypes = this.paymentTypesRef.snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const paymenTypes = a.payload.doc.data();
+        paymenTypes['id'] = a.payload.doc.id;
+      })
+    }));
 
     this.orderForm.get('food').setValue(this.foodList);
 

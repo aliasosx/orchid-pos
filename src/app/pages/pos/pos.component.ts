@@ -47,13 +47,6 @@ export class PosComponent implements OnInit {
 
   ngOnInit() {
     this.FoodCategories = this.foodCategoriesRef.valueChanges();
-    this.foods = this.foodsRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data();
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    }));
     this.carts = this.cartsRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data();
@@ -61,9 +54,33 @@ export class PosComponent implements OnInit {
         return data;
       });
     }));
-
+    this.loadFoodPage({ index: 0 });
     this.totalCalculation();
   }
+
+  loadFoodPage(page) {
+
+    if (page.index == 0) {
+      this.foods = this.db.collection<Food>('foods').snapshotChanges().pipe(map(change => {
+        return change.map(a => {
+          const foods = a.payload.doc.data();
+          foods['id'] = a.payload.doc.id;
+          return foods;
+        });
+      }));
+    } else {
+      this.foods = this.db.collection<Food>('foods', ref => {
+        return ref.where('food_category', '==', page.tab.textLabel);
+      }).snapshotChanges().pipe(map(change => {
+        return change.map(a => {
+          const foods = a.payload.doc.data();
+          foods['id'] = a.payload.doc.id;
+          return foods;
+        });
+      }));
+    }
+  }
+
   openSubFood(food) {
     const dialogRef = this.dialog.open(SubfoodsComponent, {
       width: '400px',
@@ -170,9 +187,5 @@ export class PosComponent implements OnInit {
         total: this.total
       }
     });
-  }
-
-  selectedTabFilter(e) {
-
   }
 }

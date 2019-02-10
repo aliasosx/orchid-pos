@@ -85,7 +85,7 @@ export class PaymentCashComponent implements OnInit {
             console.log(doc);
           })
         });
-        //this.dialogRef.close('success');
+
       });
     } else {
       this.paymentBtnDisabled = false;

@@ -36,8 +36,8 @@
                 <div class="form-group col-md-12">
                   <label for="payBy">Pay By</label>
                   <select class="form-control" id="payBy">
-                    <option *ngFor="let paymentType of paymentTypes | async" value="{{ paymentType }}">
-                      {{ paymentType.paymentName }}</option>
+                    <option *ngFor="let p of paymentTypes | async" value="{{ p.paymentCode }}">
+                      {{ p.paymentName }}</option>
                   </select>
                 </div>
                 <div class="form-group col-md-12" style="bottom: 0;">

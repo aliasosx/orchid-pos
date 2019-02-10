@@ -3,4 +3,5 @@ export interface PaymentType {
   paymentName: string;
   paymentDescription: string;
   bankAcquirer?: any;
+  enabled: boolean;
 }

@@ -35,6 +35,7 @@ export class PaymentTypesComponent implements OnInit {
       paymentName: new FormControl(),
       paymentDescription: new FormControl(),
       bankAcquirer: new FormControl(),
+      enabled: new FormControl(true),
     });
     this.banks = this.banksRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
@@ -44,5 +45,17 @@ export class PaymentTypesComponent implements OnInit {
       });
     }));
   }
+  addPaymentType() {
+    console.log(this.paymentTypesForm.value);
+    const bank = this.db.collection<Bank>('banks')
+    /*
+    if (this.paymentTypesForm.valid) {
+      this.db.collection('paymentTypes').add(this.paymentTypesForm.value).then(() => {
+        this.snackbar.open('Payment added', 'Ok', { duration: 1000, verticalPosition: 'top' });
+      });
+    }
+    */
+  }
+
 
 }

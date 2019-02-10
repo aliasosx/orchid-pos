@@ -3,7 +3,7 @@
   <form [formGroup]="paymentTypesForm">
     <div class="form-row">
       <div class="form-group col-md-6">
-        <label for="paymentName">ລະຫັດ</label>
+        <label for="paymentCode">ລະຫັດ</label>
         <input type="text" class="form-control" formControlName="paymentCode" id="paymentCode" required>
       </div>
       <div class="form-group col-md-6">
@@ -17,11 +17,12 @@
       <div class="form-group col-md-6">
         <label for="bankAcquirer">ທະນາຄານ</label>
         <select id="bankAcquirer" class="form-control">
-          <option *ngFor="let bank of banks | async" value="{{ bank.bankCode }}">{{ bank.bankName }}</option>
+          <option *ngFor="let bank of banks | async" value="{{ bank.id }}">{{ bank.bankName }}</option>
         </select>
       </div>
       <div class="form-group col-md-12">
-        <button mat-raised-button color="primary" style="width: 100%;" class="btnSave">ບັນທືກ</button>
+        <button mat-raised-button color="primary" style="width: 100%;" (click)="addPaymentType()"
+          class="btnSave">ບັນທືກ</button>
       </div>
     </div>
     <div class="row">
@@ -31,15 +32,17 @@
           <tr>
             <th scope="col" class="text-center">ລະຫັດ</th>
             <th scope="col" class="text-center">ຊື່</th>
-            <th scope="col" class="text-center">ໝາຍເຫດ</th>
-            <th scope="col" class="text-center">ລຶບ</th>
+            <th scope="col" class="text-center">ທະນາຄານ</th>
+            <th scope="col" class="text-center">ນຳໃຊ້</th>
+            <th scope="col" class="text-center"></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let bank of banks | async">
-            <td class="text-left">{{ bank.bankCode }}</td>
-            <td class="text-left text-nowrap">{{ bank.bankName }}</td>
-            <td class="text-center" *ngIf="bank.enabled ; else disabled">
+          <tr *ngFor="let paymentType of paymentTypes | async">
+            <td class="text-left">{{ paymentType.paymentCode }}</td>
+            <td class="text-left text-nowrap">{{ paymentType.paymentName }}</td>
+            <td class="text-left text-nowrap">{{ paymentType.bankAcquirer }}</td>
+            <td class="text-center" *ngIf="paymentType.enabled ; else disabled">
               <img src="../../../assets/icons/baseline-check_circle_outline-24px.svg">
             </td>
             <ng-template #disabled><img src="../../../assets/icons/baseline-radio_button_unchecked-24px.svg">

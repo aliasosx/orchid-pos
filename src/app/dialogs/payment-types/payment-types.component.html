@@ -16,13 +16,18 @@
       </div>
       <div class="form-group col-md-6">
         <label for="bankAcquirer">ທະນາຄານ</label>
-        <select id="bankAcquirer" class="form-control">
-          <option *ngFor="let bank of banks | async" value="{{ bank.id }}">{{ bank.bankName }}</option>
+        <select id="bankAcquirer" class="form-control" formControlName="bankAcquirer" required>
+          <option value="-1" disabled>----------------</option>
+          <option *ngFor="let bank of banks | async" value="{{ bank.bankCode }}">{{ bank.bankName }}</option>
         </select>
       </div>
-      <div class="form-group col-md-12">
+      <div class="form-group col-md-6">
         <button mat-raised-button color="primary" style="width: 100%;" (click)="addPaymentType()"
-          class="btnSave">ບັນທືກ</button>
+          [disabled]="saveBtnDisabled" class="btnSave">ບັນທືກ</button>
+      </div>
+      <div class="form-group col-md-6">
+        <button mat-raised-button color="warn" style="width: 100%;" (click)="updateItem()"
+          [disabled]="updateBtnDisabled" class="btnSave">update</button>
       </div>
     </div>
     <div class="row">
@@ -34,21 +39,23 @@
             <th scope="col" class="text-center">ຊື່</th>
             <th scope="col" class="text-center">ທະນາຄານ</th>
             <th scope="col" class="text-center">ນຳໃຊ້</th>
-            <th scope="col" class="text-center"></th>
+            <th scope="col" class="text-center">ລຶບ</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let paymentType of paymentTypes | async">
-            <td class="text-left">{{ paymentType.paymentCode }}</td>
-            <td class="text-left text-nowrap">{{ paymentType.paymentName }}</td>
-            <td class="text-left text-nowrap">{{ paymentType.bankAcquirer }}</td>
+            <td class="text-left" (click)="loadFormClick(paymentType)">{{ paymentType.paymentCode }}</td>
+            <td class="text-left text-nowrap" (click)="loadFormClick(paymentType)">{{ paymentType.paymentName }}</td>
+            <td class="text-left text-nowrap" (click)="loadFormClick(paymentType)">{{ paymentType.bankAcquirer }}</td>
             <td class="text-center" *ngIf="paymentType.enabled ; else disabled">
-              <img src="../../../assets/icons/baseline-check_circle_outline-24px.svg">
+              <img src="../../../assets/icons/baseline-check_circle_outline-24px.svg" style="cursor: pointer;">
             </td>
-            <ng-template #disabled><img src="../../../assets/icons/baseline-radio_button_unchecked-24px.svg">
+            <ng-template #disabled><img src="../../../assets/icons/baseline-radio_button_unchecked-24px.svg"
+                style="cursor: pointer;">
             </ng-template>
             <td class="text-center">
-
+              <img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer;"
+                (click)="removeItem(paymentType)">
             </td>
           </tr>
         </tbody>

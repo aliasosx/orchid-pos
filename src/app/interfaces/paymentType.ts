@@ -2,6 +2,7 @@ export interface PaymentType {
   paymentCode: string;
   paymentName: string;
   paymentDescription: string;
-  bankAcquirer?: any;
+  bankAcquirer?: string;
+  bank?: any;
   enabled: boolean;
 }

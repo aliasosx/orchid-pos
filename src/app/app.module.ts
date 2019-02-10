@@ -35,6 +35,8 @@ import { AddNoteComponent } from './dialogs/add-note/add-note.component';
 import { PaymentCashComponent } from './dialogs/payment-cash/payment-cash.component';
 import { PaymentBanksChannelComponent } from './dialogs/payment-banks-channel/payment-banks-channel.component';
 import { TicketsComponent } from './dialogs/tickets/tickets.component';
+import { PaymentTypesComponent } from './dialogs/payment-types/payment-types.component';
+import { BankingComponent } from './dialogs/banking/banking.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { TicketsComponent } from './dialogs/tickets/tickets.component';
     AddNoteComponent,
     PaymentCashComponent,
     PaymentBanksChannelComponent,
-    TicketsComponent
+    TicketsComponent,
+    PaymentTypesComponent,
+    BankingComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +84,8 @@ import { TicketsComponent } from './dialogs/tickets/tickets.component';
     PaymentCashComponent,
     PaymentBanksChannelComponent,
     TicketsComponent,
+    PaymentTypesComponent,
+    BankingComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],

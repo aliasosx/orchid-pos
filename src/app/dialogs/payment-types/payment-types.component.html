@@ -1,0 +1,55 @@
+<h1 mat-dialog-title>ຊ່ອງທາງການຈ່າຍເງິນ</h1>
+<mat-dialog-content>
+  <form [formGroup]="paymentTypesForm">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="paymentName">ລະຫັດ</label>
+        <input type="text" class="form-control" formControlName="paymentCode" id="paymentCode" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="paymentName">ຊື່</label>
+        <input type="text" class="form-control" formControlName="paymentName" id="paymentName" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="paymentDescription">ໝາຍເຫດ</label>
+        <input type="text" class="form-control" formControlName="paymentDescription" id="paymentDescription" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="bankAcquirer">ທະນາຄານ</label>
+        <select id="bankAcquirer" class="form-control">
+          <option *ngFor="let bank of banks | async" value="{{ bank.bankCode }}">{{ bank.bankName }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-12">
+        <button mat-raised-button color="primary" style="width: 100%;" class="btnSave">ບັນທືກ</button>
+      </div>
+    </div>
+    <div class="row">
+      <mat-divider></mat-divider>
+      <table class="table table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" class="text-center">ລະຫັດ</th>
+            <th scope="col" class="text-center">ຊື່</th>
+            <th scope="col" class="text-center">ໝາຍເຫດ</th>
+            <th scope="col" class="text-center">ລຶບ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bank of banks | async">
+            <td class="text-left">{{ bank.bankCode }}</td>
+            <td class="text-left text-nowrap">{{ bank.bankName }}</td>
+            <td class="text-center" *ngIf="bank.enabled ; else disabled">
+              <img src="../../../assets/icons/baseline-check_circle_outline-24px.svg">
+            </td>
+            <ng-template #disabled><img src="../../../assets/icons/baseline-radio_button_unchecked-24px.svg">
+            </ng-template>
+            <td class="text-center">
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </form>
+</mat-dialog-content>

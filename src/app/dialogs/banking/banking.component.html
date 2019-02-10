@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>ທະນາຄານ</h1>
+<mat-dialog-content>
+  <form [formGroup]="bankingForm">
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="bankCode">ລະຫັດ</label>
+        <input type="text" class="form-control" formControlName="bankCode" id="bankCode" required>
+      </div>
+      <div class="form-group col-md-12">
+        <label for="bankName">ຊື່ທະນາຄານ</label>
+        <input type="text" class="form-control" formControlName="bankName" id="bankName" required>
+      </div>
+      <div class="form-group col-md-12 text-right">
+        <button mat-raised-button color="primary" style="width: 100%;" class="btnSave"
+          (click)="addBank()">ບັນທືກ</button>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <mat-divider></mat-divider>
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col" class="text-center">ລະຫັດ</th>
+          <th scope="col" class="text-center">ຊື່ທະນາຄານ</th>
+          <th scope="col" class="text-center">ນຳໃຊ້</th>
+          <th scope="col" class="text-center">ລຶບ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bank of banks | async">
+          <td class="text-left">{{ bank.bankCode }}</td>
+          <td class="text-left text-nowrap">{{ bank.bankName }}</td>
+          <td class="text-center" *ngIf="bank.enabled ; else disabled">
+            <img src="../../../assets/icons/baseline-check_circle_outline-24px.svg">
+          </td>
+          <ng-template #disabled><img src="../../../assets/icons/baseline-radio_button_unchecked-24px.svg">
+          </ng-template>
+          <td class="text-center">
+            <img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer;"
+              (click)="removeBank(bank.id)">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-dialog-content>

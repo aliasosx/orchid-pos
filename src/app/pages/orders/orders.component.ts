@@ -72,7 +72,8 @@ export class OrdersComponent implements OnInit {
     });
   }
   async updateTransactionLog(order) {
-    let transaction = {
+    /*
+      let transaction = {
       transaction_date: new Date(),
       foodId: number,
       foodName: order.food.food,
@@ -89,6 +90,7 @@ export class OrdersComponent implements OnInit {
       paymentBy: string; // Bank Cash QR
       refno: string;
       invoiceno: string;
-    };
+      };
+    */
   }
 }

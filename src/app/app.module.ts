@@ -37,6 +37,7 @@ import { PaymentBanksChannelComponent } from './dialogs/payment-banks-channel/pa
 import { TicketsComponent } from './dialogs/tickets/tickets.component';
 import { PaymentTypesComponent } from './dialogs/payment-types/payment-types.component';
 import { BankingComponent } from './dialogs/banking/banking.component';
+import { OrdersComponent } from './pages/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { BankingComponent } from './dialogs/banking/banking.component';
     PaymentBanksChannelComponent,
     TicketsComponent,
     PaymentTypesComponent,
-    BankingComponent
+    BankingComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,

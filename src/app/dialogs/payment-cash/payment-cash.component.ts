@@ -1,14 +1,15 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Cart } from 'src/app/interfaces/cart';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, timeoutWith } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Ticket } from 'src/app/interfaces/ticket';
 
 import * as uuid from 'uuid';
 import { PaymentType } from 'src/app/interfaces/paymentType';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-payment-cash',
@@ -16,7 +17,7 @@ import { PaymentType } from 'src/app/interfaces/paymentType';
   styleUrls: ['./payment-cash.component.css']
 })
 export class PaymentCashComponent implements OnInit {
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, @Inject(MAT_DIALOG_DATA) public data) {
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data) {
     this.cartRef = db.collection<Cart>('carts', ref => {
       return ref.where('username', '==', this.username);
     });
@@ -41,7 +42,12 @@ export class PaymentCashComponent implements OnInit {
   paymentTypesRef: AngularFirestoreCollection<PaymentType>;
   paymentTypes: Observable<any[]>;
   showPaymentCash = 'hidden';
-  cartId: string;
+
+  qRCodeUrl = environment.qrcodeUrl.url;
+  srcQr = '../../../assets/icons/qr-code.svg';
+  ticketSelectedId: Ticket;
+  cartIds: any = [];
+
 
   ngOnInit() {
     const uuid1 = uuid.v1();
@@ -55,18 +61,21 @@ export class PaymentCashComponent implements OnInit {
       recieved: new FormControl(this.data.total),
       change: new FormControl(0),
       paymentType: new FormControl(),
+      invoiceno: new FormControl(),
       orderDateTime: new FormControl(new Date()),
       orderFinishTime: new FormControl(),
       settled: new FormControl(false),
       completed: new FormControl(false),
       username: new FormControl(this.username),
+      status: new FormControl('processing'),
     });
+    //this.generateQRDate();
 
-    this.orderForm.get('paymentType').setValue('CASH');
     this.carts = this.cartRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const cart = a.payload.doc.data();
         cart['id'] = a.payload.doc.id;
+        this.cartIds.push(a.payload.doc.id);
         return cart;
       });
     }));
@@ -75,7 +84,7 @@ export class PaymentCashComponent implements OnInit {
       doc.forEach(element => {
         element['done'] = false;
         this.foodList.push(element);
-      })
+      });
     });
 
     this.paymentTypes = this.paymentTypesRef.snapshotChanges().pipe(map(change => {
@@ -95,15 +104,26 @@ export class PaymentCashComponent implements OnInit {
         return tickets;
       });
     }));
+    this.generateQRDate();
   }
   paymentProcess() {
     this.paymentBtnDisabled = true;
     if (this.orderForm.valid) {
       this.db.collection('orders').add(this.orderForm.value).then((res) => {
-        //Update Ticket
-        //this.ticketsRef.doc(this.getTicketById(this.orderForm.get('ticket').value).id).update()
+        this.ticketSelectedId.used = true;
+        this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
+          this.cartIds.forEach(element => {
+            console.log(element);
+            this.cartRef.doc(element).delete().then(() => {
+
+            });
+          });
+          this.dialogRef.close('success');
+        });
       });
+
     } else {
+      this.snackbar.open('Data incorrect', 'Fail', { duration: 1000, verticalPosition: 'top' });
       this.paymentBtnDisabled = false;
       return;
     }
@@ -124,20 +144,28 @@ export class PaymentCashComponent implements OnInit {
     while (s.length < size) s = "0" + s;
     return s;
   }
-  getTicketById(ticket) {
-    const doc = this.db.collection<Ticket>('tickets', ref => {
-      return ref.where('ticket', '==', ticket);
+  async getTicketById(ticket) {
+    const doc = await this.db.collection<Ticket>('tickets', ref => {
+      return ref.where('ticket', '==', parseInt(ticket));
     }).snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data();
         data['id'] = a.payload.doc.id;
         return data;
       });
-    }));
-    doc.subscribe(_ticket => {
-      _ticket.forEach(t => {
-        console.log(t);
+    })).subscribe(t => {
+      t.forEach(_ticket => {
+        this.ticketSelectedId = _ticket;
       });
     });
+  }
+  async generateQRDate() {
+    const _uuid1 = uuid.v1();
+    const _terminalId = '000001';
+    const _amount = this.data.total;
+    const _invoiceNumber = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
+    const _description = 'letterp-POS-transctions';
+    this.orderForm.get('invoiceno').setValue(_invoiceNumber);
+    let urlFormat = '/?uuid=' + _uuid1 + '&tid=' + _terminalId + '&amount=' + _amount + '&invoiceId=' + _invoiceNumber + '&description=' + _description;
   }
 }

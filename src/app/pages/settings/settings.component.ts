@@ -24,7 +24,7 @@ export class SettingsComponent implements OnInit {
     const dialogRef = this.dialog.open(ExtendedFoodTypeComponent, { width: '600px' });
   }
   openTicketMainternance() {
-    const dialogRef = this.dialog.open(TicketsComponent, { width: '400px' });
+    const dialogRef = this.dialog.open(TicketsComponent, { width: '600px' });
   }
   openPaymentType() {
     const dialogRef = this.dialog.open(PaymentTypesComponent, { width: '600px' });

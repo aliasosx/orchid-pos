@@ -20,19 +20,19 @@
   text-align: center;
   height: 30px;
   vertical-align: middle;
-  background-color: black;
-  color: white;
+  background-color: rgb(228, 241, 247);
+  color: rgb(53, 48, 48);
   opacity: 0.7;
 }
 .pricetag {
   position: absolute;
   top: 5px;
   right: 10px;
-  background-color: black;
-  color: white;
+  background-color: rgb(247, 242, 242);
+  color: rgb(9, 120, 247);
   border-radius: 3px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'phetsarath ot';
-  opacity: 0.7;
+  opacity: 0.9;
   width: 100px;
   height: 30px;
   text-align: center;

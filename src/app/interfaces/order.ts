@@ -1,6 +1,7 @@
 export interface Order {
   orderId: string;
   refno: string;
+  invoiceno: string;
   ticket: number;
   food: any;
   grandtotal: number;
@@ -11,4 +12,6 @@ export interface Order {
   orderFinishTime: Date;
   settled: boolean;
   completed: boolean;
+  status?: string;
+  username: string;
 }

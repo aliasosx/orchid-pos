@@ -44,9 +44,21 @@ export class TicketsComponent implements OnInit {
   addNewTicket() {
     if (this.ticketForm.valid) {
       this.db.collection('tickets').add(this.ticketForm.value).then(() => {
-
+        this.ticketForm.reset();
       });
     }
+  }
+  removeTicket(id) {
+    this.db.collection<Ticket>('tickets').doc(id).delete();
+  }
+  update(ticket) {
+    if (ticket.used == false) {
+      ticket.used = true;
+    } else if (ticket.used == true) {
+      ticket.used = false;
+    }
+
+    this.db.collection<Ticket>('tickets').doc(ticket.id).update(ticket);
   }
 
 }

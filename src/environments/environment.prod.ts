@@ -7,5 +7,8 @@ export const environment = {
     projectId: "orchid-pos",
     storageBucket: "orchid-pos.appspot.com",
     messagingSenderId: "322682959300"
+  },
+  qrcodeUrl: {
+    url: 'https://letterp.000webhostapp.com/letterp.php',
   }
 };

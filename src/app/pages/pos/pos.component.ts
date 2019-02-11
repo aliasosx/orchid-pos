@@ -178,6 +178,14 @@ export class PosComponent implements OnInit {
           total: this.total
         }
       });
+      dialogCashRef.afterClosed().subscribe(res => {
+        if (res) {
+          this.snackbar.open('Order completed', 'ok', { duration: 10000, verticalPosition: 'top' });
+          this.totalCalculation();
+        } else {
+          return;
+        }
+      });
     }
   }
   opentBanksChannel(total) {

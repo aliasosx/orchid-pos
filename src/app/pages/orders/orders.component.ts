@@ -5,6 +5,7 @@ import { Order } from 'src/app/interfaces/order';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Transaction } from 'src/app/interfaces/transaction';
+import { FormGroup, FormControl } from '@angular/forms';
 
 declare var swal: any;
 
@@ -31,10 +32,16 @@ export class OrdersComponent implements OnInit {
 
   username: string = 'administrator';
 
+  formFoodList: FormGroup;
+
   ngOnInit() {
+    this.formFoodList = new FormGroup({
+      food: new FormControl(),
+    });
+
     this.orders = this.orderRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
-        const data = a.payload.doc.data();
+        const data = a.payload.doc.data() as Order;
         data['id'] = a.payload.doc.id;
         return data;
       });
@@ -47,9 +54,35 @@ export class OrdersComponent implements OnInit {
     } else if (food.done == false) {
       _condition == true;
     }
-    this.orderRef.doc(order.id).get().subscribe(f => {
-      console.log(f.data().food);
+
+    // get Foods from Order
+
+    let foods = [];
+    this.orderRef.doc(order.id).get().subscribe(order => {
+      const o = order.data();
+      o.food.forEach(element => {
+        if (element.id == food.id) {
+          element.done = true;
+          foods.push(element);
+        } else {
+          foods.push(element);
+        }
+      });
     });
+    // update to order
+
+    this.formFoodList.get('food').setValue(foods);
+    console.log(this.formFoodList.get('food').value);
+    //order.food = foods;
+    console.log(this.formFoodList.value);
+
+    this.orderRef.doc(order.id).update({
+      food: this.formFoodList.get('food').value
+    }).then(() => {
+      this.snackbarRef.open('Update done', 'Ok', { duration: 1000, verticalPosition: 'top' });
+    });
+
+
   }
   async markOrderComplete(order) {
     let c = await this.orderRef.doc(order.id).update({
@@ -71,6 +104,8 @@ export class OrdersComponent implements OnInit {
       this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000, verticalPosition: 'top' });
     });
   }
+
+
   async updateTransactionLog(order) {
     /*
       let transaction = {

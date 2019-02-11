@@ -24,7 +24,7 @@ export class PaymentCashComponent implements OnInit {
       return ref.where('used', '==', false).orderBy('ticket', 'asc');
     });
     this.paymentTypesRef = db.collection<PaymentType>('paymentTypes', ref => {
-      return ref.where('enabled', '==', true);
+      return ref.where('enabled', '==', true).orderBy('paymentCode', 'asc');
     });
   }
   username: string = 'administrator';
@@ -40,23 +40,29 @@ export class PaymentCashComponent implements OnInit {
 
   paymentTypesRef: AngularFirestoreCollection<PaymentType>;
   paymentTypes: Observable<any[]>;
-
+  showPaymentCash = 'hidden';
+  cartId: string;
 
   ngOnInit() {
     const uuid1 = uuid.v1();
-    const refno = Math.floor(Math.random() * 6000) + 1;
+    const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
     this.orderForm = new FormGroup({
       orderId: new FormControl(uuid1),
       refno: new FormControl(refno),
       ticket: new FormControl(),
       food: new FormControl(),
       grandtotal: new FormControl(this.data.total),
+      recieved: new FormControl(this.data.total),
+      change: new FormControl(0),
+      paymentType: new FormControl(),
       orderDateTime: new FormControl(new Date()),
       orderFinishTime: new FormControl(),
       settled: new FormControl(false),
       completed: new FormControl(false),
       username: new FormControl(this.username),
     });
+
+    this.orderForm.get('paymentType').setValue('CASH');
     this.carts = this.cartRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const cart = a.payload.doc.data();
@@ -74,9 +80,10 @@ export class PaymentCashComponent implements OnInit {
 
     this.paymentTypes = this.paymentTypesRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
-        const paymenTypes = a.payload.doc.data();
-        paymenTypes['id'] = a.payload.doc.id;
-      })
+        const data = a.payload.doc.data();
+        data['id'] = a.payload.doc.id;
+        return data;
+      });
     }));
 
     this.orderForm.get('food').setValue(this.foodList);
@@ -93,18 +100,44 @@ export class PaymentCashComponent implements OnInit {
     this.paymentBtnDisabled = true;
     if (this.orderForm.valid) {
       this.db.collection('orders').add(this.orderForm.value).then((res) => {
-        // clear cart
-        console.log(this.cartRef)
-        this.carts.subscribe(cart => {
-          cart.forEach(doc => {
-            console.log(doc);
-          })
-        });
-
+        //Update Ticket
+        //this.ticketsRef.doc(this.getTicketById(this.orderForm.get('ticket').value).id).update()
       });
     } else {
       this.paymentBtnDisabled = false;
       return;
     }
+  }
+  checkPaymentCash(payment) {
+    console.log(payment);
+    if (payment == 'CASH') {
+      this.showPaymentCash = '';
+    } else {
+      this.showPaymentCash = 'hidden';
+    }
+  }
+  changeCalculation() {
+    this.orderForm.get('change').setValue(this.orderForm.get('recieved').value - this.data.total);
+  }
+  padding(num: number, size: number) {
+    let s = num + "";
+    while (s.length < size) s = "0" + s;
+    return s;
+  }
+  getTicketById(ticket) {
+    const doc = this.db.collection<Ticket>('tickets', ref => {
+      return ref.where('ticket', '==', ticket);
+    }).snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data();
+        data['id'] = a.payload.doc.id;
+        return data;
+      });
+    }));
+    doc.subscribe(_ticket => {
+      _ticket.forEach(t => {
+        console.log(t);
+      });
+    });
   }
 }

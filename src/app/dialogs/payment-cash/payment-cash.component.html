@@ -28,19 +28,39 @@
               <div class="form-row">
                 <div class="form-group col-md-12" style="margin-top: 10px;">
                   <label for="ticket">Ticket</label>
-                  <select class="form-control" id="ticket" required formControlName="ticket">
-                    <option *ngFor="let t of tickets |async" value="{{ t.ticket }}">{{ t.ticket }}
+                  <select class="form-control" id="ticket" required formControlName="ticket"
+                    (change)="getTicketById($event.target.value)">
+                    <option value="" disabled>------------------------</option>
+                    <option *ngFor="let t of tickets | async" value="{{ t.ticket }}">{{ t.ticket }}
                     </option>
                   </select>
                 </div>
                 <div class="form-group col-md-12">
                   <label for="payBy">Pay By</label>
-                  <select class="form-control" id="payBy">
+                  <select class="form-control" id="payBy" (change)="checkPaymentCash($event.target.value)">
+                    <option value="" disabled>------------------------</option>
                     <option *ngFor="let p of paymentTypes | async" value="{{ p.paymentCode }}">
-                      {{ p.paymentName }}</option>
+                      {{ p.paymentCode }}</option>
                   </select>
                 </div>
-                <div class="form-group col-md-12" style="bottom: 0;">
+                <mat-card class="col col-md-12" [ngClass]="showPaymentCash">
+                  <mat-card-content>
+                    <div class="row">
+                      <div class="form-group col-md-6">
+                        <label for="recieved">ຮັບມາ</label>
+                        <input type="number" class="form-control" id="recieved" formControlName="recieved" required
+                          (keyup)="changeCalculation()">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="change">ທອນ</label>
+                        <input type="number" readonly class="form-control" id="change" formControlName="change"
+                          required>
+                      </div>
+                    </div>
+
+                  </mat-card-content>
+                </mat-card>
+                <div class="form-group col-md-12" style="margin-top: 10px;">
                   <button mat-flat-button color="warn" style="width: 100%; height: 50px;" (click)="paymentProcess()"
                     [disabled]="paymentBtnDisabled">ຈ່າຍ</button>
                 </div>

@@ -45,6 +45,7 @@ import { ViewProductsComponent } from './dialogs/view-products/view-products.com
 import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { AddPurchaseComponent } from './dialogs/add-purchase/add-purchase.component';
 import { ViewPurchaseComponent } from './dialogs/view-purchase/view-purchase.component';
+import { VendorsComponent } from './dialogs/vendors/vendors.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { ViewPurchaseComponent } from './dialogs/view-purchase/view-purchase.com
     ViewProductsComponent,
     PurchaseComponent,
     AddPurchaseComponent,
-    ViewPurchaseComponent
+    ViewPurchaseComponent,
+    VendorsComponent
   ],
   imports: [
     BrowserModule,
@@ -106,6 +108,7 @@ import { ViewPurchaseComponent } from './dialogs/view-purchase/view-purchase.com
     ViewProductsComponent,
     AddPurchaseComponent,
     ViewPurchaseComponent,
+    VendorsComponent,
 
   ]
   ,

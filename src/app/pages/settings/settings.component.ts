@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { ExtendedFoodTypeComponent } from 'src/app/dialogs/extended-food-type/extended-food-type.component';
 import { TicketsComponent } from 'src/app/dialogs/tickets/tickets.component';
 import { PaymentTypesComponent } from 'src/app/dialogs/payment-types/payment-types.component';
+import { VendorsComponent } from 'src/app/dialogs/vendors/vendors.component';
 
 @Component({
   selector: 'app-settings',
@@ -34,6 +35,9 @@ export class SettingsComponent implements OnInit {
   }
   openMenuSetting() {
 
+  }
+  openVendors() {
+    const dialogRef = this.dialog.open(VendorsComponent, { width: '600px' });
   }
 
 }

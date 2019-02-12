@@ -1,6 +1,6 @@
 export interface Transaction {
   transaction_date: Date;
-  foodId: number;
+  foodId?: number;
   foodName: string;
   cost: number;
   price: number;

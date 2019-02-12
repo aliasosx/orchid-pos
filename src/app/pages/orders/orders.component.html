@@ -44,13 +44,13 @@
             <td class="text-center align-middle">{{ food.quantity | number }}</td>
             <td class="text-center align-middle" style="color: red; font-weight: bold;">{{ food.note }}</td>
             <td class="text-center align-middle" *ngIf="food.done == true; else undone">
-              <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;"
-                (click)="updateFoodDone(order,food)">
+              <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" disable
+                style="max-width: 20px;cursor: pointer;" (click)="updateFoodDone(order,food)">
             </td>
             <ng-template #undone>
               <td class="text-center align-middle">
-                <img src="../../../assets/icons/baseline-remove-24px.svg" style="max-width: 20px; cursor: pointer;"
-                  (click)="updateFoodDone(order,food)">
+                <img mat-raised-button src="../../../assets/icons/baseline-remove-24px.svg"
+                  style="max-width: 20px; cursor: pointer;" (click)="updateFoodDone(order,food)">
               </td>
             </ng-template>
           </tr>

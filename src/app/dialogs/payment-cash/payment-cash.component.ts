@@ -113,9 +113,8 @@ export class PaymentCashComponent implements OnInit {
         this.ticketSelectedId.used = true;
         this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
           this.cartIds.forEach(element => {
-            console.log(element);
+            //console.log(element);
             this.cartRef.doc(element).delete().then(() => {
-
             });
           });
           this.dialogRef.close('success');
@@ -129,7 +128,7 @@ export class PaymentCashComponent implements OnInit {
     }
   }
   checkPaymentCash(payment) {
-    console.log(payment);
+    //console.log(payment);
     if (payment == 'CASH') {
       this.showPaymentCash = '';
     } else {

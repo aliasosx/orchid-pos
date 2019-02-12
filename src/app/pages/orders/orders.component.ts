@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Transaction } from 'src/app/interfaces/transaction';
 import { FormGroup, FormControl } from '@angular/forms';
+import { Ticket } from 'src/app/interfaces/ticket';
 
 declare var swal: any;
 
@@ -33,12 +34,11 @@ export class OrdersComponent implements OnInit {
   username: string = 'administrator';
 
   formFoodList: FormGroup;
+  foodsList: any = [];
+
+  sendBtnDisable = false;
 
   ngOnInit() {
-    this.formFoodList = new FormGroup({
-      food: new FormControl(),
-    });
-
     this.orders = this.orderRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data() as Order;
@@ -47,42 +47,41 @@ export class OrdersComponent implements OnInit {
       });
     }));
   }
-  updateFoodDone(order, food) {
-    let _condition;
-    if (food.done == true) {
-      _condition == false;
-    } else if (food.done == false) {
-      _condition == true;
+  async updateFoodDone(order, _food) {
+    // Clear cache
+    this.foodsList = [];
+    if (_food.done === true) {
+      _food.done = false;
+    } else {
+      _food.done = true;
     }
-
-    // get Foods from Order
-
-    let foods = [];
-    this.orderRef.doc(order.id).get().subscribe(order => {
-      const o = order.data();
-      o.food.forEach(element => {
-        if (element.id == food.id) {
-          element.done = true;
-          foods.push(element);
-        } else {
-          foods.push(element);
-        }
-      });
-    });
-    // update to order
-
-    this.formFoodList.get('food').setValue(foods);
-    console.log(this.formFoodList.get('food').value);
-    //order.food = foods;
-    console.log(this.formFoodList.value);
-
-    this.orderRef.doc(order.id).update({
-      food: this.formFoodList.get('food').value
+    const cs = await this.orderRef.doc(order.id).get().toPromise().then(_order => {
+      if (_order.exists) {
+        const o = _order.data() as Order;
+        // populate food data
+        o.food.forEach(element => {
+          if (element.id === _food.id) {
+            element.done = true;
+            this.foodsList.push(element);
+          } else {
+            this.foodsList.push(element);
+          }
+        });
+      }
     }).then(() => {
-      this.snackbarRef.open('Update done', 'Ok', { duration: 1000, verticalPosition: 'top' });
+      if (this.foodsList.length > 0) {
+        let food = {
+          food: this.foodsList
+        };
+        this.db.collection<Order>('orders').doc(order.id).update(food).then(() => {
+          this.snackbarRef.open('Food Order Updated', 'ok', { duration: 1000 });
+          this.foodsList = [];
+        });
+      } else {
+        this.snackbarRef.open('Error Updated, Please try again later', 'ok', { duration: 1000 });
+        this.foodsList = [];
+      }
     });
-
-
   }
   async markOrderComplete(order) {
     let c = await this.orderRef.doc(order.id).update({
@@ -90,8 +89,9 @@ export class OrdersComponent implements OnInit {
       orderFinishTime: new Date(),
       status: 'completed',
       username: this.username,
-    }).then(() => {
-      this.snackbarRef.open('Order completed', 'ok', { duration: 1000, verticalPosition: 'top' });
+    }).then(async () => {
+      this.snackbarRef.open('Order completed', 'ok', { duration: 1000 });
+      let c = await this.releaseTicket(order.ticket);
     });
   }
   async markOrderCancel(order) {
@@ -100,17 +100,38 @@ export class OrdersComponent implements OnInit {
       orderFinishTime: new Date(),
       status: 'cancel',
       username: this.username,
-    }).then(() => {
-      this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000, verticalPosition: 'top' });
+    }).then(async () => {
+      this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000 });
+      let c = await this.releaseTicket(order.ticket);
     });
   }
-
-
+  async releaseTicket(ticket) {
+    console.log(ticket);
+    let ticketId = "";
+    if (ticket) {
+      const c = await this.db.collection<Ticket>('tickets', ref => {
+        return ref.where('ticket', '==', parseInt(ticket));
+      }).snapshotChanges().pipe(map(change => {
+        return change.map(a => {
+          const tickets = a.payload.doc.data() as Ticket;
+          tickets['id'] = a.payload.doc.id;
+          ticketId = a.payload.doc.id;
+          return tickets;
+        });
+      }));
+      c.subscribe(a => {
+        this.db.collection<Ticket>('tickets').doc(ticketId).update({
+          used: false
+        }).then(() => {
+          this.snackbarRef.open('Ticket ' + ticket + ' released', 'ok', { duration: 1000 });
+        });
+      });
+    }
+  }
   async updateTransactionLog(order) {
     /*
-      let transaction = {
+    let transaction = {
       transaction_date: new Date(),
-      foodId: number,
       foodName: order.food.food,
       cost: number,
       price: number,
@@ -125,7 +146,7 @@ export class OrdersComponent implements OnInit {
       paymentBy: string; // Bank Cash QR
       refno: string;
       invoiceno: string;
-      };
-    */
+    };
+*/
   }
 }

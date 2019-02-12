@@ -68,7 +68,7 @@ import { OrdersComponent } from './pages/orders/orders.component';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,

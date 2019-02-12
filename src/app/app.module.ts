@@ -40,6 +40,11 @@ import { BankingComponent } from './dialogs/banking/banking.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { TransactionsComponent } from './pages/transactions/transactions.component';
 import { ReportsComponent } from './pages/reports/reports.component';
+import { AddProductsComponent } from './dialogs/add-products/add-products.component';
+import { ViewProductsComponent } from './dialogs/view-products/view-products.component';
+import { PurchaseComponent } from './pages/purchase/purchase.component';
+import { AddPurchaseComponent } from './dialogs/add-purchase/add-purchase.component';
+import { ViewPurchaseComponent } from './dialogs/view-purchase/view-purchase.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +70,12 @@ import { ReportsComponent } from './pages/reports/reports.component';
     BankingComponent,
     OrdersComponent,
     TransactionsComponent,
-    ReportsComponent
+    ReportsComponent,
+    AddProductsComponent,
+    ViewProductsComponent,
+    PurchaseComponent,
+    AddPurchaseComponent,
+    ViewPurchaseComponent
   ],
   imports: [
     BrowserModule,
@@ -92,6 +102,11 @@ import { ReportsComponent } from './pages/reports/reports.component';
     TicketsComponent,
     PaymentTypesComponent,
     BankingComponent,
+    AddProductsComponent,
+    ViewProductsComponent,
+    AddPurchaseComponent,
+    ViewPurchaseComponent,
+
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],

@@ -1,0 +1,16 @@
+.example-header-image {
+  background-image: url('../../../assets/icons/baseline-dashboard-24px.svg');
+  background-size: cover;
+}
+.card-status {
+  width: 300px;
+}
+.spaceDiv {
+  margin-left: 5px;
+}
+.table {
+  border-radius: 2px;
+}
+.product_detail {
+  margin-top: 10px;
+}

@@ -13,5 +13,6 @@ export interface Order {
   settled: boolean;
   completed: boolean;
   status?: string;
+  kitchen: string;
   username: string;
 }

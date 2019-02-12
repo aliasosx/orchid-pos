@@ -92,6 +92,7 @@ export class OrdersComponent implements OnInit {
     }).then(async () => {
       this.snackbarRef.open('Order completed', 'ok', { duration: 1000 });
       let c = await this.releaseTicket(order.ticket);
+      this.updateTransactionLog(order);
     });
   }
   async markOrderCancel(order) {
@@ -106,7 +107,6 @@ export class OrdersComponent implements OnInit {
     });
   }
   async releaseTicket(ticket) {
-    console.log(ticket);
     let ticketId = "";
     if (ticket) {
       const c = await this.db.collection<Ticket>('tickets', ref => {
@@ -129,24 +129,34 @@ export class OrdersComponent implements OnInit {
     }
   }
   async updateTransactionLog(order) {
-    /*
-    let transaction = {
-      transaction_date: new Date(),
-      foodName: order.food.food,
-      cost: number,
-      price: number,
-      quantity: number;
-      total_price: number;
-      total_cost: number;
-      kitchen: string;
-      profit: number;
-      settled: boolean;
-      username: string;
-      orderId: string;
-      paymentBy: string; // Bank Cash QR
-      refno: string;
-      invoiceno: string;
-    };
-*/
+    if (order) {
+      order.food.forEach(element => {
+        console.log(element);
+        let transaction = {
+          transaction_date: new Date(),
+          foodName: element.food,
+          cost: element.cost,
+          price: element.price,
+          quantity: element.quantity,
+          total_price: element.quantity * element.price,
+          total_cost: element.cost * element.quantity,
+          kitchen: element.kitchen,
+          profit: (element.quantity * element.price) - (element.cost * element.quantity),
+          bill_amount: order.grandtotal,
+          settled: true,
+          username: this.username,
+          orderId: order.orderId,
+          paymentBy: order.paymentType, // Bank Cash QR
+          refno: order.refno,
+          invoiceno: order.invoiceno,
+        };
+        this.db.collection<Transaction>('transactions').add(transaction).then(() => {
+          this.snackbarRef.open('Transaction posted ', 'ok', { duration: 1000 });
+        });
+      });
+    } else {
+      this.snackbarRef.open('Transaction posted Failed', 'ok', { duration: 1000 });
+    }
+
   }
 }

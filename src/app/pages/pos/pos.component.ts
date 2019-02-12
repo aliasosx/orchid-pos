@@ -103,9 +103,11 @@ export class PosComponent implements OnInit {
         'id': food.id,
         'food': food.food_name,
         'price': food.price,
+        'cost': food.cost,
         'quantity': 1,
         'total': food.price * 1,
-        'username': 'administrator'
+        'username': 'administrator',
+        'kitchen': food.kitchen,
       }
       this.addCartsToDb(item);
     }

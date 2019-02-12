@@ -7,6 +7,7 @@ export interface Transaction {
   quantity: number;
   total_price: number;
   total_cost: number;
+  bill_amount: number;
   kitchen: string;
   profit: number;
   settled: boolean;

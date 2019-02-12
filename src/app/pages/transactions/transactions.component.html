@@ -1,0 +1,54 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Transactions</mat-card-title>
+    <mat-card-subtitle>Summary all Transactions</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div>
+      <table class="table table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" class="text-center">orderId</th>
+            <th scope="col" class="text-center">transaction_date</th>
+            <th scope="col" class="text-center">refno</th>
+            <th scope="col" class="text-center">foodName</th>
+            <th scope="col" class="text-center">cost</th>
+            <th scope="col" class="text-center">price</th>
+            <th scope="col" class="text-center">quantity</th>
+            <th scope="col" class="text-center">Grand total</th>
+            <th scope="col" class="text-center">Total cost</th>
+            <th scope="col" class="text-center">Profit</th>
+            <th scope="col" class="text-center">Bill Amount</th>
+            <th scope="col" class="text-center">Payment</th>
+            <th scope="col" class="text-center">Settled</th>
+            <th scope="col" class="text-center">Invoice no</th>
+            <th scope="col" class="text-center">Kitchen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactions | async">
+            <td class="text-left">{{ transaction.orderId }}</td>
+            <td class="text-center">{{ transaction.transaction_date.toDate() | date:'dd-MMM-yyyy HH:mm:ss' }}</td>
+            <td class="text-center">{{ transaction.refno }}</td>
+            <td class="text-left">{{ transaction.foodName }}</td>
+            <td class="text-right">{{ transaction.cost | number }}</td>
+            <td class="text-right">{{ transaction.price | number }}</td>
+            <td class="text-right">{{ transaction.quantity | number }}</td>
+            <td class="text-right">{{ transaction.total_price | number }}</td>
+            <td class="text-right">{{ transaction.total_cost | number }}</td>
+            <td class="text-right">{{ transaction.profit | number }}</td>
+            <td class="text-right">{{ transaction.bill_amount | number }}</td>
+            <td class="text-center">{{ transaction.paymentBy }}</td>
+            <td class="text-center" *ngIf="transaction.settled == true">
+              <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" disable
+                style="max-width: 20px;">
+            </td>
+            <td class="text-center">{{ transaction.invoiceno }}</td>
+            <td class="text-center">{{ transaction.kitchen }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>

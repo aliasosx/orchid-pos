@@ -32,5 +32,8 @@ export class SettingsComponent implements OnInit {
   openBanking() {
     const dialogRef = this.dialog.open(BankingComponent, { width: '600px' });
   }
+  openMenuSetting() {
+
+  }
 
 }

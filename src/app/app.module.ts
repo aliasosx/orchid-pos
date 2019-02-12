@@ -39,6 +39,7 @@ import { PaymentTypesComponent } from './dialogs/payment-types/payment-types.com
 import { BankingComponent } from './dialogs/banking/banking.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { TransactionsComponent } from './pages/transactions/transactions.component';
+import { ReportsComponent } from './pages/reports/reports.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { TransactionsComponent } from './pages/transactions/transactions.compone
     PaymentTypesComponent,
     BankingComponent,
     OrdersComponent,
-    TransactionsComponent
+    TransactionsComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,

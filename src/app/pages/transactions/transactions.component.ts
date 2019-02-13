@@ -15,7 +15,7 @@ export class TransactionsComponent implements OnInit {
 
   constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar) {
     this.transactionsRef = db.collection<Transaction>('transactions', ref => {
-      return ref.orderBy('orderId', 'asc');
+      return ref.orderBy('transaction_date', 'asc');
     });
   }
 

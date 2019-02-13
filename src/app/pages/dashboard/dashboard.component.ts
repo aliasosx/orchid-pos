@@ -4,9 +4,7 @@ import { Observable } from 'rxjs';
 import { Transaction } from './../../interfaces/transaction';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Component, OnInit } from '@angular/core';
-import { firestore } from 'firebase';
 import { DatePipe } from '@angular/common';
-import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-dashboard',

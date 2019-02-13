@@ -48,9 +48,13 @@
         <div class="col-md-4 col-xl-3">
           <div class="card bg-c-pink order-card">
             <div class="card-block">
-              <h6 class="m-b-20">Orders Received</h6>
-              <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>486</span></h2>
-              <p class="m-b-0">Completed Orders<span class="f-right">351</span></p>
+              <h6 class="m-b-20">ຍອດການຈ່າຍ</h6>
+              <div *ngFor="let p of paymentMethodReport">
+                <h2 class="text-right"><i class="fa fa-credit-card f-left">
+                    {{ p.paymentMethod }}</i><span>{{ p.paymentAmount | number }}</span></h2>
+                <p class="m-b-0">Completed Orders<span class="f-right">{{ p.paymentCount | number}}</span></p>
+              </div>
+
             </div>
           </div>
         </div>

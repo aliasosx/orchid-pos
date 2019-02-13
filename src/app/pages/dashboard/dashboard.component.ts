@@ -5,6 +5,7 @@ import { Transaction } from './../../interfaces/transaction';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { PaymentType } from 'src/app/interfaces/paymentType';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,13 +15,13 @@ import { DatePipe } from '@angular/common';
 export class DashboardComponent implements OnInit {
   constructor(private db: AngularFirestore) {
     this.transactionsRef = db.collection<Transaction>('transactions');
-    //let currentDate = firestore.Timestamp.fromDate(new Date());
-    //console.log(currentDate.toDate());
     this.transactionsCurrentRef = db.collection<Transaction>('transactions', ref => {
       return ref.orderBy('transaction_date', 'asc');
     });
     this.transactionsKitchenRef = db.collection<Transaction>('transactions');
     this.kitchensRef = db.collection<Kitchen>('kitchens');
+    this.transactionsPaymentRef = db.collection<Transaction>('transactions');
+    this.paymentMethodRef = db.collection<PaymentType>('paymentTypes');
   }
 
   transactionsRef: AngularFirestoreCollection<Transaction>
@@ -45,6 +46,11 @@ export class DashboardComponent implements OnInit {
   reportByKitchen: any[] = [];
   transactionCurrentKitchen: Observable<any[]>;
 
+  paymentMethodRef: AngularFirestoreCollection<PaymentType>;
+  paymentMethods: Observable<any[]>;
+  paymentMethodReport: any[] = [];
+  transactionsPaymentRef: AngularFirestoreCollection<Transaction>;
+  transactionsPayments: Observable<any[]>;
   ngOnInit() {
     this.transactions = this.transactionsRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
@@ -122,5 +128,45 @@ export class DashboardComponent implements OnInit {
         });
       });
     });
+
+    this.paymentMethods = this.paymentMethodRef.snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data() as PaymentType;
+        data['id'] = a.payload.doc.id;
+        return data;
+      });
+    }));
+    this.transactionsPayments = this.transactionsPaymentRef.snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data() as Transaction;
+        data['id'] = a.payload.doc.id;
+        return data;
+      });
+    }));
+    this.paymentMethods.subscribe(_paymentTypes => {
+      _paymentTypes.forEach(paymentType => {
+        this.transactionsPayments.subscribe(tranxs => {
+          let paymentCount = 0;
+          let paymentAmount = 0;
+          tranxs.forEach(tranx => {
+            let tranx_date = new DatePipe('en-us').transform(tranx.transaction_date.toDate(), 'dd-MMM-yyyy');
+            let currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
+            //console.log(paymentType.paymentCode + ' - ' + tranx.paymentBy);
+            if (tranx_date === currentDate) {
+              if (tranx.paymentBy == paymentType.paymentCode) {
+                paymentCount += tranx.quantity;
+                paymentAmount += tranx.total_price;
+              }
+            }
+          });
+          this.paymentMethodReport.push({
+            paymentMethod: paymentType.paymentName,
+            paymentCount: paymentCount,
+            paymentAmount: paymentAmount
+          });
+        });
+      });
+    });
+
   }
 }

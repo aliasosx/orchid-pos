@@ -46,6 +46,7 @@ import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { AddPurchaseComponent } from './dialogs/add-purchase/add-purchase.component';
 import { ViewPurchaseComponent } from './dialogs/view-purchase/view-purchase.component';
 import { VendorsComponent } from './dialogs/vendors/vendors.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { VendorsComponent } from './dialogs/vendors/vendors.component';
     PurchaseComponent,
     AddPurchaseComponent,
     ViewPurchaseComponent,
-    VendorsComponent
+    VendorsComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -87,6 +89,7 @@ import { VendorsComponent } from './dialogs/vendors/vendors.component';
     AngularFirestoreModule.enablePersistence(),
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule
   ],

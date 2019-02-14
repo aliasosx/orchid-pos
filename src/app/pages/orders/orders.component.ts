@@ -157,6 +157,10 @@ export class OrdersComponent implements OnInit {
     } else {
       this.snackbarRef.open('Transaction posted Failed', 'ok', { duration: 1000 });
     }
+  }
+
+  async stockUpdate() {
 
   }
+
 }

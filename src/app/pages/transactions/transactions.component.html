@@ -29,7 +29,7 @@
         <tbody>
           <tr *ngFor="let transaction of transactions | async">
             <td class="text-left">{{ transaction.orderId }}</td>
-            <td class="text-center">{{ transaction.transaction_date.toDate() | date:'dd-MMM-yyyy HH:mm:ss' }}</td>
+            <td class="text-left">{{ transaction.transaction_date.toDate() | date:'dd-MMM-yyyy HH:mm:ss' }}</td>
             <td class="text-center">{{ transaction.refno }}</td>
             <td class="text-left">{{ transaction.foodName }}</td>
             <td class="text-right">{{ transaction.cost | number }}</td>

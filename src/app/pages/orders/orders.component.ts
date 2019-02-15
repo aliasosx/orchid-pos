@@ -9,6 +9,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Ticket } from 'src/app/interfaces/ticket';
 import { Product } from 'src/app/interfaces/product';
 import { StockHistory } from 'src/app/interfaces/stockHistory';
+import { async } from '@angular/core/testing';
 
 declare var swal: any;
 
@@ -89,27 +90,68 @@ export class OrdersComponent implements OnInit {
     });
   }
   async markOrderComplete(order) {
-    let c = await this.orderRef.doc(order.id).update({
-      completed: true,
-      orderFinishTime: new Date(),
-      status: 'completed',
-      username: this.username,
-    }).then(async () => {
-      this.snackbarRef.open('Order completed', 'ok', { duration: 1000 });
-      let c = await this.releaseTicket(order.ticket);
-      this.updateTransactionLog(order);
+    swal({
+      title: 'ໄດ້ກວດສອບລາຍການທັງໝົດຄົບແລ້ວ ແລະ ພ້ອມສົ່ງ',
+      icon: "warning",
+      dangerMode: true,
+    }).then(async (value) => {
+      if (value) {
+        let c = await this.orderRef.doc(order.id).update({
+          completed: true,
+          orderFinishTime: new Date(),
+          status: 'completed',
+          username: this.username,
+        }).then(async () => {
+          this.snackbarRef.open('Order completed', 'ok', { duration: 1000 });
+          let c = await this.releaseTicket(order.ticket);
+          this.updateTransactionLog(order);
+        });
+      }
     });
+
+
+
   }
   async markOrderCancel(order) {
-    let c = await this.orderRef.doc(order.id).update({
-      completed: true,
-      orderFinishTime: new Date(),
-      status: 'cancel',
-      username: this.username,
-    }).then(async () => {
-      this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000 });
-      let c = await this.releaseTicket(order.ticket);
+    // Check time
+
+    swal({
+      title: 'ແນ່ໃຈວ່າຈະຍົກເລີກລາຍການນີ້',
+      icon: "warning",
+      dangerMode: true,
+    }).then(async (value) => {
+      if (value) {
+        let currentConsumingTime;
+        let a = await this.orderRef.doc(order.id).get().subscribe(o => {
+          let currDate: any = new Date();
+          let StartDate: any;
+          if (o.exists) {
+            StartDate = o.data().orderDateTime.toDate();
+            currentConsumingTime = (currDate - StartDate) / 60000;
+            if (currentConsumingTime > 10) {
+              swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', "ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້", "error");
+              return;
+            } else {
+              this.orderRef.doc(order.id).update({
+                completed: true,
+                orderFinishTime: new Date(),
+                status: 'cancel',
+                username: this.username,
+              }).then(async () => {
+                this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000 });
+                let c = await this.releaseTicket(order.ticket);
+              });
+
+            }
+          }
+        });
+      }
     });
+
+
+
+
+
   }
   async releaseTicket(ticket) {
     let ticketId = "";
@@ -155,6 +197,7 @@ export class OrdersComponent implements OnInit {
           paymentBy: order.paymentType, // Bank Cash QR
           refno: order.refno,
           invoiceno: order.invoiceno,
+          ticket: order.ticket,
         };
         this.db.collection<Transaction>('transactions').add(transaction).then(() => {
           this.snackbarRef.open('Transaction posted ', 'ok', { duration: 1000 });
@@ -169,18 +212,20 @@ export class OrdersComponent implements OnInit {
     let productCurrentQuantity = 0;
     let newProductCurrentQuantity = 0;
     if (order) {
+
       order.food.forEach(fd => {
+        console.log(fd);
         this.productsRef.get().subscribe(product => {
           product.forEach(doc => {
-            console.log(doc.data());
             if (doc.data().foodId == fd.foodId) {
+              console.log(doc.data());
               productCurrentQuantity = doc.data().currentQuantity;
-              console.log('Food ' + doc.data().foodName);
+              console.log('Food ' + doc.data().productName);
               console.log('Current quantity is : ' + productCurrentQuantity);
               console.log('Sale quantity is : ' + fd.quantity);
               newProductCurrentQuantity = productCurrentQuantity - fd.quantity;
               console.log('New stock quantity is : ' + newProductCurrentQuantity);
-              this.db.collection<Product>('products').doc(doc.data().id).update({
+              this.db.collection<Product>('products').doc(doc.id).update({
                 currentQuantity: newProductCurrentQuantity,
               }).then(() => {
                 console.log('================ Stock updated ================');
@@ -203,7 +248,8 @@ export class OrdersComponent implements OnInit {
 
               });
             } else {
-              console.log('Product not existing');
+              this.snackbarRef.open('Food not existing on Products stock !', 'OK', { duration: 1000 });
+              console.log('================  Product not existing ================ ');
               return;
             }
           });
@@ -213,5 +259,4 @@ export class OrdersComponent implements OnInit {
       return;
     }
   }
-
 }

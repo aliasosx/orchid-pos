@@ -16,4 +16,5 @@ export interface Transaction {
   paymentBy: string; // Bank Cash QR
   refno: string;
   invoiceno: string;
+  ticket: string;
 }

@@ -51,6 +51,9 @@ export class DashboardComponent implements OnInit {
   paymentMethodReport: any[] = [];
   transactionsPaymentRef: AngularFirestoreCollection<Transaction>;
   transactionsPayments: Observable<any[]>;
+
+  currentDate = new Date();
+
   ngOnInit() {
     this.transactions = this.transactionsRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {

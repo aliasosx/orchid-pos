@@ -11,7 +11,7 @@
         <div class="col-md-4 col-xl-3">
           <div class="card bg-c-blue order-card">
             <div class="card-block">
-              <h6 class="m-b-20">ຍອດຂາຍທັງໝົດ</h6>
+              <h5 class="m-b-20">ຍອດຂາຍທັງໝົດ</h5>
               <h2 class="text-right"><i class="fa fa-rocket f-left"></i><span>{{ transactionAmount |number }}</span>
               </h2>
               <p class="m-b-0">ຍອດການຂາຍ<span class="f-right">{{ transactionCount |number }} ລາຍການ</span></p>
@@ -22,7 +22,7 @@
         <div class="col-md-4 col-xl-3">
           <div class="card bg-c-green order-card">
             <div class="card-block">
-              <h6 class="m-b-20">ຍອດຂາຍ ຂອງວັນ </h6>
+              <h5 class="m-b-20">ຍອດຂາຍ ຂອງວັນ </h5>
               <h2 class="text-right"><i
                   class="fa fa-rocket f-left"></i><span>{{ transactionAmountDiary |number }}</span></h2>
               <p class="m-b-0">ຍອດການຂາຍ<span class="f-right">{{ transactionCountDairy |number }} ລາຍການ</span>
@@ -34,12 +34,14 @@
         <div class="col-md-4 col-xl-3">
           <div class="card bg-c-yellow order-card">
             <div class="card-block">
-              <h6 class="m-b-20">ຍອດຂາຍ ຕາມຄົວ</h6>
+              <h5 class="m-b-20">ຍອດຂາຍ ຕາມຄົວ ປະຈໍາວັນທີ {{ currentDate | date: 'dd-MMM-yyyy' }}</h5>
               <div *ngFor="let rp of reportByKitchen">
-                <h2 class="text-right">
-                  <i class="material-icons f-left">flare
-                    {{ rp.kitchen }}</i><span>{{ rp.kitchenAmount | number}}</span></h2>
-                <p class="m-b-0">ຍອດການຂາຍ<span class="f-right"> {{ rp.kitchenCount | number }} ລາຍການ</span>
+                <h2 class="text-right" *ngIf="rp.kitchenAmount > 0">
+                  <div class="f-left">
+                    {{ rp.kitchen }}</div><span>{{ rp.kitchenAmount | number}}</span>
+                </h2>
+                <p *ngIf="rp.kitchenAmount > 0" class="m-b-0">ຍອດການຂາຍ<span class="f-right">
+                    {{ rp.kitchenCount | number }} ລາຍການ</span>
               </div>
 
             </div>
@@ -48,17 +50,18 @@
         <div class="col-md-4 col-xl-3">
           <div class="card bg-c-pink order-card">
             <div class="card-block">
-              <h6 class="m-b-20">ຍອດການຈ່າຍ</h6>
+              <h5 class="m-b-20">ຍອດການຈ່າຍ</h5>
               <div *ngFor="let p of paymentMethodReport">
-                <h2 class="text-right"><i class="fa fa-credit-card f-left">
-                    {{ p.paymentMethod }}</i><span>{{ p.paymentAmount | number }}</span></h2>
-                <p class="m-b-0">Completed Orders<span class="f-right">{{ p.paymentCount | number}}</span></p>
+                <h2 class="text-right" *ngIf="p.paymentAmount > 0">
+                  <div class="f-left">
+                    {{ p.paymentMethod }}</div><span>{{ p.paymentAmount | number }}</span>
+                </h2>
+                <p *ngIf="p.paymentAmount > 0" class="m-b-0 h5">ຍອດການຂາຍ<span
+                    class="f-right h5">{{ p.paymentCount | number}}</span></p>
               </div>
-
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </mat-card-content>

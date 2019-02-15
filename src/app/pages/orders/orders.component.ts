@@ -7,6 +7,8 @@ import { map } from 'rxjs/operators';
 import { Transaction } from 'src/app/interfaces/transaction';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Ticket } from 'src/app/interfaces/ticket';
+import { Product } from 'src/app/interfaces/product';
+import { StockHistory } from 'src/app/interfaces/stockHistory';
 
 declare var swal: any;
 
@@ -22,6 +24,7 @@ export class OrdersComponent implements OnInit {
       return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
     });
     this.transactionsRef = db.collection<Transaction>('transactions');
+    this.productsRef = db.collection<Product>('products');
   }
 
   orderRef: AngularFirestoreCollection<Order>;
@@ -31,6 +34,8 @@ export class OrdersComponent implements OnInit {
   transactions: Observable<any[]>;
   transaction: Transaction;
 
+  productsRef: AngularFirestoreCollection<Product>;
+  products: Observable<any[]>;
   username: string = 'administrator';
 
   formFoodList: FormGroup;
@@ -131,9 +136,10 @@ export class OrdersComponent implements OnInit {
   async updateTransactionLog(order) {
     if (order) {
       order.food.forEach(element => {
-        console.log(element);
+        //console.log(element);
         let transaction = {
           transaction_date: new Date(),
+          foodId: element.foodId, // FoodId
           foodName: element.food,
           cost: element.cost,
           price: element.price,
@@ -152,15 +158,60 @@ export class OrdersComponent implements OnInit {
         };
         this.db.collection<Transaction>('transactions').add(transaction).then(() => {
           this.snackbarRef.open('Transaction posted ', 'ok', { duration: 1000 });
+          this.stockUpdate(order);
         });
       });
     } else {
       this.snackbarRef.open('Transaction posted Failed', 'ok', { duration: 1000 });
     }
   }
+  async stockUpdate(order) {
+    let productCurrentQuantity = 0;
+    let newProductCurrentQuantity = 0;
+    if (order) {
+      order.food.forEach(fd => {
+        this.productsRef.get().subscribe(product => {
+          product.forEach(doc => {
+            console.log(doc.data());
+            if (doc.data().foodId == fd.foodId) {
+              productCurrentQuantity = doc.data().currentQuantity;
+              console.log('Food ' + doc.data().foodName);
+              console.log('Current quantity is : ' + productCurrentQuantity);
+              console.log('Sale quantity is : ' + fd.quantity);
+              newProductCurrentQuantity = productCurrentQuantity - fd.quantity;
+              console.log('New stock quantity is : ' + newProductCurrentQuantity);
+              this.db.collection<Product>('products').doc(doc.data().id).update({
+                currentQuantity: newProductCurrentQuantity,
+              }).then(() => {
+                console.log('================ Stock updated ================');
+                this.snackbarRef.open('Stock Updated new Quantity ' + newProductCurrentQuantity + ' Unit(s)', 'ok', { duration: 1000 });
+                // post stock change
+                let stockhist = {
+                  productId: doc.id,
+                  productName: doc.data().productName,
+                  beforeQuantity: productCurrentQuantity,
+                  stockChange: fd.quantity,
+                  currentQuantity: newProductCurrentQuantity,
+                  updateDate: new Date(),
+                  updateSource: 'ordering', // Sale module Or Purchase
+                  createdAt: new Date(),
+                  orderId: order.id,
+                }
+                this.db.collection<StockHistory>('stockHistories').add(stockhist).then(() => {
+                  this.snackbarRef.open('Stock history added for ' + order.id, 'ok', { duration: 1000 });
+                });
 
-  async stockUpdate() {
-
+              });
+            } else {
+              console.log('Product not existing');
+              return;
+            }
+          });
+        });
+      });
+    } else {
+      return;
+    }
   }
 
 }

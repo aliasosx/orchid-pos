@@ -9,6 +9,7 @@ import { Food } from 'src/app/interfaces/food';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import * as uuid from 'uuid';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-products',
@@ -70,7 +71,13 @@ export class AddProductsComponent implements OnInit {
     this.vendors = this.db.collection('vendors').valueChanges();
     this.productTypes = this.db.collection('productTypes').valueChanges();
     this.units = this.unitsRef.valueChanges();
-    this.foods = this.foodsRef.valueChanges();
+    this.foods = this.foodsRef.snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data();
+        data['id'] = a.payload.doc.id;
+        return data;
+      });
+    }));
     this.addProductForm.get('userId').setValue('administrator');
   }
   addProduct() {
@@ -82,7 +89,7 @@ export class AddProductsComponent implements OnInit {
     }
   }
   checkProductCode(productCode) {
-    console.log(productCode);
+    //console.log(productCode);
   }
   padding(num: number, size: number) {
     let s = num + "";

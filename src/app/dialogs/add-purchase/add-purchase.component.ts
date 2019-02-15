@@ -125,6 +125,7 @@ export class AddPurchaseComponent implements OnInit {
     console.log('Stock hist update');
     console.log(product);
     const stockhist = {
+      productId: id,
       productName: product.productName,
       beforeQuantity: product.currentQuantity,
       stockChange: parseInt(this.addFormPurchase.get('quantity').value),

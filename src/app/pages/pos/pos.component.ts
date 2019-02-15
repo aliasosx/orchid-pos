@@ -101,12 +101,13 @@ export class PosComponent implements OnInit {
     } else {
       let item = {
         'id': food.id,
+        'foodId': food.foodId,
         'food': food.food_name,
         'price': food.price,
         'cost': food.cost,
         'quantity': 1,
         'total': food.price * 1,
-        'username': 'administrator',
+        'username': this.username,
         'kitchen': food.kitchen,
       }
       this.addCartsToDb(item);

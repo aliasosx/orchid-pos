@@ -6,6 +6,7 @@ import { ExtendedFoodTypeComponent } from 'src/app/dialogs/extended-food-type/ex
 import { TicketsComponent } from 'src/app/dialogs/tickets/tickets.component';
 import { PaymentTypesComponent } from 'src/app/dialogs/payment-types/payment-types.component';
 import { VendorsComponent } from 'src/app/dialogs/vendors/vendors.component';
+import { AddusersComponent } from 'src/app/dialogs/addusers/addusers.component';
 
 @Component({
   selector: 'app-settings',
@@ -39,5 +40,7 @@ export class SettingsComponent implements OnInit {
   openVendors() {
     const dialogRef = this.dialog.open(VendorsComponent, { width: '600px' });
   }
-
+  openAddUser() {
+    const dialogRef = this.dialog.open(AddusersComponent, { width: '800px' });
+  }
 }

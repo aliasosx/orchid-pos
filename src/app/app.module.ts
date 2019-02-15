@@ -47,6 +47,8 @@ import { AddPurchaseComponent } from './dialogs/add-purchase/add-purchase.compon
 import { ViewPurchaseComponent } from './dialogs/view-purchase/view-purchase.component';
 import { VendorsComponent } from './dialogs/vendors/vendors.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { UsersComponent } from './dialogs/users/users.component';
+import { AddusersComponent } from './dialogs/addusers/addusers.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +81,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AddPurchaseComponent,
     ViewPurchaseComponent,
     VendorsComponent,
+    UsersComponent,
+    AddusersComponent,
 
   ],
   imports: [
@@ -112,6 +116,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AddPurchaseComponent,
     ViewPurchaseComponent,
     VendorsComponent,
+    AddusersComponent,
 
   ]
   ,

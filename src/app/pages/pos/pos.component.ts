@@ -25,18 +25,17 @@ export class PosComponent implements OnInit {
     this.user.subscribe(user => {
       if (user) {
         this.username_info = user;
-        return;
+        this.username = user.displayName;
+        this.foodCategoriesRef = db.collection<FoodCategory>('food_categories', ref => {
+          return ref.orderBy('foodCategoryNameLao', 'desc');
+        });
+        this.foodsRef = db.collection<Food>('foods');
+        this.cartsRef = db.collection<Cart>('carts', ref => {
+          return ref.where('username', '==', this.username);
+        });
       } else {
         router.navigateByUrl('login');
       }
-    });
-
-    this.foodCategoriesRef = db.collection<FoodCategory>('food_categories', ref => {
-      return ref.orderBy('foodCategoryNameLao', 'desc');
-    });
-    this.foodsRef = db.collection<Food>('foods');
-    this.cartsRef = db.collection<Cart>('carts', ref => {
-      return ref.where('username', '==', this.username);
     });
   }
   private user: Observable<firebase.User>;
@@ -45,7 +44,7 @@ export class PosComponent implements OnInit {
   foodCategoriesRef: AngularFirestoreCollection<FoodCategory>;
   FoodCategories: Observable<any[]>;
 
-  username: string = 'administrator';
+  username: string;
 
   foodsRef: AngularFirestoreCollection<Food>;
   foods: Observable<any[]>;
@@ -192,7 +191,8 @@ export class PosComponent implements OnInit {
       const dialogCashRef = this.dialog.open(PaymentCashComponent, {
         width: '800px',
         data: {
-          total: this.total
+          total: this.total,
+          username: this.username
         }
       });
       dialogCashRef.afterClosed().subscribe(res => {

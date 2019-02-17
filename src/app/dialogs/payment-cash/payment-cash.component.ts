@@ -23,6 +23,7 @@ declare var deepstream: any;
 })
 export class PaymentCashComponent implements OnInit {
   constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data) {
+    this.username = data.username;
     this.cartRef = db.collection<Cart>('carts', ref => {
       return ref.where('username', '==', this.username);
     });
@@ -34,7 +35,7 @@ export class PaymentCashComponent implements OnInit {
     });
     this.qrPaymentsRef = db.collection<QrBankResponseData>('qrPayments');
   }
-  username: string = 'administrator';
+  username: string;
   cartRef: AngularFirestoreCollection<Cart>;
   carts: Observable<any[]>;
 

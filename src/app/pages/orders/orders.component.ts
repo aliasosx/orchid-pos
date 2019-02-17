@@ -26,17 +26,16 @@ export class OrdersComponent implements OnInit {
     this.user.subscribe(user => {
       if (user) {
         this.username_info = user;
-        return;
+        this.username = user.displayName;
+        this.orderRef = db.collection<Order>('orders', ref => {
+          return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
+        });
+        this.transactionsRef = db.collection<Transaction>('transactions');
+        this.productsRef = db.collection<Product>('products');
       } else {
         router.navigateByUrl('login');
       }
     });
-
-    this.orderRef = db.collection<Order>('orders', ref => {
-      return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
-    });
-    this.transactionsRef = db.collection<Transaction>('transactions');
-    this.productsRef = db.collection<Product>('products');
   }
   private user: Observable<firebase.User>;
   username_info: any;
@@ -50,7 +49,7 @@ export class OrdersComponent implements OnInit {
 
   productsRef: AngularFirestoreCollection<Product>;
   products: Observable<any[]>;
-  username: string = 'administrator';
+  username: string;
 
   formFoodList: FormGroup;
   foodsList: any = [];

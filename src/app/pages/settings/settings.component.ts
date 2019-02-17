@@ -7,6 +7,9 @@ import { TicketsComponent } from 'src/app/dialogs/tickets/tickets.component';
 import { PaymentTypesComponent } from 'src/app/dialogs/payment-types/payment-types.component';
 import { VendorsComponent } from 'src/app/dialogs/vendors/vendors.component';
 import { AddusersComponent } from 'src/app/dialogs/addusers/addusers.component';
+import { Observable } from 'rxjs';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -15,7 +18,19 @@ import { AddusersComponent } from 'src/app/dialogs/addusers/addusers.component';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router) {
+    this.user = _firebaseAuth.authState;
+    this.user.subscribe(user => {
+      if (user) {
+        this.username_info = user;
+        return;
+      } else {
+        router.navigateByUrl('login');
+      }
+    });
+  }
+  private user: Observable<firebase.User>;
+  username_info: any;
 
   ngOnInit() {
   }

@@ -9,7 +9,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Ticket } from 'src/app/interfaces/ticket';
 import { Product } from 'src/app/interfaces/product';
 import { StockHistory } from 'src/app/interfaces/stockHistory';
-import { async } from '@angular/core/testing';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
 
 declare var swal: any;
 
@@ -20,13 +21,25 @@ declare var swal: any;
 })
 export class OrdersComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
+    this.user = _firebaseAuth.authState;
+    this.user.subscribe(user => {
+      if (user) {
+        this.username_info = user;
+        return;
+      } else {
+        router.navigateByUrl('login');
+      }
+    });
+
     this.orderRef = db.collection<Order>('orders', ref => {
       return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
     });
     this.transactionsRef = db.collection<Transaction>('transactions');
     this.productsRef = db.collection<Product>('products');
   }
+  private user: Observable<firebase.User>;
+  username_info: any;
 
   orderRef: AngularFirestoreCollection<Order>;
   orders: Observable<any[]>;
@@ -56,18 +69,20 @@ export class OrdersComponent implements OnInit {
   async updateFoodDone(order, _food) {
     // Clear cache
     this.foodsList = [];
-    if (_food.done === true) {
+    //console.log(_food.done);
+    if (_food.done == true) {
       _food.done = false;
-    } else {
+    } else if (_food.done == false) {
       _food.done = true;
     }
+    //console.log(_food.done);
     const cs = await this.orderRef.doc(order.id).get().toPromise().then(_order => {
       if (_order.exists) {
         const o = _order.data() as Order;
         // populate food data
         o.food.forEach(element => {
           if (element.id === _food.id) {
-            element.done = true;
+            element.done = _food.done;
             this.foodsList.push(element);
           } else {
             this.foodsList.push(element);
@@ -108,13 +123,9 @@ export class OrdersComponent implements OnInit {
         });
       }
     });
-
-
-
   }
   async markOrderCancel(order) {
     // Check time
-
     swal({
       title: 'ແນ່ໃຈວ່າຈະຍົກເລີກລາຍການນີ້',
       icon: "warning",
@@ -141,17 +152,11 @@ export class OrdersComponent implements OnInit {
                 this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000 });
                 let c = await this.releaseTicket(order.ticket);
               });
-
             }
           }
         });
       }
     });
-
-
-
-
-
   }
   async releaseTicket(ticket) {
     let ticketId = "";
@@ -198,6 +203,7 @@ export class OrdersComponent implements OnInit {
           refno: order.refno,
           invoiceno: order.invoiceno,
           ticket: order.ticket,
+          qrRefno: order.qrRefno,
         };
         this.db.collection<Transaction>('transactions').add(transaction).then(() => {
           this.snackbarRef.open('Transaction posted ', 'ok', { duration: 1000 });

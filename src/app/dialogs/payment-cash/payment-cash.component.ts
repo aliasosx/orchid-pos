@@ -32,6 +32,7 @@ export class PaymentCashComponent implements OnInit {
     this.paymentTypesRef = db.collection<PaymentType>('paymentTypes', ref => {
       return ref.where('enabled', '==', true).orderBy('paymentCode', 'asc');
     });
+    this.qrPaymentsRef = db.collection<QrBankResponseData>('qrPayments');
   }
   username: string = 'administrator';
   cartRef: AngularFirestoreCollection<Cart>;
@@ -57,6 +58,8 @@ export class PaymentCashComponent implements OnInit {
   bankDataResponse: QrBankResponseData;
   paymentSelectDisabled: boolean = true;
   showAlert = "hidden";
+
+  qrPaymentsRef: AngularFirestoreCollection<QrBankResponseData>;
 
   ngOnInit() {
     const uuid1 = uuid.v1();
@@ -125,7 +128,14 @@ export class PaymentCashComponent implements OnInit {
             this.cartRef.doc(element).delete().then(() => {
             });
           });
-          this.dialogRef.close('success');
+          if (this.bankDataResponse) {
+            this.qrPaymentsRef.add(this.bankDataResponse).then(() => {
+              this.dialogRef.close('success');
+            });
+          } else {
+            this.dialogRef.close('success');
+          }
+
         });
       });
     } else {
@@ -190,9 +200,10 @@ export class PaymentCashComponent implements OnInit {
         console.log('Login success');
         ds.event.subscribe("invoice/" + mcid + "/" + uuid1 + "/transaction", (data) => {
           if (data) {
-            //console.log(data);
             this.bankDataResponse = data;
             this.bankDataResponse.paymentBank = 'QR-BCEL';
+            this.bankDataResponse.refno = this.orderForm.get('refno').value;
+            this.bankDataResponse.orderId = this.orderForm.get('orderId').value;
             this.orderForm.get('paymentType').setValue('QR-BCEL');
             this.orderForm.get('qrRefno').setValue(data.fccref);
             this.paymentSelectDisabled = true;

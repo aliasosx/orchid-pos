@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule, FirestoreSettingsToken } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { environment } from '../environments/environment';
@@ -49,6 +50,7 @@ import { VendorsComponent } from './dialogs/vendors/vendors.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UsersComponent } from './dialogs/users/users.component';
 import { AddusersComponent } from './dialogs/addusers/addusers.component';
+import { LoginComponent } from './authentication/login/login.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +85,7 @@ import { AddusersComponent } from './dialogs/addusers/addusers.component';
     VendorsComponent,
     UsersComponent,
     AddusersComponent,
+    LoginComponent,
 
   ],
   imports: [
@@ -91,6 +94,7 @@ import { AddusersComponent } from './dialogs/addusers/addusers.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     AngularFirestoreModule.enablePersistence(),
+    AngularFireAuthModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FlexLayoutModule,

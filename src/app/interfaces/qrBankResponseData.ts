@@ -15,4 +15,6 @@ export interface QrBankResponseData {
   userid: string;
   uuid: string;
   paymentBank: string;
+  orderId: string;
+  refno: string;
 }

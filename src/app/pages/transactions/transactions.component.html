@@ -12,7 +12,7 @@
             <th scope="col" class="text-center">Q</th>
             <th scope="col" class="text-center">orderId</th>
             <th scope="col" class="text-center">transaction_date</th>
-            <th scope="col" class="text-center">refno</th>
+
             <th scope="col" class="text-center">foodName</th>
             <th scope="col" class="text-center">cost</th>
             <th scope="col" class="text-center">price</th>
@@ -21,7 +21,9 @@
             <th scope="col" class="text-center">Total cost</th>
             <th scope="col" class="text-center">Profit</th>
             <th scope="col" class="text-center">Bill Amount</th>
-            <th scope="col" class="text-center">Payment</th>
+            <th scope="col" class="text-center">Payment By</th>
+            <th scope="col" class="text-center">refno</th>
+            <th scope="col" class="text-center">QR Refno</th>
             <th scope="col" class="text-center">Settled</th>
             <th scope="col" class="text-center">Invoice no</th>
             <th scope="col" class="text-center">Kitchen</th>
@@ -34,7 +36,7 @@
             <td class="text-left align-middle">{{ transaction.orderId }}</td>
             <td class="text-left align-middle">{{ transaction.transaction_date.toDate() | date:'dd-MMM-yyyy HH:mm:ss' }}
             </td>
-            <td class="text-center align-middle">{{ transaction.refno }}</td>
+
             <td class="text-left align-middle">{{ transaction.foodName }}</td>
             <td class="text-right align-middle">{{ transaction.cost | number }}</td>
             <td class="text-right align-middle">{{ transaction.price | number }}</td>
@@ -44,6 +46,11 @@
             <td class="text-right align-middle">{{ transaction.profit | number }}</td>
             <td class="text-right align-middle">{{ transaction.bill_amount | number }}</td>
             <td class="text-center align-middle">{{ transaction.paymentBy }}</td>
+            <td class="text-center align-middle">{{ transaction.refno }}</td>
+            <td class="text-center align-middle" *ngIf="transaction.qrRefno; else noQr">{{ transaction.qrRefno }}</td>
+            <ng-template #noQr>
+              <td class="text-center align-middle">N/A</td>
+            </ng-template>
             <td class="text-center align-middle" *ngIf="transaction.settled == true">
               <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" disable
                 style="max-width: 20px;">

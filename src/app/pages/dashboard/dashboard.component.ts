@@ -6,6 +6,8 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { PaymentType } from 'src/app/interfaces/paymentType';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +15,19 @@ import { PaymentType } from 'src/app/interfaces/paymentType';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router) {
+    this.user = _firebaseAuth.authState;
+    this.user.subscribe(user => {
+      if (user) {
+        this.username_info = user;
+        return;
+      } else {
+        router.navigateByUrl('login');
+      }
+    });
+
+
+
     this.transactionsRef = db.collection<Transaction>('transactions');
     this.transactionsCurrentRef = db.collection<Transaction>('transactions', ref => {
       return ref.orderBy('transaction_date', 'asc');
@@ -23,6 +37,9 @@ export class DashboardComponent implements OnInit {
     this.transactionsPaymentRef = db.collection<Transaction>('transactions');
     this.paymentMethodRef = db.collection<PaymentType>('paymentTypes');
   }
+
+  private user: Observable<firebase.User>;
+  username_info: any;
 
   transactionsRef: AngularFirestoreCollection<Transaction>
   transactions: Observable<any[]>;

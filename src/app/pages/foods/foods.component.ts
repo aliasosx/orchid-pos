@@ -8,6 +8,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { AddExtendedFoodComponent } from 'src/app/dialogs/add-extended-food/add-extended-food.component';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
 
 declare var swal: any;
 
@@ -18,9 +20,21 @@ declare var swal: any;
 })
 export class FoodsComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
+    this.user = _firebaseAuth.authState;
+    this.user.subscribe(user => {
+      if (user) {
+        this.username_info = user;
+        return;
+      } else {
+        router.navigateByUrl('login');
+      }
+    });
+
     this.foodsRef = db.collection('foods');
   }
+  private user: Observable<firebase.User>;
+  username_info: any;
 
   foodsRef: AngularFirestoreCollection<Food>;
   foods: Observable<any[]>;

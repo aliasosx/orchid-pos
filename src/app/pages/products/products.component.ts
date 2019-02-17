@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AddProductsComponent } from 'src/app/dialogs/add-products/add-products.component';
 import { ViewProductsComponent } from 'src/app/dialogs/view-products/view-products.component';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
 declare var swal: any;
 
 @Component({
@@ -15,12 +17,26 @@ declare var swal: any;
 })
 export class ProductsComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog) { }
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router) {
+    this.user = _firebaseAuth.authState;
+    this.user.subscribe(user => {
+      if (user) {
+        this.username_info = user;
+        return;
+      } else {
+        router.navigateByUrl('login');
+      }
+    });
+  }
   title: string = 'Products';
   productsRef: AngularFirestoreCollection<Product>;
   private productDoc: AngularFirestoreDocument<Product>;
   product: Product;
   products: Observable<any[]>;
+
+  private user: Observable<firebase.User>;
+  username_info: any;
+
   ngOnInit() {
     this.products = this.db.collection('products').snapshotChanges().pipe(map(changes => {
       return changes.map(a => {

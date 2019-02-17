@@ -9,6 +9,7 @@ import { OrdersComponent } from './pages/orders/orders.component';
 import { TransactionsComponent } from './pages/transactions/transactions.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
+import { LoginComponent } from './authentication/login/login.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'orders', component: OrdersComponent },
   { path: 'transactions', component: TransactionsComponent },
   { path: 'reports', component: ReportsComponent },
-  { path: 'purchases', component: PurchaseComponent }
+  { path: 'purchases', component: PurchaseComponent },
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({

@@ -1,0 +1,12 @@
+<p *ngIf="userInfomation">
+  Welcome : {{ userInfomation.displayName }}
+</p>
+<div *ngIf="userInfomation; else showlogout">
+  <button mat-raised-button (click)="logOut()">Logout</button>
+
+</div>
+<ng-template #showlogout>
+  <div>
+    <button mat-raised-button (click)="loginGoogle()">Login</button>
+  </div>
+</ng-template>

@@ -10,6 +10,8 @@ import { Cart } from 'src/app/interfaces/cart';
 import { AddNoteComponent } from 'src/app/dialogs/add-note/add-note.component';
 import { PaymentCashComponent } from 'src/app/dialogs/payment-cash/payment-cash.component';
 import { PaymentBanksChannelComponent } from 'src/app/dialogs/payment-banks-channel/payment-banks-channel.component';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pos',
@@ -18,7 +20,17 @@ import { PaymentBanksChannelComponent } from 'src/app/dialogs/payment-banks-chan
 })
 export class PosComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
+    this.user = _firebaseAuth.authState;
+    this.user.subscribe(user => {
+      if (user) {
+        this.username_info = user;
+        return;
+      } else {
+        router.navigateByUrl('login');
+      }
+    });
+
     this.foodCategoriesRef = db.collection<FoodCategory>('food_categories', ref => {
       return ref.orderBy('foodCategoryNameLao', 'desc');
     });
@@ -27,6 +39,8 @@ export class PosComponent implements OnInit {
       return ref.where('username', '==', this.username);
     });
   }
+  private user: Observable<firebase.User>;
+  username_info: any;
 
   foodCategoriesRef: AngularFirestoreCollection<FoodCategory>;
   FoodCategories: Observable<any[]>;

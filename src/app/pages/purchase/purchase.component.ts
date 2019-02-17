@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { AddPurchaseComponent } from 'src/app/dialogs/add-purchase/add-purchase.component';
 import { ViewPurchaseComponent } from 'src/app/dialogs/view-purchase/view-purchase.component';
 import { map } from 'rxjs/operators';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
 declare var swal: any;
 
 @Component({
@@ -15,10 +17,23 @@ declare var swal: any;
 })
 export class PurchaseComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router) {
+
+    this.user = _firebaseAuth.authState;
+    this.user.subscribe(user => {
+      if (user) {
+        this.username_info = user;
+        return;
+      } else {
+        router.navigateByUrl('login');
+      }
+    });
+
+
     this.purchasesRef = db.collection<Purchase>('purchases');
   }
-
+  private user: Observable<firebase.User>;
+  username_info: any;
   purchasesRef: AngularFirestoreCollection<Purchase>;
   purchaseDoc: AngularFirestoreDocument<Purchase>;
   purchases: Observable<any[]>;

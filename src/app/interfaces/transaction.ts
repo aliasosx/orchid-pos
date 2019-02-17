@@ -1,6 +1,7 @@
 export interface Transaction {
   transaction_date: Date;
   foodId?: number;
+  qrRefno?: string;
   foodName: string;
   cost: number;
   price: number;

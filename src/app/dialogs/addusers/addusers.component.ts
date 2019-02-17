@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { Role } from 'src/app/interfaces/role';
 import { map } from 'rxjs/operators';
+import { Userlogin } from 'src/app/interfaces/userlogin';
 
 @Component({
   selector: 'app-addusers',
@@ -18,8 +19,9 @@ export class AddusersComponent implements OnInit {
   constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<AddusersComponent>, private snackbar: MatSnackBar) {
     this.usersRef = db.collection<User>('users');
     this.rolesRef = db.collection<Role>('roles');
+    this.webuserRef = db.collection<Userlogin>('userlogins');
   }
-
+  webUsers: Observable<any[]>;
   addUserForm: FormGroup;
   usersRef: AngularFirestoreCollection<User>;
   users: Observable<any[]>;
@@ -30,6 +32,8 @@ export class AddusersComponent implements OnInit {
   showAlert = "hidden";
   userBtnDisable = false;
 
+  webuserRef: AngularFirestoreCollection<Userlogin>;
+  userExist: boolean = false;
   ngOnInit() {
     const uuid1 = uuid.v1();
     const uuid1Emp = uuid.v1();
@@ -48,11 +52,20 @@ export class AddusersComponent implements OnInit {
       enabled: new FormControl(true),
       registeringDate: new FormControl(new Date()),
       employedDate: new FormControl(new Date()),
+      role: new FormControl()
     });
     this.roles = this.rolesRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data() as Role;
         data['id'] = a.payload.doc.id;
+        return data;
+      });
+    }));
+
+    this.webUsers = this.webuserRef.snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data() as Userlogin;
+        data['docid'] = a.payload.doc.id;
         return data;
       });
     }));
@@ -63,15 +76,19 @@ export class AddusersComponent implements OnInit {
         if (user.data().userName == username) {
           this.showAlert = "";
           this.userBtnDisable = true;
+          this.userExist = true;
         } else {
           this.showAlert = "hidden";
           this.userBtnDisable = false;
+          this.userExist = false;
         }
       });
     });
   }
   addUser() {
     this.userBtnDisable = true;
+    this.checkUserNameAvailable(this.addUserForm.get('userName').value);
+
     if (this.addUserForm.valid) {
       this.usersRef.add(this.addUserForm.value).then(() => {
         this.snackbar.open('User has been added', 'ok', { duration: 1000 });
@@ -81,5 +98,19 @@ export class AddusersComponent implements OnInit {
       this.userBtnDisable = false;
       this.snackbar.open('Form incomplete plesae check', 'fail', { duration: 1000 });
     }
+  }
+  webUserSelectChange(docId) {
+    let webuser;
+    this.webuserRef.doc(docId).get().subscribe(user => {
+      this.checkUserNameAvailable(user.data().given_name);
+      this.addUserForm.get('userName').setValue(user.data().given_name);
+      this.addUserForm.get('fullName').setValue(user.data().name);
+      if (user.data().gender == 'male') {
+        this.addUserForm.get('gender').setValue('M');
+      } else {
+        this.addUserForm.get('gender').setValue('F');
+      }
+      this.addUserForm.get('photo').setValue(user.data().picture);
+    });
   }
 }

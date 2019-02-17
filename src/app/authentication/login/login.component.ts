@@ -35,14 +35,17 @@ export class LoginComponent implements OnInit {
   usersWeblogins: Observable<any[]>;
 
   loginGoogle() {
-    return this._firebaseAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((res) => {
-      this.userProfile = res['additionalUserInfo'].profile;
+    this._firebaseAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((res) => {
+      this.userProfile = res.additionalUserInfo.profile;
       this.webUsersRef.get().subscribe(users => {
         users.forEach(user => {
+          console.log(user);
           if (user.data().name == this.userProfile.name) {
             return;
           } else {
+            console.log('Add new User');
             this.webUsersRef.add(this.userProfile);
+            return;
           }
         });
       });
@@ -53,5 +56,4 @@ export class LoginComponent implements OnInit {
 
     });
   }
-
 }

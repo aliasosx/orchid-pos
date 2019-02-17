@@ -1,33 +1,62 @@
 <h1 mat-dialog-title>ລົງທະບຽນຜູ້ໃຊ້</h1>
+<div class="alert alert-danger" role="alert" [ngClass]="showAlert">
+  User duplicate
+</div>
 <form [formGroup]="addUserForm">
   <div class="row">
-
     <div class="col col-md-6">
       <label for="userId">UserId</label>
-      <input type="text" id="userId" readonly class="form-control" formControlName="userId">
+      <input type="text" id="userId" readonly class="form-control" formControlName="userId" required>
     </div>
     <div class="col col-md-6">
-      <label for="userName">User Name</label>
-      <input type="text" id="userName" class="form-control" formControlName="userName">
+      <label for="userName">ຊື່ຜູ້ໃຊ້</label>
+      <input type="text" id="userName" class="form-control" formControlName="userName" required
+        (keyup)="checkUserNameAvailable($event.target.value)">
     </div>
 
     <div class="col col-md-6">
-      <label for="employeeCode">Employee code</label>
-      <input type="text" id="employeeCode" readonly class="form-control" formControlName="employeeCode">
+      <label for="employeeCode">ລະຫັດພະນັກງານ</label>
+      <input type="text" id="employeeCode" readonly class="form-control" formControlName="employeeCode" required>
     </div>
     <div class="col col-md-6">
-      <label for="gender">Gender</label>
-      <select class="form-control" formControlName="gender">
+      <label for="gender">ເພດ</label>
+      <select class="form-control" formControlName="gender" required>
         <option value="" disabled>-------------</option>
         <option value="M">Mr.</option>
         <option value="F">Ms.</option>
       </select>
     </div>
-    <mat-divider></mat-divider>
+
     <div class="col col-md-6">
-      <label for="fullName">FullName</label>
-      <input type="text" id="fullName" class="form-control" formControlName="fullName">
+      <label for="fullName">ຊື່ເຕັມ</label>
+      <input type="text" id="fullName" class="form-control" formControlName="fullName" required>
+    </div>
+    <div class="col col-md-6">
+      <label for="dateOfbirth">ວັນເດືອນປິເກິດ</label>
+      <input type="date" id="dateOfbirth" class="form-control" formControlName="dateOfbirth" required>
+    </div>
+    <div class="col col-md-12">
+      <label for="placeOfBirth">ສະຖານທີ່ເກິດ</label>
+      <input type="text" maxlength="255" id="placeOfBirth" class="form-control" formControlName="placeOfBirth" required>
+    </div>
+    <div class="col col-md-6">
+      <label for="idCardno">ເລກບັດປະຈຳຕົວ ຫຼື ສຳມະໂນຄົວ</label>
+      <input type="text" id="idCardno" class="form-control" formControlName="idCardno" required>
+    </div>
+    <div class="col col-md-6">
+      <label for="mobile">ເບີໂທລະສັບ</label>
+      <input type="tel" id="mobile" class="form-control" formControlName="mobile" required>
+    </div>
+    <div class="col col-md-6">
+      <label for="role">Role</label>
+      <select class="form-control" formControlName="role" required>
+        <option value="" disabled>-------------</option>
+        <option value="{{ role.roleCode }}" *ngFor="let role of roles | async ">{{ role.roleCode }}</option>
+      </select>
+    </div>
+    <div class="col col-md-12">
+      <button mat-raised-button color="primary" style="width: 100%; margin-top: 10px;" [disabled]="userBtnDisable"
+        (click)="addUser()">Save</button>
     </div>
   </div>
-
 </form>

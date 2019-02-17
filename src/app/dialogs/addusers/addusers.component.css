@@ -1,3 +1,9 @@
 * {
   font-family: 'Montserrat',  sans-serif , 'phetsarath-ot';
 }
+.col {
+  margin-top: 5px;
+}
+.hidden {
+  display: none;
+}

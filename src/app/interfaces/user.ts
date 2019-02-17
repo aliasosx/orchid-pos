@@ -9,7 +9,6 @@ export interface User {
   placeOfBirth: string;
   idCardno: string;
   photo: string;
-  tel: string;
   mobile: string;
   enabled: boolean;
   role: {

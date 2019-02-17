@@ -3,13 +3,18 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Cart } from 'src/app/interfaces/cart';
 import { Observable } from 'rxjs';
-import { map, timeoutWith } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Ticket } from 'src/app/interfaces/ticket';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import * as uuid from 'uuid';
 import { PaymentType } from 'src/app/interfaces/paymentType';
 import { environment } from '../../../environments/environment';
+import { QrBankResponseData } from 'src/app/interfaces/qrBankResponseData';
+
+declare var $: any;
+declare var deepstream: any;
 
 @Component({
   selector: 'app-payment-cash',
@@ -17,7 +22,7 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./payment-cash.component.css']
 })
 export class PaymentCashComponent implements OnInit {
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data) {
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data) {
     this.cartRef = db.collection<Cart>('carts', ref => {
       return ref.where('username', '==', this.username);
     });
@@ -47,7 +52,11 @@ export class PaymentCashComponent implements OnInit {
   srcQr = '../../../assets/icons/qr-code.svg';
   ticketSelectedId: Ticket;
   cartIds: any = [];
-
+  bcelQRcodeUrl: string;
+  urlSafe: SafeResourceUrl;
+  bankDataResponse: QrBankResponseData;
+  paymentSelectDisabled: boolean = true;
+  showAlert = "hidden";
 
   ngOnInit() {
     const uuid1 = uuid.v1();
@@ -56,6 +65,7 @@ export class PaymentCashComponent implements OnInit {
       orderId: new FormControl(uuid1),
       refno: new FormControl(refno),
       ticket: new FormControl(),
+      qrRefno: new FormControl(),
       food: new FormControl(),
       grandtotal: new FormControl(this.data.total),
       recieved: new FormControl(this.data.total),
@@ -69,7 +79,7 @@ export class PaymentCashComponent implements OnInit {
       username: new FormControl(this.username),
       status: new FormControl('processing'),
     });
-    //this.generateQRDate();
+    this.generateQRDate();
 
     this.carts = this.cartRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
@@ -104,7 +114,6 @@ export class PaymentCashComponent implements OnInit {
         return tickets;
       });
     }));
-    this.generateQRDate();
   }
   paymentProcess() {
     this.paymentBtnDisabled = true;
@@ -113,14 +122,12 @@ export class PaymentCashComponent implements OnInit {
         this.ticketSelectedId.used = true;
         this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
           this.cartIds.forEach(element => {
-            //console.log(element);
             this.cartRef.doc(element).delete().then(() => {
             });
           });
           this.dialogRef.close('success');
         });
       });
-
     } else {
       this.snackbar.open('Data incorrect', 'Fail', { duration: 1000, verticalPosition: 'top' });
       this.paymentBtnDisabled = false;
@@ -166,5 +173,35 @@ export class PaymentCashComponent implements OnInit {
     const _description = 'letterp-POS-transctions';
     this.orderForm.get('invoiceno').setValue(_invoiceNumber);
     let urlFormat = '/?uuid=' + _uuid1 + '&tid=' + _terminalId + '&amount=' + _amount + '&invoiceId=' + _invoiceNumber + '&description=' + _description;
+    this.bcelQRcodeUrl = this.qRCodeUrl + urlFormat;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.bcelQRcodeUrl);
+    //console.log(this.bcelQRcodeUrl);
+    $('#qrIframe').on('load', () => {
+      console.log('QR Code Ready')
+      this.getResponseFromDeepstream(_uuid1);
+    });
+  }
+  getResponseFromDeepstream(uuid1) {
+    console.log('Started Wait for Complete Payment for ' + uuid1);
+    const mcid = 'mch5c481be0ce38f';
+    const ds = deepstream('wss://bcel.la:6020/onepayws');
+    ds.login({ type: "invoice", mcid: mcid, uuid: uuid1 }, (success) => {
+      if (success) {
+        console.log('Login success');
+        ds.event.subscribe("invoice/" + mcid + "/" + uuid1 + "/transaction", (data) => {
+          if (data) {
+            //console.log(data);
+            this.bankDataResponse = data;
+            this.bankDataResponse.paymentBank = 'QR-BCEL';
+            this.orderForm.get('paymentType').setValue('QR-BCEL');
+            this.orderForm.get('qrRefno').setValue(data.fccref);
+            this.paymentSelectDisabled = true;
+            this.showAlert = "";
+          } else {
+            console.log('Error happend');
+          }
+        });
+      }
+    });
   }
 }

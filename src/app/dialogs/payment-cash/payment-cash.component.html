@@ -3,18 +3,22 @@
   <mat-divider></mat-divider>
   <mat-card-content style="margin-top: 20px;">
     <div class="row">
-      <div class="col col-md-4">
+      <div class="col col-md-5">
         <mat-card>
           <mat-card-title class="text-center">ຈ່າຍດ້ວຍ QR</mat-card-title>
           <mat-divider></mat-divider>
           <mat-card-content>
             <div class="qrDiv text-center shadow">
-              <img [src]="srcQr" style="width: 200px;">
+              <iframe id="qrIframe" [src]="urlSafe" [frameBorder]="0"
+                style="max-width: 220px;min-height: 230px;"></iframe>
+            </div>
+            <div class="alert alert-success text-center" role="alert" [ngClass]="showAlert">
+              ຈ່າຍເງິນສຳເລັດຈາກ ທ່ານ<p class="text-center" *ngIf="bankDataResponse">{{ bankDataResponse.name }}</p>
             </div>
           </mat-card-content>
         </mat-card>
       </div>
-      <div class="col col-md-8">
+      <div class="col col-md-7">
         <form [formGroup]="orderForm">
           <mat-card>
             <mat-card-title class="text-center">ຍອດເງິນທີ່ຕ້ອງຊຳລະ</mat-card-title>
@@ -37,7 +41,7 @@
                 <div class="form-group col-md-12">
                   <label for="payBy">Pay By</label>
                   <select class="form-control" id="payBy" (change)="checkPaymentCash($event.target.value)"
-                    formControlName="paymentType" required>
+                    [disabled]="paymentSelectDisabled" formControlName="paymentType" required>
                     <option value="" disabled>------------------------</option>
                     <option *ngFor="let p of paymentTypes | async" value="{{ p.paymentCode }}">
                       {{ p.paymentCode }}</option>

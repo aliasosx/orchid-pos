@@ -1,6 +1,7 @@
 export interface Order {
   orderId: string;
   refno: string;
+  qrRefno?: string;
   invoiceno: string;
   ticket: number;
   food: any;

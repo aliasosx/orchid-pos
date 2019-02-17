@@ -6,6 +6,8 @@
 }
 .qrDiv {
   margin-top: 20px;
+  max-width: 300px;
+  min-height: 250px;
 }
 .hidden {
   display: none;

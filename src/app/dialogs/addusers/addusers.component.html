@@ -20,6 +20,10 @@
       </select>
     </div>
     <div class="col col-md-6">
+      <label for="googleId">Google Id</label>
+      <input type="text" id="googleId" class="form-control" readonly formControlName="googleId" required>
+    </div>
+    <div class="col col-md-6">
       <label for="userName">ຊື່ຜູ້ໃຊ້</label>
       <input type="text" id="userName" class="form-control" formControlName="userName" required
         (keyup)="checkUserNameAvailable($event.target.value)">

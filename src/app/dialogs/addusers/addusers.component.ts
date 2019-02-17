@@ -39,6 +39,7 @@ export class AddusersComponent implements OnInit {
     const uuid1Emp = uuid.v1();
     this.addUserForm = new FormGroup({
       userId: new FormControl(uuid1),
+      googleId: new FormControl(),
       userName: new FormControl(),
       password: new FormControl(),
       employeeCode: new FormControl(uuid1Emp),
@@ -105,6 +106,7 @@ export class AddusersComponent implements OnInit {
       this.checkUserNameAvailable(user.data().given_name);
       this.addUserForm.get('userName').setValue(user.data().given_name);
       this.addUserForm.get('fullName').setValue(user.data().name);
+      this.addUserForm.get('googleId').setValue(user.data().id);
       if (user.data().gender == 'male') {
         this.addUserForm.get('gender').setValue('M');
       } else {

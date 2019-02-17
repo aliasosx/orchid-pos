@@ -5,6 +5,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { User } from 'firebase';
+import { Role } from 'src/app/interfaces/role';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +19,10 @@ export class NavbarComponent implements OnInit {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
+        //console.log(user.providerData);
         this.username_info = user;
+        //console.log(user);
+        this.googleId = user.providerData[0].uid;
         this.navBarShow = '';
         return;
       } else {
@@ -30,13 +35,14 @@ export class NavbarComponent implements OnInit {
       return ref.orderBy('menuId', 'asc');
     });
     this.restaurantInfoRef = db.collection<RestaurantInfo>('restaurant_info');
+    this.usersRef = db.collection<User>('users');
   }
 
   navBarShow = '';
 
   private user: Observable<firebase.User>;
   username_info: any;
-
+  googleId: string;
   title = "Letter'P restaurant";
   menusRef: AngularFirestoreCollection<Webmenu>;
   menus: Observable<any[]>;
@@ -44,9 +50,42 @@ export class NavbarComponent implements OnInit {
   restaurantInfoRef: AngularFirestoreCollection<RestaurantInfo>;
   RestaurantInfos: Observable<any[]>;
 
+  usersRef: AngularFirestoreCollection<User>;
+  users: Observable<any[]>;
+  currentRole: string;
+  menusByRoles: any[] = [];
   ngOnInit() {
     this.menus = this.menusRef.valueChanges();
     this.RestaurantInfos = this.restaurantInfoRef.valueChanges();
+
+    this.usersRef.get().subscribe(users => {
+      users.docs.forEach(user => {
+        if (user.data().googleId == this.googleId) {
+          // Get Roles
+          this.db.collection<Role>('roles', ref => {
+            return ref.where('roleCode', '==', user.data().role);
+          }).get().subscribe(roles => {
+            roles.forEach(role => {
+              role.data().menus.forEach(menu => {
+                if (menu.toLowerCase() == 'dashboards') {
+                  this.menusByRoles.push({
+                    menuName: menu.toUpperCase(),
+                    menuLink: ''
+                  });
+                } else {
+                  this.menusByRoles.push({
+                    menuName: menu.toUpperCase(),
+                    menuLink: menu.toLowerCase(),
+                  });
+                }
+
+              });
+              console.log(this.menus);
+            });
+          });
+        }
+      });
+    });
   }
   logOut() {
     this._firebaseAuth.auth.signOut().then(() => {

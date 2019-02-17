@@ -1,5 +1,6 @@
 export interface User {
   userId: string;
+  googleId: number;
   userName: string;
   password: string;
   employeeCode: string;

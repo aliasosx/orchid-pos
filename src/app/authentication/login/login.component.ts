@@ -35,19 +35,28 @@ export class LoginComponent implements OnInit {
   usersWeblogins: Observable<any[]>;
 
   loginGoogle() {
-    this._firebaseAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((res) => {
+    return this._firebaseAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((res) => {
+      console.log(res);
       this.userProfile = res.additionalUserInfo.profile;
       this.webUsersRef.get().subscribe(users => {
-        users.forEach(user => {
-          console.log(user);
-          if (user.data().name == this.userProfile.name) {
-            return;
-          } else {
-            console.log('Add new User');
-            this.webUsersRef.add(this.userProfile);
-            return;
-          }
-        });
+        if (!users.empty) {
+          users.forEach(user => {
+            //console.log(user);
+            if (user.data().name == this.userProfile.name) {
+              return;
+            } else {
+              //console.log('Add new User');
+              this.webUsersRef.add(this.userProfile);
+              localStorage.setItem('users', this.userProfile);
+              return;
+            }
+          });
+        } else {
+          //console.log('Add new User');
+          this.webUsersRef.add(this.userProfile);
+          localStorage.setItem('users', this.userProfile);
+          return;
+        }
       });
     });
   }

@@ -7,6 +7,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { User } from 'firebase';
 import { Role } from 'src/app/interfaces/role';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -24,6 +25,7 @@ export class NavbarComponent implements OnInit {
         //console.log(user);
         this.googleId = user.providerData[0].uid;
         this.navBarShow = '';
+        this.loadMenu();
         return;
       } else {
         //router.navigateByUrl('login');
@@ -55,9 +57,19 @@ export class NavbarComponent implements OnInit {
   currentRole: string;
   menusByRoles: any[] = [];
   ngOnInit() {
-    this.menus = this.menusRef.valueChanges();
+    this.menus = this.menusRef.snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data();
+        data['id'] = a.payload.doc.id;
+        //this.loadMenu();
+        return data;
+      });
+    }));
     this.RestaurantInfos = this.restaurantInfoRef.valueChanges();
-
+    //this.loadMenu();
+  }
+  loadMenu() {
+    this.menusByRoles = [];
     this.usersRef.get().subscribe(users => {
       users.docs.forEach(user => {
         if (user.data().googleId == this.googleId) {
@@ -78,7 +90,6 @@ export class NavbarComponent implements OnInit {
                     menuLink: menu.toLowerCase(),
                   });
                 }
-
               });
               console.log(this.menus);
             });

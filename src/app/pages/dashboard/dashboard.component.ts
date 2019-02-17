@@ -26,8 +26,6 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-
-
     this.transactionsRef = db.collection<Transaction>('transactions');
     this.transactionsCurrentRef = db.collection<Transaction>('transactions', ref => {
       return ref.orderBy('transaction_date', 'asc');

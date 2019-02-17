@@ -1,4 +1,4 @@
-<div class="topbar-Container">
+<div class="topbar-Container" [ngClass]="navBarShow">
   <mat-toolbar color="primary">
     <mat-toolbar-row>
       <span *ngFor="let RestaurantInfo of RestaurantInfos | async">{{ RestaurantInfo.restaurantName }}
@@ -8,6 +8,7 @@
         <button mat-flat-button color="primary" class="matbtn" *ngFor="let menu of menus |async"
           routerLink="{{ menu.menuLink }}">{{
       menu.menuName }}</button>
+        <button mat-flat-button color="primary" class="matbtn" (click)="logOut()">logout</button>
       </div>
     </mat-toolbar-row>
   </mat-toolbar>

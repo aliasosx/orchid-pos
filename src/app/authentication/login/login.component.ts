@@ -4,6 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Userlogin } from 'src/app/interfaces/userlogin';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,12 +13,12 @@ import { Userlogin } from 'src/app/interfaces/userlogin';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore) {
+  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router) {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
         this.userInfomation = user;
-        //console.log(user);
+        this.router.navigateByUrl('/');
       } else {
         this.userInfomation = null;
       }

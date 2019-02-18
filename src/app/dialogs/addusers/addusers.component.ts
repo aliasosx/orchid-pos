@@ -1,12 +1,12 @@
+import { User } from 'firebase';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import * as uuid from 'uuid';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { User } from 'src/app/interfaces/user';
 import { Observable } from 'rxjs';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { Role } from 'src/app/interfaces/role';
-import { map } from 'rxjs/operators';
+import { map, distinct } from 'rxjs/operators';
 import { Userlogin } from 'src/app/interfaces/userlogin';
 
 @Component({
@@ -70,6 +70,10 @@ export class AddusersComponent implements OnInit {
         return data;
       });
     }));
+
+
+
+
   }
   checkUserNameAvailable(username) {
     this.usersRef.get().subscribe(users => {

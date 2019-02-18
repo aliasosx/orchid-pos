@@ -33,7 +33,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of products  | async" [ngClass]="{'bg-warning': product.currentQuantity == 0}">
+        <tr *ngFor="let product of products  | async"
+          [ngClass]="{'bg-danger': product.currentQuantity == 0 || product.minimumQuantity > product.currentQuantity}">
           <td class="text-left" (click)="updateProduct(product)" style="cursor: pointer">{{ product.id.trim() }}</td>
           <td class="text-left">{{ product.barcode }}</td>
           <td class="text-left">{{ product.productCode }}</td>

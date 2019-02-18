@@ -42,7 +42,11 @@
           <tr *ngFor="let food of order.food">
             <td class="text-left align-middle">{{ food.food }}</td>
             <td class="text-center align-middle">{{ food.quantity | number }}</td>
-            <td class="text-center align-middle" style="color: red; font-weight: bold;">{{ food.note }}</td>
+            <td class="text-center align-middle" style="color: red; font-weight: bold;" *ngIf="food.note; else noNote">
+              {{ food.note }}</td>
+            <ng-template #noNote>
+              <td class="text-center align-middle" style="color: red; font-weight: bold;"></td>
+            </ng-template>
             <td class="text-center align-middle" *ngIf="food.done == true; else undone">
               <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" disable
                 style="max-width: 20px;cursor: pointer;" (click)="updateFoodDone(order,food)">

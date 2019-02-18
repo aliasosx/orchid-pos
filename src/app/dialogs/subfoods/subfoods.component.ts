@@ -15,7 +15,7 @@ export class SubfoodsComponent implements OnInit {
 
   constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<SubfoodsComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private snackbar: MatSnackBar) {
     this.foodsRef = db.collection<Food>('foods', ref => {
-      return ref.where('id', '==', data.id);
+      return ref.where('id', '==', this.data.food.id);
     });
   }
   btnDisable = false;
@@ -28,35 +28,32 @@ export class SubfoodsComponent implements OnInit {
   username: string = 'administrator';
   ngOnInit() {
     // load food data
-    /*
-    this.foods = this.foodsRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data();
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    }));
-    */
-    console.log(this.data);
+
     this.subFoodsForm = new FormGroup({
-      'id': new FormControl(this.data.id),
-      'food': new FormControl(this.data.food_name),
+      'id': new FormControl(this.data.food.id),
+      'food': new FormControl(this.data.food.food_name),
       'subFood': new FormControl(),
+      'cost': new FormControl(),
       'price': new FormControl(0),
       'quantity': new FormControl(1),
       'total': new FormControl(0),
-      'username': new FormControl(this.username),
+      'username': new FormControl(this.data.username),
+      'kitchen': new FormControl(),
+      'foodId': new FormControl(),
     });
-    this.extendedFoodList = this.data.extendedFoods;
+    this.extendedFoodList = this.data.food.extendedFoods;
   }
   selectedFood(event) {
     this.extendedFoodList.forEach(element => {
       if (element.extendedFoodName == event) {
         this.subFoodsForm.get('subFood').setValue(element.extendedFoodName);
         this.subFoodsForm.get('price').setValue(element.price);
+        this.subFoodsForm.get('cost').setValue(element.cost);
+        this.subFoodsForm.get('cost').setValue(element.cost);
+        this.subFoodsForm.get('kitchen').setValue(this.data.food.kitchen);
+        this.subFoodsForm.get('foodId').setValue(this.data.food.foodId);
       }
     });
-
   }
   addFood() {
     if (this.subFoodsForm.valid) {

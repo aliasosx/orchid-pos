@@ -97,6 +97,9 @@ export class PaymentCashComponent implements OnInit {
     this.carts.subscribe(doc => {
       doc.forEach(element => {
         element['done'] = false;
+        if (element.subFood) {
+          element['food'] = element.food + ' ' + element.subFood;
+        }
         this.foodList.push(element);
       });
     });

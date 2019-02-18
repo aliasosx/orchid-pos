@@ -62,11 +62,13 @@ export class PosComponent implements OnInit {
     this.FoodCategories = this.foodCategoriesRef.valueChanges();
     this.carts = this.cartsRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
+        //console.log(a.payload.doc.data());
         const data = a.payload.doc.data();
         data['id'] = a.payload.doc.id;
         return data;
       });
     }));
+
     this.loadFoodPage({ index: 0 });
     this.totalCalculation();
   }
@@ -97,7 +99,10 @@ export class PosComponent implements OnInit {
   openSubFood(food) {
     const dialogRef = this.dialog.open(SubfoodsComponent, {
       width: '400px',
-      data: food
+      data: {
+        food: food,
+        username: this.username
+      }
     });
     dialogRef.afterClosed().subscribe(feedBack => {
       if (feedBack) {
@@ -143,6 +148,7 @@ export class PosComponent implements OnInit {
 
   }
   addCartsToDb(food) {
+    console.log(food);
     if (food) {
       this.db.collection<Cart>('carts', ref => {
         return ref.where('food', '==', food.food)
@@ -150,6 +156,7 @@ export class PosComponent implements OnInit {
         if (!item.empty) {
           item.docs.forEach(doc => {
             let cart = doc.data();
+            console.log(cart);
             cart['quantity'] = doc.data().quantity + 1;
             cart['total'] = doc.data().price * cart.quantity;
             this.db.collection('carts').doc(doc.id).update(cart).then(() => {
@@ -160,8 +167,8 @@ export class PosComponent implements OnInit {
           // add new item
           if (food) {
             this.cartsRef.add(food).then(() => {
+              this.totalCalculation();
             });
-            this.totalCalculation();
           }
         }
       });

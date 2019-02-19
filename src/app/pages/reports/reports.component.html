@@ -1,3 +1,46 @@
-<p>
-  reports works!
-</p>
+<mat-card class="topHeader">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Reports</mat-card-title>
+    <mat-card-subtitle>report by categories</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="row">
+      <div class="col col-md-12">
+        <div class="card">
+          <div class="card-header">
+            Report Date
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-2">
+                <label for="fromDate">From</label>
+                <div class="input-group mb-1">
+                  <input matInput id="fromDate" [matDatepicker]="Frmpicker" class="form-control"
+                    placeholder="Choose a date">
+                  <mat-datepicker-toggle matSuffix [for]="Frmpicker"></mat-datepicker-toggle>
+                  <mat-datepicker #Frmpicker></mat-datepicker>
+                </div>
+              </div>
+              <div class="col col-md-2">
+                <label for="fromDate">To</label>
+                <div class="input-group mb-1">
+                  <input matInput id="ToDate" [matDatepicker]="toPicker" class="form-control"
+                    placeholder="Choose a date">
+                  <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #toPicker></mat-datepicker>
+                </div>
+              </div>
+              <div class="col col-md-2">
+                <label for="fromDate">To</label>
+                <div class="input-group mb-1">
+                  <button mat-raised-button color="primary">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

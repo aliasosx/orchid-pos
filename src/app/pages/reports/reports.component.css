@@ -1,0 +1,7 @@
+.example-header-image {
+  background-image: url('../../../assets/icons/baseline-dashboard-24px.svg');
+  background-size: cover;
+}
+.topHeader {
+  margin-top: 5px;
+}

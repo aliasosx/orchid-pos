@@ -18,7 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
-  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDivider, MatDividerModule, MatListModule
+  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDivider, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule
 } from '@angular/material';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { FoodsComponent } from './pages/foods/foods.component';
@@ -99,7 +99,7 @@ import { LoginComponent } from './authentication/login/login.component';
     ReactiveFormsModule,
     FlexLayoutModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
-    MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule
+    MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
   ],
   entryComponents: [
     AddFoodComponent,

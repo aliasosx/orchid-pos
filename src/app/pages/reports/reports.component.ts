@@ -7,6 +7,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-reports',
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class ReportsComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
+  constructor(private datePipe: DatePipe, private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
@@ -34,6 +35,10 @@ export class ReportsComponent implements OnInit {
 
   transactionsRef: AngularFirestoreCollection<Transaction>;
   transactions: Observable<any[]>;
+  events: string[] = [];
+
+  fromDate: Date;
+  toDate: Date;
 
   ngOnInit() {
     this.transactions = this.transactionsRef.snapshotChanges().pipe(map(change => {
@@ -44,5 +49,15 @@ export class ReportsComponent implements OnInit {
       });
     }));
   }
+  loadReport() {
 
+  }
+  fromDateEvent(e) {
+    this.fromDate = e.target.value;
+    console.log(new DatePipe('en-us').transform(this.fromDate, 'dd-MMM-yyyy'));
+  }
+  toDateEvent(e) {
+    this.toDate = e.target.value;
+    console.log(new DatePipe('en-us').transform(this.toDate, 'dd-MMM-yyyy'));
+  }
 }

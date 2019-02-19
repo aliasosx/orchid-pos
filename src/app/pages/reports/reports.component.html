@@ -17,7 +17,7 @@
                 <label for="fromDate">From</label>
                 <div class="input-group mb-1">
                   <input matInput id="fromDate" [matDatepicker]="Frmpicker" class="form-control"
-                    placeholder="Choose a date">
+                    placeholder="Choose a date" (dateInput)="fromDateEvent($event)">
                   <mat-datepicker-toggle matSuffix [for]="Frmpicker"></mat-datepicker-toggle>
                   <mat-datepicker #Frmpicker></mat-datepicker>
                 </div>
@@ -26,7 +26,7 @@
                 <label for="fromDate">To</label>
                 <div class="input-group mb-1">
                   <input matInput id="ToDate" [matDatepicker]="toPicker" class="form-control"
-                    placeholder="Choose a date">
+                    placeholder="Choose a date" (dateInput)="toDateEvent($event)">
                   <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
                   <mat-datepicker #toPicker></mat-datepicker>
                 </div>
@@ -34,7 +34,85 @@
               <div class="col col-md-2">
                 <label for="fromDate">To</label>
                 <div class="input-group mb-1">
-                  <button mat-raised-button color="primary">Submit</button>
+                  <button mat-raised-button color="primary" (click)="loadReport()">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            Report by Revenue
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-4">
+                <div class="card">
+                  <div class="card-header">
+                    Total revenue
+                  </div>
+                  <div class="card-body">
+                    DDDDDDDDDDDDDDDDDDDD
+                  </div>
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <div class="card">
+                  <div class="card-header">
+                    Total by user
+                  </div>
+                  <div class="card-body">
+                    DDDDDDDDDDDDDDDDDDDD
+                  </div>
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <div class="card">
+                  <div class="card-header">
+                    Total by Kitchen
+                  </div>
+                  <div class="card-body">
+                    DDDDDDDDDDDDDDDDDDDD
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            Report Detail
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-4">
+                <div class="card">
+                  <div class="card-header">
+                    Report By Kitchen
+                  </div>
+                  <div class="card-body">
+                    DDDDDDDDDDDDDDDDDDDD
+                  </div>
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <div class="card">
+                  <div class="card-header">
+                    Report By Food Categories
+                  </div>
+                  <div class="card-body">
+                    DDDDDDDDDDDDDDDDDDDD
+                  </div>
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <div class="card">
+                  <div class="card-header">
+                    Report By Foods
+                  </div>
+                  <div class="card-body">
+                    DDDDDDDDDDDDDDDDDDDD
+                  </div>
                 </div>
               </div>
             </div>

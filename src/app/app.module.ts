@@ -51,6 +51,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { UsersComponent } from './dialogs/users/users.component';
 import { AddusersComponent } from './dialogs/addusers/addusers.component';
 import { LoginComponent } from './authentication/login/login.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,7 @@ import { LoginComponent } from './authentication/login/login.component';
 
   ]
   ,
-  providers: [{ provide: FirestoreSettingsToken, useValue: {} }],
+  providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

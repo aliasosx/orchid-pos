@@ -10,22 +10,21 @@
         <thead class="thead-light">
           <tr>
             <th scope="col" class="text-center">Q</th>
-            <th scope="col" class="text-center">orderId</th>
             <th scope="col" class="text-center">transaction_date</th>
 
             <th scope="col" class="text-center">foodName</th>
             <th scope="col" class="text-center">cost</th>
             <th scope="col" class="text-center">price</th>
             <th scope="col" class="text-center">quantity</th>
-            <th scope="col" class="text-center">Grand total</th>
-            <th scope="col" class="text-center">Total cost</th>
+            <th scope="col" class="text-center text-nowrap">Grand total</th>
+            <th scope="col" class="text-center text-nowrap">Total cost</th>
             <th scope="col" class="text-center">Profit</th>
-            <th scope="col" class="text-center">Bill Amount</th>
-            <th scope="col" class="text-center">Payment By</th>
+            <th scope="col" class="text-center text-nowrap">Bill Amount</th>
+            <th scope="col" class="text-center text-nowrap">Payment By</th>
             <th scope="col" class="text-center">refno</th>
-            <th scope="col" class="text-center">QR Refno</th>
+            <th scope="col" class="text-center text-nowrap">QR Refno</th>
             <th scope="col" class="text-center">Settled</th>
-            <th scope="col" class="text-center">Invoice no</th>
+            <th scope="col" class="text-center text-nowrap">Invoice no</th>
             <th scope="col" class="text-center">Kitchen</th>
             <th scope="col" class="text-center">Recover</th>
           </tr>
@@ -33,11 +32,10 @@
         <tbody>
           <tr *ngFor="let transaction of transactions | async">
             <td class="text-left align-middle">{{ transaction.ticket }}</td>
-            <td class="text-left align-middle">{{ transaction.orderId }}</td>
             <td class="text-left align-middle">{{ transaction.transaction_date.toDate() | date:'dd-MMM-yyyy HH:mm:ss' }}
             </td>
 
-            <td class="text-left align-middle">{{ transaction.foodName }}</td>
+            <td class="text-left align-middle text-nowrap">{{ transaction.foodName }}</td>
             <td class="text-right align-middle">{{ transaction.cost | number }}</td>
             <td class="text-right align-middle">{{ transaction.price | number }}</td>
             <td class="text-right align-middle">{{ transaction.quantity | number }}</td>

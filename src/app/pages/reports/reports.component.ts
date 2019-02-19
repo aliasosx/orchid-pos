@@ -16,7 +16,7 @@ import { DatePipe } from '@angular/common';
 })
 export class ReportsComponent implements OnInit {
 
-  constructor(private datePipe: DatePipe, private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
+  constructor(private snackbar: MatSnackBar, private datePipe: DatePipe, private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
@@ -26,9 +26,7 @@ export class ReportsComponent implements OnInit {
         router.navigateByUrl('login');
       }
     });
-    this.transactionsRef = db.collection<Transaction>('transactions', ref => {
-      return ref.orderBy('orderId', 'asc');
-    });
+
   }
   private user: Observable<firebase.User>;
   username_info: any;
@@ -38,26 +36,46 @@ export class ReportsComponent implements OnInit {
   events: string[] = [];
 
   fromDate: Date;
-  toDate: Date;
+  toDateEnd: Date;
+
+  grandtotalAmount: number = 0;
+  userTransactions: any[] = [];
 
   ngOnInit() {
-    this.transactions = this.transactionsRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const transactions = a.payload.doc.data() as Transaction;
-        transactions['id'] = a.payload.doc.id;
-        return transactions;
-      });
-    }));
+
   }
   loadReport() {
+    if (this.toDateEnd != null && this.fromDate != null) {
+      this.toDateEnd.setDate(this.toDateEnd.getDate() + 1);
+      this.transactionsRef = this.db.collection<Transaction>('transactions', ref => {
+        return ref.where('transaction_date', '>=', this.fromDate).where('transaction_date', '<=', this.toDateEnd);
+      });
+      this.transactions = this.transactionsRef.snapshotChanges().pipe(map(change => {
+        return change.map(a => {
+          const transactions = a.payload.doc.data() as Transaction;
+          transactions['id'] = a.payload.doc.id;
+          return transactions;
+        });
+      }));
+      this.transactions.subscribe(tranxs => {
+        this.grandtotalAmount = 0;
+        tranxs.forEach(tranx => {
+          console.log(tranx.transaction_date.toDate().toDateString() + ' - ' + this.fromDate.toDateString());
+          this.grandtotalAmount += tranx.total_price;
+        });
+      });
+    } else {
+      this.snackbar.open('Please select date range before process', 'ok', { duration: 2000 });
+    }
 
   }
   fromDateEvent(e) {
     this.fromDate = e.target.value;
-    console.log(new DatePipe('en-us').transform(this.fromDate, 'dd-MMM-yyyy'));
+    //console.log(new DatePipe('en-us').transform(this.fromDate, 'dd-MMM-yyyy'));
   }
   toDateEvent(e) {
-    this.toDate = e.target.value;
-    console.log(new DatePipe('en-us').transform(this.toDate, 'dd-MMM-yyyy'));
+    this.toDateEnd = e.target.value;
+    this.toDateEnd.setDate(this.toDateEnd.getDate() + 1);
+    console.log(this.toDateEnd);
   }
 }

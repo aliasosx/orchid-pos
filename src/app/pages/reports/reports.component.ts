@@ -60,7 +60,6 @@ export class ReportsComponent implements OnInit {
       this.transactions.subscribe(tranxs => {
         this.grandtotalAmount = 0;
         tranxs.forEach(tranx => {
-          console.log(tranx.transaction_date.toDate().toDateString() + ' - ' + this.fromDate.toDateString());
           this.grandtotalAmount += tranx.total_price;
         });
       });

@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { User } from 'src/app/interfaces/user';
 
 @Component({
   selector: 'app-reports',
@@ -35,17 +36,27 @@ export class ReportsComponent implements OnInit {
   transactions: Observable<any[]>;
   events: string[] = [];
 
+
+  usersRef: AngularFirestoreCollection<User>;
+  users: Observable<any[]>;
+
   fromDate: Date;
   toDateEnd: Date;
 
   grandtotalAmount: number = 0;
+
   userTransactions: any[] = [];
+  userCountTranx: number = 0;
+  userAmountTranx: number = 0;
+
+  viewReport = "hidden";
 
   ngOnInit() {
 
   }
   loadReport() {
     if (this.toDateEnd != null && this.fromDate != null) {
+      this.viewReport = '';
       this.toDateEnd.setDate(this.toDateEnd.getDate() + 1);
       this.transactionsRef = this.db.collection<Transaction>('transactions', ref => {
         return ref.where('transaction_date', '>=', this.fromDate).where('transaction_date', '<=', this.toDateEnd);
@@ -65,8 +76,8 @@ export class ReportsComponent implements OnInit {
       });
     } else {
       this.snackbar.open('Please select date range before process', 'ok', { duration: 2000 });
+      this.viewReport = 'hidden';
     }
-
   }
   fromDateEvent(e) {
     this.fromDate = e.target.value;

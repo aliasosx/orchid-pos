@@ -40,93 +40,97 @@
             </div>
           </div>
         </div>
-        <div class="card">
-          <div class="card-header">
+        <div class="mainReportDetail" [ngClass]="viewReport">
+          <div class="card">
+            <div class="card-header">
 
-            <div class="font-weight-bold">
-              Report by Revenue
+              <div class="font-weight-bold">
+                Report by Revenue
+              </div>
             </div>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col col-md-4">
-                <div class="card">
-                  <div class="card-header">
-                    Total revenue
-                  </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col col-md-6 text-left display-4">ຍອດຂາຍ</div>
-                      <div class="col col-md-6 text-right display-4">{{ grandtotalAmount | number }}</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      Total revenue
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col col-md-6 col-sm-12 text-left text-nowrap display-4">ຍອດຂາຍ</div>
+                        <div class="col col-md-6 col-sm-12 text-right text-nowrap display-4">
+                          {{ grandtotalAmount | number }}</div>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+
                     </div>
                   </div>
-                  <div class="card-footer">
+                </div>
+                <div class="col col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      Total by user
+                    </div>
+                    <div class="card-body">
+                      DDDDDDDDDDDDDDDDDDDD
+                    </div>
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      Total by Kitchen
+                    </div>
+                    <div class="card-body">
+                      DDDDDDDDDDDDDDDDDDDD
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              Report Detail
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      Report By Kitchen
+                    </div>
+                    <div class="card-body">
+                      DDDDDDDDDDDDDDDDDDDD
+                    </div>
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      Report By Food Categories
+                    </div>
+                    <div class="card-body">
+                      DDDDDDDDDDDDDDDDDDDD
+                    </div>
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      Report By Foods
+                    </div>
+                    <div class="card-body">
+                      DDDDDDDDDDDDDDDDDDDD
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                  </div>
-                </div>
-              </div>
-              <div class="col col-md-4">
-                <div class="card">
-                  <div class="card-header">
-                    Total by user
-                  </div>
-                  <div class="card-body">
-                    DDDDDDDDDDDDDDDDDDDD
-                  </div>
-                </div>
-              </div>
-              <div class="col col-md-4">
-                <div class="card">
-                  <div class="card-header">
-                    Total by Kitchen
-                  </div>
-                  <div class="card-body">
-                    DDDDDDDDDDDDDDDDDDDD
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            Report Detail
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col col-md-4">
-                <div class="card">
-                  <div class="card-header">
-                    Report By Kitchen
-                  </div>
-                  <div class="card-body">
-                    DDDDDDDDDDDDDDDDDDDD
-                  </div>
-                </div>
-              </div>
-              <div class="col col-md-4">
-                <div class="card">
-                  <div class="card-header">
-                    Report By Food Categories
-                  </div>
-                  <div class="card-body">
-                    DDDDDDDDDDDDDDDDDDDD
-                  </div>
-                </div>
-              </div>
-              <div class="col col-md-4">
-                <div class="card">
-                  <div class="card-header">
-                    Report By Foods
-                  </div>
-                  <div class="card-body">
-                    DDDDDDDDDDDDDDDDDDDD
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </mat-card-content>

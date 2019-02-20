@@ -56,6 +56,8 @@ export class OrdersComponent implements OnInit {
 
   sendBtnDisable = false;
 
+  foodUpdateStatus: boolean = false;
+
   ngOnInit() {
     this.orders = this.orderRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
@@ -66,42 +68,50 @@ export class OrdersComponent implements OnInit {
     }));
   }
   async updateFoodDone(order, _food) {
-    // Clear cache
-    this.foodsList = [];
-    //console.log(_food.done);
-    if (_food.done == true) {
-      _food.done = false;
-    } else if (_food.done == false) {
-      _food.done = true;
-    }
-    //console.log(_food.done);
-    const cs = await this.orderRef.doc(order.id).get().toPromise().then(_order => {
-      if (_order.exists) {
-        const o = _order.data() as Order;
-        // populate food data
-        o.food.forEach(element => {
-          if (element.id === _food.id) {
-            element.done = _food.done;
-            this.foodsList.push(element);
-          } else {
-            this.foodsList.push(element);
-          }
-        });
+    if (this.foodUpdateStatus == false) {
+      // Clear cache
+      this.foodsList = [];
+      //console.log(_food.done);
+      if (_food.done == true) {
+        _food.done = false;
+      } else if (_food.done == false) {
+        _food.done = true;
       }
-    }).then(() => {
-      if (this.foodsList.length > 0) {
-        let food = {
-          food: this.foodsList
-        };
-        this.db.collection<Order>('orders').doc(order.id).update(food).then(() => {
-          this.snackbarRef.open('Food Order Updated', 'ok', { duration: 1000 });
+      //console.log(_food.done);
+      this.foodUpdateStatus = true;
+      const cs = await this.orderRef.doc(order.id).get().toPromise().then(_order => {
+        if (_order.exists) {
+          const o = _order.data() as Order;
+          // populate food data
+          o.food.forEach(element => {
+            if (element.id === _food.id) {
+              element.done = _food.done;
+              this.foodsList.push(element);
+            } else {
+              this.foodsList.push(element);
+            }
+          });
+        }
+      }).then(() => {
+        if (this.foodsList.length > 0) {
+          let food = {
+            food: this.foodsList
+          };
+          this.db.collection<Order>('orders').doc(order.id).update(food).then(() => {
+            this.snackbarRef.open('Food Order Updated', 'ok', { duration: 1000 });
+            this.foodsList = [];
+            this.foodUpdateStatus = false;
+          });
+        } else {
+          this.snackbarRef.open('Error Updated, Please try again later', 'ok', { duration: 1000 });
           this.foodsList = [];
-        });
-      } else {
-        this.snackbarRef.open('Error Updated, Please try again later', 'ok', { duration: 1000 });
-        this.foodsList = [];
-      }
-    });
+          this.foodUpdateStatus = false;
+        }
+      });
+    } else {
+      this.snackbarRef.open('Wait task complete and try again', 'ok', { duration: 1000, verticalPosition: 'top' });
+      return
+    }
   }
   async markOrderComplete(order) {
     swal({

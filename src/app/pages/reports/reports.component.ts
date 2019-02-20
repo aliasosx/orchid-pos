@@ -43,13 +43,13 @@ export class ReportsComponent implements OnInit {
   fromDate: Date;
   toDateEnd: Date;
 
-  grandtotalAmount: number = 0;
+  grandtotalAmount = 0;
 
   userTransactions: any[] = [];
-  userCountTranx: number = 0;
-  userAmountTranx: number = 0;
+  userCountTranx = 0;
+  userAmountTranx = 0;
 
-  viewReport = "hidden";
+  viewReport = 'hidden';
 
   ngOnInit() {
 
@@ -70,9 +70,16 @@ export class ReportsComponent implements OnInit {
       }));
       this.transactions.subscribe(tranxs => {
         this.grandtotalAmount = 0;
+        let userWithTranx = '';
         tranxs.forEach(tranx => {
+          userWithTranx = tranx.username;
           this.grandtotalAmount += tranx.total_price;
         });
+        this.userTransactions.push({
+          username: userWithTranx,
+          userAmount: this.grandtotalAmount
+        });
+        console.log(this.userTransactions);
       });
     } else {
       this.snackbar.open('Please select date range before process', 'ok', { duration: 2000 });
@@ -81,7 +88,7 @@ export class ReportsComponent implements OnInit {
   }
   fromDateEvent(e) {
     this.fromDate = e.target.value;
-    //console.log(new DatePipe('en-us').transform(this.fromDate, 'dd-MMM-yyyy'));
+    // console.log(new DatePipe('en-us').transform(this.fromDate, 'dd-MMM-yyyy'));
   }
   toDateEvent(e) {
     this.toDateEnd = e.target.value;

@@ -60,6 +60,34 @@ export class LoginComponent implements OnInit {
       });
     });
   }
+  loginFacebook() {
+    return this._firebaseAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((res) => {
+      this.userProfile = res.additionalUserInfo.profile;
+      this.webUsersRef.get().subscribe(users => {
+        if (!users.empty) {
+          users.forEach(user => {
+            //console.log(user);
+            if (user.data().name == this.userProfile.name) {
+              return;
+            } else {
+              //console.log('Add new User');
+              this.webUsersRef.add(this.userProfile);
+              localStorage.setItem('users', this.userProfile);
+              return;
+            }
+          });
+        } else {
+          //console.log('Add new User');
+          this.webUsersRef.add(this.userProfile);
+          localStorage.setItem('users', this.userProfile);
+          return;
+        }
+      });
+    });
+  }
+  loginByEmail() {
+    return this._firebaseAuth.auth.signInWithEmailAndPassword();
+  }
   logOut() {
     this._firebaseAuth.auth.signOut().then(() => {
 

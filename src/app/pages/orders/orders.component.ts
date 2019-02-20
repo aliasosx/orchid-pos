@@ -213,6 +213,7 @@ export class OrdersComponent implements OnInit {
           invoiceno: order.invoiceno,
           ticket: order.ticket,
           qrRefno: order.qrRefno,
+          food_category: element.food_category
         };
         this.db.collection<Transaction>('transactions').add(transaction).then(() => {
           this.snackbarRef.open('Transaction posted ', 'ok', { duration: 1000 });

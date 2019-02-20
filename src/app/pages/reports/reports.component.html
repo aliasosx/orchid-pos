@@ -14,7 +14,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col col-md-2">
-                <label for="fromDate">From</label>
+                <label for="fromDate" class="lead">ເລີ່ມຈາກວັນທີ</label>
                 <div class="input-group mb-1">
                   <input matInput id="fromDate" [matDatepicker]="Frmpicker" class="form-control"
                     placeholder="Choose a date" (dateInput)="fromDateEvent($event)">
@@ -22,8 +22,8 @@
                   <mat-datepicker #Frmpicker></mat-datepicker>
                 </div>
               </div>
-              <div class="col col-md-2">
-                <label for="fromDate">To</label>
+              <div class="col col-md-2" class="lead">
+                <label for="fromDate">ຮອດວັນທີ</label>
                 <div class="input-group mb-1">
                   <input matInput id="ToDate" [matDatepicker]="toPicker" class="form-control"
                     placeholder="Choose a date" (dateInput)="toDateEvent($event)">
@@ -32,9 +32,10 @@
                 </div>
               </div>
               <div class="col col-md-2">
-                <label for="fromDate">To</label>
+                <label for="fromDate"></label>
                 <div class="input-group mb-1">
-                  <button mat-raised-button color="primary" (click)="loadReport()">Submit</button>
+                  <button mat-raised-button color="primary" (click)="loadReport()"
+                    style="margin-top: 18px;width: 200px;">Submit</button>
                 </div>
               </div>
             </div>
@@ -44,46 +45,71 @@
           <div class="card">
             <div class="card-header">
 
-              <div class="font-weight-bold">
-                Report by Revenue
+              <div class="lead">
+                ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ
+                <span class="font-weight-bold" style="font-weight: bold;color: rgb(245, 101, 6);">
+                  {{ fromDate | date: 'dd-MMM-yyyy' }} <span class="ml-2 mr-2">-</span>
+                  {{ toEndDateDiff |date: 'dd-MMM-yyyy' }}
+                </span>
               </div>
             </div>
             <div class="card-body">
               <div class="row">
                 <div class="col col-md-4">
                   <div class="card">
-                    <div class="card-header">
-                      Total revenue
+                    <div class="card-header lead">
+                      ຍອດຂາຍທັງໝົດ
                     </div>
                     <div class="card-body">
                       <div class="row">
-                        <div class="col col-md-6 col-sm-12 text-left text-nowrap display-4">ຍອດຂາຍ</div>
-                        <div class="col col-md-6 col-sm-12 text-right text-nowrap display-4">
-                          {{ grandtotalAmount | number }}</div>
+                        <div class="col col-md-6 col-sm-12 text-left text-nowrap h4"></div>
+                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h4">
+                          {{ grandtotalAmount | number }} ກີບ</div>
                       </div>
                     </div>
-                    <div class="card-footer">
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <div class="card">
+                    <div class="card-header lead">
+                      ຍອດຂາຍຕາມ ພະນັກງານຂາຍ
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col col-md-12" *ngFor="let userTransaction of userTransactions">
+                          <div class="row" *ngIf="userTransaction.userAmountTranx > 0">
+                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h5 ">
+                              {{ userTransaction.gender }}. {{ userTransaction.username }}
+                            </div>
+                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h5 ">
+                              {{ userTransaction.userAmountTranx | number }} ກີບ
+                            </div>
+                          </div>
 
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="col col-md-4">
                   <div class="card">
-                    <div class="card-header">
-                      Total by user
+                    <div class="card-header lead">
+                      ຍອດຂາຍຕາມ ຄົວ
                     </div>
                     <div class="card-body">
-                      DDDDDDDDDDDDDDDDDDDD
-                    </div>
-                  </div>
-                </div>
-                <div class="col col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      Total by Kitchen
-                    </div>
-                    <div class="card-body">
-                      DDDDDDDDDDDDDDDDDDDD
+                      <div class="row">
+                        <div class="col col-md-12" *ngFor="let kitchenTransaction of kitchenTransactions">
+                          <div class="row">
+                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h5 ">
+                              {{ kitchenTransaction.kitchen }}
+                            </div>
+                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h5 ">
+                              {{ kitchenTransaction.kitchenAmount | number }} ກີບ
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -91,38 +117,82 @@
             </div>
           </div>
           <div class="card">
-            <div class="card-header">
-              Report Detail
+            <div class="card-header lead">
+              ລາຍລະອຽດຍອດຂາຍ
             </div>
             <div class="card-body">
               <div class="row">
                 <div class="col col-md-4">
                   <div class="card">
-                    <div class="card-header">
-                      Report By Kitchen
+                    <div class="card-header lead">
+                      ຍອດຂາຍຕາມ ປະເພດອາຫານ
                     </div>
                     <div class="card-body">
-                      DDDDDDDDDDDDDDDDDDDD
+                      <div class="row">
+                        <div class="col col-md-12" *ngFor="let foodCategoryTransaction of foodCategoriesTransactions">
+                          <div class="row" *ngIf="foodCategoryTransaction.foodCategoryAmount > 0">
+                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h5 ">
+                              {{ foodCategoryTransaction.foodCategory }}
+                            </div>
+                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h5 ">
+                              {{ foodCategoryTransaction.foodCategoryAmount | number }} ກີບ
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="col col-md-4">
                   <div class="card">
-                    <div class="card-header">
-                      Report By Food Categories
+                    <div class="card-header lead">
+                      ຍອດຂາຍຕາມ ຊ່ອງທາງການຈ່າຍ
                     </div>
                     <div class="card-body">
-                      DDDDDDDDDDDDDDDDDDDD
+                      <div class="row">
+                        <div class="col col-md-12" *ngFor="let paymentsTransaction of paymentsTransactions">
+                          <div class="row" *ngIf="paymentsTransaction.paymentAmount > 0">
+                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h5 ">
+                              {{ paymentsTransaction.paymentName }}
+                            </div>
+                            <div class="col col-md-2 col-sm-12 text-right text-nowrap h5 ">
+                              ຈຳນວນ<span class="ml-4 text-right">{{ paymentsTransaction.paymentCount | number }}</span>
+                            </div>
+                            <div class="col col-md-4 col-sm-12 text-right text-nowrap h5 ">
+                              {{ paymentsTransaction.paymentAmount | number }}
+                              <span class="ml-3 text-right">ກີບ</span>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="col col-md-4">
                   <div class="card">
-                    <div class="card-header">
-                      Report By Foods
+                    <div class="card-header lead">
+                      ຍອດຂາຍ ຕາມລາຍການອາຫານ
                     </div>
                     <div class="card-body">
-                      DDDDDDDDDDDDDDDDDDDD
+                      <div class="row">
+                        <div class="col col-md-12" *ngFor="let foodsTransaction of foodsTransactions">
+                          <div class="row" *ngIf="foodsTransaction.foodAmount > 0">
+                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h5 ">
+                              {{ foodsTransaction.foodname }}
+                            </div>
+                            <div class="col col-md-2 col-sm-12 text-right text-nowrap h5 ">
+                              ຈຳນວນ<span class="ml-4 text-right">{{ foodsTransaction.foodQuantity | number }}</span>
+                            </div>
+                            <div class="col col-md-4 col-sm-12 text-right text-nowrap h5 ">
+                              {{ foodsTransaction.foodAmount | number }}
+                              <span class="ml-3 text-right">ກີບ</span>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

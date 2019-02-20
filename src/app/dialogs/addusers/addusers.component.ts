@@ -112,9 +112,9 @@ export class AddusersComponent implements OnInit {
       this.addUserForm.get('fullName').setValue(user.data().name);
       this.addUserForm.get('googleId').setValue(user.data().id);
       if (user.data().gender == 'male') {
-        this.addUserForm.get('gender').setValue('M');
+        this.addUserForm.get('gender').setValue('Mr');
       } else {
-        this.addUserForm.get('gender').setValue('F');
+        this.addUserForm.get('gender').setValue('Mrs');
       }
       this.addUserForm.get('photo').setValue(user.data().picture);
     });

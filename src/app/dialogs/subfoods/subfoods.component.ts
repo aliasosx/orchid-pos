@@ -40,6 +40,7 @@ export class SubfoodsComponent implements OnInit {
       'username': new FormControl(this.data.username),
       'kitchen': new FormControl(),
       'foodId': new FormControl(),
+      'food_category': new FormControl(),
     });
     this.extendedFoodList = this.data.food.extendedFoods;
   }
@@ -52,6 +53,7 @@ export class SubfoodsComponent implements OnInit {
         this.subFoodsForm.get('cost').setValue(element.cost);
         this.subFoodsForm.get('kitchen').setValue(this.data.food.kitchen);
         this.subFoodsForm.get('foodId').setValue(this.data.food.foodId);
+        this.subFoodsForm.get('food_category').setValue(this.data.food.food_category);
       }
     });
   }

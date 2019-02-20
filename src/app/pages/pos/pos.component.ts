@@ -121,6 +121,7 @@ export class PosComponent implements OnInit {
         'id': food.id,
         'foodId': food.foodId,
         'food': food.food_name,
+        'food_category': food.food_category,
         'price': food.price,
         'cost': food.cost,
         'quantity': 1,

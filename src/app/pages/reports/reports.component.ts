@@ -21,7 +21,13 @@ import { PaymentType } from 'src/app/interfaces/paymentType';
 })
 export class ReportsComponent implements OnInit {
 
-  constructor(private snackbar: MatSnackBar, private datePipe: DatePipe, private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
+  constructor(private snackbar: MatSnackBar,
+    private datePipe: DatePipe,
+    private db: AngularFirestore,
+    private dialog: MatDialog,
+    private snackbarRef: MatSnackBar,
+    private _firebaseAuth: AngularFireAuth,
+    private router: Router) {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
@@ -99,7 +105,6 @@ export class ReportsComponent implements OnInit {
       }));
       this.transactions.subscribe(async (tranxs) => {
         this.grandtotalAmount = 0;
-        let userWithTranx = '';
         tranxs.forEach(tranx => {
           this.grandtotalAmount += tranx.total_price;
         });
@@ -131,9 +136,9 @@ export class ReportsComponent implements OnInit {
       users.forEach(user => {
         this.userAmountTranx = 0;
         tranxs.forEach(tranx => {
-          if (tranx.username.toLowerCase() == user.fullName.toLowerCase()) {
+          if (tranx.username.toLowerCase() === user.fullName.toLowerCase()) {
             this.userAmountTranx += tranx.total_price;
-            //console.log(this.userAmountTranx);
+            // console.log(this.userAmountTranx);
           }
         });
         this.userTransactions.push({
@@ -147,7 +152,7 @@ export class ReportsComponent implements OnInit {
     // admin user transactions
     this.userAmountTranx = 0;
     tranxs.forEach(tranx => {
-      if (tranx.username.toLowerCase() == 'administrator') {
+      if (tranx.username.toLowerCase() === 'administrator') {
         this.userAmountTranx += tranx.total_price;
       }
     });
@@ -173,7 +178,7 @@ export class ReportsComponent implements OnInit {
       kitchens.forEach(kitchen => {
         this.kitchenAmountTranx = 0;
         tranxs.forEach(tranx => {
-          if (kitchen.kitchenName.toLowerCase() == tranx.kitchen.toLowerCase()) {
+          if (kitchen.kitchenName.toLowerCase() === tranx.kitchen.toLowerCase()) {
             this.kitchenAmountTranx += tranx.total_price;
           }
         });
@@ -201,10 +206,10 @@ export class ReportsComponent implements OnInit {
       this.foodCategoriesTransactions = [];
       foodCategories.forEach(foodCategory => {
         this.foodCategoriesAmountTranx = 0;
-        //console.log(foodCategory);
+        // console.log(foodCategory);
         tranxs.forEach(tranx => {
           if (tranx.food_category === foodCategory.foodCategoryNameLao) {
-            //console.log(tranx.food_category + ' - ' + foodCategory.foodCategoryNameLao)
+            // console.log(tranx.food_category + ' - ' + foodCategory.foodCategoryNameLao)
             this.foodCategoriesAmountTranx += tranx.total_price;
           }
         });
@@ -291,7 +296,7 @@ export class ReportsComponent implements OnInit {
         this.paymentsAmountTranx = 0;
         this.paymentsCountTranx = 0;
         tranxs.forEach(tranx => {
-          if (tranx.paymentBy.toLowerCase() == payment.paymentCode.toLowerCase()) {
+          if (tranx.paymentBy.toLowerCase() === payment.paymentCode.toLowerCase()) {
             this.paymentsCountTranx += tranx.quantity;
             this.paymentsAmountTranx += tranx.total_price;
           }

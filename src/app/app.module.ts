@@ -52,6 +52,7 @@ import { UsersComponent } from './dialogs/users/users.component';
 import { AddusersComponent } from './dialogs/addusers/addusers.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { DatePipe } from '@angular/common';
+import { UserRegisterComponent } from './dialogs/user-register/user-register.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { DatePipe } from '@angular/common';
     UsersComponent,
     AddusersComponent,
     LoginComponent,
+    UserRegisterComponent,
 
   ],
   imports: [
@@ -122,6 +124,7 @@ import { DatePipe } from '@angular/common';
     ViewPurchaseComponent,
     VendorsComponent,
     AddusersComponent,
+    UserRegisterComponent,
 
   ]
   ,

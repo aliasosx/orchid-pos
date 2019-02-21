@@ -1,6 +1,7 @@
 export interface User {
   userId: string;
   googleId: number;
+  email: string;
   userName: string;
   password: string;
   employeeCode: string;
@@ -15,7 +16,7 @@ export interface User {
   role: {
     roleName: string;
     menus: any;
-  },
+  };
   registeringDate: Date;
   employedDate: Date;
 }

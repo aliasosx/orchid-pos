@@ -1,0 +1,73 @@
+<h1 mat-dialog-title>ລົງທະບຽນ</h1>
+<div class="alert alert-danger" role="alert" [ngClass]="showAlert">
+  {{ message }}
+</div>
+<form [formGroup]="userRegistrationForm">
+  <div class="row">
+    <div class="col col-md-3">
+      <img [src]="photoSrc" (click)="fileinput.click()" class="photoDiv shadow p-3 mb-5 bg-white">
+      <input type="file" #fileinput style="display: none;">
+    </div>
+    <div class="col col-md-9">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="employeeCode">ລະຫັດພະນັກງານ</label>
+          <input type="text" class="form-control" id="employeeCode" readonly formControlName="employeeCode">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="userName">username</label>
+          <input type="text" minlength="6" class="form-control" id="userName" formControlName="userName" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="email">email</label>
+          <input type="email" minlength="6" class="form-control" id="email" formControlName="email" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="gender">ເພດ</label>
+          <select class="form-control" id="gender" formControlName="gender" required>
+            <option value="" disabled>--------</option>
+            <option value="Mr">Mr.</option>
+            <option value="Mrs">Mrs.</option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="fullName">ຊື່ເຕັມ</label>
+          <input type="text" minlength="10" class="form-control" id="fullName" formControlName="fullName" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="dateOfbirth">ວັນເດືອນປີເກີດ</label>
+          <input type="date" class="form-control" id="dateOfbirth" formControlName="dateOfbirth" required>
+        </div>
+        <div class="form-group col-md-12">
+          <label for="placeOfBirth">ສະຖານທີເກີດ</label>
+          <input type="text" class="form-control" id="placeOfBirth" formControlName="placeOfBirth" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="idCardno">ເລກບັດປະຈະຕົວ / ສຳມະໂນຄົວ</label>
+          <input type="text" class="form-control" id="idCardno" formControlName="idCardno" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="mobile">ເບີໂທລະສັບ</label>
+          <input type="text" class="form-control" id="mobile" placeholder="020..." formControlName="mobile" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="userpassword">ລະຫັດ</label>
+          <input type="password" class="form-control" id="userpassword" (keyup)="checkPasswordIntegrity($event)"
+            formControlName="password" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="re-password">ລະຫັດ ອີກຄັ້ງ</label>
+          <input type="password" class="form-control" (keyup)="checkPasswordIntegrity($event)" id="re-password">
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="row">
+    <div class="col col-md-12 text-right mt-3">
+      <button mat-flat-button color="primary" style="width: 200px;" (click)="addUser()"
+        [disabled]="saveBtnDisable">ບັນທຶກ</button>
+    </div>
+  </div>
+</form>

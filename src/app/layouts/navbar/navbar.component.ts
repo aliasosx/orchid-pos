@@ -20,15 +20,15 @@ export class NavbarComponent implements OnInit {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
-        //console.log(user.providerData);
+        // console.log(user.providerData);
         this.username_info = user;
-        //console.log(user);
+        // console.log(user);
         this.googleId = user.providerData[0].uid;
         this.navBarShow = '';
         this.loadMenu();
         return;
       } else {
-        //router.navigateByUrl('login');
+        // router.navigateByUrl('login');
         this.navBarShow = 'hidden';
       }
     });
@@ -45,7 +45,7 @@ export class NavbarComponent implements OnInit {
   private user: Observable<firebase.User>;
   username_info: any;
   googleId: string;
-  title = "Letter'P restaurant";
+  title = 'Letter\'P restaurant';
   menusRef: AngularFirestoreCollection<Webmenu>;
   menus: Observable<any[]>;
 
@@ -61,18 +61,18 @@ export class NavbarComponent implements OnInit {
       return change.map(a => {
         const data = a.payload.doc.data();
         data['id'] = a.payload.doc.id;
-        //this.loadMenu();
+        // this.loadMenu();
         return data;
       });
     }));
     this.RestaurantInfos = this.restaurantInfoRef.valueChanges();
-    //this.loadMenu();
+    // this.loadMenu();
   }
   loadMenu() {
     this.menusByRoles = [];
     this.usersRef.get().subscribe(users => {
       users.docs.forEach(user => {
-        if (user.data().googleId == this.googleId) {
+        if (user.data().googleId === this.googleId) {
           // Get Roles
           this.db.collection<Role>('roles', ref => {
             return ref.where('roleCode', '==', user.data().role);

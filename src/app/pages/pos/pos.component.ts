@@ -13,6 +13,7 @@ import { PaymentBanksChannelComponent } from 'src/app/dialogs/payment-banks-chan
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-pos',
@@ -75,12 +76,12 @@ export class PosComponent implements OnInit {
         });
       }));
     }
-
-
     this.loadFoodPage({ index: 0 });
     this.totalCalculation();
+    if (localStorage.getItem('cart')) {
+      this.virtualCard = JSON.parse(localStorage.getItem('cart'));
+    }
   }
-
   loadFoodPage(page) {
     if (page.index == 0) {
       this.foods = this.db.collection<Food>('foods').snapshotChanges().pipe(map(change => {
@@ -141,8 +142,11 @@ export class PosComponent implements OnInit {
   }
   removeFromlist(food) {
     if (food) {
+      /*
       this.db.collection<Cart>('carts').doc(food.id).delete().then(() => {
       });
+      */
+
     }
     this.totalCalculation();
   }
@@ -163,22 +167,24 @@ export class PosComponent implements OnInit {
   addCartsToDb(food) {
     if (food) {
       if (this.virtualCard.length > 0) {
+        let index = -1;
         for (var i = 0; i < this.virtualCard.length; i++) {
           if (this.virtualCard[i].foodId === food.foodId) {
             this.virtualCard[i].quantity += 1;
             this.virtualCard[i].total = this.virtualCard[i].quantity * this.virtualCard[i].price;
-          } else {
-            this.virtualCard[i].quantity = 1;
-            this.virtualCard.push(food);
+            index = 1;
+            break;
           }
         }
+        if (index == -1) {
+          this.virtualCard.push(food);
+        }
         this.totalCalculation();
-      } else {
+      } else if (this.virtualCard.length == 0) {
         this.virtualCard.push(food);
         this.totalCalculation();
       }
-
-
+      localStorage.setItem('cart', JSON.stringify(this.virtualCard));
       /*
       this.db.collection<Cart>('carts').get().subscribe(items => {
         if (!items.empty) {

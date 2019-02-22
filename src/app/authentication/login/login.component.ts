@@ -108,30 +108,6 @@ export class LoginComponent implements OnInit {
         if (newUser) {
           alert('Please contact adminsitrator for Adding Your role');
         }
-
-
-        /*
-        this.webUsersRef.get().subscribe(users => {
-          if (!users.empty) {
-            users.forEach(user => {
-              // console.log(user);
-              if (user.data().name === this.userProfile.name) {
-                return;
-              } else {
-                // console.log('Add new User');
-                this.webUsersRef.add(this.userProfile);
-                localStorage.setItem('users', this.userProfile);
-                return;
-              }
-            });
-          } else {
-            // console.log('Add new User');
-            this.webUsersRef.add(this.userProfile);
-            localStorage.setItem('users', this.userProfile);
-            return;
-          }
-        });
-        */
       }).catch((err) => {
         swal({
           title: 'ຜູ້ໃຊ້ ບໍ່ມີໃນລະບົບ',

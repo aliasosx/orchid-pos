@@ -79,7 +79,7 @@ export class NavbarComponent implements OnInit {
           }).get().subscribe(roles => {
             roles.forEach(role => {
               role.data().menus.forEach(menu => {
-                if (menu.toLowerCase() == 'dashboards') {
+                if (menu.toLowerCase() === 'dashboards') {
                   this.menusByRoles.push({
                     menuName: menu.toUpperCase(),
                     menuLink: ''
@@ -91,7 +91,7 @@ export class NavbarComponent implements OnInit {
                   });
                 }
               });
-              console.log(this.menus);
+              // console.log(this.menus);
             });
           });
         }

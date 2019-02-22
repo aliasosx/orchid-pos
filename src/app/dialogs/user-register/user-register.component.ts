@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
@@ -44,16 +45,18 @@ export class UserRegisterComponent implements OnInit {
       photo: new FormControl(),
       mobile: new FormControl(),
       enabled: new FormControl(true),
-      role: new FormControl(),
+      role: new FormControl('staff'),
       registeringDate: new FormControl(new Date()),
       employedDate: new FormControl(new Date()),
     });
   }
   addUser() {
     if (this.userRegistrationForm.valid) {
+      this.saveBtnDisable = true;
       this._firebaseAuth.auth.createUserWithEmailAndPassword(this.userRegistrationForm.get('email').value,
         this.userRegistrationForm.get('password').value.trim()).then((resp) => {
           if (this.userRegistrationForm.valid) {
+            this.userRegistrationForm.get('photo').setValue(this.photoSrc);
             this.userRegistrationForm.get('userId').setValue(resp.user.uid);
             this.usersRef.add(this.userRegistrationForm.value).then(() => {
               this.dialogRef.close('success');
@@ -76,5 +79,43 @@ export class UserRegisterComponent implements OnInit {
       this.message = 'Password not match';
       this.showAlert = '';
     }
+  }
+  checkUserDuplicate(e) {
+    this.usersRef.snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data() as User;
+        data['id'] = a.payload.doc.id;
+        return data;
+      });
+    })).subscribe(users => {
+      users.forEach(user => {
+        if (user.userName.toLowerCase().trim() === e.toLowerCase().trim()) {
+          // console.log(user.userName + ' - ' + e);
+          this.saveBtnDisable = true;
+          this.message = 'Username already exist';
+          this.showAlert = '';
+          this.snackbar.open(this.message, 'Fail', { duration: 5000 });
+        } else {
+          this.showAlert = 'hidden';
+          // this.saveBtnDisable = false;
+        }
+      });
+    });
+  }
+  checkEmailDuplicate(e) {
+    this.usersRef.get().subscribe(users => {
+      // console.log(users.docs.);
+      users.docs.forEach(user => {
+        if (user.data().email === e.trim()) {
+          console.log(user.data());
+          this.saveBtnDisable = true;
+          this.message = 'Email already exist';
+          this.showAlert = '';
+          this.snackbar.open(this.message, 'Fail', { duration: 5000 });
+        } else {
+          this.showAlert = 'hidden';
+        }
+      });
+    });
   }
 }

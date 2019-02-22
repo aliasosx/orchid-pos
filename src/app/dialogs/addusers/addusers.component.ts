@@ -1,12 +1,12 @@
 import { User } from 'firebase';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import * as uuid from 'uuid';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
-import { MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { Role } from 'src/app/interfaces/role';
-import { map, distinct } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Userlogin } from 'src/app/interfaces/userlogin';
 
 @Component({
@@ -16,7 +16,7 @@ import { Userlogin } from 'src/app/interfaces/userlogin';
 })
 export class AddusersComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<AddusersComponent>, private snackbar: MatSnackBar) {
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<AddusersComponent>, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.usersRef = db.collection<User>('users');
     this.rolesRef = db.collection<Role>('roles');
     this.webuserRef = db.collection<Userlogin>('userlogins');
@@ -70,10 +70,10 @@ export class AddusersComponent implements OnInit {
         return data;
       });
     }));
-
-
-
-
+    console.log(this.data);
+    if (this.data) {
+      this.addUserForm.setValue(this.data);
+    }
   }
   checkUserNameAvailable(username) {
     this.usersRef.get().subscribe(users => {

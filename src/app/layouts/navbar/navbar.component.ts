@@ -22,10 +22,16 @@ export class NavbarComponent implements OnInit {
       if (user) {
         // console.log(user.providerData);
         this.username_info = user;
-        // console.log(user);
-        this.googleId = user.providerData[0].uid;
+        this.googleId = user.uid;
         this.navBarShow = '';
         this.loadMenu();
+        db.collection<User>('users').get().subscribe(users => {
+          users.docs.forEach(u => {
+            if (u.data().userId === user.uid) {
+              localStorage.setItem('username', u.data().userName);
+            }
+          });
+        });
         return;
       } else {
         // router.navigateByUrl('login');
@@ -72,7 +78,7 @@ export class NavbarComponent implements OnInit {
     this.menusByRoles = [];
     this.usersRef.get().subscribe(users => {
       users.docs.forEach(user => {
-        if (user.data().googleId === this.googleId) {
+        if (user.data().userId === this.googleId) {
           // Get Roles
           this.db.collection<Role>('roles', ref => {
             return ref.where('roleCode', '==', user.data().role);

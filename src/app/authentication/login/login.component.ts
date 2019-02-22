@@ -8,7 +8,7 @@ import { Userlogin } from 'src/app/interfaces/userlogin';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { UserRegisterComponent } from 'src/app/dialogs/user-register/user-register.component';
-
+import * as uuid from 'uuid';
 declare var swal: any;
 
 @Component({
@@ -101,26 +101,15 @@ export class LoginComponent implements OnInit {
   }
   loginByEmail() {
     if (this.usersForm.valid) {
-      return this._firebaseAuth.auth.signInWithEmailAndPassword('sayyalinh@outlook.com', '123456').then((res) => {
-        console.log(res);
+      return this._firebaseAuth.auth.signInWithEmailAndPassword(this.usersForm.get('email').value.trim(), this.usersForm.get('password').value.trim()).then((res) => {
         this.userProfile = res.additionalUserInfo.profile;
         const newUser = res.additionalUserInfo.isNewUser;
-        if (newUser) {
-          alert('Please contact adminsitrator for Adding Your role');
-        }
       }).catch((err) => {
         swal({
-          title: 'ຜູ້ໃຊ້ ບໍ່ມີໃນລະບົບ',
-          text: 'ຖ້າແມ່ນ ຜູ້ໃຊ້ໃໝ່ກະລຸນາລົງທະບຽນ ກົດ Ok',
+          title: 'ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ',
+          text: err.message,
           icon: 'warning',
-          buttons: true,
           dangerMode: false,
-        }).then((register) => {
-          if (register) {
-            this.dialog.open(UserRegisterComponent, {
-              width: '800px',
-            });
-          }
         });
       });
     }

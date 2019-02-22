@@ -10,6 +10,7 @@ import { AddusersComponent } from 'src/app/dialogs/addusers/addusers.component';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { UsersComponent } from 'src/app/dialogs/users/users.component';
 
 @Component({
   selector: 'app-settings',
@@ -56,6 +57,6 @@ export class SettingsComponent implements OnInit {
     const dialogRef = this.dialog.open(VendorsComponent, { width: '600px' });
   }
   openAddUser() {
-    const dialogRef = this.dialog.open(AddusersComponent, { width: '800px' });
+    const dialogRef = this.dialog.open(UsersComponent, { width: '1024px' });
   }
 }

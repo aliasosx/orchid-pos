@@ -1,4 +1,5 @@
 export interface Cart {
+  foodId: string;
   food: string;
   price: number;
   quantity: number;

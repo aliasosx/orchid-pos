@@ -3,7 +3,7 @@ export interface User {
   googleId: number;
   email: string;
   userName: string;
-  password: string;
+  password?: string;
   employeeCode: string;
   gender: string;
   fullName: string;

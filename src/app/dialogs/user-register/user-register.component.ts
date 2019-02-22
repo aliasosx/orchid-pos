@@ -1,14 +1,17 @@
 import { map } from 'rxjs/operators';
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
-import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { Router } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 import * as uuid from 'uuid';
+
 import { User } from 'src/app/interfaces/user';
+import { Role } from 'src/app/interfaces/role';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-register',
@@ -18,8 +21,9 @@ import { User } from 'src/app/interfaces/user';
 export class UserRegisterComponent implements OnInit {
 
   constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router,
-    private dialogRef: MatDialogRef<UserRegisterComponent>, private snackbar: MatSnackBar) {
+    private dialogRef: MatDialogRef<UserRegisterComponent>, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.usersRef = db.collection<User>('users');
+    this.rolesRef = db.collection<Role>('roles');
   }
   userRegistrationForm: FormGroup;
   photoSrc = '../../../assets/images/man01.png';
@@ -28,15 +32,22 @@ export class UserRegisterComponent implements OnInit {
   showAlert = 'hidden';
   saveBtnDisable = true;
   usersRef: AngularFirestoreCollection<User>;
-
+  showRole = 'hidden';
+  messageTitle = 'ລົງທະບຽນ';
+  buttonMessage = 'ບັນທືກ';
+  rolesRef: AngularFirestoreCollection<Role>;
+  roles: Observable<any[]>;
+  updateFlag: boolean = false;
   ngOnInit() {
+    const uuid1Emp = uuid.v1();
     this.userRegistrationForm = new FormGroup({
+      id: new FormControl(),
       userId: new FormControl(),
       googleId: new FormControl(),
       email: new FormControl(),
       userName: new FormControl(),
       password: new FormControl(),
-      employeeCode: new FormControl(),
+      employeeCode: new FormControl(uuid1Emp),
       gender: new FormControl(),
       fullName: new FormControl(),
       dateOfbirth: new FormControl(),
@@ -49,28 +60,47 @@ export class UserRegisterComponent implements OnInit {
       registeringDate: new FormControl(new Date()),
       employedDate: new FormControl(new Date()),
     });
+    this.roles = this.rolesRef.valueChanges();
+    if (this.data) {
+      this.showRole = '';
+      this.userRegistrationForm.setValue(this.data);
+      this.updateFlag = true;
+      this.messageTitle = 'Update User information';
+      this.buttonMessage = 'ແກ້ໄຂ';
+      this.saveBtnDisable = false;
+    } else {
+      this.showRole = 'hidden';
+    }
   }
   addUser() {
-    if (this.userRegistrationForm.valid) {
-      this.saveBtnDisable = true;
-      this._firebaseAuth.auth.createUserWithEmailAndPassword(this.userRegistrationForm.get('email').value,
-        this.userRegistrationForm.get('password').value.trim()).then((resp) => {
-          if (this.userRegistrationForm.valid) {
-            this.userRegistrationForm.get('photo').setValue(this.photoSrc);
-            this.userRegistrationForm.get('userId').setValue(resp.user.uid);
-            this.usersRef.add(this.userRegistrationForm.value).then(() => {
-              this.dialogRef.close('success');
-            });
-          }
-        }).catch((err) => {
-          this.message = err.message;
-          this.showAlert = '';
-        });
+    if (this.updateFlag && this.data) {
+      this.updateUser();
     } else {
-      this.snackbar.open('Please correct all input form', 'OK', { duration: 2000 });
+      if (this.userRegistrationForm.valid) {
+
+        this.saveBtnDisable = true;
+        this._firebaseAuth.auth.createUserWithEmailAndPassword(this.userRegistrationForm.get('email').value,
+          this.userRegistrationForm.get('password').value.trim()).then((resp) => {
+            if (this.userRegistrationForm.valid) {
+              this.userRegistrationForm.get('photo').setValue(this.photoSrc);
+              this.userRegistrationForm.get('userId').setValue(resp.user.uid);
+              this.usersRef.add(this.userRegistrationForm.value).then(() => {
+                this.dialogRef.close('success');
+              });
+            }
+          }).catch((err) => {
+            this.message = err.message;
+            this.showAlert = '';
+          });
+      } else {
+        this.snackbar.open('Please correct all input form', 'OK', { duration: 2000 });
+      }
     }
   }
   checkPasswordIntegrity(e) {
+    if (this.updateFlag) {
+      return;
+    }
     if (this.userRegistrationForm.get('password').value.trim() === e.target.value.trim()) {
       this.showAlert = 'hidden';
       this.saveBtnDisable = false;
@@ -104,7 +134,6 @@ export class UserRegisterComponent implements OnInit {
   }
   checkEmailDuplicate(e) {
     this.usersRef.get().subscribe(users => {
-      // console.log(users.docs.);
       users.docs.forEach(user => {
         if (user.data().email === e.trim()) {
           console.log(user.data());
@@ -117,5 +146,17 @@ export class UserRegisterComponent implements OnInit {
         }
       });
     });
+  }
+  updateUser() {
+    if (this.userRegistrationForm.valid) {
+      this.saveBtnDisable = true;
+      this.buttonMessage = 'Saving ...';
+      this.usersRef.doc(this.data.id).update(this.userRegistrationForm.value).then(() => {
+        this.dialogRef.close('success');
+      }).catch((err) => {
+        this.snackbar.open(err.message, 'OK', { duration: 5000 });
+        this.saveBtnDisable = false;
+      });
+    }
   }
 }

@@ -12,6 +12,7 @@ import { PaymentCashComponent } from 'src/app/dialogs/payment-cash/payment-cash.
 import { PaymentBanksChannelComponent } from 'src/app/dialogs/payment-banks-channel/payment-banks-channel.component';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { User } from 'src/app/interfaces/user';
 
 @Component({
   selector: 'app-pos',
@@ -22,17 +23,15 @@ export class PosComponent implements OnInit {
 
   constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
     this.user = _firebaseAuth.authState;
+    this.foodsRef = db.collection<Food>('foods');
+    this.foodCategoriesRef = db.collection<FoodCategory>('food_categories', ref => {
+      return ref.orderBy('foodCategoryNameLao', 'desc');
+    });
+
     this.user.subscribe(user => {
       if (user) {
         this.username_info = user;
-        this.username = user.displayName;
-        this.foodCategoriesRef = db.collection<FoodCategory>('food_categories', ref => {
-          return ref.orderBy('foodCategoryNameLao', 'desc');
-        });
-        this.foodsRef = db.collection<Food>('foods');
-        this.cartsRef = db.collection<Cart>('carts', ref => {
-          return ref.where('username', '==', this.username);
-        });
+        this.loadFoodPage({ index: 0 });
       } else {
         router.navigateByUrl('login');
       }
@@ -44,7 +43,7 @@ export class PosComponent implements OnInit {
   foodCategoriesRef: AngularFirestoreCollection<FoodCategory>;
   FoodCategories: Observable<any[]>;
 
-  username: string;
+  username: string = localStorage.getItem('username');
 
   foodsRef: AngularFirestoreCollection<Food>;
   foods: Observable<any[]>;
@@ -56,25 +55,33 @@ export class PosComponent implements OnInit {
   itemSelected: any = [];
   total: number = 0;
 
+  localCart: any[] = [];
+  items: any[] = [];
+  usersRef: AngularFirestoreCollection<User>;
+  users: Observable<any[]>;
+  virtualCard: Cart[] = [];
   disablePaymentBtn = false;
 
   ngOnInit() {
     this.FoodCategories = this.foodCategoriesRef.valueChanges();
-    this.carts = this.cartsRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        //console.log(a.payload.doc.data());
-        const data = a.payload.doc.data();
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    }));
+    if (this.username) {
+      this.carts = this.db.collection<Cart>('carts', ref => {
+        return ref.where('username', '==', this.username);
+      }).snapshotChanges().pipe(map(change => {
+        return change.map(a => {
+          const data = a.payload.doc.data();
+          data['id'] = a.payload.doc.id;
+          return data;
+        });
+      }));
+    }
+
 
     this.loadFoodPage({ index: 0 });
     this.totalCalculation();
   }
 
   loadFoodPage(page) {
-
     if (page.index == 0) {
       this.foods = this.db.collection<Food>('foods').snapshotChanges().pipe(map(change => {
         return change.map(a => {
@@ -134,30 +141,73 @@ export class PosComponent implements OnInit {
   }
   removeFromlist(food) {
     if (food) {
-      this.cartsRef.doc(food.id).delete().then(() => {
+      this.db.collection<Cart>('carts').doc(food.id).delete().then(() => {
       });
     }
     this.totalCalculation();
   }
   totalCalculation() {
     this.total = 0;
+    this.virtualCard.forEach(v => {
+      this.total += v.total;
+    });
+    /*
     this.db.collection<Cart>('carts').get().subscribe(f => {
       f.forEach(item => {
         this.total += item.data().total;
       })
     });
+    */
 
   }
   addCartsToDb(food) {
-    console.log(food);
     if (food) {
+      if (this.virtualCard.length > 0) {
+        for (var i = 0; i < this.virtualCard.length; i++) {
+          if (this.virtualCard[i].foodId === food.foodId) {
+            this.virtualCard[i].quantity += 1;
+            this.virtualCard[i].total = this.virtualCard[i].quantity * this.virtualCard[i].price;
+          } else {
+            this.virtualCard[i].quantity = 1;
+            this.virtualCard.push(food);
+          }
+        }
+        this.totalCalculation();
+      } else {
+        this.virtualCard.push(food);
+        this.totalCalculation();
+      }
+
+
+      /*
+      this.db.collection<Cart>('carts').get().subscribe(items => {
+        if (!items.empty) {
+          items.docs.forEach(item => {
+            if (item.data().foodId === food.foodId) {
+              let cart = item.data();
+              cart['quantity'] = item.data().quantity + 1;
+              cart['total'] = item.data().price * cart.quantity;
+              this.db.collection<Cart>('carts').doc(item.id).update(cart).then(() => {
+                this.totalCalculation();
+              });
+            }
+          });
+        } else {
+          this.db.collection<Cart>('carts').add(food).then(() => {
+            this.totalCalculation();
+          }).catch((err) => {
+            console.log(err);
+          });
+        }
+      });
+
+      /*
       this.db.collection<Cart>('carts', ref => {
         return ref.where('food', '==', food.food)
       }).get().subscribe((item) => {
         if (!item.empty) {
           item.docs.forEach(doc => {
             let cart = doc.data();
-            console.log(cart);
             cart['quantity'] = doc.data().quantity + 1;
             cart['total'] = doc.data().price * cart.quantity;
             this.db.collection('carts').doc(doc.id).update(cart).then(() => {
@@ -166,15 +216,45 @@ export class PosComponent implements OnInit {
           });
         } else {
           // add new item
-          if (food) {
-            this.cartsRef.add(food).then(() => {
-              this.totalCalculation();
-            });
-          }
+
+          this.db.collection('carts').add(food).then(() => {
+            this.totalCalculation();
+          }).catch((err) => {
+            console.log(err);
+          });
+
         }
       });
+
+      */
+
+
     }
   }
+  addToCartCollection(cart) {
+    console.log(cart);
+    if (cart) {
+      this.db.collection<Cart>('carts').add(cart);
+    }
+  }
+  loadCart() {
+    this.items = [];
+    if (localStorage.getItem('cart') === null) {
+      return;
+    }
+    if (localStorage.getItem('cart') != null) {
+      let cart = JSON.parse(localStorage.getItem('cart'));
+      for (var i = 0; i < cart.length; i++) {
+        let item = JSON.parse(cart[i]);
+        this.items.push({
+          food: item.food,
+          quantity: item.quantity,
+        });
+      }
+    }
+
+  }
+
   addnote(cart) {
     const dialogRef = this.dialog.open(AddNoteComponent, {
       width: '600px'
@@ -184,7 +264,7 @@ export class PosComponent implements OnInit {
       if (note) {
         if (cart) {
           cart['note'] = note.note;
-          this.cartsRef.doc(cart.id).update(cart).then(() => {
+          this.db.collection<Cart>('carts').doc(cart.id).update(cart).then(() => {
           });
         } else {
           return;

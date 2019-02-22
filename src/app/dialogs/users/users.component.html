@@ -1,3 +1,31 @@
-<p>
-  users works!
-</p>
+<h1 mat-dialog-title>Users</h1>
+<div>
+  <table class="table table-bordered table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col" class="text-center text-nowrap">username</th>
+        <th scope="col" class="text-center text-nowrap">ຊື່</th>
+        <th scope="col" class="text-center text-nowrap">ວັນເດື່ອນປິເກິດ</th>
+        <th scope="col" class="text-center text-nowrap">ເລກບັດ</th>
+        <th scope="col" class="text-center text-nowrap">Role</th>
+        <th scope="col" class="text-center text-nowrap">Control</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users | async">
+        <td class="text-left text-nowrap">{{ user.userName }}</td>
+        <td class="text-left text-nowrap" style="max-width: 140px;">{{ user.gender }}. {{ user.fullName }}</td>
+        <td class="text-center text-nowrap " style="max-width: 20px;">{{ user.dateOfbirth | date:'dd-MMM-yyyy' }}</td>
+        <td class="text-left text-nowrap" style="max-width: 110px;">{{ user.idCardno }}</td>
+        <td class="text-left text-nowrap">{{ user.role}}</td>
+        <td class="text-left text-nowrap">
+          <div class="row">
+            <div class="col col-md-12 text-center">
+              <button mat-flat-button color="warn" style="width: 100%;" (click)="showUserAdd(user)">Update</button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

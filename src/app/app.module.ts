@@ -125,6 +125,7 @@ import { UserRegisterComponent } from './dialogs/user-register/user-register.com
     VendorsComponent,
     AddusersComponent,
     UserRegisterComponent,
+    UsersComponent,
 
   ]
   ,

@@ -40,10 +40,14 @@ export class UserRegisterComponent implements OnInit {
   updateFlag: boolean = false;
   ngOnInit() {
     const uuid1Emp = uuid.v1();
+    const uuid1usr = uuid.v1();
+    const uuid1google = uuid.v1();
+    const uuid1Id = uuid.v1();
+
     this.userRegistrationForm = new FormGroup({
-      id: new FormControl(),
-      userId: new FormControl(),
-      googleId: new FormControl(),
+      id: new FormControl(uuid1Id),
+      userId: new FormControl(uuid1usr),
+      googleId: new FormControl(uuid1google),
       email: new FormControl(),
       userName: new FormControl(),
       password: new FormControl(),
@@ -53,7 +57,7 @@ export class UserRegisterComponent implements OnInit {
       dateOfbirth: new FormControl(),
       placeOfBirth: new FormControl(),
       idCardno: new FormControl(),
-      photo: new FormControl(),
+      photo: new FormControl(this.photoSrc),
       mobile: new FormControl(),
       enabled: new FormControl(true),
       role: new FormControl('staff'),
@@ -82,6 +86,7 @@ export class UserRegisterComponent implements OnInit {
         this._firebaseAuth.auth.createUserWithEmailAndPassword(this.userRegistrationForm.get('email').value,
           this.userRegistrationForm.get('password').value.trim()).then((resp) => {
             if (this.userRegistrationForm.valid) {
+              this.userRegistrationForm.get('password').setValue('****************');
               this.userRegistrationForm.get('photo').setValue(this.photoSrc);
               this.userRegistrationForm.get('userId').setValue(resp.user.uid);
               this.usersRef.add(this.userRegistrationForm.value).then(() => {
@@ -120,14 +125,12 @@ export class UserRegisterComponent implements OnInit {
     })).subscribe(users => {
       users.forEach(user => {
         if (user.userName.toLowerCase().trim() === e.toLowerCase().trim()) {
-          // console.log(user.userName + ' - ' + e);
           this.saveBtnDisable = true;
           this.message = 'Username already exist';
           this.showAlert = '';
           this.snackbar.open(this.message, 'Fail', { duration: 5000 });
         } else {
           this.showAlert = 'hidden';
-          // this.saveBtnDisable = false;
         }
       });
     });

@@ -1,0 +1,54 @@
+<h1 mat-dialog-title>Add New BOM</h1>
+<form [formGroup]="addBomForm">
+  <div class="row">
+    <div class="form-group col-md-3">
+      <label for="food">ອາຫານ</label>
+      <select class="form-control" id="food" required (change)="foodSelectedChange($event.target.value)">
+        <option value="">------</option>
+        <option value="{{food.foodId}}" *ngFor="let food of foods | async">{{ food.food_name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="product">Product</label>
+      <select class="form-control" id="product" (change)="productSelectedChange($event.target.value)">
+        <option value="">------</option>
+        <option value="{{ product.productCode }}" *ngFor="let product of products | async">{{ product.productName }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="Quantity">ຈຳນວນ</label>
+      <input type="number" id="Quantity" class="form-control" placeholder="Quantity" required
+        (change)="quantityChange($event.target.value)">
+    </div>
+    <div class="form-group col-md-3">
+      <button mat-raised-button color="primary" style="margin-top: 32px;width: 100%;" (click)="addTolist()">Add</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header text-center">
+      Solution
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <th class="text-left">Product Name</th>
+          <th class="text-center">Quantity</th>
+          <th class="text-center">Unit</th>
+          <th class="text-center">remove</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of productsBuffer">
+            <td class="text-left">{{ product.productName }}</td>
+            <td class="text-center">{{ product.bom_quantity |number}}</td>
+            <td class="text-center">{{ product.unit }}</td>
+            <td class="text-center">
+              <img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer;">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</form>

@@ -10,6 +10,7 @@ import { TransactionsComponent } from './pages/transactions/transactions.compone
 import { ReportsComponent } from './pages/reports/reports.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { LoginComponent } from './authentication/login/login.component';
+import { BomComponent } from './pages/bom/bom.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'transactions', component: TransactionsComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'purchases', component: PurchaseComponent },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'bom', component: BomComponent },
 ];
 
 @NgModule({

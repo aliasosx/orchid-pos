@@ -53,6 +53,8 @@ import { AddusersComponent } from './dialogs/addusers/addusers.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { DatePipe } from '@angular/common';
 import { UserRegisterComponent } from './dialogs/user-register/user-register.component';
+import { BomComponent } from './pages/bom/bom.component';
+import { AddbomComponent } from './dialogs/addbom/addbom.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +91,8 @@ import { UserRegisterComponent } from './dialogs/user-register/user-register.com
     AddusersComponent,
     LoginComponent,
     UserRegisterComponent,
+    BomComponent,
+    AddbomComponent,
 
   ],
   imports: [
@@ -126,6 +130,7 @@ import { UserRegisterComponent } from './dialogs/user-register/user-register.com
     AddusersComponent,
     UserRegisterComponent,
     UsersComponent,
+    AddbomComponent,
 
   ]
   ,

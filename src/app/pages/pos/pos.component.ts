@@ -13,7 +13,6 @@ import { PaymentBanksChannelComponent } from 'src/app/dialogs/payment-banks-chan
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user';
-import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-pos',
@@ -60,26 +59,19 @@ export class PosComponent implements OnInit {
   items: any[] = [];
   usersRef: AngularFirestoreCollection<User>;
   users: Observable<any[]>;
-  virtualCard: Cart[] = [];
+  virtualCart: Cart[] = [];
   disablePaymentBtn = false;
 
   ngOnInit() {
     this.FoodCategories = this.foodCategoriesRef.valueChanges();
     if (this.username) {
-      this.carts = this.db.collection<Cart>('carts', ref => {
-        return ref.where('username', '==', this.username);
-      }).snapshotChanges().pipe(map(change => {
-        return change.map(a => {
-          const data = a.payload.doc.data();
-          data['id'] = a.payload.doc.id;
-          return data;
-        });
-      }));
-    }
-    this.loadFoodPage({ index: 0 });
-    this.totalCalculation();
-    if (localStorage.getItem('cart')) {
-      this.virtualCard = JSON.parse(localStorage.getItem('cart'));
+      this.loadFoodPage({ index: 0 });
+      this.totalCalculation();
+      if (localStorage.getItem('cart')) {
+        this.virtualCart = JSON.parse(localStorage.getItem('cart'));
+      }
+    } else {
+      this.snackbar.open('Internet connection issue !!', 'OK', { duration: 2000 });
     }
   }
   loadFoodPage(page) {
@@ -142,103 +134,70 @@ export class PosComponent implements OnInit {
   }
   removeFromlist(food) {
     if (food) {
-      /*
-      this.db.collection<Cart>('carts').doc(food.id).delete().then(() => {
+      let items = JSON.parse(localStorage.getItem('cart'));
+      let cartBuffers = [];
+      console.log(items);
+      items.forEach((item, index) => {
+        if (item.id === food.id) {
+          items.splice(index, 1);
+        } else {
+          cartBuffers.push(item);
+        }
       });
-      */
-
+      if (cartBuffers.length > 0) {
+        localStorage.setItem('cart', JSON.stringify(cartBuffers));
+        this.loadCurrentCartStat();
+        this.totalCalculation();
+      } else {
+        localStorage.removeItem('cart');
+        this.virtualCart = [];
+        this.totalCalculation();
+      }
     }
-    this.totalCalculation();
   }
   totalCalculation() {
     this.total = 0;
-    this.virtualCard.forEach(v => {
-      this.total += v.total;
-    });
-    /*
-    this.db.collection<Cart>('carts').get().subscribe(f => {
-      f.forEach(item => {
-        this.total += item.data().total;
-      })
-    });
-    */
-
+    if (localStorage.getItem('cart')) {
+      let items = JSON.parse(localStorage.getItem('cart'));
+      items.forEach(item => {
+        this.total += item.total;
+      });
+    } else {
+      return
+    }
+  }
+  loadCurrentCartStat() {
+    if (localStorage.getItem('cart')) {
+      this.virtualCart = JSON.parse(localStorage.getItem('cart'));
+    } else {
+      this.virtualCart = [];
+    }
   }
   addCartsToDb(food) {
     if (food) {
-      if (this.virtualCard.length > 0) {
+      if (this.virtualCart.length > 0) {
         let index = -1;
-        for (var i = 0; i < this.virtualCard.length; i++) {
-          if (this.virtualCard[i].foodId === food.foodId) {
-            this.virtualCard[i].quantity += 1;
-            this.virtualCard[i].total = this.virtualCard[i].quantity * this.virtualCard[i].price;
+        for (var i = 0; i < this.virtualCart.length; i++) {
+          if (this.virtualCart[i].foodId === food.foodId) {
+            this.virtualCart[i].quantity += 1;
+            this.virtualCart[i].total = this.virtualCart[i].quantity * this.virtualCart[i].price;
             index = 1;
             break;
           }
         }
         if (index == -1) {
-          this.virtualCard.push(food);
+          this.virtualCart.push(food);
         }
         this.totalCalculation();
-      } else if (this.virtualCard.length == 0) {
-        this.virtualCard.push(food);
+      } else if (this.virtualCart.length == 0) {
+        this.virtualCart.push(food);
         this.totalCalculation();
       }
-      localStorage.setItem('cart', JSON.stringify(this.virtualCard));
-      /*
-      this.db.collection<Cart>('carts').get().subscribe(items => {
-        if (!items.empty) {
-          items.docs.forEach(item => {
-            if (item.data().foodId === food.foodId) {
-              let cart = item.data();
-              cart['quantity'] = item.data().quantity + 1;
-              cart['total'] = item.data().price * cart.quantity;
-              this.db.collection<Cart>('carts').doc(item.id).update(cart).then(() => {
-                this.totalCalculation();
-              });
-            }
-          });
-        } else {
-          this.db.collection<Cart>('carts').add(food).then(() => {
-            this.totalCalculation();
-          }).catch((err) => {
-            console.log(err);
-          });
-        }
-      });
-
-      /*
-      this.db.collection<Cart>('carts', ref => {
-        return ref.where('food', '==', food.food)
-      }).get().subscribe((item) => {
-        if (!item.empty) {
-          item.docs.forEach(doc => {
-            let cart = doc.data();
-            cart['quantity'] = doc.data().quantity + 1;
-            cart['total'] = doc.data().price * cart.quantity;
-            this.db.collection('carts').doc(doc.id).update(cart).then(() => {
-              this.totalCalculation();
-            });
-          });
-        } else {
-          // add new item
-
-          this.db.collection('carts').add(food).then(() => {
-            this.totalCalculation();
-          }).catch((err) => {
-            console.log(err);
-          });
-
-        }
-      });
-
-      */
-
+      localStorage.setItem('cart', JSON.stringify(this.virtualCart));
 
     }
   }
   addToCartCollection(cart) {
-    console.log(cart);
     if (cart) {
       this.db.collection<Cart>('carts').add(cart);
     }
@@ -261,17 +220,33 @@ export class PosComponent implements OnInit {
 
   }
 
+  increaseQuantity(cart) {
+
+  }
+
   addnote(cart) {
     const dialogRef = this.dialog.open(AddNoteComponent, {
       width: '600px'
     });
-
     dialogRef.afterClosed().subscribe((note) => {
       if (note) {
         if (cart) {
           cart['note'] = note.note;
-          this.db.collection<Cart>('carts').doc(cart.id).update(cart).then(() => {
+          let items = [];
+          let cartBuffers = [];
+
+          items = JSON.parse(localStorage.getItem('cart'));
+          items.forEach(item => {
+            if (item.foodId === cart.foodId) {
+              item['note'] = note.note;
+              cartBuffers.push(item);
+            } else {
+              cartBuffers.push(item);
+            }
           });
+          if (cartBuffers.length > 0) {
+            localStorage.setItem('cart', JSON.stringify(cartBuffers));
+          }
         } else {
           return;
         }
@@ -281,30 +256,27 @@ export class PosComponent implements OnInit {
     });
   }
   openPaymentCash() {
-    if (this.total > 0) {
+    if (this.total > 0 && this.username) {
+      console.log(this.username);
       const dialogCashRef = this.dialog.open(PaymentCashComponent, {
         width: '800px',
         data: {
+          cart: this.virtualCart,
           total: this.total,
           username: this.username
         }
       });
       dialogCashRef.afterClosed().subscribe(res => {
         if (res) {
-          this.snackbar.open('Order completed', 'ok', { duration: 1000, verticalPosition: 'top' });
+          this.loadCurrentCartStat();
           this.totalCalculation();
+          this.snackbar.open('Order completed', 'ok', { duration: 1000, verticalPosition: 'top' });
         } else {
+          this.loadCurrentCartStat();
+          this.totalCalculation();
           return;
         }
       });
     }
-  }
-  opentBanksChannel(total) {
-    const dialogCashRef = this.dialog.open(PaymentBanksChannelComponent, {
-      width: '800px',
-      data: {
-        total: this.total
-      }
-    });
   }
 }

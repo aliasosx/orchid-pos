@@ -26,7 +26,7 @@ export class OrdersComponent implements OnInit {
     this.user.subscribe(user => {
       if (user) {
         this.username_info = user;
-        this.username = user.displayName;
+        //this.username = user.displayName;
         this.orderRef = db.collection<Order>('orders', ref => {
           return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
         });
@@ -49,7 +49,7 @@ export class OrdersComponent implements OnInit {
 
   productsRef: AngularFirestoreCollection<Product>;
   products: Observable<any[]>;
-  username: string;
+  username: string = localStorage.getItem('username');
 
   formFoodList: FormGroup;
   foodsList: any = [];

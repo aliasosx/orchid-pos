@@ -84,26 +84,10 @@ export class PaymentCashComponent implements OnInit {
       status: new FormControl('processing'),
     });
     this.generateQRDate();
-
-    this.carts = this.cartRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const cart = a.payload.doc.data();
-        cart['id'] = a.payload.doc.id;
-        this.cartIds.push(a.payload.doc.id);
-        return cart;
-      });
-    }));
-
-    this.carts.subscribe(doc => {
-      doc.forEach(element => {
-        element['done'] = false;
-        if (element.subFood) {
-          element['food'] = element.food + ' ' + element.subFood;
-        }
-        this.foodList.push(element);
-      });
+    this.data.cart.forEach(element => {
+      element['done'] = false;
+      this.foodList.push(element);
     });
-
     this.paymentTypes = this.paymentTypesRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data();
@@ -124,19 +108,17 @@ export class PaymentCashComponent implements OnInit {
   }
   paymentProcess() {
     this.paymentBtnDisabled = true;
-    if (this.orderForm.valid) {
+    if (this.orderForm.valid && this.orderForm.get('username').value != null) {
       this.db.collection('orders').add(this.orderForm.value).then((res) => {
         this.ticketSelectedId.used = true;
         this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
-          this.cartIds.forEach(element => {
-            this.cartRef.doc(element).delete().then(() => {
-            });
-          });
           if (this.bankDataResponse) {
             this.qrPaymentsRef.add(this.bankDataResponse).then(() => {
+              localStorage.removeItem('cart');
               this.dialogRef.close('success');
             });
           } else {
+            localStorage.removeItem('cart');
             this.dialogRef.close('success');
           }
 

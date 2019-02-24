@@ -58,7 +58,7 @@
                 </mat-list-item>
                 <mat-divider></mat-divider>
                 <div class="listDiv">
-                  <mat-list-item *ngFor="let cart of virtualCard">
+                  <mat-list-item *ngFor="let cart of virtualCart">
                     <div class="row" style="width: 100%;">
                       <div class="col col-sm-12 col-md-3 text-left text-nowrap">{{ cart.food }} {{ cart.subFood }}</div>
                       <div class="col col-sm-12 col-md-2 text-right">{{ cart.quantity | number }}</div>

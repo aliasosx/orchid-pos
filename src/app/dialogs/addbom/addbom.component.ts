@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Food } from 'src/app/interfaces/food';
@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Product } from 'src/app/interfaces/product';
 import { map } from 'rxjs/operators';
 import { Bom } from 'src/app/interfaces/bom';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-addbom',
@@ -14,7 +15,7 @@ import { Bom } from 'src/app/interfaces/bom';
 })
 export class AddbomComponent implements OnInit {
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<AddbomComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.foodsRef = db.collection<Food>('foods', ref => {
       return ref.where('kitchen', '==', 'Drink');
     });
@@ -28,7 +29,7 @@ export class AddbomComponent implements OnInit {
   foodId: string;
 
   addBomForm: FormGroup;
-  username = localStorage.getItem('user');
+  username = localStorage.getItem('username');
 
   foodsRef: AngularFirestoreCollection<Food>;
   foods: Observable<any[]>;
@@ -37,17 +38,22 @@ export class AddbomComponent implements OnInit {
   products: Observable<any[]>;
   product: any;
 
+  bomList: any = [];
+
   resultLists: any;
-  listBuffer: any[] = [];
+  listBuffer: Bom;
   quantity = 0;
 
   bomRef: AngularFirestoreCollection<Bom>;
   bom: Observable<any[]>;
 
   productsBuffer: any[] = [];
-
+  title: string;
+  saveButtonTitle: string;
   ngOnInit() {
+
     this.addBomForm = new FormGroup({
+      id: new FormControl(),
       food: new FormControl(),
       products: new FormControl(),
       username: new FormControl(this.username),
@@ -71,18 +77,41 @@ export class AddbomComponent implements OnInit {
       });
     }));
 
+    if (this.data) {
+      this.saveButtonTitle = 'Update';
+      this.title = 'ແກ້ໄຂລາຍການ ' + this.data.food.food_name;
+      this.addBomForm.setValue(this.data);
+      this.addBomForm.get('food').setValue(this.data.food.foodId);
+      this.productsBuffer = this.data.products;
+      this.listBuffer = this.data;
+    } else {
+      this.title = 'ເພີ່ມລາຍການ';
+      this.saveButtonTitle = 'Save';
+    }
   }
   addTolist() {
     if (this.product && this.food && this.quantity) {
       this.product['bom_quantity'] = this.quantity;
       this.productsBuffer.push(this.product);
-      this.listBuffer.push({
-        food: this.food,
-        products: this.product,
-        enabled: true,
-        createdAt: new Date(),
-        username: this.username,
-      });
+    }
+  }
+  saveBom() {
+    if (this.listBuffer) {
+      if (this.data) {
+        this.listBuffer.products = this.productsBuffer;
+        console.log(this.listBuffer);
+        this.db.collection('boms').doc(this.data.id).update(this.listBuffer).then(() => {
+          this.dialogRef.close('success');
+        });
+      } else {
+        this.listBuffer.products = this.productsBuffer;
+        this.db.collection('boms').add(this.listBuffer).then(() => {
+          this.dialogRef.close('success');
+        });
+      }
+
+    } else {
+      console.log(this.listBuffer);
     }
   }
   foodSelectedChange(value) {
@@ -92,6 +121,12 @@ export class AddbomComponent implements OnInit {
     }).get().subscribe(foods => {
       foods.docs.forEach(food => {
         this.food = food.data();
+        this.listBuffer = {
+          food: this.food,
+          enabled: true,
+          createdAt: new Date(),
+          username: this.username,
+        };
       });
     });
   }

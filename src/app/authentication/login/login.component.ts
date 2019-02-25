@@ -110,18 +110,19 @@ export class LoginComponent implements OnInit {
       return;
     }
     if (this.usersForm.valid) {
-      return this._firebaseAuth.auth.signInWithEmailAndPassword(this.usersForm.get('email').value.trim(), this.usersForm.get('password').value.trim()).then((res) => {
-        this.userProfile = res.additionalUserInfo.profile;
-        const newUser = res.additionalUserInfo.isNewUser;
-      }).catch((err) => {
-        this.loginCount += 1;
-        swal({
-          title: 'ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ',
-          text: err.message,
-          icon: 'warning',
-          dangerMode: false,
+      return this._firebaseAuth.auth.signInWithEmailAndPassword(this.usersForm.get('email').value.trim(),
+        this.usersForm.get('password').value.trim()).then((res) => {
+          this.userProfile = res.additionalUserInfo.profile;
+          const newUser = res.additionalUserInfo.isNewUser;
+        }).catch((err) => {
+          this.loginCount += 1;
+          swal({
+            title: 'ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ',
+            text: err.message,
+            icon: 'warning',
+            dangerMode: false,
+          });
         });
-      });
     } else {
       this.loginCount += 1;
       swal({

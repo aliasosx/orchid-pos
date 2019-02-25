@@ -108,6 +108,16 @@ export class AddbomComponent implements OnInit {
   quantityChange(value) {
     this.quantity = 0;
     this.quantity = value;
-    console.log(this.quantity);
+  }
+  removeItem(product) {
+    if (product) {
+      this.productsBuffer.forEach((p, index) => {
+        console.log(this.productsBuffer);
+        if (p.productName === product.productName) {
+          console.log(index);
+          this.productsBuffer.splice(index, 1);
+        }
+      });
+    }
   }
 }

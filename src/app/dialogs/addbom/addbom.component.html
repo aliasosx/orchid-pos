@@ -32,18 +32,21 @@
     <div class="card-body">
       <table class="table">
         <thead>
+          <th class="text-center">#</th>
           <th class="text-left">Product Name</th>
           <th class="text-center">Quantity</th>
           <th class="text-center">Unit</th>
           <th class="text-center">remove</th>
         </thead>
         <tbody>
-          <tr *ngFor="let product of productsBuffer">
+          <tr *ngFor="let product of productsBuffer ;let i = index">
+            <td class="text-center">{{ i + 1 }}</td>
             <td class="text-left">{{ product.productName }}</td>
             <td class="text-center">{{ product.bom_quantity |number}}</td>
             <td class="text-center">{{ product.unit }}</td>
             <td class="text-center">
-              <img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer;">
+              <img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer;"
+                (click)="removeItem(product)">
             </td>
           </tr>
         </tbody>

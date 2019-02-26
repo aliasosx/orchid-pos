@@ -7,7 +7,7 @@
   <mat-card-content>
     <div class="row">
       <div class="col col-md-10">
-        <input type="text" class="form-control" style="width: 100%" placeholder="Search">
+        <input type="text" class="form-control" style="width: 100%" placeholder="Search" [(ngModel)]="searchProduct">
       </div>
       <div class="col col-md-2 text-right">
         <button mat-raised-button color="primary" style="width: 100%;" (click)="openAddNewDialog()">Add new</button>
@@ -33,7 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of products  | async"
+        <tr *ngFor="let product of products  | async | product: searchProduct"
           [ngClass]="{'bg-danger': product.currentQuantity == 0 || product.minimumQuantity > product.currentQuantity}">
           <td class="text-left" (click)="updateProduct(product)" style="cursor: pointer">{{ product.id.trim() }}</td>
           <td class="text-left">{{ product.barcode }}</td>

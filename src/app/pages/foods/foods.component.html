@@ -7,7 +7,7 @@
   <mat-card-content>
     <div class="form-group row">
       <div class="col col-sm-12 col-md-10">
-        <input type="text" class="form-control" placeholder="ຄົ້ນຫາ...">
+        <input type="text" class="form-control" placeholder="ຄົ້ນຫາ..." [(ngModel)]="foodname">
       </div>
       <div class="col col-sm-12 col-md-2">
         <button mat-raised-button color="primary" style="width: 100%;" (click)="openAddFood()">Add new</button>
@@ -31,7 +31,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let food of foods |async">
+          <tr *ngFor="let food of foods |async |foodPipe: foodname">
             <td class="text-center align-middle"><img src="{{ food.food_photo }}" class="foodPhoto shadow"
                 (click)="openViewFood(food)" style="cursor: pointer; width: 300px;"></td>
             <td class="text-left align-middle">{{ food.food_name }}</td>

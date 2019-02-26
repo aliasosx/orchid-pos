@@ -82,11 +82,14 @@ export class AddbomComponent implements OnInit {
       this.title = 'ແກ້ໄຂລາຍການ ' + this.data.food.food_name;
       this.addBomForm.setValue(this.data);
       this.addBomForm.get('food').setValue(this.data.food.foodId);
+      this.food = this.data.food;
       this.productsBuffer = this.data.products;
       this.listBuffer = this.data;
+      this.addBomForm.get('food').disable();
+
     } else {
       this.title = 'ເພີ່ມລາຍການ';
-      this.saveButtonTitle = 'Save';
+      this.saveButtonTitle = 'ບັນທຶກ';
     }
   }
   addTolist() {
@@ -109,7 +112,6 @@ export class AddbomComponent implements OnInit {
           this.dialogRef.close('success');
         });
       }
-
     } else {
       console.log(this.listBuffer);
     }

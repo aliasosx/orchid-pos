@@ -2,6 +2,7 @@
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>Billing of Materials</mat-card-title>
+    <mat-card-subtitle>All Food recipts</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <div class="form-group row">
@@ -56,10 +57,11 @@
             <td class="text-center align-middle" style="width: 150px;">
               <div class="row">
                 <div class="col col-md-6">
-                  <button mat-raised-button color="primary" (click)="openUpdateBOM(bom)">Update</button>
+                  <button mat-raised-button color="primary" style="width: 100px;"
+                    (click)="openUpdateBOM(bom)">Update</button>
                 </div>
                 <div class="col col-md-6">
-                  <button mat-raised-button color="warn">Remove</button>
+                  <button mat-raised-button color="warn" style="width: 100px;">Remove</button>
                 </div>
               </div>
             </td>

@@ -11,6 +11,7 @@ import { ReportsComponent } from './pages/reports/reports.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { BomComponent } from './pages/bom/bom.component';
+import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'purchases', component: PurchaseComponent },
   { path: 'login', component: LoginComponent },
   { path: 'bom', component: BomComponent },
+  { path: 'kitchenorders', component: KitchenOrdersComponent },
 ];
 
 @NgModule({

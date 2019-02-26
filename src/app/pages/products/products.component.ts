@@ -34,6 +34,8 @@ export class ProductsComponent implements OnInit {
   product: Product;
   products: Observable<any[]>;
 
+  searchProduct: string;
+
   private user: Observable<firebase.User>;
   username_info: any;
 

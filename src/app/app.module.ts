@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -55,6 +55,9 @@ import { DatePipe } from '@angular/common';
 import { UserRegisterComponent } from './dialogs/user-register/user-register.component';
 import { BomComponent } from './pages/bom/bom.component';
 import { AddbomComponent } from './dialogs/addbom/addbom.component';
+import { FoodPipePipe } from './pipes/food-pipe.pipe';
+import { ProductPipe } from './pipes/product.pipe';
+import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +96,9 @@ import { AddbomComponent } from './dialogs/addbom/addbom.component';
     UserRegisterComponent,
     BomComponent,
     AddbomComponent,
+    FoodPipePipe,
+    ProductPipe,
+    KitchenOrdersComponent,
 
   ],
   imports: [
@@ -105,6 +111,7 @@ import { AddbomComponent } from './dialogs/addbom/addbom.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    FormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
   ],

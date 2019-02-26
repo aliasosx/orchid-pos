@@ -35,7 +35,7 @@ export class FoodsComponent implements OnInit {
   }
   private user: Observable<firebase.User>;
   username_info: any;
-
+  foodname: string;
   foodsRef: AngularFirestoreCollection<Food>;
   foods: Observable<any[]>;
 
@@ -89,6 +89,9 @@ export class FoodsComponent implements OnInit {
   }
   openViewExtendedFood(food) {
     const dialogRef = this.dialog.open(ViewExtendedFoodComponent, { width: '800px', data: food });
+  }
+  searchBy(msg) {
+
   }
 }
 

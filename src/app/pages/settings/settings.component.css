@@ -15,3 +15,7 @@
   max-width: 220px;
   margin-left: 20px;
 }
+.example-header-image {
+  background-image: url('../../../assets/icons/baseline-settings-20px.svg');
+  background-size: cover;
+}

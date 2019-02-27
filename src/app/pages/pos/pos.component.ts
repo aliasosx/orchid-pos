@@ -1,3 +1,4 @@
+import { AddQuantityComponent } from './../../dialogs/add-quantity/add-quantity.component';
 import { map } from 'rxjs/operators';
 import { Food } from 'src/app/interfaces/food';
 import { Observable } from 'rxjs';
@@ -53,7 +54,7 @@ export class PosComponent implements OnInit {
 
   foodCartList: any = [];
   itemSelected: any = [];
-  total: number = 0;
+  total = 0;
 
   localCart: any[] = [];
   items: any[] = [];
@@ -114,10 +115,10 @@ export class PosComponent implements OnInit {
     });
   }
   foodChoosed(food) {
-    if (food.price == 0) {
+    if (food.price === 0) {
       this.openSubFood(food);
     } else {
-      let item = {
+      const item = {
         'id': food.id,
         'foodId': food.foodId,
         'food': food.food_name,
@@ -128,14 +129,14 @@ export class PosComponent implements OnInit {
         'total': food.price * 1,
         'username': this.username,
         'kitchen': food.kitchen,
-      }
+      };
       this.addCartsToDb(item);
     }
   }
   removeFromlist(food) {
     if (food) {
-      let items = JSON.parse(localStorage.getItem('cart'));
-      let cartBuffers = [];
+      const items = JSON.parse(localStorage.getItem('cart'));
+      const cartBuffers = [];
       console.log(items);
       items.forEach((item, index) => {
         if (item.id === food.id) {
@@ -158,12 +159,12 @@ export class PosComponent implements OnInit {
   totalCalculation() {
     this.total = 0;
     if (localStorage.getItem('cart')) {
-      let items = JSON.parse(localStorage.getItem('cart'));
+      const items = JSON.parse(localStorage.getItem('cart'));
       items.forEach(item => {
         this.total += item.total;
       });
     } else {
-      return
+      return;
     }
   }
   loadCurrentCartStat() {
@@ -177,7 +178,7 @@ export class PosComponent implements OnInit {
     if (food) {
       if (this.virtualCart.length > 0) {
         let index = -1;
-        for (var i = 0; i < this.virtualCart.length; i++) {
+        for (let i = 0; i < this.virtualCart.length; i++) {
           if (this.virtualCart[i].foodId === food.foodId) {
             this.virtualCart[i].quantity += 1;
             this.virtualCart[i].total = this.virtualCart[i].quantity * this.virtualCart[i].price;
@@ -185,16 +186,16 @@ export class PosComponent implements OnInit {
             break;
           }
         }
-        if (index == -1) {
+        if (index === -1) {
           this.virtualCart.push(food);
         }
         this.totalCalculation();
-      } else if (this.virtualCart.length == 0) {
+      } else if (this.virtualCart.length === 0) {
         this.virtualCart.push(food);
         this.totalCalculation();
       }
       localStorage.setItem('cart', JSON.stringify(this.virtualCart));
-
+      this.totalCalculation();
     }
   }
   addToCartCollection(cart) {
@@ -208,9 +209,9 @@ export class PosComponent implements OnInit {
       return;
     }
     if (localStorage.getItem('cart') != null) {
-      let cart = JSON.parse(localStorage.getItem('cart'));
-      for (var i = 0; i < cart.length; i++) {
-        let item = JSON.parse(cart[i]);
+      const cart = JSON.parse(localStorage.getItem('cart'));
+      for (let i = 0; i < cart.length; i++) {
+        const item = JSON.parse(cart[i]);
         this.items.push({
           food: item.food,
           quantity: item.quantity,
@@ -223,7 +224,41 @@ export class PosComponent implements OnInit {
   increaseQuantity(cart) {
 
   }
+  openQuantity(cart) {
+    const dialogRef = this.dialog.open(AddQuantityComponent, {
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe((q) => {
+      if (q) {
+        if (cart) {
+          cart['quantity'] = q;
+          let items = [];
+          const cartBuffers = [];
 
+          items = JSON.parse(localStorage.getItem('cart'));
+          items.forEach(item => {
+            if (item.foodId === cart.foodId) {
+              item['quantity'] = q;
+              cartBuffers.push(item);
+            } else {
+              cartBuffers.push(item);
+            }
+            this.totalCalculation();
+          });
+          if (cartBuffers.length > 0) {
+            localStorage.setItem('cart', JSON.stringify(cartBuffers));
+            this.totalCalculation();
+          }
+        } else {
+          this.totalCalculation();
+          return;
+        }
+      } else {
+        this.totalCalculation();
+        return;
+      }
+    });
+  }
   addnote(cart) {
     const dialogRef = this.dialog.open(AddNoteComponent, {
       width: '600px'
@@ -233,7 +268,7 @@ export class PosComponent implements OnInit {
         if (cart) {
           cart['note'] = note.note;
           let items = [];
-          let cartBuffers = [];
+          const cartBuffers = [];
 
           items = JSON.parse(localStorage.getItem('cart'));
           items.forEach(item => {

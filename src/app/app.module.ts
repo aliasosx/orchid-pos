@@ -58,6 +58,7 @@ import { AddbomComponent } from './dialogs/addbom/addbom.component';
 import { FoodPipePipe } from './pipes/food-pipe.pipe';
 import { ProductPipe } from './pipes/product.pipe';
 import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.component';
+import { AddQuantityComponent } from './dialogs/add-quantity/add-quantity.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.co
     FoodPipePipe,
     ProductPipe,
     KitchenOrdersComponent,
+    AddQuantityComponent,
 
   ],
   imports: [
@@ -138,7 +140,7 @@ import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.co
     UserRegisterComponent,
     UsersComponent,
     AddbomComponent,
-
+    AddQuantityComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe],

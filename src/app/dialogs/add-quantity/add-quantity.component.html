@@ -1,0 +1,9 @@
+<h1 mat-dialog-title class="text-center h4">Quantity</h1>
+<form [formGroup]="addQuantityForm">
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <input type="number" step="1" class="form-control text-left" formControlName="quantity" required
+        (keydown.enter)="addQuantity($event.target.value)">
+    </div>
+  </div>
+</form>

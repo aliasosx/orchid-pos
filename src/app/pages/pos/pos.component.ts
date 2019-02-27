@@ -221,12 +221,9 @@ export class PosComponent implements OnInit {
 
   }
 
-  increaseQuantity(cart) {
-
-  }
   openQuantity(cart) {
     const dialogRef = this.dialog.open(AddQuantityComponent, {
-      width: '600px',
+      width: '300px',
     });
     dialogRef.afterClosed().subscribe((q) => {
       if (q) {
@@ -240,8 +237,10 @@ export class PosComponent implements OnInit {
             if (item.foodId === cart.foodId) {
               item['quantity'] = q;
               cartBuffers.push(item);
+              this.totalCalculation();
             } else {
               cartBuffers.push(item);
+              this.totalCalculation();
             }
             this.totalCalculation();
           });
@@ -258,6 +257,7 @@ export class PosComponent implements OnInit {
         return;
       }
     });
+    this.totalCalculation();
   }
   addnote(cart) {
     const dialogRef = this.dialog.open(AddNoteComponent, {

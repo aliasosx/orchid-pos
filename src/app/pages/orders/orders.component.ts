@@ -11,6 +11,8 @@ import { Product } from 'src/app/interfaces/product';
 import { StockHistory } from 'src/app/interfaces/stockHistory';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { Bom } from 'src/app/interfaces/bom';
+import { StockServicesService } from 'src/app/services/stock-services.service';
 
 declare var swal: any;
 
@@ -21,7 +23,8 @@ declare var swal: any;
 })
 export class OrdersComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar,
+    private _firebaseAuth: AngularFireAuth, private router: Router, private _stockService: StockServicesService) {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
@@ -32,6 +35,9 @@ export class OrdersComponent implements OnInit {
         });
         this.transactionsRef = db.collection<Transaction>('transactions');
         this.productsRef = db.collection<Product>('products');
+
+        this.bomRef = db.collection<Bom>('boms');
+
       } else {
         router.navigateByUrl('login');
       }
@@ -58,6 +64,10 @@ export class OrdersComponent implements OnInit {
 
   foodUpdateStatus: boolean = false;
 
+  bomRef: AngularFirestoreCollection<Bom>;
+  boms: Observable<any[]>;
+
+
   ngOnInit() {
     this.orders = this.orderRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
@@ -66,6 +76,7 @@ export class OrdersComponent implements OnInit {
         return data;
       });
     }));
+    //this.updateTransactionsLogfix('9ef7f220-3423-11e9-b71a-3d88757dda31');
   }
   async updateFoodDone(order, _food) {
     if (this.foodUpdateStatus == false) {
@@ -215,22 +226,46 @@ export class OrdersComponent implements OnInit {
           qrRefno: order.qrRefno,
           food_category: element.food_category
         };
-        this.db.collection<Transaction>('transactions').add(transaction).then(() => {
+        this.db.collection<Transaction>('transactions').add(transaction).then(async () => {
           this.snackbarRef.open('Transaction posted ', 'ok', { duration: 1000 });
-          this.stockUpdate(order);
+          let s = await this.stockUpdate(order);
+          this.updateStockBOM(order);
         });
       });
     } else {
       this.snackbarRef.open('Transaction posted Failed', 'ok', { duration: 1000 });
     }
   }
+
+  updateTransactionsLogfix(foodId) {
+    this.db.collection<Transaction>('transactions').snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data() as Transaction;
+        data['id'] = a.payload.doc.id;
+        return data;
+      });
+    })).subscribe(tx => {
+      tx.forEach(t => {
+        if (t.foodId == foodId) {
+          this.db.collection<Transaction>('transactions').doc(t.id).update({
+            cost: 5800,
+            total_cost: 5800 * 1,
+            profit: 13000 - 5800,
+          }).then(() => {
+            console.log('Transaction log updated');
+          });
+        }
+      })
+    });
+  }
+
   async stockUpdate(order) {
     let productCurrentQuantity = 0;
     let newProductCurrentQuantity = 0;
     if (order) {
-
       order.food.forEach(fd => {
         console.log(fd);
+        console.log('********************* Stock update for Sale direct products *********************');
         this.productsRef.get().subscribe(product => {
           product.forEach(doc => {
             if (doc.data().foodId == fd.foodId) {
@@ -263,8 +298,76 @@ export class OrdersComponent implements OnInit {
                 });
 
               });
-            } else {
+            }
+            else {
               this.snackbarRef.open('Food not existing on Products stock !', 'OK', { duration: 1000 });
+              console.log('================  Product not existing ================ ');
+              return;
+            }
+          });
+        });
+      });
+    } else {
+      return;
+    }
+  }
+  async updateStockBOM(order) {
+    let productCurrentQuantity = 0;
+    let newProductCurrentQuantity = 0;
+
+    let products = [];
+    if (order) {
+      order.food.forEach(fd => {
+        console.log(fd);
+        console.log('********************* Stock update for BOM products *********************');
+        this.bomRef.get().subscribe(async (boms) => {
+          boms.docs.forEach(doc => {
+            console.log(doc.data());
+            console.log(doc.data().food.foodId + ' - ' + fd.foodId);
+            if (doc.data().food.foodId == fd.foodId) {
+              //console.log(doc.data());
+              // Fetch all products relate in BOM
+              doc.data().products.forEach(product => {
+                console.log(product);
+                console.log('-------------- update stock for ' + product.productName + ' --------------');
+                productCurrentQuantity = 0;
+                newProductCurrentQuantity = 0;
+
+                this.db.collection<Product>('products', ref => {
+                  return ref.where('productName', '==', product.productName);
+                }).get().subscribe((product_master) => {
+                  console.log('getLatestQuantityByProductName');
+                  product_master.docs.forEach(p => {
+                    productCurrentQuantity = p.data().currentQuantity;
+                    newProductCurrentQuantity = p.data().currentQuantity - product.bom_quantity;
+                    console.log('Current quantity is : ' + productCurrentQuantity);
+                    console.log('New quantity is : ' + newProductCurrentQuantity);
+
+                    this.db.collection<Product>('products').doc(product.id).update({
+                      currentQuantity: newProductCurrentQuantity,
+                    }).then(async () => {
+                      this.snackbarRef.open('Stock Updated new Quantity for ' + product.productName + ' : ' + newProductCurrentQuantity + ' Unit(s)', 'ok', { duration: 1000 });
+                      console.log('Stock tracking update');
+                      let stockhist = {
+                        productId: product.id,
+                        productName: product.productName,
+                        beforeQuantity: productCurrentQuantity,
+                        stockChange: product.bom_quantity,
+                        currentQuantity: newProductCurrentQuantity,
+                        updateDate: new Date(),
+                        updateSource: 'ordering', // Sale module Or Purchase
+                        createdAt: new Date(),
+                        orderId: order.id,
+                      }
+                      let n = await this.db.collection<StockHistory>('stockHistories').add(stockhist).then(() => {
+                        this.snackbarRef.open('Stock history added for ' + order.id, 'ok', { duration: 1000 });
+                      });
+                    });
+                  });
+                });
+              });
+            } else {
+              this.snackbarRef.open('Food not existing on BOM stock !', 'OK', { duration: 1000 });
               console.log('================  Product not existing ================ ');
               return;
             }

@@ -1,4 +1,5 @@
 export interface Transaction {
+  id?: string;
   transaction_date: Date;
   foodId?: number;
   qrRefno?: string;

@@ -59,6 +59,7 @@ import { FoodPipePipe } from './pipes/food-pipe.pipe';
 import { ProductPipe } from './pipes/product.pipe';
 import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.component';
 import { AddQuantityComponent } from './dialogs/add-quantity/add-quantity.component';
+import { DbconsoleComponent } from './pages/dbconsole/dbconsole.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import { AddQuantityComponent } from './dialogs/add-quantity/add-quantity.compon
     ProductPipe,
     KitchenOrdersComponent,
     AddQuantityComponent,
+    DbconsoleComponent,
 
   ],
   imports: [

@@ -12,6 +12,7 @@ import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { BomComponent } from './pages/bom/bom.component';
 import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.component';
+import { DbconsoleComponent } from './pages/dbconsole/dbconsole.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'bom', component: BomComponent },
   { path: 'kitchenorders', component: KitchenOrdersComponent },
+  { path: 'console', component: DbconsoleComponent }
 ];
 
 @NgModule({

@@ -37,7 +37,7 @@ export class UserRegisterComponent implements OnInit {
   buttonMessage = 'ບັນທືກ';
   rolesRef: AngularFirestoreCollection<Role>;
   roles: Observable<any[]>;
-  updateFlag: boolean = false;
+  updateFlag = false;
   ngOnInit() {
     const uuid1Emp = uuid.v1();
     const uuid1usr = uuid.v1();
@@ -58,6 +58,7 @@ export class UserRegisterComponent implements OnInit {
       placeOfBirth: new FormControl(),
       idCardno: new FormControl(),
       photo: new FormControl(this.photoSrc),
+      kitchen: new FormControl(),
       mobile: new FormControl(),
       enabled: new FormControl(true),
       role: new FormControl('staff'),

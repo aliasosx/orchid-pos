@@ -20,7 +20,7 @@ export class KitchenOrdersComponent implements OnInit {
   ordersRef: AngularFirestoreCollection<Order>;
   orders: Observable<any[]>;
 
-  kitchen: string = 'Food';
+  kitchen = localStorage.getItem('kitchen');
 
   ngOnInit() {
     this.orders = this.ordersRef.snapshotChanges().pipe(map(change => {

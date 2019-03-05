@@ -129,10 +129,10 @@ export class DashboardComponent implements OnInit {
           let kitchenAmount = 0;
 
           tranxs.forEach(tranx => {
-            let tranx_date = new DatePipe('en-us').transform(tranx.transaction_date.toDate(), 'dd-MMM-yyyy');
-            let currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
+            const tranx_date = new DatePipe('en-us').transform(tranx.transaction_date.toDate(), 'dd-MMM-yyyy');
+            const currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
             if (tranx_date === currentDate) {
-              if (tranx.kitchen == kitchen.kitchenName) {
+              if (tranx.kitchen === kitchen.kitchenName) {
                 kitchenCount += tranx.quantity;
                 kitchenAmount += tranx.total_price;
               }
@@ -167,18 +167,18 @@ export class DashboardComponent implements OnInit {
           let paymentCount = 0;
           let paymentAmount = 0;
           tranxs.forEach(tranx => {
-            let tranx_date = new DatePipe('en-us').transform(tranx.transaction_date.toDate(), 'dd-MMM-yyyy');
-            let currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
-            //console.log(paymentType.paymentCode + ' - ' + tranx.paymentBy);
+            const tranx_date = new DatePipe('en-us').transform(tranx.transaction_date.toDate(), 'dd-MMM-yyyy');
+            const currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
+            // console.log(paymentType.paymentCode + ' - ' + tranx.paymentBy);
             if (tranx_date === currentDate) {
-              if (tranx.paymentBy == paymentType.paymentCode) {
+              if (tranx.paymentBy === paymentType.paymentCode) {
                 paymentCount += tranx.quantity;
                 paymentAmount += tranx.total_price;
               }
             }
           });
           this.paymentMethodReport.push({
-            paymentMethod: paymentType.paymentName,
+            paymentMethod: paymentType.paymentCode,
             paymentCount: paymentCount,
             paymentAmount: paymentAmount
           });

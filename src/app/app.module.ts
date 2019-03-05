@@ -18,7 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
-  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDivider, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule
+  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDivider, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule
 } from '@angular/material';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { FoodsComponent } from './pages/foods/foods.component';
@@ -118,6 +118,7 @@ import { DbconsoleComponent } from './pages/dbconsole/dbconsole.component';
     FormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
+    MatMenuModule,
   ],
   entryComponents: [
     AddFoodComponent,

@@ -18,9 +18,7 @@ declare var swal: any;
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router,
-    private dialog: MatDialog
-  ) {
+  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private dialog: MatDialog) {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {

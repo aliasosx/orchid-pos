@@ -79,7 +79,9 @@ export class NavbarComponent implements OnInit {
     this.usersRef.get().subscribe(users => {
       users.docs.forEach(user => {
         if (user.data().userId === this.googleId) {
+          localStorage.setItem('kitchen', user.data().kitchen);
           // Get Roles
+
           this.db.collection<Role>('roles', ref => {
             return ref.where('roleCode', '==', user.data().role);
           }).get().subscribe(roles => {

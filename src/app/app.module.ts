@@ -61,6 +61,7 @@ import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.co
 import { AddQuantityComponent } from './dialogs/add-quantity/add-quantity.component';
 import { DbconsoleComponent } from './pages/dbconsole/dbconsole.component';
 import { StocksComponent } from './pages/stocks/stocks.component';
+import { NewpasswordComponent } from './dialogs/newpassword/newpassword.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { StocksComponent } from './pages/stocks/stocks.component';
     AddQuantityComponent,
     DbconsoleComponent,
     StocksComponent,
+    NewpasswordComponent,
 
   ],
   imports: [
@@ -146,6 +148,7 @@ import { StocksComponent } from './pages/stocks/stocks.component';
     UsersComponent,
     AddbomComponent,
     AddQuantityComponent,
+    NewpasswordComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe],

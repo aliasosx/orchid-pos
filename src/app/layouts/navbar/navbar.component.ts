@@ -8,6 +8,10 @@ import { Router } from '@angular/router';
 import { User } from 'firebase';
 import { Role } from 'src/app/interfaces/role';
 import { map } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { NewpasswordComponent } from 'src/app/dialogs/newpassword/newpassword.component';
+
+declare var swal: any;
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +20,7 @@ import { map } from 'rxjs/operators';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router) {
+  constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router, private dialog: MatDialog, ) {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
@@ -109,6 +113,26 @@ export class NavbarComponent implements OnInit {
   logOut() {
     this._firebaseAuth.auth.signOut().then(() => {
 
+    });
+  }
+  openNewPassword() {
+    const dialogRef = this.dialog.open(NewpasswordComponent, {
+      width: '400px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      let currUser = this._firebaseAuth.auth.currentUser;
+      currUser.updatePassword(result).then(() => {
+        swal({
+          title: 'password update successful',
+          icon: 'success'
+        });
+      }).catch((err) => {
+        swal({
+          icon: "error",
+          title: err.message,
+        });
+      });
     });
   }
 

@@ -60,6 +60,7 @@ import { ProductPipe } from './pipes/product.pipe';
 import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.component';
 import { AddQuantityComponent } from './dialogs/add-quantity/add-quantity.component';
 import { DbconsoleComponent } from './pages/dbconsole/dbconsole.component';
+import { StocksComponent } from './pages/stocks/stocks.component';
 
 @NgModule({
   declarations: [
@@ -103,6 +104,7 @@ import { DbconsoleComponent } from './pages/dbconsole/dbconsole.component';
     KitchenOrdersComponent,
     AddQuantityComponent,
     DbconsoleComponent,
+    StocksComponent,
 
   ],
   imports: [

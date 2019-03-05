@@ -13,6 +13,7 @@ import { LoginComponent } from './authentication/login/login.component';
 import { BomComponent } from './pages/bom/bom.component';
 import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.component';
 import { DbconsoleComponent } from './pages/dbconsole/dbconsole.component';
+import { StocksComponent } from './pages/stocks/stocks.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -27,7 +28,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'bom', component: BomComponent },
   { path: 'kitchenorders', component: KitchenOrdersComponent },
-  { path: 'console', component: DbconsoleComponent }
+  { path: 'console', component: DbconsoleComponent },
+  { path: 'stocks', component: StocksComponent }
 ];
 
 @NgModule({

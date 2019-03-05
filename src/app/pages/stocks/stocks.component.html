@@ -1,0 +1,43 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Stocks managements</mat-card-title>
+    <mat-card-subtitle>Stock statistics</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="form-group row">
+      <div class="col col-sm-12 col-md-12">
+        <input type="text" class="form-control" placeholder="ຄົ້ນຫາ...">
+      </div>
+    </div>
+    <div>
+      <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" class="text-center">updateDate</th>
+            <th scope="col" class="text-center">productId</th>
+            <th scope="col" class="text-center">productName</th>
+            <th scope="col" class="text-center">beforeQuantity</th>
+            <th scope="col" class="text-center">stockChange</th>
+            <th scope="col" class="text-center">currentQuantity</th>
+            <th scope="col" class="text-center">updateSource</th>
+            <th scope="col" class="text-center">orderId</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let stock of stocks |async">
+            <td class="text-center">{{ stock.updateDate.toDate() | date: 'dd-MMM-yyyy H:mm:ss'}}</td>
+            <td class="text-left">{{ stock.productId  }}</td>
+            <td class="text-left">{{ stock.productName  }}</td>
+            <td class="text-right">{{ stock.beforeQuantity  | number }}</td>
+            <td class="text-right">{{ stock.stockChange | number }}</td>
+            <td class="text-right">{{ stock.currentQuantity | number }}</td>
+            <td class="text-center">{{ stock.updateSource  }}</td>
+            <td class="text-center">{{ stock.orderId  }}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>

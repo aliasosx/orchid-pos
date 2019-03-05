@@ -319,7 +319,8 @@ export class OrdersComponent implements OnInit {
                   console.log('getLatestQuantityByProductName');
                   product_master.docs.forEach(p => {
                     productCurrentQuantity = p.data().currentQuantity;
-                    newProductCurrentQuantity = p.data().currentQuantity - product.bom_quantity;
+                    newProductCurrentQuantity = p.data().currentQuantity - (product.bom_quantity * fd.quantity);
+
                     console.log('Current quantity is : ' + productCurrentQuantity);
                     console.log('New quantity is : ' + newProductCurrentQuantity);
 

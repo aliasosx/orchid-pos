@@ -44,10 +44,8 @@ export class AddPurchaseComponent implements OnInit {
 
   file: File;
 
-
   productsForUpdate: Observable<Product[]>;
   productForUpdateCollect: AngularFirestoreCollection<Product>;
-
 
   ngOnInit() {
     this.addFormPurchase = new FormGroup({
@@ -58,7 +56,7 @@ export class AddPurchaseComponent implements OnInit {
       total: new FormControl(0),
       purchaseDate: new FormControl(new Date()),
       vendor: new FormControl(),
-      userName: new FormControl(),
+      userName: new FormControl(localStorage.getItem('username')),
       noted: new FormControl(),
       bills: new FormControl(),
     });
@@ -133,6 +131,7 @@ export class AddPurchaseComponent implements OnInit {
       updateDate: new Date(),
       updateSource: 'Purchase',
       purchaseDetailId: purchase,
+      username: localStorage.getItem('username'),
       createdAt: new Date(),
     }
     this.db.collection('stockHistories').add(stockhist).then((resp) => {

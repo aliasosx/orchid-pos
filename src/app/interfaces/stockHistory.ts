@@ -1,4 +1,5 @@
 export interface StockHistory {
+  id?: string;
   productId: string;
   productName: string;
   beforeQuantity: number;
@@ -9,4 +10,5 @@ export interface StockHistory {
   purchaseDetail?: object;
   orderId?: string;
   createdAt: Date;
+  username?: string;
 }

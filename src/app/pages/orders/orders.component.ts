@@ -339,6 +339,7 @@ export class OrdersComponent implements OnInit {
                         updateSource: 'ordering', // Sale module Or Purchase
                         createdAt: new Date(),
                         orderId: order.id,
+                        username: this.username,
                       }
                       let n = await this.db.collection<StockHistory>('stockHistories').add(stockhist).then(() => {
                         this.snackbarRef.open('Stock history added for ' + order.id, 'ok', { duration: 1000 });

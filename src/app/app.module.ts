@@ -62,6 +62,7 @@ import { AddQuantityComponent } from './dialogs/add-quantity/add-quantity.compon
 import { DbconsoleComponent } from './pages/dbconsole/dbconsole.component';
 import { StocksComponent } from './pages/stocks/stocks.component';
 import { NewpasswordComponent } from './dialogs/newpassword/newpassword.component';
+import { StocksPipePipe } from './pipes/stocks-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -107,6 +108,7 @@ import { NewpasswordComponent } from './dialogs/newpassword/newpassword.componen
     DbconsoleComponent,
     StocksComponent,
     NewpasswordComponent,
+    StocksPipePipe,
 
   ],
   imports: [

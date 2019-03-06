@@ -7,26 +7,26 @@
   <mat-card-content>
     <div class="form-group row">
       <div class="col col-sm-12 col-md-12">
-        <input type="text" class="form-control" placeholder="ຄົ້ນຫາ...">
+        <input type="text" class="form-control" placeholder="ຄົ້ນຫາ..." [(ngModel)]="searchProduct">
       </div>
     </div>
     <div>
       <table class="table table-bordered table-hover">
         <thead class="thead-light">
           <tr>
-            <th scope="col" class="text-center">updateDate</th>
-            <th scope="col" class="text-center">productId</th>
-            <th scope="col" class="text-center">productName</th>
-            <th scope="col" class="text-center">beforeQuantity</th>
-            <th scope="col" class="text-center">stockChange</th>
-            <th scope="col" class="text-center">currentQuantity</th>
-            <th scope="col" class="text-center">updateSource</th>
+            <th scope="col" class="text-center">ວັນທີ່ຊື້</th>
+            <th scope="col" class="text-center">ລະຫັດສິນຄ້າ</th>
+            <th scope="col" class="text-center">ສິນຄ້າ</th>
+            <th scope="col" class="text-center">ຍອດຍົກມາ</th>
+            <th scope="col" class="text-center">ປ່ຽນແປງ</th>
+            <th scope="col" class="text-center">ຍອດປະຈຸບັນ</th>
+            <th scope="col" class="text-center">ມາຈາກ</th>
             <th scope="col" class="text-center">orderId</th>
-            <th scope="col" class="text-center">Username</th>
+            <th scope="col" class="text-center">ຜູ້ໃຊ້</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let stock of stocks |async">
+          <tr *ngFor="let stock of stocks |async | stocksPipe: searchProduct">
             <td class="text-center">{{ stock.updateDate.toDate() | date: 'dd-MMM-yyyy H:mm:ss'}}</td>
             <td class="text-left">{{ stock.productId  }}</td>
             <td class="text-left">{{ stock.productName  }}</td>

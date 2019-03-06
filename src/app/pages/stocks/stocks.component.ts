@@ -16,7 +16,7 @@ export class StocksComponent implements OnInit {
       return ref.orderBy('updateDate', 'desc');
     });
   }
-
+  searchProduct: any;
   stocksRef: AngularFirestoreCollection<StockHistory>;
   stocks: Observable<any[]>
 

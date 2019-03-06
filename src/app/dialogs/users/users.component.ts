@@ -35,7 +35,7 @@ export class UsersComponent implements OnInit {
     this.dialog.open(UserRegisterComponent, {
       width: '800px',
       data: user
-    })
+    });
   }
 
 }

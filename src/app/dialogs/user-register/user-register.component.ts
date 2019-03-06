@@ -1,3 +1,4 @@
+import { Kitchen } from './../../interfaces/kitchen';
 import { map } from 'rxjs/operators';
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
@@ -24,6 +25,7 @@ export class UserRegisterComponent implements OnInit {
     private dialogRef: MatDialogRef<UserRegisterComponent>, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.usersRef = db.collection<User>('users');
     this.rolesRef = db.collection<Role>('roles');
+    this.kitchensRef = db.collection<Kitchen>('kitchens');
   }
   userRegistrationForm: FormGroup;
   photoSrc = '../../../assets/images/man01.png';
@@ -38,6 +40,10 @@ export class UserRegisterComponent implements OnInit {
   rolesRef: AngularFirestoreCollection<Role>;
   roles: Observable<any[]>;
   updateFlag = false;
+
+  kitchensRef: AngularFirestoreCollection<Kitchen>;
+  kitchens: Observable<any[]>;
+
   ngOnInit() {
     const uuid1Emp = uuid.v1();
     const uuid1usr = uuid.v1();
@@ -66,6 +72,7 @@ export class UserRegisterComponent implements OnInit {
       employedDate: new FormControl(new Date()),
     });
     this.roles = this.rolesRef.valueChanges();
+    this.kitchens = this.kitchensRef.valueChanges();
     if (this.data) {
       this.showRole = '';
       this.userRegistrationForm.setValue(this.data);

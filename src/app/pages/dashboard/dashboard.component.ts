@@ -39,6 +39,8 @@ export class DashboardComponent implements OnInit {
   private user: Observable<firebase.User>;
   username_info: any;
 
+  username = localStorage.getItem('username');
+
   transactionsRef: AngularFirestoreCollection<Transaction>
   transactions: Observable<any[]>;
 

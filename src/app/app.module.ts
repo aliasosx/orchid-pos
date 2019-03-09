@@ -18,7 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
-  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDivider, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule
+  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule,
 } from '@angular/material';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { FoodsComponent } from './pages/foods/foods.component';
@@ -63,6 +63,7 @@ import { DbconsoleComponent } from './pages/dbconsole/dbconsole.component';
 import { StocksComponent } from './pages/stocks/stocks.component';
 import { NewpasswordComponent } from './dialogs/newpassword/newpassword.component';
 import { StocksPipePipe } from './pipes/stocks-pipe.pipe';
+import { StaffBenefitComponent } from './dialogs/staff-benefit/staff-benefit.component';
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import { StocksPipePipe } from './pipes/stocks-pipe.pipe';
     StocksComponent,
     NewpasswordComponent,
     StocksPipePipe,
+    StaffBenefitComponent,
 
   ],
   imports: [
@@ -124,7 +126,7 @@ import { StocksPipePipe } from './pipes/stocks-pipe.pipe';
     FormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
-    MatMenuModule,
+    MatMenuModule, MatTooltipModule,
   ],
   entryComponents: [
     AddFoodComponent,
@@ -151,9 +153,10 @@ import { StocksPipePipe } from './pipes/stocks-pipe.pipe';
     AddbomComponent,
     AddQuantityComponent,
     NewpasswordComponent,
+    StaffBenefitComponent,
   ]
   ,
-  providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe],
+  providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

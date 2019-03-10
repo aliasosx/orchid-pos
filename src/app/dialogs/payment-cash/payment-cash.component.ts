@@ -57,8 +57,8 @@ export class PaymentCashComponent implements OnInit {
   bcelQRcodeUrl: string;
   urlSafe: SafeResourceUrl;
   bankDataResponse: QrBankResponseData;
-  paymentSelectDisabled: boolean = true;
-  showAlert = "hidden";
+  paymentSelectDisabled = true;
+  showAlert = 'hidden';
 
   qrPaymentsRef: AngularFirestoreCollection<QrBankResponseData>;
 
@@ -131,8 +131,8 @@ export class PaymentCashComponent implements OnInit {
     }
   }
   checkPaymentCash(payment) {
-    //console.log(payment);
-    if (payment == 'CASH') {
+    // console.log(payment);
+    if (payment === 'CASH') {
       this.showPaymentCash = '';
     } else {
       this.showPaymentCash = 'hidden';
@@ -142,8 +142,8 @@ export class PaymentCashComponent implements OnInit {
     this.orderForm.get('change').setValue(this.orderForm.get('recieved').value - this.data.total);
   }
   padding(num: number, size: number) {
-    let s = num + "";
-    while (s.length < size) s = "0" + s;
+    let s = num + '';
+    while (s.length < size) { s = '0' + s; }
     return s;
   }
   async getTicketById(ticket) {
@@ -171,7 +171,7 @@ export class PaymentCashComponent implements OnInit {
     let urlFormat = '/?uuid=' + _uuid1 + '&tid=' + _terminalId + '&amount=' + _amount + '&invoiceId=' + _invoiceNumber + '&description=' + _description;
     this.bcelQRcodeUrl = this.qRCodeUrl + urlFormat;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.bcelQRcodeUrl);
-    //console.log(this.bcelQRcodeUrl);
+    // console.log(this.bcelQRcodeUrl);
     $('#qrIframe').on('load', () => {
       console.log('QR Code Ready')
       this.getResponseFromDeepstream(_uuid1);
@@ -181,10 +181,10 @@ export class PaymentCashComponent implements OnInit {
     console.log('Started Wait for Complete Payment for ' + uuid1);
     const mcid = 'mch5c481be0ce38f';
     const ds = deepstream('wss://bcel.la:6020/onepayws');
-    ds.login({ type: "invoice", mcid: mcid, uuid: uuid1 }, (success) => {
+    ds.login({ type: 'invoice', mcid: mcid, uuid: uuid1 }, (success) => {
       if (success) {
         console.log('Login success');
-        ds.event.subscribe("invoice/" + mcid + "/" + uuid1 + "/transaction", (data) => {
+        ds.event.subscribe('invoice/' + mcid + '/' + uuid1 + '/transaction', (data) => {
           if (data) {
             this.bankDataResponse = data;
             this.bankDataResponse.paymentBank = 'QR-BCEL';
@@ -193,7 +193,7 @@ export class PaymentCashComponent implements OnInit {
             this.orderForm.get('paymentType').setValue('QR-BCEL');
             this.orderForm.get('qrRefno').setValue(data.fccref);
             this.paymentSelectDisabled = true;
-            this.showAlert = "";
+            this.showAlert = '';
           } else {
             console.log('Error happend');
           }

@@ -30,7 +30,11 @@ export class StaffBenefitComponent implements OnInit {
 
   foodsRef: AngularFirestoreCollection<Food>;
   foods: Observable<any[]>;
-  addBtnDisable;
+  addBtnDisable = true;
+  updateFlg = false;
+  btnAddCaption = 'Add';
+
+  foodsList: any;
 
   ngOnInit() {
     this.addNewStaffBenefitForm = new FormGroup({
@@ -57,29 +61,44 @@ export class StaffBenefitComponent implements OnInit {
         return staffBenefit;
       });
     }));
+
+
   }
   addStaffBenefit() {
-    if (this.addNewStaffBenefitForm.valid && this.addNewStaffBenefitForm.get('discount').value > 0 && this.addNewStaffBenefitForm.get('food').value) {
-      this.db.collection('staffBenefits').add(this.addNewStaffBenefitForm.value).then(() => {
-        this.snackbar.open('added', 'OK', { duration: 1000 });
-      });
+    if (!this.updateFlg) {
+      // tslint:disable-next-line: max-line-length
+      if (this.addNewStaffBenefitForm.valid && this.addNewStaffBenefitForm.get('discount').value > 0 && this.addNewStaffBenefitForm.get('food').value) {
+        this.db.collection('staffBenefits').add(this.addNewStaffBenefitForm.value).then(() => {
+          this.snackbar.open('added', 'OK', { duration: 1000 });
+        });
+      } else {
+        this.snackbar.open('Data Incorrect !!!', 'OK', { duration: 2000 });
+      }
     } else {
-      this.snackbar.open('Data Incorrect !!!', 'OK', { duration: 2000 });
+
+    }
+
+  }
+  updateStaffbenefit(e) {
+    if (e) {
+      this.updateFlg = true;
+      this.btnAddCaption = 'Update';
+      this.addNewStaffBenefitForm.setValue(e);
     }
   }
-  async onselectedFood(e) {
-    //this.addBtnDisable = true;
-    let c = await this.db.collection<Food>('foods').doc(e).get().subscribe(food => {
+  async onselectedFood(e: any) {
+    this.addBtnDisable = true;
+    this.db.collection<Food>('foods').doc(e).get().subscribe(food => {
       this.db.collection<StaffBenefit>('staffBenefits').get().subscribe(async (staffBe) => {
         staffBe.docs.forEach(s => {
+          // console.log(s.data());
           if (s.data().food.foodId === food.data().foodId) {
             this.addBtnDisable = true;
             this.snackbar.open('Duplicate food !!!', 'OK', { duration: 2000 });
             return;
-          } else if (s.data().food.foodId != food.data().foodId) {
-            this.addNewStaffBenefitForm.get('food').setValue(food.data());
-            this.addBtnDisable = false;
           }
+          this.addBtnDisable = false;
+          this.addNewStaffBenefitForm.get('food').setValue(food.data());
         });
       });
     });
@@ -94,9 +113,9 @@ export class StaffBenefitComponent implements OnInit {
   }
   removeItem(staffbe) {
     swal({
-      title: "ທ່ານຕ້ອງການລຶບແທ້ບໍ?",
-      text: "ຫຼັງຈາກລືບລາຍການແລ້ວບໍ່ສາມາທີ່ຈະຈກູ້ຄືນໄດ້",
-      icon: "warning",
+      title: 'ທ່ານຕ້ອງການລຶບແທ້ບໍ?',
+      text: 'ຫຼັງຈາກລືບລາຍການແລ້ວບໍ່ສາມາທີ່ຈະຈກູ້ຄືນໄດ້',
+      icon: 'warning',
       buttons: true,
       dangerMode: true,
     }).then((res) => {

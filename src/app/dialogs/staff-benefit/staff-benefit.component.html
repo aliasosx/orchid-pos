@@ -6,7 +6,7 @@
   <div class="row mt-3">
     <div class="form-group col-md-4">
       <label for="food">ອາຫານ</label>
-      <select class="form-control" id="food" (change)="onselectedFood($event.target.value)">
+      <select class="form-control" id="food" (change)="onselectedFood($event.target.value)" formControlName="food">
         <option value="" disabled>------</option>
         <option value="{{ food.id }}" *ngFor="let food of foods | async">{{ food.food_name }}</option>
       </select>
@@ -17,7 +17,7 @@
     </div>
     <div class="form-group col-md-4">
       <button mat-raised-button color="primary" style="margin-top: 30px;" class="form-control"
-        (click)="addStaffBenefit()" [disabled]="addBtnDisable">add</button> </div>
+        (click)="addStaffBenefit()" [disabled]="addBtnDisable">{{ btnAddCaption }}</button> </div>
   </div>
 </form>
 <div class="row">
@@ -35,7 +35,8 @@
     <tbody>
       <tr *ngFor="let staffBenefit of staffBenefits | async ; let i = index;">
         <td class="text-center">{{ i + 1 }}</td>
-        <td class="text-left">{{ staffBenefit.food.food_name }}</td>
+        <td class="text-left" (click)="updateStaffbenefit(staffBenefit)" style="cursor: pointer;">
+          {{ staffBenefit.food.food_name }}</td>
         <td class="text-center">{{ staffBenefit.discount | number }}</td>
         <td *ngIf="staffBenefit.enabled; else disabledBenefit" class="text-center">
           <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"

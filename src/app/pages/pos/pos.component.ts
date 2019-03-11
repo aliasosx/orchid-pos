@@ -22,6 +22,7 @@ import { User } from 'src/app/interfaces/user';
 })
 export class PosComponent implements OnInit {
 
+  // tslint:disable-next-line: max-line-length
   constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
     this.user = _firebaseAuth.authState;
     this.foodsRef = db.collection<Food>('foods');
@@ -137,7 +138,7 @@ export class PosComponent implements OnInit {
     if (food) {
       const items = JSON.parse(localStorage.getItem('cart'));
       const cartBuffers = [];
-      console.log(items);
+      // console.log(items);
       items.forEach((item, index) => {
         if (item.id === food.id) {
           items.splice(index, 1);
@@ -163,7 +164,9 @@ export class PosComponent implements OnInit {
       items.forEach(item => {
         this.total += item.total;
       });
+      // console.log(this.total);
     } else {
+      // console.log(this.total);
       return;
     }
   }
@@ -231,29 +234,25 @@ export class PosComponent implements OnInit {
           cart['quantity'] = q;
           let items = [];
           const cartBuffers = [];
-
           items = JSON.parse(localStorage.getItem('cart'));
           items.forEach(item => {
             if (item.foodId === cart.foodId) {
               item['quantity'] = q;
+              item['total'] = (q * item.price);
               cartBuffers.push(item);
-              this.totalCalculation();
             } else {
               cartBuffers.push(item);
-              this.totalCalculation();
             }
-            this.totalCalculation();
           });
           if (cartBuffers.length > 0) {
             localStorage.setItem('cart', JSON.stringify(cartBuffers));
             this.totalCalculation();
           }
         } else {
-          this.totalCalculation();
           return;
         }
-      } else {
         this.totalCalculation();
+      } else {
         return;
       }
     });
@@ -292,7 +291,7 @@ export class PosComponent implements OnInit {
   }
   openPaymentCash() {
     if (this.total > 0 && this.username) {
-      console.log(this.username);
+      // console.log(this.username);
       const dialogCashRef = this.dialog.open(PaymentCashComponent, {
         width: '800px',
         data: {

@@ -22,6 +22,7 @@ declare var deepstream: any;
   styleUrls: ['./payment-cash.component.css']
 })
 export class PaymentCashComponent implements OnInit {
+  // tslint:disable-next-line: max-line-length
   constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data) {
     this.username = data.username;
     this.cartRef = db.collection<Cart>('carts', ref => {

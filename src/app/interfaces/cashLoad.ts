@@ -6,7 +6,8 @@ export interface CashLoad {
   eodCashBalance: number;
   eodBankBalance: number;
   cashBalance: number;
-  bankBalance: number;
+  cashInHands: number;
+  closeBalance: number;
   close: boolean;
   closeDatetime: Date;
   closeby: string;

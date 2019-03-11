@@ -29,7 +29,7 @@ export class OrdersComponent implements OnInit {
     this.user.subscribe(user => {
       if (user) {
         this.username_info = user;
-        //this.username = user.displayName;
+        // this.username = user.displayName;
         this.orderRef = db.collection<Order>('orders', ref => {
           return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
         });
@@ -62,7 +62,7 @@ export class OrdersComponent implements OnInit {
 
   sendBtnDisable = false;
 
-  foodUpdateStatus: boolean = false;
+  foodUpdateStatus = false;
 
   bomRef: AngularFirestoreCollection<Bom>;
   boms: Observable<any[]>;
@@ -76,24 +76,24 @@ export class OrdersComponent implements OnInit {
         return data;
       });
     }));
-    //this.updateTransactionsLogfix('9ef7f220-3423-11e9-b71a-3d88757dda31');
+    // this.updateTransactionsLogfix('9ef7f220-3423-11e9-b71a-3d88757dda31');
   }
   async updateFoodDone(order, _food) {
     if (this.foodUpdateStatus == false) {
-      // Clear cache
+      //  Clear cache
       this.foodsList = [];
-      //console.log(_food.done);
+      // console.log(_food.done);
       if (_food.done == true) {
         _food.done = false;
       } else if (_food.done == false) {
         _food.done = true;
       }
-      //console.log(_food.done);
+      // console.log(_food.done);
       this.foodUpdateStatus = true;
       const cs = await this.orderRef.doc(order.id).get().toPromise().then(_order => {
         if (_order.exists) {
           const o = _order.data() as Order;
-          // populate food data
+          //  populate food data
           o.food.forEach(element => {
             if (element.id === _food.id) {
               element.done = _food.done;
@@ -105,7 +105,7 @@ export class OrdersComponent implements OnInit {
         }
       }).then(() => {
         if (this.foodsList.length > 0) {
-          let food = {
+          const food = {
             food: this.foodsList
           };
           this.db.collection<Order>('orders').doc(order.id).update(food).then(() => {
@@ -121,13 +121,13 @@ export class OrdersComponent implements OnInit {
       });
     } else {
       this.snackbarRef.open('Wait task complete and try again', 'ok', { duration: 1000, verticalPosition: 'top' });
-      return
+      return;
     }
   }
   async markOrderComplete(order) {
     swal({
       title: 'ໄດ້ກວດສອບລາຍການທັງໝົດຄົບແລ້ວ ແລະ ພ້ອມສົ່ງ',
-      icon: "warning",
+      icon: 'warning',
       dangerMode: true,
     }).then(async (value) => {
       if (value) {
@@ -145,10 +145,10 @@ export class OrdersComponent implements OnInit {
     });
   }
   async markOrderCancel(order) {
-    // Check time
+    //  Check time
     swal({
       title: 'ແນ່ໃຈວ່າຈະຍົກເລີກລາຍການນີ້',
-      icon: "warning",
+      icon: 'warning',
       dangerMode: true,
     }).then(async (value) => {
       if (value) {
@@ -160,7 +160,7 @@ export class OrdersComponent implements OnInit {
             StartDate = o.data().orderDateTime.toDate();
             currentConsumingTime = (currDate - StartDate) / 60000;
             if (currentConsumingTime > 10) {
-              swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', "ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້", "error");
+              swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
               return;
             } else {
               this.orderRef.doc(order.id).update({
@@ -179,7 +179,7 @@ export class OrdersComponent implements OnInit {
     });
   }
   async releaseTicket(ticket) {
-    let ticketId = "";
+    let ticketId = '';
     if (ticket) {
       const c = await this.db.collection<Ticket>('tickets', ref => {
         return ref.where('ticket', '==', parseInt(ticket));
@@ -203,10 +203,10 @@ export class OrdersComponent implements OnInit {
   async updateTransactionLog(order) {
     if (order) {
       order.food.forEach(element => {
-        //console.log(element);
-        let transaction = {
+        // console.log(element);
+        const transaction = {
           transaction_date: new Date(),
-          foodId: element.foodId, // FoodId
+          foodId: element.foodId, //  FoodId
           foodName: element.food,
           cost: element.cost,
           price: element.price,
@@ -216,10 +216,10 @@ export class OrdersComponent implements OnInit {
           kitchen: element.kitchen,
           profit: (element.quantity * element.price) - (element.cost * element.quantity),
           bill_amount: order.grandtotal,
-          settled: true,
+          settled: false,
           username: this.username,
           orderId: order.orderId,
-          paymentBy: order.paymentType, // Bank Cash QR
+          paymentBy: order.paymentType, //  Bank Cash QR
           refno: order.refno,
           invoiceno: order.invoiceno,
           ticket: order.ticket,
@@ -261,7 +261,7 @@ export class OrdersComponent implements OnInit {
               }).then(() => {
                 console.log('================ Stock updated ================');
                 this.snackbarRef.open('Stock Updated new Quantity ' + newProductCurrentQuantity + ' Unit(s)', 'ok', { duration: 1000 });
-                // post stock change
+                //  post stock change
                 let stockhist = {
                   productId: doc.id,
                   productName: doc.data().productName,
@@ -269,7 +269,7 @@ export class OrdersComponent implements OnInit {
                   stockChange: fd.quantity,
                   currentQuantity: newProductCurrentQuantity,
                   updateDate: new Date(),
-                  updateSource: 'ordering', // Sale module Or Purchase
+                  updateSource: 'ordering', //  Sale module Or Purchase
                   createdAt: new Date(),
                   orderId: order.id,
                 }
@@ -305,8 +305,8 @@ export class OrdersComponent implements OnInit {
             console.log(doc.data());
             console.log(doc.data().food.foodId + ' - ' + fd.foodId);
             if (doc.data().food.foodId == fd.foodId) {
-              //console.log(doc.data());
-              // Fetch all products relate in BOM
+              // console.log(doc.data());
+              //  Fetch all products relate in BOM
               doc.data().products.forEach(product => {
                 console.log(product);
                 console.log('-------------- update stock for ' + product.productName + ' --------------');
@@ -336,7 +336,7 @@ export class OrdersComponent implements OnInit {
                         stockChange: product.bom_quantity,
                         currentQuantity: newProductCurrentQuantity,
                         updateDate: new Date(),
-                        updateSource: 'ordering', // Sale module Or Purchase
+                        updateSource: 'ordering', //  Sale module Or Purchase
                         createdAt: new Date(),
                         orderId: order.id,
                         username: this.username,

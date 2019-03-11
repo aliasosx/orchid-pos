@@ -5,11 +5,9 @@
       <span>Cashloads Managements</span>
     </mat-card-title>
     <span class="float-right">
-      <button mat-flat-button (click)="openCash()">Open</button>
+      <button mat-flat-button color="primary" (click)="openCash()">Open</button>
     </span>
-    <span class="float-right">
-      <button mat-flat-button class="ml-2">Close</button>
-    </span>
+
     <mat-card-subtitle>All current Cashloads</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
@@ -29,14 +27,49 @@
                   <th scope="col" class="text-center">ເວລາ</th>
                   <th scope="col" class="text-center">ຍອດຂາຍເງິນສົດ</th>
                   <th scope="col" class="text-center">ຍອດຂາຍຜ່ານທະນາຄານ</th>
-                  <th scope="col" class="text-center">ລວມຍອດຂາຍ</th>
-                  <th scope="col" class="text-center">ລວມຍອດ</th>
+                  <th scope="col" class="text-center">ລວມຍອດເງິນສົດ</th>
                   <th scope="col" class="text-center">ເງິນສົດຕົວຈິງ</th>
                   <th scope="col" class="text-center">Balance</th>
                   <th scope="col" class="text-center">ພະນັກງານຂາຍ</th>
+                  <th scope="col" class="text-center">ເວລາປີດ</th>
                   <th scope="col" class="text-center">ອະນຸມັດໂດຍ</th>
+                  <th scope="col" class="text-center">ສະຖານະ</th>
+                  <th scope="col" class="text-center">ປິດການຂາຍ</th>
+                  <th scope="col" class="text-center">ຈັດການ</th>
+
                 </tr>
               </thead>
+              <tbody>
+                <tr *ngFor="let cash of cashloads|async ; let i = index;">
+                  <td class="text-center align-middle"> {{ i+1 }}</td>
+                  <td class="text-right align-middle">{{ cash.initBalance | number }}</td>
+                  <td class="text-center align-middle">{{ cash.openAuthorizedBy }}</td>
+                  <td class="text-center align-middle">{{ cash.loadDateTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}
+                  </td>
+                  <td class="text-right align-middle">{{ cash.eodCashBalance | number }}</td>
+                  <td class="text-right align-middle">{{ cash.eodBankBalance | number }}</td>
+                  <td class="text-right align-middle">{{ cash.cashBalance | number }}</td>
+                  <td class="text-right align-middle">{{ cash.cashInHands | number }}</td>
+                  <td class="text-right align-middle">{{ cash.closeBalance | number }}</td>
+                  <td class="text-center align-middle">{{ cash.closeby }}</td>
+
+                  <td class="text-center align-middle" *ngIf="cash.closeDatetime; else nonclose">
+                    {{ cash.closeDatetime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+                  <ng-template #nonclose>
+                    <td></td>
+                  </ng-template>
+                  <td class="text-center align-middle">{{ cash.closeAuthorizedBy }}</td>
+                  <td class="text-center align-middle" *ngIf="cash.close ; else closeStat">Closed</td>
+                  <ng-template #closeStat>
+                    <td class="text-center align-middle">Open</td>
+                  </ng-template>
+                  <td class="text-center align-middle"><button mat-flat-button color="warn" style="width: 100%;"
+                      (click)="openCloseBalance(cash)">ປິດ</button></td>
+                  <td class="text-center align-middle"><img mat-raised-button
+                      src="../../../assets/icons/baseline-delete-24px.svg" (click)="removeCashLoad(cash.id)"
+                      style="width: 20px;cursor: pointer;"></td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>

@@ -66,6 +66,8 @@ import { StocksPipePipe } from './pipes/stocks-pipe.pipe';
 import { StaffBenefitComponent } from './dialogs/staff-benefit/staff-benefit.component';
 import { CashloadComponent } from './pages/cashload/cashload.component';
 import { OpenCashComponent } from './dialogs/open-cash/open-cash.component';
+import { PasswordInputComponent } from './dialogs/password-input/password-input.component';
+import { CloseBalanceComponent } from './dialogs/close-balance/close-balance.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +117,8 @@ import { OpenCashComponent } from './dialogs/open-cash/open-cash.component';
     StaffBenefitComponent,
     CashloadComponent,
     OpenCashComponent,
+    PasswordInputComponent,
+    CloseBalanceComponent,
 
   ],
   imports: [
@@ -159,6 +163,8 @@ import { OpenCashComponent } from './dialogs/open-cash/open-cash.component';
     NewpasswordComponent,
     StaffBenefitComponent,
     OpenCashComponent,
+    PasswordInputComponent,
+    CloseBalanceComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe,],

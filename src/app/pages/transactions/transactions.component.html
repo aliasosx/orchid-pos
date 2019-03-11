@@ -49,10 +49,15 @@
             <ng-template #noQr>
               <td class="text-center align-middle">N/A</td>
             </ng-template>
-            <td class="text-center align-middle" *ngIf="transaction.settled == true">
+            <td class="text-center align-middle" *ngIf="transaction.settled == true; else nonSettled">
               <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" disable
                 style="max-width: 20px;">
             </td>
+            <ng-template #nonSettled>
+              <td class="text-center align-middle">
+                <img mat-raised-button src="../../../assets/icons/cancel.svg" disable style="max-width: 20px;">
+              </td>
+            </ng-template>
             <td class="text-center align-middle">{{ transaction.invoiceno }}</td>
             <td class="text-center align-middle">{{ transaction.kitchen }}</td>
             <td class="text-center align-middle">

@@ -1,3 +1,60 @@
-<p>
-  close-balance for {{ _title }}
+<p class="h5 mb-2">
+  ປິດຍອດຂາຍສຳລັບ id {{ _title }}
 </p>
+<form [formGroup]="addCashload">
+  <div class="row">
+    <div class="form-group col-md-9">
+      <label for="initBalance">ຍອດຍົກມາ</label>
+      <input type="number" class="form-control" readonly formControlName="initBalance" id="initBalance">
+    </div>
+    <div class="form-group col-md-3 text-right">
+      <button mat-flat-button color="warn" (click)="closeBalanceProcess()" [disabled]="disableCloseJob"
+        style="width: 120px; margin-top: 31px;height: 40px;">ປິດຍອດຂາຍ</button>
+    </div>
+    <div class="form-group col-md-9">
+      <label for="eodCashBalance">ຍອດຂາຍ ເງິນສົດ</label>
+      <input type="number" class="form-control" readonly formControlName="eodCashBalance" id="eodCashBalance">
+    </div>
+
+    <div class="form-group col-md-9">
+      <label for="eodBankBalance">ຍອດຂາຍ ຜ່ານທະນາຄານ</label>
+      <input type="number" class="form-control" readonly formControlName="eodBankBalance" id="eodBankBalance">
+    </div>
+    <div class="form-group col-md-9">
+      <label for="cashBalance">ຍອດລວມເງິນສົດ</label>
+      <input type="number" class="form-control" readonly formControlName="cashBalance" id="cashBalance">
+    </div>
+    <div class="form-group col-md-9">
+      <label for="cashInHands">ຍອດລວມເງິນສົດ ຕົວຈິງ</label>
+      <input type="number" class="form-control" formControlName="cashInHands" id="cashInHands"
+        (keyup)="calculateOnHandsAmount($event.target.value)">
+    </div>
+    <div class="form-group col-md-9">
+      <label for="closeBalance">ປິດຍອດຂາຍ</label>
+      <input type="number" class="form-control" readonly formControlName="closeBalance" id="closeBalance">
+    </div>
+    <div class="form-group col-md-9">
+      <label for="closeAuthorizedBy">ຜູ້ອະນຸມັດ</label>
+      <select class="form-control" formControlName="closeAuthorizedBy" id="closeAuthorizedBy" [disabled]="userDisable">
+        <option value="" disabled>-----------------------</option>
+        <option value="{{ user.email }}" *ngFor="let user of users | async">{{ user.fullName }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3 text-right">
+      <button mat-flat-button color="primary" style="width: 120px; margin-top: 31px;height: 40px;"
+        [disabled]="btnDisable" (click)="approveProcess()">ອະນຸມັດ</button>
+    </div>
+    <div class="form-group col-md-9">
+      <label for="note">ໝາຍເຫດ</label>
+      <input type="text" class="form-control" maxlength="255" formControlName="note" id="note">
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+  <div class="row">
+    <div class="col col-md-12 text-right">
+      <button mat-flat-button class="mt-2" color="primary" (click)="saveBalance()"
+        style="width: 150px;height: 40px;">ບັນທຶກ</button>
+    </div>
+  </div>
+</form>

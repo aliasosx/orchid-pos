@@ -41,10 +41,12 @@ export class OpenCashComponent implements OnInit {
       cashBalance: new FormControl(0),
       cashInHands: new FormControl(0),
       closeBalance: new FormControl(0),
+      totalSellAmount: new FormControl(0),
       close: new FormControl(false),
       closeDatetime: new FormControl(),
       closeby: new FormControl(localStorage.getItem('username')),
       closeAuthorizedBy: new FormControl(),
+      note: new FormControl(),
     });
 
     this.users = this.usersRef.snapshotChanges().pipe(map(change => {

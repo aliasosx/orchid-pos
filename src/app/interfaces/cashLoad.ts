@@ -8,8 +8,10 @@ export interface CashLoad {
   cashBalance: number;
   cashInHands: number;
   closeBalance: number;
+  totalSellAmount: number;
   close: boolean;
   closeDatetime: Date;
   closeby: string;
   closeAuthorizedBy: string;
+  note: string;
 }

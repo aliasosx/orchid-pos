@@ -6,7 +6,9 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { OpenCashComponent } from 'src/app/dialogs/open-cash/open-cash.component';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
+declare var swal: any;
 @Component({
   selector: 'app-cashload',
   templateUrl: './cashload.component.html',
@@ -14,13 +16,26 @@ import { map } from 'rxjs/operators';
 })
 export class CashloadComponent implements OnInit {
 
-  constructor(private dialog: MatDialog, private db: AngularFirestore, private snackbar: MatSnackBar) {
+  constructor(private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router, private db: AngularFirestore, private snackbar: MatSnackBar) {
+
+    this.user = _firebaseAuth.authState;
+    this.user.subscribe(user => {
+      if (user) {
+        console.log(user);
+        this.username_info = user;
+        return;
+      } else {
+        router.navigateByUrl('login');
+      }
+    });
     this.cashloadsRef = db.collection<CashLoad>('cashloads');
   }
 
+
   cashloadsRef: AngularFirestoreCollection<CashLoad>;
   cashloads: Observable<any[]>;
-
+  private user: Observable<firebase.User>;
+  username_info: any;
   ngOnInit() {
     this.cashloads = this.cashloadsRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
@@ -43,9 +58,19 @@ export class CashloadComponent implements OnInit {
     }
   }
   openCloseBalance(cash) {
-    const dialogRef = this.dialog.open(CloseBalanceComponent, {
-      width: '600px',
-      data: cash
-    });
+    if (!cash.close) {
+      const dialogRef = this.dialog.open(CloseBalanceComponent, {
+        width: '600px',
+        data: cash
+      });
+    } else {
+      swal({
+        title: 'ລາຍການທັງໝົດ ປິດແລ້ວ',
+        text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
+        icon: 'error',
+      });
+      return;
+    }
+
   }
 }

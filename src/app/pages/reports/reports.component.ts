@@ -62,6 +62,7 @@ export class ReportsComponent implements OnInit {
 
   kitchenRef: AngularFirestoreCollection<Kitchen>;
   kitchenTransactions: any[] = [];
+  kitchenCostTranx = 0;
   kitchenCountTranx = 0;
   kitchenAmountTranx = 0;
   kitchens: Observable<any[]>;
@@ -71,19 +72,22 @@ export class ReportsComponent implements OnInit {
   foodCategoriesTransactions: any[] = [];
   foodCategoriesCountTranx = 0;
   foodCategoriesAmountTranx = 0;
+  foodCategoriesCostTranx = 0;
 
   foodsRef: AngularFirestoreCollection<Food>;
   foods: Observable<any[]>;
   foodsTransactions: any[] = [];
   foodsCountTranx = 0;
   foodsAmountTranx = 0;
+  foodsCostTranx = 0;
 
   paymentsRef: AngularFirestoreCollection<PaymentType>;
   payments: Observable<any[]>;
   paymentsTransactions: any[] = [];
   paymentsCountTranx = 0;
   paymentsAmountTranx = 0;
-
+  totalCost = 0;
+  netProfit = 0;
   viewReport = 'hidden';
 
   ngOnInit() {
@@ -105,8 +109,11 @@ export class ReportsComponent implements OnInit {
       }));
       this.transactions.subscribe(async (tranxs) => {
         this.grandtotalAmount = 0;
+        this.totalCost = 0;
         tranxs.forEach(tranx => {
           this.grandtotalAmount += tranx.total_price;
+          this.totalCost += tranx.total_cost;
+          this.netProfit = this.grandtotalAmount - this.totalCost;
         });
         let a = await this.loadReportByUser(tranxs);
       });
@@ -180,11 +187,13 @@ export class ReportsComponent implements OnInit {
         tranxs.forEach(tranx => {
           if (kitchen.kitchenName.toLowerCase() === tranx.kitchen.toLowerCase()) {
             this.kitchenAmountTranx += tranx.total_price;
+            this.kitchenCostTranx += tranx.total_cost;
           }
         });
         this.kitchenTransactions.push({
           kitchen: kitchen.kitchenName,
-          kitchenAmount: this.kitchenAmountTranx
+          kitchenAmount: this.kitchenAmountTranx,
+          kitchenCost: this.kitchenCostTranx,
         });
       });
     });
@@ -206,16 +215,19 @@ export class ReportsComponent implements OnInit {
       this.foodCategoriesTransactions = [];
       foodCategories.forEach(foodCategory => {
         this.foodCategoriesAmountTranx = 0;
+        this.foodCategoriesCostTranx = 0;
         // console.log(foodCategory);
         tranxs.forEach(tranx => {
           if (tranx.food_category === foodCategory.foodCategoryNameLao) {
             // console.log(tranx.food_category + ' - ' + foodCategory.foodCategoryNameLao)
             this.foodCategoriesAmountTranx += tranx.total_price;
+            this.foodCategoriesCostTranx += tranx.total_cost;
           }
         });
         this.foodCategoriesTransactions.push({
           foodCategory: foodCategory.foodCategoryNameLao,
-          foodCategoryAmount: this.foodCategoriesAmountTranx
+          foodCategoryAmount: this.foodCategoriesAmountTranx,
+          foodCategoryCost: this.foodCategoriesCostTranx,
         });
       });
       this.foodCategoriesTransactions.sort((a, b) => {
@@ -251,17 +263,20 @@ export class ReportsComponent implements OnInit {
         let _foodName = '';
         this.foodsAmountTranx = 0;
         this.foodsCountTranx = 0;
+        this.foodsCostTranx = 0;
         tranxs.forEach(tranx => {
           if (tranx.foodId == food.foodId) {
             _foodName = tranx.foodName;
             this.foodsCountTranx += tranx.quantity;
             this.foodsAmountTranx += tranx.total_price;
+            this.foodsCostTranx += tranx.total_cost;
           }
         });
         this.foodsTransactions.push({
           foodname: _foodName,
           foodQuantity: this.foodsCountTranx,
-          foodAmount: this.foodsAmountTranx
+          foodAmount: this.foodsAmountTranx,
+          foodCost: this.foodsCostTranx,
         });
       });
       this.foodsTransactions.sort((a, b) => {

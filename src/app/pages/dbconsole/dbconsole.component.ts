@@ -17,7 +17,20 @@ export class DbconsoleComponent implements OnInit {
 
   }
   async updateTransactionsLogfix() {
-
+    /*
+    this.db.collection<Transaction>('transactions', ref => {
+      return ref.where('username', '==', localStorage.getItem('username'));
+    }).get().subscribe(transctions => {
+      transctions.docs.forEach(transaction => {
+        console.log(transaction.id + ' => ' + transaction.data().settled);
+        this.db.collection<Transaction>('transactions').doc(transaction.id).update({
+          'settled': false,
+        }).then((resp) => {
+          console.log(resp)
+        });
+      })
+    });
+    */
   }
 
 }

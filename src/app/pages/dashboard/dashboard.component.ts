@@ -174,8 +174,8 @@ export class DashboardComponent implements OnInit {
             // console.log(paymentType.paymentCode + ' - ' + tranx.paymentBy);
             if (tranx_date === currentDate) {
               if (tranx.paymentBy === paymentType.paymentCode) {
-                paymentCount += tranx.quantity;
-                paymentAmount += tranx.total_price;
+                paymentCount += parseInt(tranx.quantity);
+                paymentAmount += parseInt(tranx.total_price);
               }
             }
           });

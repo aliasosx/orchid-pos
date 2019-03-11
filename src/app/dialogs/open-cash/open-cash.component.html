@@ -2,16 +2,17 @@
   ເປິດຍອດ
 </p>
 <form [formGroup]="addCashload">
-  <div class="row">
-    <div class="form-group col-md-10">
-      <input type="number" class="form-control" formControlName="initBalance" min="5" required>
-      <button mat-raised-button color="primary" style="width: 100px;top:30px;right: 5px;"
-        class="form-control">Authorize</button>
-    </div>
-    <div class="form-group col-md-12">
-      <button mat-raised-button color="primary" class="form-control">
-        ບັນທຶກ
-      </button>
+  <div class="input-group mb-3">
+    <input type="number" class="form-control" min="100000" placeholder="Open Cash minimum 100,000 KIP" min
+      aria-label="Open Cash minimum 100,000 KIP" aria-describedby="basic-addon2" require>
+  </div>
+  <div class="input-group mb-3">
+    <select class="form-control" formControlName="closeAuthorizedBy">
+      <option value="" disabled>-----------------------</option>
+      <option value="{{ user.userName }}" *ngFor="let user of users | async">{{ user.fullName }}</option>
+    </select>
+    <div class="input-group-append">
+      <button class="btn btn-outline-success" (click)="approveProcess()" type="button">Approve</button>
     </div>
   </div>
 </form>

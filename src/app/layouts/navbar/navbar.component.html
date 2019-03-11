@@ -6,9 +6,12 @@
       <span class="example-spacer"></span>
       <div fxShow="true" fxHide.lt-md="true">
         <button mat-flat-button color="primary" class="matbtn" *ngFor="let menu of menusByRoles"
-          routerLink="{{ menu.menuLink }}">{{
-      menu.menuName }}</button>
+          routerLink="{{ menu.menuLink }}">{{ menu.menuName }}</button>
         <mat-menu #appMenu>
+          <button mat-menu-item>
+            <mat-icon>account_box</mat-icon>
+            <span>{{ username }}</span>
+          </button>
           <button mat-menu-item>
             <mat-icon>account_box</mat-icon>
             <span>Profile</span>
@@ -26,6 +29,23 @@
           <mat-icon>more_vert</mat-icon>
         </button>
       </div>
+
+      <div fxShow="true" fxHide.gt-sm="true">
+        <mat-menu #smallAppMenu>
+          <button mat-menu-item *ngFor="let menu of menusByRoles" routerLink="{{ menu.menuLink }}">
+            <mat-icon>account_box</mat-icon>
+            <span>{{ menu.menuName }}</span>
+          </button>
+          <button mat-menu-item (click)="logOut()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="smallAppMenu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+
     </mat-toolbar-row>
   </mat-toolbar>
 </div>

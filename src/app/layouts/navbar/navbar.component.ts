@@ -24,7 +24,6 @@ export class NavbarComponent implements OnInit {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
-        // console.log(user.providerData);
         this.username_info = user;
         this.googleId = user.uid;
         this.navBarShow = '';
@@ -38,7 +37,6 @@ export class NavbarComponent implements OnInit {
         });
         return;
       } else {
-        // router.navigateByUrl('login');
         this.navBarShow = 'hidden';
       }
     });
@@ -54,6 +52,7 @@ export class NavbarComponent implements OnInit {
 
   private user: Observable<firebase.User>;
   username_info: any;
+  username = localStorage.getItem('username');
   googleId: string;
   title = 'Letter\'P restaurant';
   menusRef: AngularFirestoreCollection<Webmenu>;
@@ -129,7 +128,7 @@ export class NavbarComponent implements OnInit {
         });
       }).catch((err) => {
         swal({
-          icon: "error",
+          icon: 'error',
           title: err.message,
         });
       });

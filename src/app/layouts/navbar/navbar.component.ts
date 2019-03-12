@@ -84,7 +84,6 @@ export class NavbarComponent implements OnInit {
         if (user.data().userId === this.googleId) {
           localStorage.setItem('kitchen', user.data().kitchen);
           // Get Roles
-
           this.db.collection<Role>('roles', ref => {
             return ref.where('roleCode', '==', user.data().role);
           }).get().subscribe(roles => {
@@ -111,7 +110,7 @@ export class NavbarComponent implements OnInit {
   }
   logOut() {
     this._firebaseAuth.auth.signOut().then(() => {
-
+      this.router.navigateByUrl('login');
     });
   }
   openNewPassword() {

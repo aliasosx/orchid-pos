@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddbomComponent } from 'src/app/dialogs/addbom/addbom.component';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Bom } from 'src/app/interfaces/bom';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+declare var swal: any;
 
 @Component({
   selector: 'app-bom',
@@ -13,7 +15,7 @@ import { map } from 'rxjs/operators';
 })
 export class BomComponent implements OnInit {
 
-  constructor(private dialog: MatDialog, private db: AngularFirestore) {
+  constructor(private dialog: MatDialog, private db: AngularFirestore, private snackbar: MatSnackBar) {
     this.bomsRef = db.collection<Bom>('boms');
   }
 
@@ -39,5 +41,20 @@ export class BomComponent implements OnInit {
       width: '800px',
       data: bom
     });
+  }
+  removeBom(id) {
+    if (id) {
+      swal({
+        title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດລາຍການນີ້',
+        icon: 'warning',
+        dangerMode: true,
+      }).then((value) => {
+        if (value) {
+          this.db.collection<Bom>('boms').doc(id).delete().then(() => {
+            this.snackbar.open('Items removed', 'OK', { duration: 1000 });
+          });
+        }
+      });
+    }
   }
 }

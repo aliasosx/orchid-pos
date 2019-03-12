@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Order } from 'src/app/interfaces/order';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import { map, filter, groupBy, mergeMap, toArray } from 'rxjs/operators';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-kitchen-orders',
@@ -11,16 +13,32 @@ import { map, filter } from 'rxjs/operators';
 })
 export class KitchenOrdersComponent implements OnInit {
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router) {
+
+    this.user = _firebaseAuth.authState;
+    this.user.subscribe(user => {
+      if (user) {
+        this.username_info = user;
+        return;
+      } else {
+        router.navigateByUrl('login');
+      }
+    });
+
     this.ordersRef = db.collection<Order>('orders', ref => {
       return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
     });
   }
-
+  showList = '';
+  private user: Observable<firebase.User>;
+  username_info: any;
   ordersRef: AngularFirestoreCollection<Order>;
   orders: Observable<any[]>;
 
   kitchen = localStorage.getItem('kitchen');
+
+  orderList: any[] = [];
+  order_tracks: any;
 
   ngOnInit() {
     this.orders = this.ordersRef.snapshotChanges().pipe(map(change => {

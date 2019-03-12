@@ -77,7 +77,7 @@ export class PosComponent implements OnInit {
     }
   }
   loadFoodPage(page) {
-    if (page.index == 0) {
+    if (page.index === 0) {
       this.foods = this.db.collection<Food>('foods').snapshotChanges().pipe(map(change => {
         return change.map(a => {
           const foods = a.payload.doc.data();
@@ -123,6 +123,7 @@ export class PosComponent implements OnInit {
         'id': food.id,
         'foodId': food.foodId,
         'food': food.food_name,
+        'food_name_en': food.food_name_en,
         'food_category': food.food_category,
         'price': food.price,
         'cost': food.cost,

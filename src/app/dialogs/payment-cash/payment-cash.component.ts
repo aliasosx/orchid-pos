@@ -46,6 +46,7 @@ export class PaymentCashComponent implements OnInit {
   orderForm: FormGroup;
   ticketsRef: AngularFirestoreCollection<Ticket>;
   tickets: Observable<any[]>;
+  ticketSelected: number;
   foodList: any = [];
 
   paymentTypesRef: AngularFirestoreCollection<PaymentType>;
@@ -63,6 +64,7 @@ export class PaymentCashComponent implements OnInit {
   showAlert = 'hidden';
 
   qrPaymentsRef: AngularFirestoreCollection<QrBankResponseData>;
+  items_Print: any = [];
 
   ngOnInit() {
     const uuid1 = uuid.v1();
@@ -107,7 +109,23 @@ export class PaymentCashComponent implements OnInit {
         return tickets;
       });
     }));
+    this.prepaireItemToPrint();
   }
+
+  prepaireItemToPrint() {
+    const items = JSON.parse(localStorage.getItem('cart'));
+    // console.log(items);
+
+    items.forEach(item => {
+      this.items_Print.push({
+        'food_name': item.food_name_en.substring(0, 15),
+        'quantity': item.quantity,
+        'total': (item.quantity * item.price)
+      });
+    });
+    console.log(this.items_Print);
+  }
+
   paymentProcess() {
     this.paymentBtnDisabled = true;
     if (this.orderForm.valid && this.orderForm.get('username').value != null) {
@@ -116,10 +134,12 @@ export class PaymentCashComponent implements OnInit {
         this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
           if (this.bankDataResponse) {
             this.qrPaymentsRef.add(this.bankDataResponse).then(() => {
+              this.print_thermal(this.orderForm.get('ticket').value, this.orderForm.get('paymentType').value);
               localStorage.removeItem('cart');
               this.dialogRef.close('success');
             });
           } else {
+            this.print_thermal(this.orderForm.get('ticket').value, this.orderForm.get('paymentType').value);
             localStorage.removeItem('cart');
             this.dialogRef.close('success');
           }
@@ -205,23 +225,22 @@ export class PaymentCashComponent implements OnInit {
     });
   }
   // Thermal printer module
-  async print_thermal(ticket, paymentType, items_Print, grandtotal, received, change) {
+  async print_thermal(ticket, paymentType) {
     if (ticket) {
       const printData = {
         'staff': localStorage.getItem('username'),
         'ticket': ticket,
-        'terminal': paymentType,
-        'items': items_Print,
-        'grandTotal': grandtotal,
-        'recieved': received,
-        'change': change
+        'terminal': 'POS-001-' + paymentType,
+        'items': this.items_Print,
+        'grandTotal': this.data.total,
+        'recieved': this.orderForm.get('recieved').value,
+        'change': this.orderForm.get('change').value
       };
       console.log(printData);
       const c = await this.printerService.print_local(printData).then(res => {
         console.log(res);
       });
     }
-
   }
 
 }

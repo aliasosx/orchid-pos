@@ -20,7 +20,7 @@ export class AddQuantityComponent implements OnInit {
   }
   addQuantity(q) {
     if (q) {
-      this.dialogRef.close(q);
+      this.dialogRef.close(parseInt(q));
     }
   }
 

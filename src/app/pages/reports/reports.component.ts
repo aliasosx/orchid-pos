@@ -265,11 +265,11 @@ export class ReportsComponent implements OnInit {
         this.foodsCountTranx = 0;
         this.foodsCostTranx = 0;
         tranxs.forEach(tranx => {
-          if (tranx.foodId == food.foodId) {
+          if (tranx.foodId === food.foodId) {
             _foodName = tranx.foodName;
-            this.foodsCountTranx += tranx.quantity;
-            this.foodsAmountTranx += tranx.total_price;
-            this.foodsCostTranx += tranx.total_cost;
+            this.foodsCountTranx += parseInt(tranx.quantity);
+            this.foodsAmountTranx += parseInt(tranx.total_price);
+            this.foodsCostTranx += parseInt(tranx.total_cost);
           }
         });
         this.foodsTransactions.push({

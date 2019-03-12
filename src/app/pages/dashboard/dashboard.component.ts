@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
     this.transactions.subscribe(tranxs => {
       this.transactionCount = tranxs.length;
       tranxs.forEach(tranx => {
-        this.transactionAmount += tranx.total_price;
+        this.transactionAmount += parseInt(tranx.total_price);
       });
     });
     this.transactionsCurrent = this.transactionsCurrentRef.snapshotChanges().pipe(map(change => {
@@ -101,8 +101,8 @@ export class DashboardComponent implements OnInit {
         let tranx_date = new DatePipe('en-us').transform(tranx.transaction_date.toDate(), 'dd-MMM-yyyy');
         let currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
         if (tranx_date == currentDate) {
-          this.transactionAmountDiary += tranx.total_price;
-          this.transactionCountDairy += tranx.quantity;
+          this.transactionAmountDiary += parseInt(tranx.total_price);
+          this.transactionCountDairy += parseInt(tranx.quantity);
         }
       });
     });
@@ -135,8 +135,8 @@ export class DashboardComponent implements OnInit {
             const currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
             if (tranx_date === currentDate) {
               if (tranx.kitchen === kitchen.kitchenName) {
-                kitchenCount += tranx.quantity;
-                kitchenAmount += tranx.total_price;
+                kitchenCount += parseInt(tranx.quantity);
+                kitchenAmount += parseInt(tranx.total_price);
               }
             }
           });

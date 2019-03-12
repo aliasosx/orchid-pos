@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { Transaction } from 'src/app/interfaces/transaction';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
-
+declare var swal: any;
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class TransactionsComponent implements OnInit {
 
+  // tslint:disable-next-line: max-line-length
   constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
@@ -44,6 +45,21 @@ export class TransactionsComponent implements OnInit {
         return transactions;
       });
     }));
+  }
+  settleToggle(tranx) {
+    if (tranx) {
+      swal({
+        title: 'ແນ່ໃຈວ່າ ຈະປ່ຽນແປງ',
+        icon: 'warning',
+        dangerMode: true,
+      }).then((value) => {
+        if (value) {
+          this.db.collection<Transaction>('transactions').doc(tranx.id).update({
+            settled: !tranx.settled,
+          });
+        }
+      });
+    }
   }
 
 }

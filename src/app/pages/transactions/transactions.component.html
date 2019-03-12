@@ -50,12 +50,13 @@
               <td class="text-center align-middle">N/A</td>
             </ng-template>
             <td class="text-center align-middle" *ngIf="transaction.settled == true; else nonSettled">
-              <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" disable
-                style="max-width: 20px;">
+              <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
+                (click)="settleToggle(transaction)" style="max-width: 20px;cursor: pointer;">
             </td>
             <ng-template #nonSettled>
               <td class="text-center align-middle">
-                <img mat-raised-button src="../../../assets/icons/cancel.svg" disable style="max-width: 20px;">
+                <img mat-raised-button src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;"
+                  (click)="settleToggle(transaction)">
               </td>
             </ng-template>
             <td class="text-center align-middle">{{ transaction.invoiceno }}</td>

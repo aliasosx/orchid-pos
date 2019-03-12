@@ -36,6 +36,7 @@ export class OpenCashComponent implements OnInit {
       loadDateTime: new FormControl(new Date),
       initBalance: new FormControl(0),
       openAuthorizedBy: new FormControl(),
+      loadApproved: new FormControl(false),
       eodCashBalance: new FormControl(0),
       eodBankBalance: new FormControl(0),
       cashBalance: new FormControl(0),
@@ -46,6 +47,7 @@ export class OpenCashComponent implements OnInit {
       closeDatetime: new FormControl(),
       closeby: new FormControl(localStorage.getItem('username')),
       closeAuthorizedBy: new FormControl(),
+      closeApproved: new FormControl(false),
       note: new FormControl(),
     });
 
@@ -57,6 +59,19 @@ export class OpenCashComponent implements OnInit {
       });
     }));
   }
+
+  async addInitialBalance() {
+    if (this.addCashload.get('initBalance').value) {
+      this.db.collection<CashLoad>('cashloads').add(this.addCashload.value).then((resps) => {
+        console.log(resps);
+        this.dialogRef.close('success');
+      }).catch((err) => {
+        console.log(err.message);
+        this.btnDisable = false;
+      });
+    }
+  }
+
   async approveProcess() {
     this.btnDisable = true;
     if (this.addCashload.get('openAuthorizedBy').value) {

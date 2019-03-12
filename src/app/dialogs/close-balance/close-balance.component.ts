@@ -46,6 +46,7 @@ export class CloseBalanceComponent implements OnInit {
       loadDateTime: new FormControl(),
       initBalance: new FormControl(0),
       openAuthorizedBy: new FormControl(),
+      loadApproved: new FormControl(),
       eodCashBalance: new FormControl(0),
       eodBankBalance: new FormControl(0),
       cashBalance: new FormControl(0),
@@ -57,6 +58,7 @@ export class CloseBalanceComponent implements OnInit {
       closeDatetime: new FormControl(new Date()),
       closeby: new FormControl(localStorage.getItem('username')),
       closeAuthorizedBy: new FormControl(),
+      closeApproved: new FormControl()
     });
     if (this.data) {
       this.addCashload.setValue(this.data);
@@ -88,6 +90,7 @@ export class CloseBalanceComponent implements OnInit {
             let nowDate = this.datePipe.transform(new Date(), 'dd-MMM-yyyy');
             // sum cash
             if (transactionDate === nowDate && transaction.data().paymentBy === 'CASH' && transaction.data().settled === false) {
+              // tslint:disable-next-line: max-line-length
               // console.log(transactionDate + ' => ' + transaction.data().price + ' - ' + transaction.data().quantity + ' - ' + transaction.data().total_price);
               sum_cash += transaction.data().total_price;
               this.db.collection<Transaction>('transactions').doc(transaction.id).update({
@@ -95,6 +98,7 @@ export class CloseBalanceComponent implements OnInit {
               });
               // console.log(sum);
             } else if (transactionDate === nowDate && transaction.data().paymentBy !== 'CASH' && transaction.data().settled === false) {
+              // tslint:disable-next-line: max-line-length
               console.log(transactionDate + ' => ' + transaction.data().price + ' - ' + transaction.data().quantity + ' - ' + transaction.data().total_price);
               sum_bank += transaction.data().total_price;
               this.db.collection<Transaction>('transactions').doc(transaction.id).update({

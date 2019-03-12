@@ -22,9 +22,10 @@
               <thead class="thead-light">
                 <tr>
                   <th scope="col" class="text-center">#</th>
+                  <th scope="col" class="text-center">ເວລາ</th>
                   <th scope="col" class="text-center">ຍອດເປີດ</th>
                   <th scope="col" class="text-center">ອະນຸມັດໂດຍ</th>
-                  <th scope="col" class="text-center">ເວລາ</th>
+                  <th scope="col" class="text-center">ອະນຸມັດເປີດຍອດ</th>
                   <th scope="col" class="text-center">ຍອດຂາຍເງິນສົດ</th>
                   <th scope="col" class="text-center">ຍອດຂາຍຜ່ານທະນາຄານ</th>
                   <th scope="col" class="text-center">ລວມຍອດເງິນສົດ</th>
@@ -34,6 +35,7 @@
                   <th scope="col" class="text-center">ພະນັກງານຂາຍ</th>
                   <th scope="col" class="text-center">ເວລາປີດ</th>
                   <th scope="col" class="text-center">ອະນຸມັດໂດຍ</th>
+                  <th scope="col" class="text-center">ອະນຸມັດປິດຍອດ</th>
                   <th scope="col" class="text-center">ສະຖານະ</th>
                   <th scope="col" class="text-center">ໝາຍເຫດ</th>
                   <th scope="col" class="text-center">ປິດການຂາຍ</th>
@@ -42,11 +44,24 @@
               </thead>
               <tbody>
                 <tr *ngFor="let cash of cashloads|async ; let i = index;">
+
                   <td class="text-center align-middle"> {{ i+1 }}</td>
-                  <td class="text-right align-middle">{{ cash.initBalance | number }}</td>
-                  <td class="text-center align-middle">{{ cash.openAuthorizedBy }}</td>
                   <td class="text-center align-middle">{{ cash.loadDateTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}
                   </td>
+                  <td class="text-right align-middle">{{ cash.initBalance | number }}</td>
+                  <td class="text-center align-middle">{{ cash.openAuthorizedBy }}</td>
+                  <td class="text-center align-middle" *ngIf="cash.loadApproved == true;else loadApprovedTag">
+                    <img mat-raised-button src=" ../../../assets/icons/Check_green_icon.svg.png"
+                      style="max-width: 20px;cursor: pointer;">
+                  </td>
+                  <ng-template #loadApprovedTag>
+                    <td class="text-center align-middle" (click)="approvedLoadCash(cash.id)">
+                      <img mat-raised-button src="../../../assets/icons/cancel.svg"
+                        style="max-width: 20px;cursor: pointer;">
+                    </td>
+                  </ng-template>
+
+
                   <td class="text-right align-middle">{{ cash.eodCashBalance | number }}</td>
                   <td class="text-right align-middle">{{ cash.eodBankBalance | number }}</td>
                   <td class="text-right align-middle">{{ cash.cashBalance | number }}</td>
@@ -64,6 +79,18 @@
                   <ng-template #closeStat>
                     <td class="text-center align-middle">Open</td>
                   </ng-template>
+
+                  <td class="text-center align-middle" *ngIf="cash.closeApproved == true;else closeApprovedTag">
+                    <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
+                      style="max-width: 20px;cursor: pointer;">
+                  </td>
+                  <ng-template #closeApprovedTag>
+                    <td class="text-center align-middle" (click)="closeApproved(cash.id)">
+                      <img mat-raised-button src="../../../assets/icons/cancel.svg"
+                        style="max-width: 20px;cursor: pointer;">
+                    </td>
+                  </ng-template>
+
                   <td class="text-left align-middle">{{ cash.note }}</td>
                   <td class="text-center align-middle"><button mat-flat-button color="warn" style="width: 100%;"
                       (click)="openCloseBalance(cash)">ປິດ</button>

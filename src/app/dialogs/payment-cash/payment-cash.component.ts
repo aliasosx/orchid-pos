@@ -1,3 +1,4 @@
+import { PrinterServiceService } from './../../services/printer-service.service';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
@@ -23,7 +24,7 @@ declare var deepstream: any;
 })
 export class PaymentCashComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data) {
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data, private printerService: PrinterServiceService) {
     this.username = data.username;
     this.cartRef = db.collection<Cart>('carts', ref => {
       return ref.where('username', '==', this.username);
@@ -169,6 +170,7 @@ export class PaymentCashComponent implements OnInit {
     const _invoiceNumber = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
     const _description = 'letterp-POS-transctions';
     this.orderForm.get('invoiceno').setValue(_invoiceNumber);
+    // tslint:disable-next-line: max-line-length
     let urlFormat = '/?uuid=' + _uuid1 + '&tid=' + _terminalId + '&amount=' + _amount + '&invoiceId=' + _invoiceNumber + '&description=' + _description;
     this.bcelQRcodeUrl = this.qRCodeUrl + urlFormat;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.bcelQRcodeUrl);
@@ -202,4 +204,24 @@ export class PaymentCashComponent implements OnInit {
       }
     });
   }
+  // Thermal printer module
+  async print_thermal(ticket, paymentType, items_Print, grandtotal, received, change) {
+    if (ticket) {
+      const printData = {
+        'staff': localStorage.getItem('username'),
+        'ticket': ticket,
+        'terminal': paymentType,
+        'items': items_Print,
+        'grandTotal': grandtotal,
+        'recieved': received,
+        'change': change
+      };
+      console.log(printData);
+      const c = await this.printerService.print_local(printData).then(res => {
+        console.log(res);
+      });
+    }
+
+  }
+
 }

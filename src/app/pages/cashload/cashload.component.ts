@@ -1,3 +1,4 @@
+import { FormGroup, FormControl } from '@angular/forms';
 import { CloseBalanceComponent } from './../../dialogs/close-balance/close-balance.component';
 import { CashLoad } from './../../interfaces/cashLoad';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
@@ -16,12 +17,12 @@ declare var swal: any;
 })
 export class CashloadComponent implements OnInit {
 
+  // tslint:disable-next-line: max-line-length
   constructor(private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router, private db: AngularFirestore, private snackbar: MatSnackBar) {
 
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
-        console.log(user);
         this.username_info = user;
         return;
       } else {
@@ -30,13 +31,15 @@ export class CashloadComponent implements OnInit {
     });
     this.cashloadsRef = db.collection<CashLoad>('cashloads');
   }
-
-
   cashloadsRef: AngularFirestoreCollection<CashLoad>;
   cashloads: Observable<any[]>;
   private user: Observable<firebase.User>;
   username_info: any;
+
+
+
   ngOnInit() {
+
     this.cashloads = this.cashloadsRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data() as CashLoad;
@@ -52,8 +55,16 @@ export class CashloadComponent implements OnInit {
   }
   removeCashLoad(id) {
     if (id) {
-      this.db.collection<CashLoad>('cashloads').doc(id).delete().then(() => {
-        this.snackbar.open('Record has been removed', 'OK', { duration: 1000 });
+      swal({
+        title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດລາຍການນີ້',
+        icon: 'warning',
+        dangerMode: true,
+      }).then((value) => {
+        if (value) {
+          this.db.collection<CashLoad>('cashloads').doc(id).delete().then(() => {
+            this.snackbar.open('Record has been removed', 'OK', { duration: 1000 });
+          });
+        }
       });
     }
   }
@@ -71,6 +82,63 @@ export class CashloadComponent implements OnInit {
       });
       return;
     }
+  }
+  approvedLoadCash(id) {
+    if (id) {
+      swal({
+        title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດລາຍການນີ້',
+        icon: 'warning',
+        dangerMode: true,
+      }).then((value) => {
+        if (value) {
+          this.db.collection<CashLoad>('cashloads').doc(id).get().subscribe((cashload) => { // closeby
+            if (cashload.data().closeby !== localStorage.getItem('username')) {
+              this.db.collection<CashLoad>('cashloads').doc(id).update({
+                loadApproved: true,
+                openAuthorizedBy: localStorage.getItem('username'),
+              }).then(() => {
+                this.snackbar.open('Operation success', 'OK', { duration: 1000 });
+              });
+            } else {
+              swal({
+                title: 'ທ່ານບໍ່ສາມາດທີ່ຈະອະນຸມັດໃຫ້ຕົນເອງໄດ້!',
+                text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
+                icon: 'error',
+              });
+              return;
+            }
+          });
+        }
+      });
 
+    }
+  }
+  closeApproved(id) {
+    if (id) {
+      swal({
+        title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດປິດລາຍການນີ້',
+        icon: 'warning',
+        dangerMode: true,
+      }).then((value) => {
+        if (value) {
+          this.db.collection<CashLoad>('cashloads').doc(id).get().subscribe((cashload) => {
+            if (cashload.data().closeby !== localStorage.getItem('username')) {
+              this.db.collection<CashLoad>('cashloads').doc(id).update({
+                closeApproved: true,
+                closeAuthorizedBy: localStorage.getItem('username'),
+              }).then(() => {
+                this.snackbar.open('Operation success', 'OK', { duration: 1000 });
+              });
+            } else {
+              swal({
+                title: 'ທ່ານບໍ່ສາມາດທີ່ຈະອະນຸມັດໃຫ້ຕົນເອງໄດ້!',
+                text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
+                icon: 'error',
+              });
+            }
+          });
+        }
+      });
+    }
   }
 }

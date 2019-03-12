@@ -3,6 +3,7 @@ export interface CashLoad {
   loadDateTime: Date;
   initBalance: number;
   openAuthorizedBy: string;
+  loadApproved: boolean;
   eodCashBalance: number;
   eodBankBalance: number;
   cashBalance: number;
@@ -13,5 +14,6 @@ export interface CashLoad {
   closeDatetime: Date;
   closeby: string;
   closeAuthorizedBy: string;
+  closeApproved: boolean;
   note: string;
 }

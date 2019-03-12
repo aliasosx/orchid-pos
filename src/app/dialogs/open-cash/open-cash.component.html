@@ -4,9 +4,13 @@
 <form [formGroup]="addCashload">
   <div class="input-group mb-3">
     <input type="number" class="form-control" min="100000" placeholder="Open Cash minimum 100,000 KIP" min
-      aria-label="Open Cash minimum 100,000 KIP" aria-describedby="basic-addon2" required formControlName="initBalance">
+      aria-label="Open Cash minimum 100,000 KIP" aria-describedby="basic-addon2" required formControlName="initBalance"
+      (keydown.enter)="addInitialBalance()">
   </div>
-  <div class="input-group mb-3">
+  <!--
+
+
+  <div class=" input-group mb-3">
     <select class="form-control" formControlName="openAuthorizedBy">
       <option value="" disabled>-----------------------</option>
       <option value="{{ user.email }}" *ngFor="let user of users | async">{{ user.fullName }}</option>
@@ -16,4 +20,5 @@
         type="button">Approve</button>
     </div>
   </div>
+  -->
 </form>

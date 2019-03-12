@@ -18,8 +18,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
+  // tslint:disable-next-line: max-line-length
   MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule,
 } from '@angular/material';
+
+import { HttpClientModule } from '@angular/common/http';
+
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { FoodsComponent } from './pages/foods/foods.component';
 import { ProductsComponent } from './pages/products/products.component';
@@ -120,6 +124,7 @@ import { CloseBalanceComponent } from './dialogs/close-balance/close-balance.com
     PasswordInputComponent,
     CloseBalanceComponent,
 
+
   ],
   imports: [
     BrowserModule,
@@ -135,6 +140,7 @@ import { CloseBalanceComponent } from './dialogs/close-balance/close-balance.com
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
     MatMenuModule, MatTooltipModule,
+    HttpClientModule,
   ],
   entryComponents: [
     AddFoodComponent,

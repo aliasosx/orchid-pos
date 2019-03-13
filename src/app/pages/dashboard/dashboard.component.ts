@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
   private user: Observable<firebase.User>;
   username_info: any;
 
-  username = localStorage.getItem('username');
+  username;
 
   transactionsRef: AngularFirestoreCollection<Transaction>
   transactions: Observable<any[]>;
@@ -187,6 +187,6 @@ export class DashboardComponent implements OnInit {
         });
       });
     });
-
+    this.username = localStorage.getItem('username');
   }
 }

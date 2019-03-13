@@ -1,3 +1,5 @@
+import { DatePipe } from '@angular/common';
+import { CashLoad } from 'src/app/interfaces/cashLoad';
 import { AddQuantityComponent } from './../../dialogs/add-quantity/add-quantity.component';
 import { map } from 'rxjs/operators';
 import { Food } from 'src/app/interfaces/food';
@@ -38,6 +40,7 @@ export class PosComponent implements OnInit {
         router.navigateByUrl('login');
       }
     });
+    this.checkOpenCashBal();
   }
   private user: Observable<firebase.User>;
   username_info: any;
@@ -312,6 +315,41 @@ export class PosComponent implements OnInit {
           return;
         }
       });
+    }
+  }
+  async checkOpenCashBal() {
+    const currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
+    let cashloadsOb: Observable<any[]>;
+    let countCashLoad = 0;
+    cashloadsOb = await this.db.collection<CashLoad>('cashloads', ref => {
+      return ref.where('closeby', '==', localStorage.getItem('username'));
+    }).snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data() as CashLoad;
+        data['id'] = a.payload.doc.id;
+        return data;
+      });
+    }));
+
+    let c = await cashloadsOb.subscribe(csh => {
+      countCashLoad = csh.length;
+    });
+
+    if (countCashLoad > 0) {
+      cashloadsOb.subscribe(cashloads => {
+        cashloads.forEach(casload => {
+          const loadDate = new DatePipe('en-us').transform(casload.loadDateTime.toDate(), 'dd-MMM-yyyy');
+          if (currentDate === loadDate && casload.loadApproved === true) {
+            this.snackbar.open('Cash opened and Approved', 'OK', { duration: 2000 });
+          } else {
+            this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
+            this.router.navigateByUrl('cashloads');
+          }
+        });
+      });
+    } else {
+      this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
+      this.router.navigateByUrl('cashloads');
     }
   }
 }

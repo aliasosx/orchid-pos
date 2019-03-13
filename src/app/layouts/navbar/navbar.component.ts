@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { User } from 'firebase';
-import { Role } from 'src/app/interfaces/role';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { NewpasswordComponent } from 'src/app/dialogs/newpassword/newpassword.component';
@@ -22,16 +21,22 @@ export class NavbarComponent implements OnInit {
 
   constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router, private dialog: MatDialog, ) {
     this.user = _firebaseAuth.authState;
-    this.user.subscribe(user => {
+    this.user.subscribe(async (user) => {
       if (user) {
+        // console.log(user);
         this.username_info = user;
         this.googleId = user.uid;
         this.navBarShow = '';
-        this.loadMenu();
-        db.collection<User>('users').get().subscribe(users => {
+        // this.loadMenu();
+        await db.collection<User>('users').get().subscribe(users => {
           users.docs.forEach(u => {
             if (u.data().userId === user.uid) {
               localStorage.setItem('username', u.data().userName);
+              if (localStorage.getItem('username')) {
+                this.loadMenus();
+              } else {
+                window.location.reload();
+              }
             }
           });
         });
@@ -45,7 +50,7 @@ export class NavbarComponent implements OnInit {
       return ref.orderBy('menuId', 'asc');
     });
     this.restaurantInfoRef = db.collection<RestaurantInfo>('restaurant_info');
-    this.usersRef = db.collection<User>('users');
+
   }
 
   navBarShow = '';
@@ -65,51 +70,37 @@ export class NavbarComponent implements OnInit {
   users: Observable<any[]>;
   currentRole: string;
   menusByRoles: any[] = [];
+
+  userMenus: any[] = [];
+
   ngOnInit() {
-    this.menus = this.menusRef.snapshotChanges().pipe(map(change => {
+    this.RestaurantInfos = this.restaurantInfoRef.valueChanges();
+  }
+
+  loadMenus() {
+    this.userMenus = [];
+    this.users = this.db.collection<User>('users', ref => {
+      return ref.where('userName', '==', localStorage.getItem('username'));
+    }).snapshotChanges().pipe(map(change => {
       return change.map(a => {
-        const data = a.payload.doc.data();
+        const data = a.payload.doc.data() as User;
         data['id'] = a.payload.doc.id;
-        // this.loadMenu();
         return data;
       });
     }));
-    this.RestaurantInfos = this.restaurantInfoRef.valueChanges();
-    // this.loadMenu();
-  }
-  loadMenu() {
-    this.menusByRoles = [];
-    this.usersRef.get().subscribe(users => {
-      users.docs.forEach(user => {
-        if (user.data().userId === this.googleId) {
-          localStorage.setItem('kitchen', user.data().kitchen);
-          // Get Roles
-          this.db.collection<Role>('roles', ref => {
-            return ref.where('roleCode', '==', user.data().role);
-          }).get().subscribe(roles => {
-            roles.forEach(role => {
-              role.data().menus.forEach(menu => {
-                if (menu.toLowerCase() === 'dashboards') {
-                  this.menusByRoles.push({
-                    menuName: menu.toUpperCase(),
-                    menuLink: ''
-                  });
-                } else {
-                  this.menusByRoles.push({
-                    menuName: menu.toUpperCase(),
-                    menuLink: menu.toLowerCase(),
-                  });
-                }
-              });
-              // console.log(this.menus);
-            });
-          });
-        }
+
+    this.users.subscribe(users => {
+      users.forEach(user => {
+        user.menus.forEach(element => {
+          this.userMenus.push(element.toUpperCase());
+        });
       });
     });
   }
+
   logOut() {
     this._firebaseAuth.auth.signOut().then(() => {
+      localStorage.removeItem('username');
       this.router.navigateByUrl('login');
     });
   }
@@ -118,7 +109,7 @@ export class NavbarComponent implements OnInit {
       width: '400px'
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) return;
+      if (!result) { return; }
       let currUser = this._firebaseAuth.auth.currentUser;
       currUser.updatePassword(result).then(() => {
         swal({

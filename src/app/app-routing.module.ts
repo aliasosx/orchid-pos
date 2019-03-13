@@ -18,6 +18,7 @@ import { CashloadComponent } from './pages/cashload/cashload.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
+  { path: 'dashboards', component: DashboardComponent },
   { path: 'foods', component: FoodsComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'pos', component: PosComponent },

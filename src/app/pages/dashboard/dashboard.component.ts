@@ -98,9 +98,9 @@ export class DashboardComponent implements OnInit {
       this.transactionAmountDiary = 0;
       this.transactionCountDairy = 0;
       tranxs.forEach(tranx => {
-        let tranx_date = new DatePipe('en-us').transform(tranx.transaction_date.toDate(), 'dd-MMM-yyyy');
-        let currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
-        if (tranx_date == currentDate) {
+        const tranx_date = new DatePipe('en-us').transform(tranx.transaction_date.toDate(), 'dd-MMM-yyyy');
+        const currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
+        if (tranx_date === currentDate) {
           this.transactionAmountDiary += parseInt(tranx.total_price);
           this.transactionCountDairy += parseInt(tranx.quantity);
         }

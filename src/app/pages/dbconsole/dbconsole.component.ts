@@ -1,8 +1,10 @@
+import { User } from 'src/app/interfaces/user';
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Component, OnInit } from '@angular/core';
-import { Transaction } from 'src/app/interfaces/transaction';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { map } from 'rxjs/operators';
-import { StockHistory } from 'src/app/interfaces/stockHistory';
+import { Role } from 'src/app/interfaces/role';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dbconsole',
@@ -11,26 +13,45 @@ import { StockHistory } from 'src/app/interfaces/stockHistory';
 })
 export class DbconsoleComponent implements OnInit {
 
-  constructor(private db: AngularFirestore) { }
+  constructor(private db: AngularFirestore) {
+    this.rolesRef = db.collection<Role>('roles');
+  }
+  disableBtn = false;
+  btnTxt = 'Process';
 
+  rolesRef: AngularFirestoreCollection<Role>;
+  roles: Observable<any[]>;
+  consoleText = '';
   ngOnInit() {
+    this.roles = this.rolesRef.snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data() as Role;
+        data['id'] = a.payload.doc.id;
+        return data;
+      });
+    }));
 
   }
   async updateTransactionsLogfix() {
-    /*
-    this.db.collection<Transaction>('transactions', ref => {
-      return ref.where('username', '==', localStorage.getItem('username'));
-    }).get().subscribe(transctions => {
-      transctions.docs.forEach(transaction => {
-        console.log(transaction.id + ' => ' + transaction.data().settled);
-        this.db.collection<Transaction>('transactions').doc(transaction.id).update({
-          'settled': false,
-        }).then((resp) => {
-          console.log(resp)
-        });
-      })
-    });
-    */
-  }
+    this.disableBtn = true;
+    this.btnTxt = 'Processing ... ';
 
+    // add menu to Users
+
+    let c = await this.db.collection<Role>('roles').get().subscribe(roles => {
+      roles.docs.forEach(role => {
+        this.db.collection<User>('users').get().subscribe(users => {
+          users.docs.forEach(user => {
+            if (user.data().role === role.id) {
+              this.db.collection<User>('users').doc(user.id).update({
+                menus: role.data().menus
+              }).then((resp) => {
+                console.log(resp);
+              });
+            }
+          });
+        });
+      });
+    });
+  }
 }

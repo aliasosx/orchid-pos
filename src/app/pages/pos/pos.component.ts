@@ -17,6 +17,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user';
 
+declare var swal: any;
+
 @Component({
   selector: 'app-pos',
   templateUrl: './pos.component.html',
@@ -322,7 +324,7 @@ export class PosComponent implements OnInit {
     let cashloadsOb: Observable<any[]>;
     let countCashLoad = 0;
     cashloadsOb = await this.db.collection<CashLoad>('cashloads', ref => {
-      return ref.where('closeby', '==', localStorage.getItem('username'));
+      return ref.where('closeby', '==', localStorage.getItem('username')).where('closeApproved', '==', false).where('close', '==', false);
     }).snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data() as CashLoad;
@@ -332,24 +334,34 @@ export class PosComponent implements OnInit {
     }));
 
     let c = await cashloadsOb.subscribe(csh => {
-      countCashLoad = csh.length;
+
+      if (csh.length > 0) {
+        cashloadsOb.subscribe(cashloads => {
+          cashloads.forEach(casload => {
+            const loadDate = new DatePipe('en-us').transform(casload.loadDateTime.toDate(), 'dd-MMM-yyyy');
+            if (currentDate === loadDate && casload.loadApproved === true) {
+              this.snackbar.open('Cash opened and Approved', 'OK', { duration: 2000, verticalPosition: 'top' });
+            } else {
+              this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
+              this.router.navigateByUrl('cashloads');
+            }
+          });
+        });
+      } else {
+        swal({
+          title: 'ບໍ່ທັນເອົາເງິນເຂົ້າ ກະແຊັດ',
+          icon: 'warning',
+          dangerMode: true,
+        }).then(() => {
+          this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
+          this.router.navigateByUrl('cashloads');
+        }).catch(() => {
+          this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
+          this.router.navigateByUrl('cashloads');
+        });
+
+      }
     });
 
-    if (countCashLoad > 0) {
-      cashloadsOb.subscribe(cashloads => {
-        cashloads.forEach(casload => {
-          const loadDate = new DatePipe('en-us').transform(casload.loadDateTime.toDate(), 'dd-MMM-yyyy');
-          if (currentDate === loadDate && casload.loadApproved === true) {
-            this.snackbar.open('Cash opened and Approved', 'OK', { duration: 2000 });
-          } else {
-            this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
-            this.router.navigateByUrl('cashloads');
-          }
-        });
-      });
-    } else {
-      this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
-      this.router.navigateByUrl('cashloads');
-    }
   }
 }

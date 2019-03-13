@@ -17,6 +17,8 @@ import { QrBankResponseData } from 'src/app/interfaces/qrBankResponseData';
 declare var $: any;
 declare var deepstream: any;
 
+declare var swal: any;
+
 @Component({
   selector: 'app-payment-cash',
   templateUrl: './payment-cash.component.html',
@@ -137,13 +139,24 @@ export class PaymentCashComponent implements OnInit {
               this.print_thermal(this.orderForm.get('ticket').value, this.orderForm.get('paymentType').value);
               localStorage.removeItem('cart');
               this.dialogRef.close('success');
+              swal({
+                title: 'ສຳເລັດ',
+                text: "ລາຍການທີ່ສັ່ງຖຶກສົ່ງໄປຄົວແລ້ວ",
+                icon: "success",
+                timer: 2000
+              });
             });
           } else {
             this.print_thermal(this.orderForm.get('ticket').value, this.orderForm.get('paymentType').value);
             localStorage.removeItem('cart');
             this.dialogRef.close('success');
+            swal({
+              title: 'ສຳເລັດ',
+              text: "ລາຍການທີ່ສັ່ງຖຶກສົ່ງໄປຄົວແລ້ວ",
+              icon: "success",
+              timer: 2000
+            });
           }
-
         });
       });
     } else {

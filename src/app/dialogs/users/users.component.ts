@@ -31,7 +31,7 @@ export class UsersComponent implements OnInit {
 
   }
   showUserAdd(user) {
-    console.log(user);
+    // console.log(user);
     this.dialog.open(UserRegisterComponent, {
       width: '800px',
       data: user

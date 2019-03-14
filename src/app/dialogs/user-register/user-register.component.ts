@@ -70,6 +70,7 @@ export class UserRegisterComponent implements OnInit {
       role: new FormControl('staff'),
       registeringDate: new FormControl(new Date()),
       employedDate: new FormControl(new Date()),
+      menus: new FormControl(),
     });
     this.roles = this.rolesRef.valueChanges();
     this.kitchens = this.kitchensRef.valueChanges();

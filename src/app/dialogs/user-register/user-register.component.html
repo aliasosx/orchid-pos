@@ -75,6 +75,7 @@
           <label for="kitchen">Kitchen</label>
           <select class="form-control" id="kitchen" formControlName="kitchen">
             <option value="" disabled>------</option>
+            <option value="all">All</option>
             <option value="{{ kitchen.kitchenName }}" *ngFor="let kitchen of kitchens | async">{{ kitchen.kitchenName }}
             </option>
           </select>

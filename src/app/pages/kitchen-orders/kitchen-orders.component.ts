@@ -29,6 +29,7 @@ export class KitchenOrdersComponent implements OnInit {
       return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
     });
   }
+  kitchenState;
   showList = '';
   private user: Observable<firebase.User>;
   username_info: any;

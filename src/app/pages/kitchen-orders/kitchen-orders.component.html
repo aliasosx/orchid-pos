@@ -7,52 +7,55 @@
   <mat-card-content>
     <mat-divider></mat-divider>
     <div class="row">
-      <div class="col col-md-6 col-sm-12" *ngFor="let order of orders |async " [ngClass]="showList">
-        <ng-container *ngIf="order.food">
-          <div class="card mt-2">
-            <div class="card-header text-center h4">
-              ລາຍການອາຫານ ເວລາ {{ order.orderDateTime.toDate() | date: 'HH:mm:ss' }}
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col col-md-12" style="padding: 0;">
-                  <table class="table table-bordered">
-                    <thead class="thead-light">
-                      <th class="text-center h6 text-nowrap">ບັດຄິວ</th>
-                      <th class="text-center h6">ອາຫານ</th>
-                      <th class="text-center h6">ຈຳນວນ</th>
-                      <th class="text-center h6">Note</th>
-                      <th class="text-center h6">Done</th>
-                    </thead>
-                    <tbody>
-                      <td class="align-middle text-center display-4" [attr.rowspan]="order.food.length +1"
-                        style="width: 10px;">
-                        {{ order.ticket }}</td>
-                      <tr *ngFor="let food of order.food">
-                        <ng-container *ngIf="food.kitchen === kitchen">
-                          <td class="text-left h5 text-nowrap" style="width: 400px;">{{ food.food }}</td>
-                          <td class="text-center" style="width: 20px;">{{ food.quantity |number }}</td>
-                          <td class="text-left text-nowrap" style="color: red; width: 200px;">{{ food.note }}</td>
-                          <td class="text-center" *ngIf="food.done == true; else undone" style="width: 10px;">
-                            <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" disable
-                              style="max-width: 20px;cursor: pointer;">
-                          </td>
-                          <ng-template #undone>
-                            <td></td>
+      <ng-container>
+        <div class="col col-md-6 col-sm-12" *ngFor="let order of orders |async " [ngClass]="showList">
+          <ng-container *ngIf="order.food">
+            <div class="card mt-2">
+              <div class="card-header text-center h4">
+                ລາຍການອາຫານ ເວລາ {{ order.orderDateTime.toDate() | date: 'HH:mm:ss' }}
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col col-md-12" style="padding: 0;">
+                    <table class="table table-bordered">
+                      <thead class="thead-light">
+                        <th class="text-center h6 text-nowrap">ບັດຄິວ</th>
+                        <th class="text-center h6">ອາຫານ</th>
+                        <th class="text-center h6">ຈຳນວນ</th>
+                        <th class="text-center h6">Note</th>
+                        <th class="text-center h6 text-nowrap">ສົ່ງແລ້ວ</th>
+                      </thead>
+                      <tbody>
+                        <td class="align-middle text-center display-4" [attr.rowspan]="order.food.length +1"
+                          style="width: 10px;">
+                          {{ order.ticket }}</td>
+                        <tr *ngFor="let food of order.food">
+                          <ng-container *ngIf="food.kitchen === kitchen">
+                            <td class="text-left h5 text-nowrap" style="width: 400px;">{{ food.food }}</td>
+                            <td class="text-center" style="width: 20px;">{{ food.quantity |number }}</td>
+                            <td class="text-left" style="color: red; width: 200px;">{{ food.note }}</td>
+                            <td class="text-center" *ngIf="food.done == true; else undone" style="width: 10px;">
+                              <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
+                                style="max-width: 20px;cursor: pointer;">
+                            </td>
+                            <ng-template #undone>
+                              <td></td>
+                            </ng-template>
+                          </ng-container>
+                          <ng-template #nodata>
+                            <td>ບໍ່ມີລາຍການສຳຫຼັບຄົວນີ້</td>
                           </ng-template>
-                        </ng-container>
-                        <ng-template #nodata>
-                          <td></td>
-                        </ng-template>
-                      </tr>
-                    </tbody>
-                  </table>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </ng-container>
-      </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
     </div>
   </mat-card-content>
 </mat-card>

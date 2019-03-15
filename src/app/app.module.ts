@@ -72,6 +72,7 @@ import { CashloadComponent } from './pages/cashload/cashload.component';
 import { OpenCashComponent } from './dialogs/open-cash/open-cash.component';
 import { PasswordInputComponent } from './dialogs/password-input/password-input.component';
 import { CloseBalanceComponent } from './dialogs/close-balance/close-balance.component';
+import { KitchenMonComponent } from './pages/kitchen-mon/kitchen-mon.component';
 
 @NgModule({
   declarations: [
@@ -123,6 +124,7 @@ import { CloseBalanceComponent } from './dialogs/close-balance/close-balance.com
     OpenCashComponent,
     PasswordInputComponent,
     CloseBalanceComponent,
+    KitchenMonComponent,
 
 
   ],

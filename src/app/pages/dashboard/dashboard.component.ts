@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { PaymentType } from 'src/app/interfaces/paymentType';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { Food } from 'src/app/interfaces/food';
 
 @Component({
   selector: 'app-dashboard',
@@ -68,6 +69,10 @@ export class DashboardComponent implements OnInit {
   paymentMethodReport: any[] = [];
   transactionsPaymentRef: AngularFirestoreCollection<Transaction>;
   transactionsPayments: Observable<any[]>;
+
+  foodsRef: AngularFirestoreCollection<Food>;
+  foods: Observable<any[]>;
+
 
   currentDate = new Date();
 

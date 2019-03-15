@@ -69,13 +69,29 @@
   </mat-card-content>
   <mat-card-content>
     <div class="row">
-      <div class="col-md-4 col-xl-3">
+      <div class="col-md-12">
         <mat-card>
           <mat-card-header>
-            <mat-card-title>ShortCut</mat-card-title>
+            <mat-card-title>ອາຫານ</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-
+            <div class="col-md-4 col-xl-3">
+              <div class="card bg-c-pink order-card">
+                <div class="card-block">
+                  <h5 class="m-b-20">ຍອດການຈ່າຍ</h5>
+                  <div *ngFor="let p of paymentMethodReport">
+                    <h4 class="text-right" *ngIf="p.paymentAmount > 0">
+                      <div class="f-left">
+                        {{ p.paymentMethod }}
+                      </div>
+                      <span>{{ p.paymentAmount | number }}</span>
+                    </h4>
+                    <p *ngIf="p.paymentAmount > 0" class="m-b-0 h5">ຍອດການຂາຍ<span
+                        class="f-right h5">{{ p.paymentCount | number}} ລາຍການ</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </mat-card-content>
         </mat-card>
       </div>

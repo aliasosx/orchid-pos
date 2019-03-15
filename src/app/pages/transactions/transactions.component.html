@@ -5,7 +5,7 @@
     <mat-card-subtitle>Summary all Transactions</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <div>
+    <div style="overflow-y: auto;overflow-x: hidden;max-height: 600px;">
       <table class="table table-bordered">
         <thead class="thead-light">
           <tr>
@@ -31,7 +31,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let transaction of transactions | async">
-            <td class="text-left align-middle">{{ transaction.ticket }}</td>
+            <td class="text-center align-middle">{{ transaction.ticket }}</td>
             <td class="text-left align-middle">{{ transaction.transaction_date.toDate() | date:'dd-MMM-yyyy HH:mm:ss' }}
             </td>
 

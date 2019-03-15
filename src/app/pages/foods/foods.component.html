@@ -13,10 +13,11 @@
         <button mat-raised-button color="primary" style="width: 100%;" (click)="openAddFood()">Add new</button>
       </div>
     </div>
-    <div>
+    <div style="overflow-y: auto;overflow-x: hidden;max-height: 600px;">
       <table class="table table-bordered table-hover">
         <thead class="thead-light">
           <tr>
+            <th scope="col" class="text-center">#</th>
             <th scope="col" class="text-center">ຮູບ</th>
             <th scope="col" class="text-center">ອາຫານ</th>
             <th scope="col" class="text-center">ອາຫານ ພາສາອັງກິດ</th>
@@ -31,7 +32,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let food of foods |async |foodPipe: foodname">
+          <tr *ngFor="let food of foods |async |foodPipe: foodname; let i = index">
+            <td class="text-center align-middle"> {{i+1}} </td>
             <td class="text-center align-middle"><img src="{{ food.food_photo }}" class="foodPhoto shadow"
                 (click)="openViewFood(food)" style="cursor: pointer; width: 300px;"></td>
             <td class="text-left align-middle">{{ food.food_name }}</td>
@@ -78,6 +80,7 @@
         </div>
       </td>
       </tr>
+
       </tbody>
       </table>
     </div>

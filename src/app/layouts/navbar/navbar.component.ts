@@ -33,6 +33,7 @@ export class NavbarComponent implements OnInit {
             if (u.data().userId === user.uid) {
               localStorage.setItem('username', u.data().userName);
               if (localStorage.getItem('username')) {
+                this.username = localStorage.getItem('username');
                 this.loadMenus();
               } else {
                 window.location.reload();
@@ -50,14 +51,13 @@ export class NavbarComponent implements OnInit {
       return ref.orderBy('menuId', 'asc');
     });
     this.restaurantInfoRef = db.collection<RestaurantInfo>('restaurant_info');
-
   }
 
   navBarShow = '';
 
   private user: Observable<firebase.User>;
   username_info: any;
-  username = localStorage.getItem('username');
+  username;
   googleId: string;
   title = 'Letter\'P restaurant';
   menusRef: AngularFirestoreCollection<Webmenu>;
@@ -102,6 +102,7 @@ export class NavbarComponent implements OnInit {
     this._firebaseAuth.auth.signOut().then(() => {
       localStorage.removeItem('username');
       this.router.navigateByUrl('login');
+      // location.reload();
     });
   }
   openNewPassword() {

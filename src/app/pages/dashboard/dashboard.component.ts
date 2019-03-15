@@ -187,6 +187,6 @@ export class DashboardComponent implements OnInit {
         });
       });
     });
-    this.username = localStorage.getItem('username');
+    // this.username = localStorage.getItem('username');
   }
 }

@@ -64,7 +64,7 @@ export class TransactionsComponent implements OnInit {
   viewBillDetail(tranx) {
     if (tranx) {
       const dialogRef = this.dialog.open(ViewBilldetailsComponent, {
-        width: '600px',
+        width: '800px',
         data: tranx,
       });
     }

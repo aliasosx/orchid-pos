@@ -1,28 +1,28 @@
 <h5 class="mb-2">ລາຍການອາຫານຕາມບິນ</h5>
 <mat-divider></mat-divider>
 <div class="row mt-2 mb-2">
-  <div class="col col-md-6">
+  <div class="col col-md-3">
     ບັດຄິວ
   </div>
-  <div class="col col-md-6 mb-1">
+  <div class="col col-md-3 mb-1" style="font-weight: bold;">
     {{ data.ticket }}
   </div>
-  <div class="col col-md-6">
+  <div class="col col-md-3">
     ເລກບິນ
   </div>
-  <div class="col col-md-6 mb-1">
+  <div class="col col-md-3 mb-1" style="font-weight: bold;">
     {{ data.invoiceno }}
   </div>
-  <div class="col col-md-6">
+  <div class="col col-md-3">
     ເລກອ້າງອິງ
   </div>
-  <div class="col col-md-6 mb-1">
+  <div class="col col-md-3 mb-1" style="font-weight: bold;">
     {{ data.refno }}
   </div>
-  <div class="col col-md-6">
+  <div class="col col-md-3">
     ວັນອອກບິນ
   </div>
-  <div class="col col-md-6 mb-1">
+  <div class="col col-md-3 mb-1" style="font-weight: bold;">
     {{ data.transaction_date.toDate() | date:'dd-MMM-yyyy H:mm:ss' }}
   </div>
   <mat-divider></mat-divider>
@@ -44,12 +44,23 @@
       <tr *ngFor="let transaction of transactions | async; let i = index">
         <td class="text-left">{{ i+1 }}</td>
         <td class="text-left">{{ transaction.foodName }}</td>
-        <td class="text-right">{{ transaction.quantity | number }}</td>
+        <td class="text-center">{{ transaction.quantity | number }}</td>
         <td class="text-right">{{ transaction.price | number }}</td>
         <td class="text-right">{{ transaction.total_price | number }}</td>
         <td class="text-center">{{ transaction.paymentBy  }}</td>
         <td class="text-center">{{ transaction.username  }}</td>
       </tr>
     </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4" class="text-center">
+          ລວມ
+        </td>
+        <td class="text-right">
+          {{ billTotal | number }}
+        </td>
+        <td colspan="2"></td>
+      </tr>
+    </tfoot>
   </table>
 </div>

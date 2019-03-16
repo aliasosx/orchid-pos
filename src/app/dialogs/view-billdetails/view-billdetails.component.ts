@@ -17,7 +17,7 @@ export class ViewBilldetailsComponent implements OnInit {
   }
   transactionsRef: AngularFirestoreCollection<Transaction>;
   transactions: Observable<any[]>;
-
+  billTotal = 0;
   ngOnInit() {
     this.transactions = this.transactionsRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
@@ -26,6 +26,13 @@ export class ViewBilldetailsComponent implements OnInit {
         return data;
       });
     }));
+
+    this.transactions.subscribe(tranxs => {
+      this.billTotal = 0;
+      tranxs.forEach(tranx => {
+        this.billTotal += parseInt(tranx.total_price);
+      });
+    });
   }
 
 }

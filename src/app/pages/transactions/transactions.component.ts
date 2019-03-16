@@ -61,5 +61,12 @@ export class TransactionsComponent implements OnInit {
       });
     }
   }
+  recoverTransaction() {
+    swal({
+      title: 'Function not ready',
+      icon: 'warning',
+      timer: 1000,
+    });
+  }
 
 }

@@ -62,7 +62,7 @@
             <td class="text-center align-middle">{{ transaction.invoiceno }}</td>
             <td class="text-center align-middle">{{ transaction.kitchen }}</td>
             <td class="text-center align-middle">
-              <button mat-raised-button color="warn">Recover</button>
+              <button mat-raised-button color="warn" (click)="recoverTransaction()">Recover</button>
             </td>
           </tr>
         </tbody>

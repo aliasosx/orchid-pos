@@ -34,7 +34,7 @@ export class OpenCashComponent implements OnInit {
   ngOnInit() {
     this.addCashload = new FormGroup({
       loadDateTime: new FormControl(new Date),
-      initBalance: new FormControl(0),
+      initBalance: new FormControl(),
       openAuthorizedBy: new FormControl(),
       loadApproved: new FormControl(false),
       eodCashBalance: new FormControl(0),

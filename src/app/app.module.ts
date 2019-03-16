@@ -74,6 +74,7 @@ import { PasswordInputComponent } from './dialogs/password-input/password-input.
 import { CloseBalanceComponent } from './dialogs/close-balance/close-balance.component';
 import { KitchenMonComponent } from './pages/kitchen-mon/kitchen-mon.component';
 import { UnitsComponent } from './dialogs/units/units.component';
+import { ViewBilldetailsComponent } from './dialogs/view-billdetails/view-billdetails.component';
 
 @NgModule({
   declarations: [
@@ -127,6 +128,7 @@ import { UnitsComponent } from './dialogs/units/units.component';
     CloseBalanceComponent,
     KitchenMonComponent,
     UnitsComponent,
+    ViewBilldetailsComponent,
 
 
   ],
@@ -176,6 +178,7 @@ import { UnitsComponent } from './dialogs/units/units.component';
     PasswordInputComponent,
     CloseBalanceComponent,
     UnitsComponent,
+    ViewBilldetailsComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe,],

@@ -1,0 +1,55 @@
+<h5 class="mb-2">ລາຍການອາຫານຕາມບິນ</h5>
+<mat-divider></mat-divider>
+<div class="row mt-2 mb-2">
+  <div class="col col-md-6">
+    ບັດຄິວ
+  </div>
+  <div class="col col-md-6 mb-1">
+    {{ data.ticket }}
+  </div>
+  <div class="col col-md-6">
+    ເລກບິນ
+  </div>
+  <div class="col col-md-6 mb-1">
+    {{ data.invoiceno }}
+  </div>
+  <div class="col col-md-6">
+    ເລກອ້າງອິງ
+  </div>
+  <div class="col col-md-6 mb-1">
+    {{ data.refno }}
+  </div>
+  <div class="col col-md-6">
+    ວັນອອກບິນ
+  </div>
+  <div class="col col-md-6 mb-1">
+    {{ data.transaction_date.toDate() | date:'dd-MMM-yyyy H:mm:ss' }}
+  </div>
+  <mat-divider></mat-divider>
+</div>
+<div>
+  <table class="table table-bordered">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col" class="text-center">#</th>
+        <th scope="col" class="text-center">ອາຫານ</th>
+        <th scope="col" class="text-center">ຈຳນວນ</th>
+        <th scope="col" class="text-center">ລາຄາ</th>
+        <th scope="col" class="text-center">ລວມ</th>
+        <th scope="col" class="text-center">ຈ່າຍຜ່ານ</th>
+        <th scope="col" class="text-center">ຜູ້ຂາຍ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaction of transactions | async; let i = index">
+        <td class="text-left">{{ i+1 }}</td>
+        <td class="text-left">{{ transaction.foodName }}</td>
+        <td class="text-right">{{ transaction.quantity | number }}</td>
+        <td class="text-right">{{ transaction.price | number }}</td>
+        <td class="text-right">{{ transaction.total_price | number }}</td>
+        <td class="text-center">{{ transaction.paymentBy  }}</td>
+        <td class="text-center">{{ transaction.username  }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

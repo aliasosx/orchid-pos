@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { Transaction } from 'src/app/interfaces/transaction';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { ViewBilldetailsComponent } from 'src/app/dialogs/view-billdetails/view-billdetails.component';
 declare var swal: any;
 @Component({
   selector: 'app-transactions',
@@ -37,7 +38,6 @@ export class TransactionsComponent implements OnInit {
   transactions: Observable<any[]>;
 
   ngOnInit() {
-
     this.transactions = this.transactionsRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const transactions = a.payload.doc.data() as Transaction;
@@ -61,12 +61,13 @@ export class TransactionsComponent implements OnInit {
       });
     }
   }
-  recoverTransaction() {
-    swal({
-      title: 'Function not ready',
-      icon: 'warning',
-      timer: 1000,
-    });
+  viewBillDetail(tranx) {
+    if (tranx) {
+      const dialogRef = this.dialog.open(ViewBilldetailsComponent, {
+        width: '600px',
+        data: tranx,
+      });
+    }
   }
 
 }

@@ -29,15 +29,14 @@ export class CashloadComponent implements OnInit {
         router.navigateByUrl('login');
       }
     });
-    this.cashloadsRef = db.collection<CashLoad>('cashloads');
+    this.cashloadsRef = db.collection<CashLoad>('cashloads', ref => {
+      return ref.orderBy('loadDateTime', 'asc');
+    });
   }
   cashloadsRef: AngularFirestoreCollection<CashLoad>;
   cashloads: Observable<any[]>;
   private user: Observable<firebase.User>;
   username_info: any;
-
-
-
   ngOnInit() {
 
     this.cashloads = this.cashloadsRef.snapshotChanges().pipe(map(change => {

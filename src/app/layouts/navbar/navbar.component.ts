@@ -32,6 +32,7 @@ export class NavbarComponent implements OnInit {
           users.docs.forEach(u => {
             if (u.data().userId === user.uid) {
               localStorage.setItem('username', u.data().userName);
+              localStorage.setItem('kitchen', u.data().kitchen);
               if (localStorage.getItem('username')) {
                 this.username = localStorage.getItem('username');
                 this.loadMenus();
@@ -101,6 +102,7 @@ export class NavbarComponent implements OnInit {
   logOut() {
     this._firebaseAuth.auth.signOut().then(() => {
       localStorage.removeItem('username');
+      localStorage.removeItem('kitchen');
       this.router.navigateByUrl('login');
       // location.reload();
     });

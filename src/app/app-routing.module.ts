@@ -15,6 +15,7 @@ import { KitchenOrdersComponent } from './pages/kitchen-orders/kitchen-orders.co
 import { DbconsoleComponent } from './pages/dbconsole/dbconsole.component';
 import { StocksComponent } from './pages/stocks/stocks.component';
 import { CashloadComponent } from './pages/cashload/cashload.component';
+import { KitchenTransactionsComponent } from './pages/kitchen-transactions/kitchen-transactions.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'console', component: DbconsoleComponent },
   { path: 'stocks', component: StocksComponent },
   { path: 'cashloads', component: CashloadComponent },
+  { path: 'kitchenreport', component: KitchenTransactionsComponent },
 ];
 
 @NgModule({

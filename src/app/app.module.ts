@@ -75,6 +75,7 @@ import { CloseBalanceComponent } from './dialogs/close-balance/close-balance.com
 import { KitchenMonComponent } from './pages/kitchen-mon/kitchen-mon.component';
 import { UnitsComponent } from './dialogs/units/units.component';
 import { ViewBilldetailsComponent } from './dialogs/view-billdetails/view-billdetails.component';
+import { KitchenTransactionsComponent } from './pages/kitchen-transactions/kitchen-transactions.component';
 
 @NgModule({
   declarations: [
@@ -129,6 +130,7 @@ import { ViewBilldetailsComponent } from './dialogs/view-billdetails/view-billde
     KitchenMonComponent,
     UnitsComponent,
     ViewBilldetailsComponent,
+    KitchenTransactionsComponent,
 
 
   ],

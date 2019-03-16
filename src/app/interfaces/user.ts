@@ -18,6 +18,7 @@ export interface User {
     roleName: string;
     menus: any;
   };
+  menus?: any;
   registeringDate: Date;
   employedDate: Date;
 }

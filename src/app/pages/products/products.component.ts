@@ -40,7 +40,9 @@ export class ProductsComponent implements OnInit {
   username_info: any;
 
   ngOnInit() {
-    this.products = this.db.collection('products').snapshotChanges().pipe(map(changes => {
+    this.products = this.db.collection('products', ref => {
+      return ref.orderBy('createdAt', 'asc');
+    }).snapshotChanges().pipe(map(changes => {
       return changes.map(a => {
         const data = a.payload.doc.data() as Product;
         data['id'] = a.payload.doc.id;

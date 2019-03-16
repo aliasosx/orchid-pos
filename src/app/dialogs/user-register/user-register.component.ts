@@ -64,7 +64,7 @@ export class UserRegisterComponent implements OnInit {
       placeOfBirth: new FormControl(),
       idCardno: new FormControl(),
       photo: new FormControl(this.photoSrc),
-      kitchen: new FormControl(),
+      kitchen: new FormControl('Drink'),
       mobile: new FormControl(),
       enabled: new FormControl(true),
       role: new FormControl('staff'),
@@ -89,6 +89,7 @@ export class UserRegisterComponent implements OnInit {
     if (this.updateFlag && this.data) {
       this.updateUser();
     } else {
+      console.log(this.userRegistrationForm);
       if (this.userRegistrationForm.valid) {
 
         this.saveBtnDisable = true;

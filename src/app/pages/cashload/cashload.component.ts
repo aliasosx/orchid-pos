@@ -52,17 +52,26 @@ export class CashloadComponent implements OnInit {
       width: '600px'
     });
   }
-  removeCashLoad(id) {
-    if (id) {
+  removeCashLoad(cash) {
+    if (cash) {
       swal({
         title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດລາຍການນີ້',
         icon: 'warning',
         dangerMode: true,
       }).then((value) => {
         if (value) {
-          this.db.collection<CashLoad>('cashloads').doc(id).delete().then(() => {
-            this.snackbar.open('Record has been removed', 'OK', { duration: 1000 });
-          });
+          if (cash.closeApproved === true) {
+            swal({
+              title: 'ບໍ່ສາມາດລຶບໄດ້ ເພາະລາຍການຖືກປິດແລ້ວ',
+              text: 'ລາຍການນີ້ ອະນຸມັດ ປິດສົມບູນແລ້ວ ບໍ່ສາມາດລຶບໄດ້ , ກະລຸນາຕິດຕໍ່ admin',
+              icon: 'error'
+            });
+          } else {
+            this.db.collection<CashLoad>('cashloads').doc(cash.id).delete().then(() => {
+              this.snackbar.open('Record has been removed', 'OK', { duration: 1000 });
+            });
+          }
+
         }
       });
     }

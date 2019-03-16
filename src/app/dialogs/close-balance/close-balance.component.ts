@@ -82,6 +82,7 @@ export class CloseBalanceComponent implements OnInit {
       let sum_bank = 0;
       let total_cash = 0;
       let totalSell = 0;
+
       if (value) {
         this.disableCloseJob = true;
         this.transactionsRef.get().subscribe(transactions => {

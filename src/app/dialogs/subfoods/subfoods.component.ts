@@ -4,7 +4,6 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Food } from 'src/app/interfaces/food';
 import { Observable } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-subfoods',

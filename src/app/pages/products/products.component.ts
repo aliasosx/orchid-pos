@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { MatDialog } from '@angular/material';
 import { Product } from 'src/app/interfaces/product';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, timeout } from 'rxjs/operators';
 import { AddProductsComponent } from 'src/app/dialogs/add-products/add-products.component';
 import { ViewProductsComponent } from 'src/app/dialogs/view-products/view-products.component';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -54,7 +54,7 @@ export class ProductsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(res => {
       if (res == 'success') {
-        swal('Products has been saved', 'Product add', 'success');
+        swal('Products has been saved', 'Product add', 'success', { timer: 1500 });
       } else {
         return;
       }

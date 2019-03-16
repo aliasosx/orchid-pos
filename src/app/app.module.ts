@@ -73,6 +73,7 @@ import { OpenCashComponent } from './dialogs/open-cash/open-cash.component';
 import { PasswordInputComponent } from './dialogs/password-input/password-input.component';
 import { CloseBalanceComponent } from './dialogs/close-balance/close-balance.component';
 import { KitchenMonComponent } from './pages/kitchen-mon/kitchen-mon.component';
+import { UnitsComponent } from './dialogs/units/units.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import { KitchenMonComponent } from './pages/kitchen-mon/kitchen-mon.component';
     PasswordInputComponent,
     CloseBalanceComponent,
     KitchenMonComponent,
+    UnitsComponent,
 
 
   ],
@@ -173,6 +175,7 @@ import { KitchenMonComponent } from './pages/kitchen-mon/kitchen-mon.component';
     OpenCashComponent,
     PasswordInputComponent,
     CloseBalanceComponent,
+    UnitsComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe,],

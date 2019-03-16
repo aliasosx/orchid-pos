@@ -12,6 +12,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { UsersComponent } from 'src/app/dialogs/users/users.component';
 import { StaffBenefitComponent } from 'src/app/dialogs/staff-benefit/staff-benefit.component';
+import { UnitsComponent } from 'src/app/dialogs/units/units.component';
 
 @Component({
   selector: 'app-settings',
@@ -63,6 +64,11 @@ export class SettingsComponent implements OnInit {
   openStaffBenefit() {
     const dialogRef = this.dialog.open(StaffBenefitComponent, {
       width: '800px'
+    });
+  }
+  openUnit() {
+    const dialogRef = this.dialog.open(UnitsComponent, {
+      width: '600px'
     });
   }
 }

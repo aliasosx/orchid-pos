@@ -1,0 +1,86 @@
+<mat-card class="topHeader">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Reports For Kitchen</mat-card-title>
+    <mat-card-subtitle>report by categories</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
+<mat-card-content>
+  <div class="row">
+    <div class="col col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="lead">Report By Date</div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col col-md-2">
+              <label for="fromDate" class="lead">ວັນທີ</label>
+              <div class="input-group mb-1">
+                <input matInput id="fromDate" [matDatepicker]="Frmpicker" class="form-control"
+                  placeholder="Choose a date" (dateInput)="dateEvent($event)">
+                <mat-datepicker-toggle matSuffix [for]="Frmpicker"></mat-datepicker-toggle>
+                <mat-datepicker #Frmpicker></mat-datepicker>
+              </div>
+            </div>
+
+            <div class="col col-md-2">
+              <label for="fromDate"></label>
+              <div class="input-group mb-1">
+                <button mat-raised-button color="primary" (click)="loadReport()"
+                  style="margin-top: 18px;width: 200px;">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="mainReportDetail" [ngClass]="viewReport">
+        <div class="card">
+          <div class="card-header">
+            <div class="lead">
+              ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ
+              <span class="font-weight-bold" style="font-weight: bold;color: rgb(245, 101, 6);">
+                {{ initDate | date: 'dd-MMM-yyyy' }}</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="card">
+                <div class="card-header">
+                  Report by Food
+                </div>
+                <div class="card-body">
+
+                  <div class="col col-md-6">
+                    <table class="table table-bordered table-hover">
+                      <thead class="thead-light">
+                        <th class="text-center">#</th>
+                        <th class="text-center">ອາຫານ</th>
+                        <th class="text-center">ຈຳນວນ</th>
+                        <th class="text-center">ທຶນ</th>
+                        <th class="text-center">ລວມ</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let trx of foodReport  ; let i  = index">
+                          <td class="text-center">{{ i+1 }}</td>
+                          <td class="text-left text-nowrap">{{ trx.food }}</td>
+                          <td class="text-right">{{ trx.quantity |number }}</td>
+                          <td class="text-right">{{ trx.cost   | number }}</td>
+                          <td class="text-right">{{ trx.total_cost | number }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card-content>

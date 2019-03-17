@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit {
       return;
     }
     if (this.usersForm.valid) {
-      return this._firebaseAuth.auth.signInWithEmailAndPassword(this.usersForm.get('email').value.trim(),
+      return this._firebaseAuth.auth.signInWithEmailAndPassword(this.usersForm.get('email').value.trim() + '@letter-p.com',
         this.usersForm.get('password').value.trim()).then((res) => {
           this.userProfile = res.additionalUserInfo.profile;
           const newUser = res.additionalUserInfo.isNewUser;

@@ -76,6 +76,7 @@ import { KitchenMonComponent } from './pages/kitchen-mon/kitchen-mon.component';
 import { UnitsComponent } from './dialogs/units/units.component';
 import { ViewBilldetailsComponent } from './dialogs/view-billdetails/view-billdetails.component';
 import { KitchenTransactionsComponent } from './pages/kitchen-transactions/kitchen-transactions.component';
+import { KitchenReportAdminComponent } from './pages/kitchen-report-admin/kitchen-report-admin.component';
 
 @NgModule({
   declarations: [
@@ -131,6 +132,7 @@ import { KitchenTransactionsComponent } from './pages/kitchen-transactions/kitch
     UnitsComponent,
     ViewBilldetailsComponent,
     KitchenTransactionsComponent,
+    KitchenReportAdminComponent,
 
 
   ],

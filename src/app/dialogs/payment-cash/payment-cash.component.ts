@@ -141,8 +141,8 @@ export class PaymentCashComponent implements OnInit {
               this.dialogRef.close('success');
               swal({
                 title: 'ສຳເລັດ',
-                text: "ລາຍການທີ່ສັ່ງຖຶກສົ່ງໄປຄົວແລ້ວ",
-                icon: "success",
+                text: 'ລາຍການທີ່ສັ່ງຖຶກສົ່ງໄປຄົວແລ້ວ',
+                icon: 'success',
                 timer: 2000
               });
             });
@@ -152,8 +152,8 @@ export class PaymentCashComponent implements OnInit {
             this.dialogRef.close('success');
             swal({
               title: 'ສຳເລັດ',
-              text: "ລາຍການທີ່ສັ່ງຖຶກສົ່ງໄປຄົວແລ້ວ",
-              icon: "success",
+              text: 'ລາຍການທີ່ສັ່ງຖຶກສົ່ງໄປຄົວແລ້ວ',
+              icon: 'success',
               timer: 2000
             });
           }

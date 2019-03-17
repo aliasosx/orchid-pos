@@ -56,7 +56,7 @@ export class KitchenReportAdminComponent implements OnInit {
           });
         })).subscribe(tranxs => {
           tranxs.forEach(tranx => {
-            const tranx_date = new DatePipe('en-us').transform(tranx.transaction_date.toDate(), 'dd-MMM-yyyy');
+            const tranx_date = new DatePipe('en-us').transform(tranx.transaction_date, 'dd-MMM-yyyy');
             const pickedDate = new DatePipe('en-us').transform(this.initDate, 'dd-MMM-yyyy');
 
             console.log(tranx_date + ' = ' + pickedDate);

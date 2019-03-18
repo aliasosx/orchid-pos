@@ -141,7 +141,7 @@ import { KitchenReportAdminComponent } from './pages/kitchen-report-admin/kitche
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,

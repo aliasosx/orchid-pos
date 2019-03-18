@@ -182,8 +182,10 @@ export class ReportsComponent implements OnInit {
     }));
     this.kitchens.subscribe(kitchens => {
       this.kitchenAmountTranx = 0;
+      this.kitchenCostTranx = 0;
       kitchens.forEach(kitchen => {
         this.kitchenAmountTranx = 0;
+        this.kitchenCostTranx = 0;
         tranxs.forEach(tranx => {
           if (kitchen.kitchenName.toLowerCase() === tranx.kitchen.toLowerCase()) {
             this.kitchenAmountTranx += tranx.total_price;

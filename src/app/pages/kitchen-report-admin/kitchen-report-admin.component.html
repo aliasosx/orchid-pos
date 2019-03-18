@@ -10,7 +10,7 @@
     <div class="col col-md-12">
       <div class="card">
         <div class="card-header">
-          <div class="lead">Report By Date</div>
+          <div class="lead">ຍອດຂາຍຕາມ ຄົວ</div>
         </div>
         <div class="card-body">
           <div class="row">
@@ -49,13 +49,12 @@
           <div class="card-body">
             <div class="row">
               <div class="card">
-                <div class="card-header">
-                  Report by Food
+                <div class="card-header h4">
+                  ຍອດຂາຍຕາມອາຫານ
                 </div>
                 <div class="card-body">
-
-                  <div class="col col-md-6">
-                    <table class="table table-bordered table-hover">
+                  <div class="col col-md-10">
+                    <table class="table table-bordered table-hover" style="width: 100%;margin: 0;">
                       <thead class="thead-light">
                         <th class="text-center">#</th>
                         <th class="text-center">ອາຫານ</th>
@@ -64,19 +63,21 @@
                         <th class="text-center">ລວມ</th>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let trx of foodReport  ; let i  = index">
+                        <tr *ngFor="let trx of foodsTransactions ; let i  = index">
                           <td class="text-center">{{ i+1 }}</td>
-                          <td class="text-left text-nowrap">{{ trx.food }}</td>
-                          <td class="text-right">{{ trx.quantity |number }}</td>
+                          <td class="text-left text-nowrap">{{ trx.foodname }}</td>
+                          <td class="text-right">{{ trx.foodQuantity |number }}</td>
                           <td class="text-right">{{ trx.cost   | number }}</td>
-                          <td class="text-right">{{ trx.total_cost | number }}</td>
+                          <td class="text-right">{{ trx.foodCost   | number }}</td>
                         </tr>
                       </tbody>
                     </table>
-
                   </div>
                 </div>
               </div>
+
+
+
             </div>
           </div>
         </div>

@@ -12,8 +12,10 @@ import { map } from 'rxjs/operators';
 })
 export class ViewBilldetailsComponent implements OnInit {
 
+  // tslint:disable-next-line: max-line-length
   constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<ViewBilldetailsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.transactionsRef = db.collection<Transaction>('transactions', ref => { return ref.where('invoiceno', '==', data.invoiceno).orderBy('transaction_date', 'asc') });
+    // tslint:disable-next-line: max-line-length
+    this.transactionsRef = db.collection<Transaction>('transactions', ref => ref.where('invoiceno', '==', data.invoiceno).orderBy('transaction_date', 'asc'));
   }
   transactionsRef: AngularFirestoreCollection<Transaction>;
   transactions: Observable<any[]>;

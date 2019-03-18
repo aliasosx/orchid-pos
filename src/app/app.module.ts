@@ -77,6 +77,8 @@ import { UnitsComponent } from './dialogs/units/units.component';
 import { ViewBilldetailsComponent } from './dialogs/view-billdetails/view-billdetails.component';
 import { KitchenTransactionsComponent } from './pages/kitchen-transactions/kitchen-transactions.component';
 import { KitchenReportAdminComponent } from './pages/kitchen-report-admin/kitchen-report-admin.component';
+import { OrdersHistoryComponent } from './pages/orders-history/orders-history.component';
+import { ViewOrderDetailsComponent } from './dialogs/view-order-details/view-order-details.component';
 
 @NgModule({
   declarations: [
@@ -133,6 +135,8 @@ import { KitchenReportAdminComponent } from './pages/kitchen-report-admin/kitche
     ViewBilldetailsComponent,
     KitchenTransactionsComponent,
     KitchenReportAdminComponent,
+    OrdersHistoryComponent,
+    ViewOrderDetailsComponent,
 
 
   ],
@@ -183,6 +187,7 @@ import { KitchenReportAdminComponent } from './pages/kitchen-report-admin/kitche
     CloseBalanceComponent,
     UnitsComponent,
     ViewBilldetailsComponent,
+    ViewOrderDetailsComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe,],

@@ -9,6 +9,7 @@
       <table class="table table-bordered">
         <thead class="thead-light">
           <tr>
+            <th scope="col" class="text-center">#</th>
             <th scope="col" class="text-center">Q</th>
             <th scope="col" class="text-center">Transaction_date</th>
             <th scope="col" class="text-center">Food Name</th>
@@ -25,11 +26,12 @@
             <th scope="col" class="text-center">Settled</th>
             <th scope="col" class="text-center text-nowrap">Invoice no</th>
             <th scope="col" class="text-center">Kitchen</th>
-            <th scope="col" class="text-center">View Bill</th>
+            <th scope="col" class="text-center">ກວດສອບ</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let transaction of transactions | async">
+          <tr *ngFor="let transaction of transactions | async; let i = index">
+            <td class="text-center align-middle">{{ i+1 }}</td>
             <td class="text-center align-middle">{{ transaction.ticket }}</td>
             <td class="text-left align-middle">{{ transaction.transaction_date.toDate() | date:'dd-MMM-yyyy HH:mm:ss' }}
             </td>
@@ -61,7 +63,7 @@
             <td class="text-center align-middle">{{ transaction.invoiceno }}</td>
             <td class="text-center align-middle">{{ transaction.kitchen }}</td>
             <td class="text-center align-middle">
-              <button mat-raised-button color="primary" (click)="viewBillDetail(transaction)">View</button>
+              <button mat-raised-button color="primary" (click)="viewBillDetail(transaction)">ກວດສອບ</button>
             </td>
           </tr>
         </tbody>

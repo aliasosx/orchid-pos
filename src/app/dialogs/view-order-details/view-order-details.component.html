@@ -1,0 +1,71 @@
+<h5 class="mb-3">ລາຍລະອຽດ Order ເລກບິນ {{ data.invoiceno }}</h5>
+<mat-divider></mat-divider>
+<div class="row mt-2 mb-2">
+  <div class="col col-md-3">
+    ບັດຄິວ
+  </div>
+  <div class="col col-md-3 mb-1" style="font-weight: bold;">
+    {{ data.ticket }}
+  </div>
+  <div class="col col-md-3">
+    ເລກອ້າງອິງ
+  </div>
+  <div class="col col-md-3 mb-1" style="font-weight: bold;">
+    {{ data.refno }}
+  </div>
+  <div class="col col-md-3">
+    ເລກອ້າງອິງ
+  </div>
+  <div class="col col-md-3 mb-1" style="font-weight: bold;">
+    {{ data.refno }}
+  </div>
+  <div class="col col-md-3">
+    ວັນອອກບິນ
+  </div>
+  <div class="col col-md-3 mb-1" style="font-weight: bold;">
+    {{ data.orderDateTime.toDate() | date:'dd-MMM-yyyy H:mm:ss' }}
+  </div>
+  <div class="col col-md-3">
+    ສະຖານະ
+  </div>
+  <div class="col col-md-3 mb-1" style="font-weight: bold;">
+    {{ data.status }}
+  </div>
+  <mat-divider></mat-divider>
+</div>
+<div>
+  <table class="table table-bordered">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col" class="text-center">#</th>
+        <th scope="col" class="text-center">ອາຫານ</th>
+        <th scope="col" class="text-center">ຈຳນວນ</th>
+        <th scope="col" class="text-center">ລາຄາ</th>
+        <th scope="col" class="text-center">ລວມ</th>
+        <th scope="col" class="text-center">ຜູ້ຂາຍ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let food of foods ; let i = index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td class="text-left">{{ food.food }}</td>
+        <td class="text-center">{{ food.quantity | number }}</td>
+        <td class="text-right">{{ food.price | number }}</td>
+        <td class="text-right">{{ food.total | number }}</td>
+        <td class="text-center">{{ food.username  }}</td>
+      </tr>
+
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4" class="text-center">
+          ລວມຍອດບິນ
+        </td>
+        <td class="text-right">
+          {{ data.grandtotal | number }}
+        </td>
+        <td colspan="2"></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

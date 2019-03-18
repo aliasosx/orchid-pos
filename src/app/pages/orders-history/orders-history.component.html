@@ -1,0 +1,53 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Order Tracking</mat-card-title>
+    <mat-card-subtitle>All current orders</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div style="overflow-y: auto;overflow-x: hidden;max-height: 600px;">
+      <table class="table table-bordered ">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Q</th>
+            <th scope="col" class="text-center">ເວລາສັ້ງ</th>
+            <th scope="col" class="text-center">ເວລາແລ້ວ</th>
+            <th scope="col" class="text-center">ເລກບິນ</th>
+            <th scope="col" class="text-center">ເລກອ້າງອິງ</th>
+            <th scope="col" class="text-center">ຍອດລວມ</th>
+            <th scope="col" class="text-center">ປະເພດການຈ່າຍ</th>
+            <th scope="col" class="text-center">ສະຖານະ</th>
+            <th scope="col" class="text-center">ລາຍການອາຫານ</th>
+            <th scope="col" class="text-center">ຜູ້ຂາຍ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders | async; let i = index">
+            <td class="text-center">{{ i+1 }}</td>
+            <td class="text-center">{{ order.ticket }}</td>
+            <td class="text-center">{{ order.orderDateTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+            <td class="text-center">{{ order.orderFinishTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+            <td class="text-center">{{ order.invoiceno }}</td>
+            <td class="text-center">{{ order.refno }}</td>
+            <td class="text-right">{{ order.grandtotal |number }}</td>
+            <td class="text-center">{{ order.paymentType }}</td>
+            <td class="text-center" *ngIf="order.status=='completed'; else cancelStatus">
+              <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
+                style="max-width: 20px;cursor: pointer;">
+            </td>
+            <ng-template #cancelStatus>
+              <td class="text-center">
+                <img mat-raised-button src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;">
+              </td>
+            </ng-template>
+            <td class="text-center">
+              <button mat-raised-button color="primary" (click)="openOrderDetail(order)">ກວດສອບລາຍການ</button>
+            </td>
+            <td class="text-center">{{ order.username }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>

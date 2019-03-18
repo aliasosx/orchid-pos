@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { Order } from 'src/app/interfaces/order';
 declare var swal: any;
 @Component({
   selector: 'app-cashload',
@@ -77,19 +78,42 @@ export class CashloadComponent implements OnInit {
     }
   }
   openCloseBalance(cash) {
-    if (!cash.close) {
-      const dialogRef = this.dialog.open(CloseBalanceComponent, {
-        width: '600px',
-        data: cash
+    let order_pending;
+    let c = this.db.collection<Order>('orders', ref => {
+      return ref.where('completed', '==', false).where('username', '==', localStorage.getItem('username'));
+    }).snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const data = a.payload.doc.data() as Order;
+        data['id'] = a.payload.doc.id;
+        return data;
       });
-    } else {
-      swal({
-        title: 'ລາຍການທັງໝົດ ປິດແລ້ວ',
-        text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
-        icon: 'error',
-      });
-      return;
-    }
+    }));
+
+    c.subscribe(order => {
+      console.log(order.length);
+      if (order.length > 0) {
+        swal({
+          title: 'ມີລາຍການ Order ຄ້າງ ກະລຸນາກວດສອບໃໝ່',
+          text: 'Order still pending please clear all Orders',
+          icon: 'error',
+        });
+        return;
+      } else {
+        if (!cash.close) {
+          const dialogRef = this.dialog.open(CloseBalanceComponent, {
+            width: '600px',
+            data: cash
+          });
+        } else {
+          swal({
+            title: 'ລາຍການທັງໝົດ ປິດແລ້ວ',
+            text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
+            icon: 'error',
+          });
+          return;
+        }
+      }
+    });
   }
   approvedLoadCash(id) {
     if (id) {

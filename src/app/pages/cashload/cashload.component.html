@@ -46,7 +46,7 @@
                 <tr *ngFor="let cash of cashloads|async ; let i = index;">
 
                   <td class="text-center align-middle"> {{ i+1 }}</td>
-                  <td class="text-center align-middle">{{ cash.loadDateTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}
+                  <td class="text-left align-middle">{{ cash.loadDateTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}
                   </td>
                   <td class="text-right align-middle">{{ cash.initBalance | number }}</td>
                   <td class="text-center align-middle">{{ cash.openAuthorizedBy }}</td>
@@ -69,7 +69,7 @@
                   <td class="text-right align-middle">{{ cash.closeBalance | number }}</td>
                   <td class="text-right align-middle">{{ cash.totalSellAmount | number }}</td>
                   <td class="text-center align-middle">{{ cash.closeby }}</td>
-                  <td class="text-center align-middle" *ngIf="cash.closeDatetime; else nonclose">
+                  <td class="text-left align-middle" *ngIf="cash.closeDatetime; else nonclose">
                     {{ cash.closeDatetime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
                   <ng-template #nonclose>
                     <td></td>

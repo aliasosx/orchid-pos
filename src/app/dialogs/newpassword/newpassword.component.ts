@@ -18,7 +18,7 @@ export class NewpasswordComponent implements OnInit {
   }
   passwordEnter(e) {
     if (this.passwordForm.valid) {
-      if (e.key === "Enter") {
+      if (e.key === 'Enter') {
         this.dialogRef.close(this.passwordForm.get('password').value);
       }
     }

@@ -8,22 +8,22 @@
         <button mat-flat-button color="primary" class="matbtn" *ngFor="let menu of userMenus"
           routerLink="{{ menu.toLowerCase() }}">{{ menu }}</button>
         <mat-menu #appMenu>
-          <button mat-menu-item>
+          <a mat-menu-item>
             <mat-icon>account_box</mat-icon>
             <span>{{ username }}</span>
-          </button>
-          <button mat-menu-item (click)="openNewPassword()">
+          </a>
+          <a mat-menu-item (click)="openNewPassword()">
             <mat-icon>fingerprint</mat-icon>
             <span>Change password</span>
-          </button>
-          <button mat-menu-item routerLink="settings">
+          </a>
+          <a mat-menu-item routerLink="settings">
             <mat-icon>settings</mat-icon>
             <span>Settings</span>
-          </button>
-          <button mat-menu-item (click)="logOut()">
+          </a>
+          <a mat-menu-item (click)="logOut()">
             <mat-icon>exit_to_app</mat-icon>
             <span>Logout</span>
-          </button>
+          </a>
         </mat-menu>
         <button mat-icon-button [matMenuTriggerFor]="appMenu">
           <mat-icon>more_vert</mat-icon>
@@ -32,24 +32,27 @@
 
       <div fxShow="true" fxHide.gt-sm="true">
         <mat-menu #smallAppMenu>
-          <button mat-menu-item *ngFor="let menu of userMenus" routerLink="{{ menu }}">
+          <a mat-menu-item>
+            <mat-icon>account_box</mat-icon>
+            <span>{{ username }}</span>
+          </a>
+          <a mat-menu-item *ngFor="let menu of userMenus" routerLink="{{ menu }}">
             <mat-icon>account_box</mat-icon>
             <span>{{ menu }}</span>
-          </button>
-          <button mat-menu-item routerLink="settings">
+          </a>
+          <a mat-menu-item routerLink="settings">
             <mat-icon>exit_to_app</mat-icon>
             <span>Settings</span>
-          </button>
-          <button mat-menu-item (click)="logOut()">
+          </a>
+          <a mat-menu-item (click)="logOut()">
             <mat-icon>exit_to_app</mat-icon>
             <span>Logout</span>
-          </button>
+          </a>
         </mat-menu>
-        <button mat-icon-button [matMenuTriggerFor]="smallAppMenu">
+        <a mat-icon-button [matMenuTriggerFor]="smallAppMenu">
           <mat-icon>more_vert</mat-icon>
-        </button>
+        </a>
       </div>
-
     </mat-toolbar-row>
   </mat-toolbar>
 </div>

@@ -53,19 +53,19 @@
                   ຍອດຂາຍຕາມອາຫານ
                 </div>
                 <div class="card-body">
-                  <div class="col col-md-10">
-                    <table class="table table-bordered table-hover" style="width: 100%;margin: 0;">
+                  <div>
+                    <table class="table table-bordered table-hover" style="margin: 0;">
                       <thead class="thead-light">
                         <th class="text-center">#</th>
                         <th class="text-center">ອາຫານ</th>
                         <th class="text-center">ຈຳນວນ</th>
                         <th class="text-center">ທຶນ</th>
-                        <th class="text-center">ລວມ</th>
+                        <th class="text-center">ລວມຕົ້ນທຶນ</th>
                       </thead>
                       <tbody>
                         <tr *ngFor="let trx of foodsTransactions ; let i  = index">
                           <td class="text-center">{{ i+1 }}</td>
-                          <td class="text-left text-nowrap">{{ trx.foodname }}</td>
+                          <td class="text-left text-nowrap" style="width: 300px;">{{ trx.foodname }}</td>
                           <td class="text-right">{{ trx.foodQuantity |number }}</td>
                           <td class="text-right">{{ trx.cost   | number }}</td>
                           <td class="text-right">{{ trx.foodCost   | number }}</td>

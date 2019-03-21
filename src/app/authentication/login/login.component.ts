@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../../services/authentication.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -18,7 +19,8 @@ declare var swal: any;
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private dialog: MatDialog) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private dialog: MatDialog, private authService: AuthenticationService) {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(user => {
       if (user) {
@@ -39,6 +41,9 @@ export class LoginComponent implements OnInit {
 
   usersForm: FormGroup;
   loginCount = 0;
+
+  loginBtnDisable = false;
+
   ngOnInit() {
     this.usersForm = new FormGroup({
       email: new FormControl(),
@@ -155,5 +160,32 @@ export class LoginComponent implements OnInit {
     this._firebaseAuth.auth.signOut().then(() => {
 
     });
+  }
+  async loginByToken() {
+
+    if (this.usersForm.valid) {
+      this.loginBtnDisable = true;
+      // tslint:disable-next-line: max-line-length
+      const c = await this.authService.login(this.usersForm.get('email').value.trim(), this.usersForm.get('password').value.trim()).then(resp => {
+        if (resp) {
+          resp.subscribe(async (x) => {
+            if (x['status'] === 'Authentication failed') {
+              swal({
+                title: 'ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ',
+                text: '',
+                icon: 'warning',
+                dangerMode: false,
+              });
+              this.loginBtnDisable = false;
+            } else if (x['token']) {
+              const a = await localStorage.setItem('token', x['token']);
+              const b = await localStorage.setItem('username', x['user'].username);
+              const d = await localStorage.setItem('usrObj', JSON.stringify(x['user']));
+              this.router.navigateByUrl('');
+            }
+          });
+        }
+      });
+    }
   }
 }

@@ -25,23 +25,22 @@ export class OrdersComponent implements OnInit {
 
   constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar,
     private _firebaseAuth: AngularFireAuth, private router: Router, private _stockService: StockServicesService) {
-    this.user = _firebaseAuth.authState;
-    this.user.subscribe(user => {
-      if (user) {
-        this.username_info = user;
-        // this.username = user.displayName;
-        this.orderRef = db.collection<Order>('orders', ref => {
-          return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
-        });
-        this.transactionsRef = db.collection<Transaction>('transactions');
-        this.productsRef = db.collection<Product>('products');
 
-        this.bomRef = db.collection<Bom>('boms');
+    if (localStorage.getItem('token')) {
+      this.username_info = JSON.parse(localStorage.getItem('usrObj'));
+      // this.username = user.displayName;
+      this.orderRef = db.collection<Order>('orders', ref => {
+        return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
+      });
+      this.transactionsRef = db.collection<Transaction>('transactions');
+      this.productsRef = db.collection<Product>('products');
 
-      } else {
-        router.navigateByUrl('login');
-      }
-    });
+      this.bomRef = db.collection<Bom>('boms');
+
+    } else {
+      router.navigateByUrl('login');
+    }
+
   }
   private user: Observable<firebase.User>;
   username_info: any;

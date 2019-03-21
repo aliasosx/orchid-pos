@@ -21,15 +21,9 @@ export class LoginComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
   constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private dialog: MatDialog, private authService: AuthenticationService) {
-    this.user = _firebaseAuth.authState;
-    this.user.subscribe(user => {
-      if (user) {
-        this.userInfomation = user;
-        this.router.navigateByUrl('/');
-      } else {
-        this.userInfomation = null;
-      }
-    });
+    if (localStorage.getItem('token')) {
+      router.navigateByUrl('/');
+    }
     this.webUsersRef = db.collection<Userlogin>('userlogins');
   }
   private user: Observable<firebase.User>;
@@ -162,7 +156,6 @@ export class LoginComponent implements OnInit {
     });
   }
   async loginByToken() {
-
     if (this.usersForm.valid) {
       this.loginBtnDisable = true;
       // tslint:disable-next-line: max-line-length
@@ -181,7 +174,7 @@ export class LoginComponent implements OnInit {
               const a = await localStorage.setItem('token', x['token']);
               const b = await localStorage.setItem('username', x['user'].username);
               const d = await localStorage.setItem('usrObj', JSON.stringify(x['user']));
-              this.router.navigateByUrl('');
+              location.reload();
             }
           });
         }

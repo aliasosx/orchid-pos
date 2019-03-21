@@ -6,7 +6,7 @@
       <span class="example-spacer"></span>
       <div fxShow="true" fxHide.lt-md="true">
         <button mat-flat-button color="primary" class="matbtn" *ngFor="let menu of userMenus"
-          routerLink="{{ menu.toLowerCase() }}">{{ menu }}</button>
+          routerLink="{{ menu.menu_link }}">{{ menu.menu_name }}</button>
         <mat-menu #appMenu>
           <a mat-menu-item>
             <mat-icon>account_box</mat-icon>

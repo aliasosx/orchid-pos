@@ -18,15 +18,14 @@ declare var swal: any;
 export class ProductsComponent implements OnInit {
 
   constructor(private db: AngularFirestore, private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router) {
-    this.user = _firebaseAuth.authState;
-    this.user.subscribe(user => {
-      if (user) {
-        this.username_info = user;
-        return;
-      } else {
-        router.navigateByUrl('login');
-      }
-    });
+
+    if (localStorage.getItem('token')) {
+      this.username_info = localStorage.getItem('usrObj');
+      return;
+    } else {
+      router.navigateByUrl('login');
+    }
+
   }
   title: string = 'Products';
   productsRef: AngularFirestoreCollection<Product>;

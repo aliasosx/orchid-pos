@@ -32,15 +32,13 @@ export class PosComponent implements OnInit {
     this.foodCategoriesRef = db.collection<FoodCategory>('food_categories', ref => {
       return ref.orderBy('foodCategoryNameLao', 'desc');
     });
+    if (localStorage.getItem('token')) {
+      this.username_info = JSON.parse(localStorage.getItem('usrObj'));
+      this.loadFoodPage({ index: 0 });
+    } else {
+      router.navigateByUrl('login');
+    }
 
-    this.user.subscribe(user => {
-      if (user) {
-        this.username_info = user;
-        this.loadFoodPage({ index: 0 });
-      } else {
-        router.navigateByUrl('login');
-      }
-    });
     this.checkOpenCashBal();
   }
   private user: Observable<firebase.User>;

@@ -9,6 +9,7 @@ import { User } from 'firebase';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { NewpasswordComponent } from 'src/app/dialogs/newpassword/newpassword.component';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 declare var swal: any;
 
@@ -19,39 +20,18 @@ declare var swal: any;
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router, private dialog: MatDialog, ) {
-    this.user = _firebaseAuth.authState;
-    this.user.subscribe(async (user) => {
-      if (user) {
-        // console.log(user);
-        this.username_info = user;
-        this.googleId = user.uid;
-        this.navBarShow = '';
-        // this.loadMenu();
-        await db.collection<User>('users').get().subscribe(users => {
-          users.docs.forEach(u => {
-            if (u.data().userId === user.uid) {
-              localStorage.setItem('username', u.data().userName);
-              localStorage.setItem('kitchen', u.data().kitchen);
-              if (localStorage.getItem('username')) {
-                this.username = localStorage.getItem('username');
-                this.loadMenus();
-              } else {
-                window.location.reload();
-              }
-            }
-          });
-        });
-        return;
-      } else {
-        this.navBarShow = 'hidden';
-      }
-    });
-
-    this.menusRef = db.collection<Webmenu>('webmenus', ref => {
-      return ref.orderBy('menuId', 'asc');
-    });
-    this.restaurantInfoRef = db.collection<RestaurantInfo>('restaurant_info');
+  // tslint:disable-next-line: max-line-length
+  constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router, private dialog: MatDialog, private authService: AuthenticationService) {
+    if (localStorage.getItem('usrObj')) {
+      this.navBarShow = '';
+      this.username_info = JSON.parse(localStorage.getItem('usrObj'));
+      this.username = this.username_info.username;
+      this.restaurantInfoRef = db.collection<RestaurantInfo>('restaurant_info');
+      this.loadMenus();
+    } else {
+      this.navBarShow = 'hidden';
+      router.navigateByUrl('login');
+    }
   }
 
   navBarShow = '';
@@ -72,7 +52,7 @@ export class NavbarComponent implements OnInit {
   currentRole: string;
   menusByRoles: any[] = [];
 
-  userMenus: any[] = [];
+  userMenus: any;
 
   ngOnInit() {
     this.RestaurantInfos = this.restaurantInfoRef.valueChanges();
@@ -80,32 +60,20 @@ export class NavbarComponent implements OnInit {
 
   loadMenus() {
     this.userMenus = [];
-    this.users = this.db.collection<User>('users', ref => {
-      return ref.where('userName', '==', localStorage.getItem('username'));
-    }).snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data() as User;
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    }));
-
-    this.users.subscribe(users => {
-      users.forEach(user => {
-        user.menus.forEach(element => {
-          this.userMenus.push(element.toUpperCase());
-        });
+    this.authService.getMenuByUsrId().then(menus => {
+      menus.subscribe(m => {
+        this.userMenus = m;
       });
     });
   }
 
   logOut() {
-    this._firebaseAuth.auth.signOut().then(() => {
-      localStorage.removeItem('username');
-      localStorage.removeItem('kitchen');
-      this.router.navigateByUrl('login');
-      // location.reload();
-    });
+    localStorage.removeItem('username');
+    localStorage.removeItem('kitchen');
+    localStorage.removeItem('usrObj');
+    localStorage.removeItem('token');
+    this.navBarShow = 'hidden';
+    this.router.navigateByUrl('login');
   }
   openNewPassword() {
     const dialogRef = this.dialog.open(NewpasswordComponent, {
@@ -127,5 +95,4 @@ export class NavbarComponent implements OnInit {
       });
     });
   }
-
 }

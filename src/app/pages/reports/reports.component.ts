@@ -28,15 +28,14 @@ export class ReportsComponent implements OnInit {
     private snackbarRef: MatSnackBar,
     private _firebaseAuth: AngularFireAuth,
     private router: Router) {
-    this.user = _firebaseAuth.authState;
-    this.user.subscribe(user => {
-      if (user) {
-        this.username_info = user;
-        return;
-      } else {
-        router.navigateByUrl('login');
-      }
-    });
+
+    if (localStorage.getItem('token')) {
+      this.username_info = JSON.parse(localStorage.getItem('usrObj'));
+      return;
+    } else {
+      router.navigateByUrl('login');
+    }
+
 
   }
   private user: Observable<firebase.User>;

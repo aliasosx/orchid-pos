@@ -27,4 +27,8 @@ export class AuthenticationService {
   async getUserById(id) {
     return this._http.get(this.backendService + 'users/' + id, this.httpOptions);
   }
+  async getMenuByUsrId() {
+    const usrId = await JSON.parse(localStorage.getItem('usrObj')).id;
+    return this._http.get(this.backendService + 'menus/' + usrId, this.httpOptions);
+  }
 }

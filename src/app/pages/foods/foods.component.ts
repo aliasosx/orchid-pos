@@ -20,16 +20,16 @@ declare var swal: any;
 })
 export class FoodsComponent implements OnInit {
 
+  // tslint:disable-next-line: max-line-length
   constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
-    this.user = _firebaseAuth.authState;
-    this.user.subscribe(user => {
-      if (user) {
-        this.username_info = user;
-        return;
-      } else {
-        router.navigateByUrl('login');
-      }
-    });
+
+    if (localStorage.getItem('token')) {
+      this.username_info = JSON.parse(localStorage.getItem('usrObj'));
+      return;
+    } else {
+      router.navigateByUrl('login');
+    }
+
 
     this.foodsRef = db.collection('foods');
   }
@@ -58,9 +58,9 @@ export class FoodsComponent implements OnInit {
   }
   deleteFood(food) {
     swal({
-      title: "ທ່ານຕ້ອງການລຶບແທ້ບໍ?",
-      text: "ຫຼັງຈາກລືບລາຍການແລ້ວບໍ່ສາມາທີ່ຈະຈກູ້ຄືນໄດ້",
-      icon: "warning",
+      title: 'ທ່ານຕ້ອງການລຶບແທ້ບໍ?',
+      text: 'ຫຼັງຈາກລືບລາຍການແລ້ວບໍ່ສາມາທີ່ຈະຈກູ້ຄືນໄດ້',
+      icon: 'warning',
       buttons: true,
       dangerMode: true,
     }).then((res) => {

@@ -17,24 +17,22 @@ import { Food } from 'src/app/interfaces/food';
 })
 export class DashboardComponent implements OnInit {
   constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router) {
-    this.user = _firebaseAuth.authState;
-    this.user.subscribe(user => {
-      if (user) {
-        this.username_info = user;
-        return;
-      } else {
-        router.navigateByUrl('login');
-      }
-    });
+    // Authentication check
 
-    this.transactionsRef = db.collection<Transaction>('transactions');
-    this.transactionsCurrentRef = db.collection<Transaction>('transactions', ref => {
-      return ref.orderBy('transaction_date', 'asc');
-    });
-    this.transactionsKitchenRef = db.collection<Transaction>('transactions');
-    this.kitchensRef = db.collection<Kitchen>('kitchens');
-    this.transactionsPaymentRef = db.collection<Transaction>('transactions');
-    this.paymentMethodRef = db.collection<PaymentType>('paymentTypes');
+    if (localStorage.getItem('token')) {
+      this.transactionsRef = db.collection<Transaction>('transactions');
+      this.transactionsCurrentRef = db.collection<Transaction>('transactions', ref => {
+        return ref.orderBy('transaction_date', 'asc');
+      });
+      this.transactionsKitchenRef = db.collection<Transaction>('transactions');
+      this.kitchensRef = db.collection<Kitchen>('kitchens');
+      this.transactionsPaymentRef = db.collection<Transaction>('transactions');
+      this.paymentMethodRef = db.collection<PaymentType>('paymentTypes');
+    } else {
+      router.navigateByUrl('login');
+    }
+
+    // end Auth check
   }
 
   private user: Observable<firebase.User>;

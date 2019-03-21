@@ -20,16 +20,13 @@ export class CashloadComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
   constructor(private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router, private db: AngularFirestore, private snackbar: MatSnackBar) {
+    if (localStorage.getItem('token')) {
+      this.username_info = JSON.parse(localStorage.getItem('usrObj'));
+      return;
+    } else {
+      router.navigateByUrl('login');
+    }
 
-    this.user = _firebaseAuth.authState;
-    this.user.subscribe(user => {
-      if (user) {
-        this.username_info = user;
-        return;
-      } else {
-        router.navigateByUrl('login');
-      }
-    });
     this.cashloadsRef = db.collection<CashLoad>('cashloads', ref => {
       return ref.orderBy('loadDateTime', 'asc');
     });

@@ -160,7 +160,7 @@ export class CashloadComponent implements OnInit {
       });
     }
   }
-  closeApproved(id) {
+  closeApproved(id, cashloadId) {
     if (id) {
       swal({
         title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດປິດລາຍການນີ້',
@@ -168,19 +168,28 @@ export class CashloadComponent implements OnInit {
         dangerMode: true,
       }).then((value) => {
         if (value) {
-          this.db.collection<CashLoad>('cashloads').doc(id).get().subscribe((cashload) => {
-            if (cashload.data().closeby !== localStorage.getItem('username')) {
-              this.db.collection<CashLoad>('cashloads').doc(id).update({
-                closeApproved: true,
-                closeAuthorizedBy: localStorage.getItem('username'),
-              }).then(() => {
-                this.snackbar.open('Operation success', 'OK', { duration: 1000 });
-              });
-            } else {
-              swal({
-                title: 'ທ່ານບໍ່ສາມາດທີ່ຈະອະນຸມັດໃຫ້ຕົນເອງໄດ້!',
-                text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
-                icon: 'error',
+          const dialogRef = this.dialog.open(ApprovedUsersComponent, {
+            width: '600px',
+          });
+          dialogRef.afterClosed().subscribe(resp => {
+            if (resp.user) {
+              const approveCloseCash = {
+                closeAuthorizedBy: resp.user.id,
+                closeApproved: 1
+              };
+              this.backendSrv.cashLoadUpdate(cashloadId, approveCloseCash).then((rs) => {
+                rs.subscribe(r => {
+                  this.db.collection<CashLoad>('cashloads').doc(id).get().subscribe((cashload) => {
+                    if (cashload.data().closeby !== localStorage.getItem('username')) {
+                      this.db.collection<CashLoad>('cashloads').doc(id).update({
+                        closeApproved: true,
+                        closeAuthorizedBy: resp.user.username,
+                      }).then(() => {
+                        this.snackbar.open('Operation success', 'OK', { duration: 1000 });
+                      });
+                    }
+                  });
+                });
               });
             }
           });

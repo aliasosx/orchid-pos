@@ -28,5 +28,17 @@ export class BackendServiceService {
   async getUsers() {
     return this._http.get(this.backendService + 'users', this.httpOptions);
   }
+  async createOrder(order) {
+    return this._http.post(this.backendService + 'orders', order, this.httpOptions);
+  }
+  async createOrderDetail(orderDetail) {
+    return this._http.post(this.backendService + 'orderdetails', orderDetail, this.httpOptions);
+  }
+  async updateOrder(orderId, order) {
+    return this._http.put(this.backendService + 'orders/' + orderId, order, this.httpOptions);
+  }
+  async userActivityLog(activity) {
+    return this._http.post(this.backendService + 'useractivity', activity, this.httpOptions);
+  }
 
 }

@@ -13,6 +13,7 @@ import * as uuid from 'uuid';
 import { PaymentType } from 'src/app/interfaces/paymentType';
 import { environment } from '../../../environments/environment';
 import { QrBankResponseData } from 'src/app/interfaces/qrBankResponseData';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 
 declare var $: any;
 declare var deepstream: any;
@@ -26,7 +27,7 @@ declare var swal: any;
 })
 export class PaymentCashComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data, private printerService: PrinterServiceService) {
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data, private printerService: PrinterServiceService, private backendService: BackendServiceService) {
     this.username = data.username;
     this.cartRef = db.collection<Cart>('carts', ref => {
       return ref.where('username', '==', this.username);
@@ -69,7 +70,7 @@ export class PaymentCashComponent implements OnInit {
   items_Print: any = [];
 
   ngOnInit() {
-    const uuid1 = uuid.v1();
+    const uuid1 = uuid.v4();
     const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
     this.orderForm = new FormGroup({
       orderId: new FormControl(uuid1),
@@ -84,10 +85,11 @@ export class PaymentCashComponent implements OnInit {
       invoiceno: new FormControl(),
       orderDateTime: new FormControl(new Date()),
       orderFinishTime: new FormControl(),
-      settled: new FormControl(false),
-      completed: new FormControl(false),
+      settled: new FormControl(0),
+      completed: new FormControl(0),
       username: new FormControl(this.username),
       status: new FormControl('processing'),
+      userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
     });
     this.generateQRDate();
     this.data.cart.forEach(element => {
@@ -127,35 +129,67 @@ export class PaymentCashComponent implements OnInit {
     });
     console.log(this.items_Print);
   }
+  processOrderDetail() {
 
+  }
   paymentProcess() {
     this.paymentBtnDisabled = true;
     if (this.orderForm.valid && this.orderForm.get('username').value != null) {
-      this.db.collection('orders').add(this.orderForm.value).then((res) => {
-        this.ticketSelectedId.used = true;
-        this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
-          if (this.bankDataResponse) {
-            this.qrPaymentsRef.add(this.bankDataResponse).then(() => {
-              this.print_thermal(this.orderForm.get('ticket').value, this.orderForm.get('paymentType').value);
-              localStorage.removeItem('cart');
-              this.dialogRef.close('success');
-              swal({
-                title: 'ສຳເລັດ',
-                text: 'ລາຍການທີ່ສັ່ງຖຶກສົ່ງໄປຄົວແລ້ວ',
-                icon: 'success',
-                timer: 2000
+      // add Order to Backend
+      this.backendService.createOrder(this.orderForm.value).then(async (resp_order) => {
+        resp_order.subscribe(async (x) => {
+          if (x['id'] > 0) {
+            this.foodList.forEach(async (food) => {
+              const orderDetail = {
+                orderId: this.orderForm.get('orderId').value,
+                foodId: food.foodId,
+                foodName: food.food,
+                cost: food.cost,
+                price: food.price,
+                quantity: food.quantity,
+                total_price: food.total,
+                total_cost: food.cost * food.quantity
+              };
+              let c = await this.backendService.createOrderDetail(orderDetail).then(async (resp_orderDetail) => {
+                resp_orderDetail.subscribe((y) => {
+                  console.log('Order detail posted id ' + y['id']);
+
+                });
               });
             });
-          } else {
-            this.print_thermal(this.orderForm.get('ticket').value, this.orderForm.get('paymentType').value);
-            localStorage.removeItem('cart');
-            this.dialogRef.close('success');
-            swal({
-              title: 'ສຳເລັດ',
-              text: 'ລາຍການທີ່ສັ່ງຖຶກສົ່ງໄປຄົວແລ້ວ',
-              icon: 'success',
-              timer: 2000
+            // load data to order realtime db
+            this.db.collection('orders').add(this.orderForm.value).then((res) => {
+              this.ticketSelectedId.used = true;
+              this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
+                if (this.bankDataResponse) {
+                  this.qrPaymentsRef.add(this.bankDataResponse).then(() => {
+                    this.print_thermal(this.orderForm.get('ticket').value, this.orderForm.get('paymentType').value);
+                    localStorage.removeItem('cart');
+                    this.dialogRef.close('success');
+                    swal({
+                      title: 'ສຳເລັດ',
+                      text: 'ລາຍການທີ່ສັ່ງຖຶກສົ່ງໄປຄົວແລ້ວ',
+                      icon: 'success',
+                      timer: 2000
+                    });
+                  });
+                } else {
+                  this.print_thermal(this.orderForm.get('ticket').value, this.orderForm.get('paymentType').value);
+                  localStorage.removeItem('cart');
+                  this.dialogRef.close('success');
+                  swal({
+                    title: 'ສຳເລັດ',
+                    text: 'ລາຍການທີ່ສັ່ງຖຶກສົ່ງໄປຄົວແລ້ວ',
+                    icon: 'success',
+                    timer: 2000
+                  });
+                }
+              });
             });
+
+          } else {
+            alert('Something when wrong!');
+            return;
           }
         });
       });

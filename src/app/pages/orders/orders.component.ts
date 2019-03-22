@@ -13,6 +13,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { Bom } from 'src/app/interfaces/bom';
 import { StockServicesService } from 'src/app/services/stock-services.service';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 
 declare var swal: any;
 
@@ -24,13 +25,14 @@ declare var swal: any;
 export class OrdersComponent implements OnInit {
 
   constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar,
-    private _firebaseAuth: AngularFireAuth, private router: Router, private _stockService: StockServicesService) {
+    // tslint:disable-next-line: max-line-length
+    private _firebaseAuth: AngularFireAuth, private router: Router, private _stockService: StockServicesService, private backendService: BackendServiceService) {
 
     if (localStorage.getItem('token')) {
       this.username_info = JSON.parse(localStorage.getItem('usrObj'));
       // this.username = user.displayName;
       this.orderRef = db.collection<Order>('orders', ref => {
-        return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
+        return ref.where('completed', '==', 0).orderBy('orderDateTime', 'asc');
       });
       this.transactionsRef = db.collection<Transaction>('transactions');
       this.productsRef = db.collection<Product>('products');
@@ -78,13 +80,13 @@ export class OrdersComponent implements OnInit {
     // this.updateTransactionsLogfix('9ef7f220-3423-11e9-b71a-3d88757dda31');
   }
   async updateFoodDone(order, _food) {
-    if (this.foodUpdateStatus == false) {
+    if (this.foodUpdateStatus === false) {
       //  Clear cache
       this.foodsList = [];
       // console.log(_food.done);
       if (_food.done == true) {
         _food.done = false;
-      } else if (_food.done == false) {
+      } else if (_food.done === false) {
         _food.done = true;
       }
       // console.log(_food.done);
@@ -130,15 +132,30 @@ export class OrdersComponent implements OnInit {
       dangerMode: true,
     }).then(async (value) => {
       if (value) {
-        let c = await this.orderRef.doc(order.id).update({
-          completed: true,
+        // process complete order
+        const completeOrder = {
+          completed: 1,
           orderFinishTime: new Date(),
           status: 'completed',
-          username: this.username,
-        }).then(async () => {
-          this.snackbarRef.open('Order completed', 'ok', { duration: 1000 });
-          let c = await this.releaseTicket(order.ticket);
-          this.updateTransactionLog(order);
+        };
+        this.backendService.updateOrder(order.orderId, completeOrder).then((resp_order) => {
+          resp_order.subscribe(async (completeOrderResp) => {
+            if (completeOrderResp['status'] === 'success') {
+              // firebase complete
+              let c = await this.orderRef.doc(order.id).update({
+                completed: true,
+                orderFinishTime: new Date(),
+                status: 'completed',
+                username: this.username,
+              }).then(async () => {
+                this.snackbarRef.open('Order completed', 'ok', { duration: 1000 });
+                let c = await this.releaseTicket(order.ticket);
+                this.updateUserActivity('Make order complete by Order ID ' + order.orderId);
+                this.updateTransactionLog(order);
+              });
+              // end firebase
+            }
+          });
         });
       }
     });
@@ -151,29 +168,54 @@ export class OrdersComponent implements OnInit {
       dangerMode: true,
     }).then(async (value) => {
       if (value) {
-        let currentConsumingTime;
-        let a = await this.orderRef.doc(order.id).get().subscribe(o => {
-          let currDate: any = new Date();
-          let StartDate: any;
-          if (o.exists) {
-            StartDate = o.data().orderDateTime.toDate();
-            currentConsumingTime = (currDate - StartDate) / 60000;
-            if (currentConsumingTime > 10) {
-              swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
-              return;
-            } else {
-              this.orderRef.doc(order.id).update({
-                completed: true,
-                orderFinishTime: new Date(),
-                status: 'cancel',
-                username: this.username,
-              }).then(async () => {
-                this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000 });
-                let c = await this.releaseTicket(order.ticket);
-              });
-            }
-          }
-        });
+        // check time
+        let currentConsumingTime_chk;
+        let currDate_chk: any = new Date();
+        let StartDate_chk: any;
+        StartDate_chk = order.orderDateTime.toDate();
+        currentConsumingTime_chk = (currDate_chk - StartDate_chk) / 60000;
+        if (currentConsumingTime_chk > 10) {
+          swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
+          return;
+        } else {
+          const cancelOrder = {
+            completed: 1,
+            orderFinishTime: new Date(),
+            status: 'canceled'
+          };
+          this.backendService.updateOrder(order.orderId, cancelOrder).then(async (resp_cancel_Order) => {
+            resp_cancel_Order.subscribe(async (cancel_order) => {
+              if (cancel_order['status'] === 'success') {
+                // firebase db
+                let currentConsumingTime;
+                let a = await this.orderRef.doc(order.id).get().subscribe(o => {
+                  let currDate: any = new Date();
+                  let StartDate: any;
+                  if (o.exists) {
+                    StartDate = o.data().orderDateTime.toDate();
+                    currentConsumingTime = (currDate - StartDate) / 60000;
+                    if (currentConsumingTime > 10) {
+                      swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
+                      return;
+                    } else {
+                      this.orderRef.doc(order.id).update({
+                        completed: true,
+                        orderFinishTime: new Date(),
+                        status: 'cancel',
+                        username: this.username,
+                      }).then(async () => {
+                        this.updateUserActivity('Make order Cancel by Order ID ' + order.orderId);
+                        this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000 });
+                        let c = await this.releaseTicket(order.ticket);
+                      });
+                    }
+                  }
+                });
+                // end
+              }
+            });
+          });
+        }
       }
     });
   }
@@ -235,9 +277,6 @@ export class OrdersComponent implements OnInit {
       this.snackbarRef.open('Transaction posted Failed', 'ok', { duration: 1000 });
     }
   }
-
-
-
   async stockUpdate(order) {
     let productCurrentQuantity = 0;
     let newProductCurrentQuantity = 0;
@@ -326,6 +365,7 @@ export class OrdersComponent implements OnInit {
                     this.db.collection<Product>('products').doc(product.id).update({
                       currentQuantity: newProductCurrentQuantity,
                     }).then(async () => {
+                      // tslint:disable-next-line: max-line-length
                       this.snackbarRef.open('Stock Updated new Quantity for ' + product.productName + ' : ' + newProductCurrentQuantity + ' Unit(s)', 'ok', { duration: 1000 });
                       console.log('Stock tracking update');
                       let stockhist = {
@@ -358,5 +398,18 @@ export class OrdersComponent implements OnInit {
     } else {
       return;
     }
+  }
+  updateUserActivity(_activities) {
+    const activity = {
+      userId: JSON.parse(localStorage.getItem('usrObj')).id,
+      activities: _activities
+    };
+    this.backendService.userActivityLog(activity).then((resp) => {
+      resp.subscribe((x) => {
+        if (x['status'] === 'success') {
+          this.snackbarRef.open('User audit loging done...', 'OK', { duration: 1000 });
+        }
+      });
+    });
   }
 }

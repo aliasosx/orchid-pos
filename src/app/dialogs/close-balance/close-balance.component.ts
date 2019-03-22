@@ -10,6 +10,7 @@ import { Transaction } from 'src/app/interfaces/transaction';
 import { DatePipe } from '@angular/common';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { PasswordInputComponent } from '../password-input/password-input.component';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 
 declare var swal: any;
 
@@ -20,7 +21,7 @@ declare var swal: any;
 })
 export class CloseBalanceComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
-  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private dialogRef: MatDialogRef<CloseBalanceComponent>, @Inject(MAT_DIALOG_DATA) public data: CashLoad, private datePipe: DatePipe, private snackbar: MatSnackBar, private dialog: MatDialog) {
+  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private dialogRef: MatDialogRef<CloseBalanceComponent>, @Inject(MAT_DIALOG_DATA) public data: CashLoad, private datePipe: DatePipe, private snackbar: MatSnackBar, private dialog: MatDialog, private backendService: BackendServiceService) {
     this.usersRef = db.collection<User>('users');
     this.transactionsRef = db.collection<Transaction>('transactions', ref => {
       return ref.where('username', '==', localStorage.getItem('username'));
@@ -89,6 +90,9 @@ export class CloseBalanceComponent implements OnInit {
 
       if (value) {
         this.disableCloseJob = true;
+
+
+        // firebase
         this.transactionsRef.get().subscribe(transactions => {
           transactions.docs.forEach(async (transaction) => {
             let transactionDate = this.datePipe.transform(transaction.data().transaction_date.toDate(), 'dd-MMM-yyyy');
@@ -126,6 +130,8 @@ export class CloseBalanceComponent implements OnInit {
             this.addCashload.get('totalSellAmount').setValue(totalSell);
           });
         });
+
+        // end firebase
       } else {
         this.disableCloseJob = false;
         return;

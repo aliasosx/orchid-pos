@@ -85,7 +85,7 @@
                       style="max-width: 20px;cursor: pointer;">
                   </td>
                   <ng-template #closeApprovedTag>
-                    <td class="text-center align-middle" (click)="closeApproved(cash.id)">
+                    <td class="text-center align-middle" (click)="closeApproved(cash.id, cash.cashloadId ,cash.close)">
                       <img mat-raised-button src="../../../assets/icons/cancel.svg"
                         style="max-width: 20px;cursor: pointer;">
                     </td>

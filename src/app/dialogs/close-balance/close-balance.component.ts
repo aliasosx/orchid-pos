@@ -29,7 +29,7 @@ export class CloseBalanceComponent implements OnInit {
   _title = this.data.id;
   addCashload: FormGroup;
 
-  disableTextInHandAmount
+  // disableTextInHandAmount
 
   usersRef: AngularFirestoreCollection<User>;
   users: Observable<any[]>;
@@ -40,6 +40,7 @@ export class CloseBalanceComponent implements OnInit {
   disableCloseJob = false;
   btnDisable = false;
   userDisable = false;
+
   ngOnInit() {
     this.addCashload = new FormGroup({
       id: new FormControl(this.data.id),
@@ -58,7 +59,10 @@ export class CloseBalanceComponent implements OnInit {
       closeDatetime: new FormControl(new Date()),
       closeby: new FormControl(localStorage.getItem('username')),
       closeAuthorizedBy: new FormControl(),
-      closeApproved: new FormControl()
+      closeApproved: new FormControl(),
+      cashloadId: new FormControl(),
+      refno: new FormControl(),
+      staff: new FormControl(),
     });
     if (this.data) {
       this.addCashload.setValue(this.data);
@@ -92,7 +96,7 @@ export class CloseBalanceComponent implements OnInit {
             // sum cash
             if (transactionDate === nowDate && transaction.data().paymentBy === 'CASH' && transaction.data().settled === false) {
               // tslint:disable-next-line: max-line-length
-              // console.log(transactionDate + ' => ' + transaction.data().price + ' - ' + transaction.data().quantity + ' - ' + transaction.data().total_price);
+              console.log(transactionDate + ' => ' + transaction.data().price + ' - ' + transaction.data().quantity + ' - ' + transaction.data().total_price);
               sum_cash += transaction.data().total_price;
               this.db.collection<Transaction>('transactions').doc(transaction.id).update({
                 settled: true,
@@ -113,6 +117,7 @@ export class CloseBalanceComponent implements OnInit {
               });
               return;
             }
+
             this.addCashload.get('eodCashBalance').setValue(sum_cash);
             this.addCashload.get('eodBankBalance').setValue(sum_bank);
             totalSell = sum_cash + sum_bank;
@@ -146,7 +151,7 @@ export class CloseBalanceComponent implements OnInit {
 
           this.db.collection<CashLoad>('cashloads').doc(this.data.id).update(this.addCashload.value).then(() => {
             this.snackbar.open('Closed', 'OK', { duration: 1000 });
-            this.dialogRef.close('succes');
+            this.dialogRef.close('success');
           });
         }
       } else {
@@ -169,7 +174,7 @@ export class CloseBalanceComponent implements OnInit {
               return ref.where('email', '==', this.addCashload.get('closeAuthorizedBy').value);
             }).get().subscribe(users => {
               users.docs.forEach(async (user) => {
-                console.log(user.data().userName);
+                // console.log(user.data().userName);
                 let c = await this.addCashload.get('closeAuthorizedBy').setValue(user.data().userName);
                 this.userDisable = true;
                 this.btnDisable = true;
@@ -177,7 +182,7 @@ export class CloseBalanceComponent implements OnInit {
             });
           }
         }).catch((err) => {
-          console.log(err.message);
+          // console.log(err.message);
           swal('Error!', err.message + ' Please try ...', 'error');
           this.btnDisable = false;
         });

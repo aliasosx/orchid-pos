@@ -83,42 +83,49 @@ export class CashloadComponent implements OnInit {
     }
   }
   openCloseBalance(cash) {
-    let order_pending;
-    let c = this.db.collection<Order>('orders', ref => {
-      return ref.where('completed', '==', false).where('username', '==', localStorage.getItem('username'));
-    }).snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data() as Order;
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    }));
-
-    c.subscribe(order => {
-      console.log(order.length);
-      if (order.length > 0) {
-        swal({
-          title: 'ມີລາຍການ Order ຄ້າງ ກະລຸນາກວດສອບໃໝ່',
-          text: 'Order still pending please clear all Orders',
-          icon: 'error',
+    if (cash.closeby === localStorage.getItem('username')) {
+      let c = this.db.collection<Order>('orders', ref => {
+        return ref.where('completed', '==', false).where('username', '==', localStorage.getItem('username'));
+      }).snapshotChanges().pipe(map(change => {
+        return change.map(a => {
+          const data = a.payload.doc.data() as Order;
+          data['id'] = a.payload.doc.id;
+          return data;
         });
-        return;
-      } else {
-        if (!cash.close) {
-          const dialogRef = this.dialog.open(CloseBalanceComponent, {
-            width: '600px',
-            data: cash
-          });
-        } else {
+      }));
+
+      c.subscribe(order => {
+        console.log(order.length);
+        if (order.length > 0) {
           swal({
-            title: 'ລາຍການທັງໝົດ ປິດແລ້ວ',
-            text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
+            title: 'ມີລາຍການ Order ຄ້າງ ກະລຸນາກວດສອບໃໝ່',
+            text: 'Order still pending please clear all Orders',
             icon: 'error',
           });
           return;
+        } else {
+          if (!cash.close) {
+            const dialogRef = this.dialog.open(CloseBalanceComponent, {
+              width: '600px',
+              data: cash
+            });
+          } else {
+            swal({
+              title: 'ລາຍການທັງໝົດ ປິດແລ້ວ',
+              text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
+              icon: 'error',
+            });
+            return;
+          }
         }
-      }
-    });
+      });
+    } else {
+      swal({
+        title: 'ກະລຸນາເລຶອກລາຍການຂອງທ່ານເອງ',
+        icon: 'error'
+      });
+      return;
+    }
   }
   approvedLoadCash(id, cashloadId) {
     if (id) {
@@ -160,8 +167,8 @@ export class CashloadComponent implements OnInit {
       });
     }
   }
-  closeApproved(id, cashloadId) {
-    if (id) {
+  closeApproved(id, cashloadId, closedFlg) {
+    if (id && closedFlg === 1) {
       swal({
         title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດປິດລາຍການນີ້',
         icon: 'warning',
@@ -195,6 +202,12 @@ export class CashloadComponent implements OnInit {
           });
         }
       });
+    } else {
+      swal({
+        title: 'ລາຍການຍັງບໍ່ທັນປິດ ກະລຸນາປິດກ່ອນ',
+        icon: 'error'
+      });
+      return;
     }
   }
 }

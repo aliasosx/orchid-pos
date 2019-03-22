@@ -80,6 +80,7 @@ import { KitchenReportAdminComponent } from './pages/kitchen-report-admin/kitche
 import { OrdersHistoryComponent } from './pages/orders-history/orders-history.component';
 import { ViewOrderDetailsComponent } from './dialogs/view-order-details/view-order-details.component';
 import { LoadingscreenComponent } from './pages/loadingscreen/loadingscreen.component';
+import { ApprovedUsersComponent } from './dialogs/approved-users/approved-users.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +140,7 @@ import { LoadingscreenComponent } from './pages/loadingscreen/loadingscreen.comp
     OrdersHistoryComponent,
     ViewOrderDetailsComponent,
     LoadingscreenComponent,
+    ApprovedUsersComponent,
 
 
   ],
@@ -190,6 +192,7 @@ import { LoadingscreenComponent } from './pages/loadingscreen/loadingscreen.comp
     UnitsComponent,
     ViewBilldetailsComponent,
     ViewOrderDetailsComponent,
+    ApprovedUsersComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe,],

@@ -1,3 +1,4 @@
+import { BackendServiceService } from './../../services/common/backend-service.service';
 import { CashLoad } from './../../interfaces/cashLoad';
 import { PasswordInputComponent } from './../password-input/password-input.component';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -19,7 +20,7 @@ declare var swal: any;
 export class OpenCashComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private dialogRef: MatDialogRef<OpenCashComponent>) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private dialogRef: MatDialogRef<OpenCashComponent>, private backendService: BackendServiceService) {
     this.usersRef = db.collection<User>('users');
   }
 
@@ -36,19 +37,22 @@ export class OpenCashComponent implements OnInit {
       loadDateTime: new FormControl(new Date),
       initBalance: new FormControl(),
       openAuthorizedBy: new FormControl(),
-      loadApproved: new FormControl(false),
+      loadApproved: new FormControl(0),
       eodCashBalance: new FormControl(0),
       eodBankBalance: new FormControl(0),
       cashBalance: new FormControl(0),
       cashInHands: new FormControl(0),
       closeBalance: new FormControl(0),
       totalSellAmount: new FormControl(0),
-      close: new FormControl(false),
+      close: new FormControl(0),
       closeDatetime: new FormControl(),
       closeby: new FormControl(localStorage.getItem('username')),
+      staff: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       closeAuthorizedBy: new FormControl(),
-      closeApproved: new FormControl(false),
+      closeApproved: new FormControl(0),
       note: new FormControl(),
+      cashloadId: new FormControl(),
+      refno: new FormControl(),
     });
 
     this.users = this.usersRef.snapshotChanges().pipe(map(change => {
@@ -62,12 +66,18 @@ export class OpenCashComponent implements OnInit {
 
   async addInitialBalance() {
     if (this.addCashload.get('initBalance').value) {
-      this.db.collection<CashLoad>('cashloads').add(this.addCashload.value).then((resps) => {
-        console.log(resps);
-        this.dialogRef.close('success');
-      }).catch((err) => {
-        console.log(err.message);
-        this.btnDisable = false;
+      const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
+      this.addCashload.get('refno').setValue(refno);
+      let c = await this.backendService.openCashload(this.addCashload.value).then((x) => {
+        x.subscribe(async (cs) => {
+          // console.log(cs);
+          let xc = await this.addCashload.get('cashloadId').setValue(cs['id']);
+          let m = await this.db.collection<CashLoad>('cashloads').add(this.addCashload.value).then(async (resps) => {
+            this.dialogRef.close('success');
+          }).catch((err) => {
+            this.btnDisable = false;
+          });
+        });
       });
     }
   }
@@ -108,5 +118,11 @@ export class OpenCashComponent implements OnInit {
     } else {
       this.btnDisable = false;
     }
+  }
+
+  padding(num: number, size: number) {
+    let s = num + '';
+    while (s.length < size) { s = '0' + s; }
+    return s;
   }
 }

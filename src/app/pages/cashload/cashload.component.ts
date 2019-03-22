@@ -1,3 +1,4 @@
+import { BackendServiceService } from './../../services/common/backend-service.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CloseBalanceComponent } from './../../dialogs/close-balance/close-balance.component';
 import { CashLoad } from './../../interfaces/cashLoad';
@@ -19,17 +20,16 @@ declare var swal: any;
 export class CashloadComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router, private db: AngularFirestore, private snackbar: MatSnackBar) {
+  constructor(private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router, private db: AngularFirestore, private snackbar: MatSnackBar, private backendSrv: BackendServiceService) {
     if (localStorage.getItem('token')) {
       this.username_info = JSON.parse(localStorage.getItem('usrObj'));
+      this.cashloadsRef = db.collection<CashLoad>('cashloads', ref => {
+        return ref.orderBy('loadDateTime', 'asc');
+      });
       return;
     } else {
       router.navigateByUrl('login');
     }
-
-    this.cashloadsRef = db.collection<CashLoad>('cashloads', ref => {
-      return ref.orderBy('loadDateTime', 'asc');
-    });
   }
   cashloadsRef: AngularFirestoreCollection<CashLoad>;
   cashloads: Observable<any[]>;
@@ -53,7 +53,7 @@ export class CashloadComponent implements OnInit {
   removeCashLoad(cash) {
     if (cash) {
       swal({
-        title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດລາຍການນີ້',
+        title: 'ແນ່ໃຈວ່າຈະ ລຶບລາຍກາຍນີ້',
         icon: 'warning',
         dangerMode: true,
       }).then((value) => {
@@ -65,11 +65,18 @@ export class CashloadComponent implements OnInit {
               icon: 'error'
             });
           } else {
-            this.db.collection<CashLoad>('cashloads').doc(cash.id).delete().then(() => {
-              this.snackbar.open('Record has been removed', 'OK', { duration: 1000 });
+            this.backendSrv.removeCashload(cash.cashloadId).then((rsp) => {
+              rsp.subscribe(rs => {
+                if (rs['status'] === 'success') {
+                  this.db.collection<CashLoad>('cashloads').doc(cash.id).delete().then(() => {
+                    this.snackbar.open('Record has been removed', 'OK', { duration: 1000 });
+                  });
+                } else {
+                  this.snackbar.open('Record cannot be remove', 'Fail', { duration: 1000 });
+                }
+              });
             });
           }
-
         }
       });
     }
@@ -120,6 +127,9 @@ export class CashloadComponent implements OnInit {
         dangerMode: true,
       }).then((value) => {
         if (value) {
+
+
+          /*
           this.db.collection<CashLoad>('cashloads').doc(id).get().subscribe((cashload) => { // closeby
             if (cashload.data().closeby !== localStorage.getItem('username')) {
               this.db.collection<CashLoad>('cashloads').doc(id).update({
@@ -137,6 +147,10 @@ export class CashloadComponent implements OnInit {
               return;
             }
           });
+
+          */
+
+
         }
       });
 

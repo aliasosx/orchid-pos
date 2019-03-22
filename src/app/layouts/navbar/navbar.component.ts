@@ -56,12 +56,14 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.RestaurantInfos = this.restaurantInfoRef.valueChanges();
+    this.loadMenus();
   }
 
   loadMenus() {
     this.userMenus = [];
     this.authService.getMenuByUsrId().then(menus => {
       menus.subscribe(m => {
+        // console.log(m);
         this.userMenus = m;
       });
     });

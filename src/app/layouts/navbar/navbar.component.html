@@ -36,9 +36,9 @@
             <mat-icon>account_box</mat-icon>
             <span>{{ username }}</span>
           </a>
-          <a mat-menu-item *ngFor="let menu of userMenus" routerLink="{{ menu }}">
+          <a mat-menu-item *ngFor="let menu of userMenus" routerLink="{{ menu.menu_link }}">
             <mat-icon>account_box</mat-icon>
-            <span>{{ menu }}</span>
+            <span>{{ menu.menu_name }}</span>
           </a>
           <a mat-menu-item routerLink="settings">
             <mat-icon>exit_to_app</mat-icon>

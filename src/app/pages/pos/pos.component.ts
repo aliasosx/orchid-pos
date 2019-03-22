@@ -38,7 +38,6 @@ export class PosComponent implements OnInit {
     } else {
       router.navigateByUrl('login');
     }
-
     this.checkOpenCashBal();
   }
   private user: Observable<firebase.User>;
@@ -320,7 +319,7 @@ export class PosComponent implements OnInit {
     const currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
     let cashloadsOb: Observable<any[]>;
     cashloadsOb = await this.db.collection<CashLoad>('cashloads', ref => {
-      return ref.where('closeby', '==', localStorage.getItem('username')).where('closeApproved', '==', false).where('close', '==', false);
+      return ref.where('closeby', '==', localStorage.getItem('username')).where('closeApproved', '==', 0).where('close', '==', 0);
     }).snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data() as CashLoad;

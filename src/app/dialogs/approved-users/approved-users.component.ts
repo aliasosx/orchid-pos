@@ -42,7 +42,6 @@ export class ApprovedUsersComponent implements OnInit {
   }
   authenticate() {
     if (this.approvedUsers.valid) {
-      // console.log(this.approvedUsers.value);
       this.authService.login(this.approvedUsers.get('username').value, this.approvedUsers.get('password').value).then((resp) => {
         resp.subscribe(authUser => {
           if (authUser['token']) {

@@ -1,3 +1,4 @@
+import { LoadingScreenService } from './../../services/loading-screen/loading-screen.service';
 import { AuthenticationService } from './../../services/authentication.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
@@ -20,7 +21,7 @@ declare var swal: any;
 export class LoginComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private dialog: MatDialog, private authService: AuthenticationService) {
+  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private dialog: MatDialog, private authService: AuthenticationService, private loadingScreenService: LoadingScreenService) {
     if (localStorage.getItem('token')) {
       router.navigateByUrl('/');
     }
@@ -156,6 +157,7 @@ export class LoginComponent implements OnInit {
     });
   }
   async loginByToken() {
+    // this.loadingScreenService.startLoading();
     if (this.usersForm.valid) {
       this.loginBtnDisable = true;
       // tslint:disable-next-line: max-line-length
@@ -175,6 +177,7 @@ export class LoginComponent implements OnInit {
               const b = await localStorage.setItem('username', x['user'].username);
               const d = await localStorage.setItem('usrObj', JSON.stringify(x['user']));
               location.reload();
+              // this.loadingScreenService.stopLoading();
             }
           });
         }

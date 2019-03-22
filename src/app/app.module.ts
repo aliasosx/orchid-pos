@@ -79,6 +79,7 @@ import { KitchenTransactionsComponent } from './pages/kitchen-transactions/kitch
 import { KitchenReportAdminComponent } from './pages/kitchen-report-admin/kitchen-report-admin.component';
 import { OrdersHistoryComponent } from './pages/orders-history/orders-history.component';
 import { ViewOrderDetailsComponent } from './dialogs/view-order-details/view-order-details.component';
+import { LoadingscreenComponent } from './pages/loadingscreen/loadingscreen.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { ViewOrderDetailsComponent } from './dialogs/view-order-details/view-ord
     KitchenReportAdminComponent,
     OrdersHistoryComponent,
     ViewOrderDetailsComponent,
+    LoadingscreenComponent,
 
 
   ],

@@ -22,4 +22,11 @@ export class BackendServiceService {
   async removeCashload(id) {
     return this._http.delete(this.backendService + 'cashloads/' + id, this.httpOptions);
   }
+  async cashLoadUpdate(id, cashloadInst) {
+    return this._http.put(this.backendService + 'cashloads/' + id, cashloadInst, this.httpOptions);
+  }
+  async getUsers() {
+    return this._http.get(this.backendService + 'users', this.httpOptions);
+  }
+
 }

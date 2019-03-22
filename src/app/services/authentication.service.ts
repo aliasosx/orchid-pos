@@ -22,6 +22,7 @@ export class AuthenticationService {
       username: username,
       password: password
     };
+    //  console.log(auth);
     return await this._http.post(this.backendService + 'auth', auth);
   }
   async getUserById(id) {

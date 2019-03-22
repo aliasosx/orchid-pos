@@ -1,3 +1,4 @@
+import { ApprovedUsersComponent } from './../../dialogs/approved-users/approved-users.component';
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CloseBalanceComponent } from './../../dialogs/close-balance/close-balance.component';
@@ -119,7 +120,7 @@ export class CashloadComponent implements OnInit {
       }
     });
   }
-  approvedLoadCash(id) {
+  approvedLoadCash(id, cashloadId) {
     if (id) {
       swal({
         title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດລາຍການນີ້',
@@ -128,32 +129,35 @@ export class CashloadComponent implements OnInit {
       }).then((value) => {
         if (value) {
 
+          const dialogRef = this.dialog.open(ApprovedUsersComponent, {
+            width: '600px',
+          });
 
-          /*
-          this.db.collection<CashLoad>('cashloads').doc(id).get().subscribe((cashload) => { // closeby
-            if (cashload.data().closeby !== localStorage.getItem('username')) {
-              this.db.collection<CashLoad>('cashloads').doc(id).update({
-                loadApproved: true,
-                openAuthorizedBy: localStorage.getItem('username'),
-              }).then(() => {
-                this.snackbar.open('Operation success', 'OK', { duration: 1000 });
+          dialogRef.afterClosed().subscribe(resp => {
+            // console.log(resp.user);
+            if (resp.user) {
+              const approveCash = {
+                openAuthorizedBy: resp.user.id,
+                loadApproved: 1
+              };
+              this.backendSrv.cashLoadUpdate(cashloadId, approveCash).then((rs) => {
+                rs.subscribe(r => {
+                  this.db.collection<CashLoad>('cashloads').doc(id).get().subscribe((cashload) => { // closeby
+                    this.db.collection<CashLoad>('cashloads').doc(id).update({
+                      loadApproved: true,
+                      openAuthorizedBy: resp.user.username,
+                    }).then(() => {
+                      this.snackbar.open('Operation success', 'OK', { duration: 1000 });
+                    });
+                  });
+                });
               });
             } else {
-              swal({
-                title: 'ທ່ານບໍ່ສາມາດທີ່ຈະອະນຸມັດໃຫ້ຕົນເອງໄດ້!',
-                text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
-                icon: 'error',
-              });
               return;
             }
           });
-
-          */
-
-
         }
       });
-
     }
   }
   closeApproved(id) {

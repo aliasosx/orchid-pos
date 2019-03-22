@@ -1,3 +1,21 @@
-<p>
-  approved-users works!
-</p>
+<form [formGroup]="approvedUsers">
+  <div class="row">
+    <div class="col col-md-12">
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="users">ຜູ້ໃຊ້</label>
+          <select class="form-control" (change)="enablePassword($event.target.value)" formControlName="username"
+            required>
+            <option value="" disabled>-----------------</option>
+            <option value="{{ u.username }}" *ngFor="let u of users">{{ u.username }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-12" [ngClass]="passwordShow">
+          <label for="password">ລະຫັດຜ່ານ</label>
+          <input type="password" class="form-control" autocomplete="off" id="password" formControlName="password"
+            required (keydown.enter)="authenticate()">
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

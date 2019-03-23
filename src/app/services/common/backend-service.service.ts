@@ -40,5 +40,11 @@ export class BackendServiceService {
   async userActivityLog(activity) {
     return this._http.post(this.backendService + 'useractivity', activity, this.httpOptions);
   }
+  async getKitchens() {
+    return this._http.get(this.backendService + 'kitchens', this.httpOptions);
+  }
+  async getRoles() {
+    return this._http.get(this.backendService + 'roles', this.httpOptions);
+  }
 
 }

@@ -1,19 +1,12 @@
-import { Kitchen } from './../../interfaces/kitchen';
-import { map } from 'rxjs/operators';
-import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { Router } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
-
+import { AngularFireStorage } from 'angularfire2/storage';
 import * as uuid from 'uuid';
 
-import { User } from 'src/app/interfaces/user';
-import { Role } from 'src/app/interfaces/role';
-import { Observable } from 'rxjs';
 import { UserServicesService } from 'src/app/services/common/user-services.service';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 
 @Component({
   selector: 'app-user-register',
@@ -23,11 +16,8 @@ import { UserServicesService } from 'src/app/services/common/user-services.servi
 export class UserRegisterComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private userService: UserServicesService,
-    private dialogRef: MatDialogRef<UserRegisterComponent>, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.usersRef = db.collection<User>('users');
-    this.rolesRef = db.collection<Role>('roles');
-    this.kitchensRef = db.collection<Kitchen>('kitchens');
+  constructor(private router: Router, private storage: AngularFireStorage, private userService: UserServicesService, private backendServices: BackendServiceService
+    , private dialogRef: MatDialogRef<UserRegisterComponent>, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
   userRegistrationForm: FormGroup;
   photoSrc = '../../../assets/images/man01.png';
@@ -35,16 +25,17 @@ export class UserRegisterComponent implements OnInit {
   message = '';
   showAlert = 'hidden';
   saveBtnDisable = true;
-  usersRef: AngularFirestoreCollection<User>;
+
   showRole = 'hidden';
   messageTitle = 'ລົງທະບຽນ';
   buttonMessage = 'ບັນທືກ';
-  rolesRef: AngularFirestoreCollection<Role>;
-  roles: Observable<any[]>;
+
   updateFlag = false;
 
-  kitchensRef: AngularFirestoreCollection<Kitchen>;
-  kitchens: Observable<any[]>;
+  progressBarValue;
+
+  kitchens: any;
+  roles: any;
 
   ngOnInit() {
     const uuid1Emp = uuid.v1();
@@ -53,30 +44,39 @@ export class UserRegisterComponent implements OnInit {
     const uuid1Id = uuid.v1();
 
     this.userRegistrationForm = new FormGroup({
-      id: new FormControl(uuid1Id),
-      userId: new FormControl(uuid1usr),
-      googleId: new FormControl(uuid1google),
-      email: new FormControl(),
-      userName: new FormControl(),
-      password: new FormControl(),
-      employeeCode: new FormControl(uuid1Emp),
+      id: new FormControl(),
+      employee_code: new FormControl(uuid1usr),
       gender: new FormControl(),
-      fullName: new FormControl(),
+      username: new FormControl(),
       dateOfbirth: new FormControl(),
-      placeOfBirth: new FormControl(),
-      idCardno: new FormControl(),
-      photo: new FormControl(this.photoSrc),
-      kitchen: new FormControl('Drink'),
+      fullname: new FormControl(),
+      employed_date: new FormControl(new Date()),
       mobile: new FormControl(),
-      enabled: new FormControl(true),
-      role: new FormControl('staff'),
-      registeringDate: new FormControl(new Date()),
-      employedDate: new FormControl(new Date()),
-      menus: new FormControl(),
+      photo: new FormControl(this.photoSrc),
+      currentAddress: new FormControl(),
+      idCardNumber: new FormControl(),
+      password: new FormControl(),
+      enabled: new FormControl(0),
+      kitchenId: new FormControl(2),
+      roleId: new FormControl(2),
+      firstlogin: new FormControl(1),
+      createdAt: new FormControl(),
+      updatedAt: new FormControl(),
     });
-    this.roles = this.rolesRef.valueChanges();
-    this.kitchens = this.kitchensRef.valueChanges();
+
+    this.backendServices.getKitchens().then(kitchen_resp => {
+      kitchen_resp.subscribe(kitchens => {
+        this.kitchens = kitchens;
+      });
+    });
+    this.backendServices.getRoles().then(roles_resp => {
+      roles_resp.subscribe(roles => {
+        this.roles = roles;
+      });
+    });
+
     if (this.data) {
+      this.photoSrc = this.data.photo;
       this.showRole = '';
       this.userRegistrationForm.setValue(this.data);
       this.updateFlag = true;
@@ -91,29 +91,12 @@ export class UserRegisterComponent implements OnInit {
     if (this.updateFlag && this.data) {
       this.updateUser();
     } else {
-      console.log(this.userRegistrationForm);
       if (this.userRegistrationForm.valid) {
         this.saveBtnDisable = true;
-        /*
-        this._firebaseAuth.auth.createUserWithEmailAndPassword(this.userRegistrationForm.get('email').value,
-          this.userRegistrationForm.get('password').value.trim()).then((resp) => {
-            if (this.userRegistrationForm.valid) {
-              this.userRegistrationForm.get('password').setValue('****************');
-              this.userRegistrationForm.get('photo').setValue(this.photoSrc);
-              this.userRegistrationForm.get('userId').setValue(resp.user.uid);
-              this.usersRef.add(this.userRegistrationForm.value).then(() => {
-                this.dialogRef.close('success');
-              });
-            }
-          }).catch((err) => {
-            this.message = err.message;
-            this.showAlert = '';
-          });
-        */
 
         this.userService.createUser(this.userRegistrationForm.value).then(user_resp => {
           user_resp.subscribe(user => {
-            if (user['status'] === 'sucess') {
+            if (user['status'] === 'success') {
               this.dialogRef.close('success');
             } else {
               this.message = 'Error happend';
@@ -140,50 +123,39 @@ export class UserRegisterComponent implements OnInit {
       this.showAlert = '';
     }
   }
-  checkUserDuplicate(e) {
-    this.usersRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data() as User;
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    })).subscribe(users => {
-      users.forEach(user => {
-        if (user.userName.toLowerCase().trim() === e.toLowerCase().trim()) {
-          this.saveBtnDisable = true;
-          this.message = 'Username already exist';
-          this.showAlert = '';
-          this.snackbar.open(this.message, 'Fail', { duration: 5000 });
-        } else {
-          this.showAlert = 'hidden';
-        }
-      });
-    });
-  }
-  checkEmailDuplicate(e) {
-    this.usersRef.get().subscribe(users => {
-      users.docs.forEach(user => {
-        if (user.data().email === e.trim()) {
-          console.log(user.data());
-          this.saveBtnDisable = true;
-          this.message = 'Email already exist';
-          this.showAlert = '';
-          this.snackbar.open(this.message, 'Fail', { duration: 5000 });
-        } else {
-          this.showAlert = 'hidden';
-        }
-      });
-    });
-  }
+
   updateUser() {
     if (this.userRegistrationForm.valid) {
       this.saveBtnDisable = true;
       this.buttonMessage = 'Saving ...';
-      this.usersRef.doc(this.data.id).update(this.userRegistrationForm.value).then(() => {
-        this.dialogRef.close('success');
-      }).catch((err) => {
+
+      this.userService.updateUser(this.userRegistrationForm.value).then((user_resp => {
+        user_resp.subscribe((resp) => {
+          if (resp['status'] === 'success') {
+            this.dialogRef.close('success');
+          }
+        });
+      })).catch((err) => {
         this.snackbar.open(err.message, 'OK', { duration: 5000 });
         this.saveBtnDisable = false;
+      });
+    }
+  }
+  uploadPhoto(event) {
+    let selectedFiles: FileList;
+    selectedFiles = event;
+    if (selectedFiles.item(0)) {
+      const file = selectedFiles.item(0);
+      const uniqkey = 'pic_' + this.userRegistrationForm.get('username').value + Math.floor(Math.random() * 1000000);
+      const uploadTask = this.storage.upload('/users/' + uniqkey, file);
+      uploadTask.percentageChanges().subscribe((value) => {
+        this.progressBarValue = value.toFixed(2);
+      });
+      uploadTask.then((snapshot: firebase.storage.UploadTaskSnapshot) => {
+        snapshot.ref.getDownloadURL().then(url => {
+          this.photoSrc = url;
+          this.userRegistrationForm.get('photo').setValue(url);
+        });
       });
     }
   }

@@ -6,15 +6,13 @@
         <th scope="col" class="text-center text-nowrap">#</th>
         <th scope="col" class="text-center text-nowrap">username</th>
         <th scope="col" class="text-center text-nowrap">ຊື່</th>
-        <th scope="col" class="text-center text-nowrap">ວັນເດື່ອນປິເກິດ</th>
-        <th scope="col" class="text-center text-nowrap">ເລກບັດ</th>
         <th scope="col" class="text-center text-nowrap">ວັນລົງທະບຽນ</th>
         <th scope="col" class="text-center text-nowrap">ສະຖານະ</th>
         <th scope="col" class="text-center text-nowrap">Control</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of usersList; let i = index">
+      <tr *ngFor="let user of users; let i = index">
         <td class="text-left text-nowrap">{{ i + 1 }}</td>
         <td class="text-left text-nowrap">{{ user.username }}</td>
         <td class="text-left text-nowrap" style="max-width: 140px;" *ngIf="user.gender == 'M'; else Female">Mr.
@@ -25,17 +23,15 @@
             {{ user.fullname }}
           </td>
         </ng-template>
-        <td class="text-center text-nowrap " style="max-width: 20px;">{{ user.dateOfbirth | date:'dd-MMM-yyyy' }}</td>
-        <td class="text-center text-nowrap" style="max-width: 110px;">{{ user.idCardNumber }}</td>
         <td class="text-center text-nowrap">{{ user.employed_date | date: 'dd-MMM-yyyy'}}</td>
         <td class="text-center text-nowrap" *ngIf="user.enabled; else disabledUsr">
-          <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" disable
+          <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" (click)="userActivateToggle(user)"
             style="max-width: 20px;cursor: pointer;">
         </td>
         <ng-template #disabledUsr>
-          <td class="text-center text-nowrap" *ngIf="user.enabled; else disabledUsr">
-            <img mat-raised-button src="../../../assets/icons/baseline-remove-24px.svg" disable
-              style="max-width: 20px;cursor: pointer;">
+          <td class="text-center text-nowrap">
+            <img mat-raised-button src="../../../assets/icons/baseline-remove-24px.svg"
+              (click)="userActivateToggle(user)" style="max-width: 20px;cursor: pointer;">
           </td>
         </ng-template>
         <td class="text-center text-nowrap">

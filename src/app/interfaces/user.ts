@@ -13,12 +13,6 @@ export interface User {
   photo: string;
   mobile: string;
   enabled: boolean;
-  kitchen?: string;
-  role: {
-    roleName: string;
-    menus: any;
-  };
-  menus?: any;
   registeringDate: Date;
   employedDate: Date;
 }

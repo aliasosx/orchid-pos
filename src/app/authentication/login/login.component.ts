@@ -133,9 +133,20 @@ export class LoginComponent implements OnInit {
   }
 
   openRegister() {
-    this.dialog.open(UserRegisterComponent, {
+    const dialogRef = this.dialog.open(UserRegisterComponent, {
       width: '800px',
     });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'success') {
+        swal({
+          title: 'ລົງທະບຽນສຳເລັດ ລໍຖ້າການອະນຸມັດ',
+          text: 'Registered successful , Please wait for Authorization',
+          icon: 'success',
+          timer: 2000
+        });
+      }
+    });
+
   }
 
   userSignUp() {

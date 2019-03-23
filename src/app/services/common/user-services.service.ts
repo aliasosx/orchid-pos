@@ -20,7 +20,10 @@ export class UserServicesService {
     return this._http.get(this.backendService + 'users', this.httpOptions);
   }
   async createUser(user) {
-    return this._http.post(this.backendService + 'users', user, this.httpOptions);
+    return this._http.post(this.backendService + 'register', user);
+  }
+  async updateUser(user) {
+    return this._http.put(this.backendService + 'users/' + user.id, user, this.httpOptions);
   }
 
 }

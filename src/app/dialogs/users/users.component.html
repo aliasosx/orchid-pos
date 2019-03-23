@@ -3,22 +3,42 @@
   <table class="table table-bordered table-hover">
     <thead class="thead-light">
       <tr>
+        <th scope="col" class="text-center text-nowrap">#</th>
         <th scope="col" class="text-center text-nowrap">username</th>
         <th scope="col" class="text-center text-nowrap">ຊື່</th>
         <th scope="col" class="text-center text-nowrap">ວັນເດື່ອນປິເກິດ</th>
         <th scope="col" class="text-center text-nowrap">ເລກບັດ</th>
-        <th scope="col" class="text-center text-nowrap">Role</th>
+        <th scope="col" class="text-center text-nowrap">ວັນລົງທະບຽນ</th>
+        <th scope="col" class="text-center text-nowrap">ສະຖານະ</th>
         <th scope="col" class="text-center text-nowrap">Control</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users | async">
-        <td class="text-left text-nowrap">{{ user.userName }}</td>
-        <td class="text-left text-nowrap" style="max-width: 140px;">{{ user.gender }}. {{ user.fullName }}</td>
+      <tr *ngFor="let user of usersList; let i = index">
+        <td class="text-left text-nowrap">{{ i + 1 }}</td>
+        <td class="text-left text-nowrap">{{ user.username }}</td>
+        <td class="text-left text-nowrap" style="max-width: 140px;" *ngIf="user.gender == 'M'; else Female">Mr.
+          {{ user.fullname }}
+        </td>
+        <ng-template #Female>
+          <td class="text-left text-nowrap" style="max-width: 140px;">Ms.
+            {{ user.fullname }}
+          </td>
+        </ng-template>
         <td class="text-center text-nowrap " style="max-width: 20px;">{{ user.dateOfbirth | date:'dd-MMM-yyyy' }}</td>
-        <td class="text-left text-nowrap" style="max-width: 110px;">{{ user.idCardno }}</td>
-        <td class="text-left text-nowrap">{{ user.role}}</td>
-        <td class="text-left text-nowrap">
+        <td class="text-center text-nowrap" style="max-width: 110px;">{{ user.idCardNumber }}</td>
+        <td class="text-center text-nowrap">{{ user.employed_date | date: 'dd-MMM-yyyy'}}</td>
+        <td class="text-center text-nowrap" *ngIf="user.enabled; else disabledUsr">
+          <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" disable
+            style="max-width: 20px;cursor: pointer;">
+        </td>
+        <ng-template #disabledUsr>
+          <td class="text-center text-nowrap" *ngIf="user.enabled; else disabledUsr">
+            <img mat-raised-button src="../../../assets/icons/baseline-remove-24px.svg" disable
+              style="max-width: 20px;cursor: pointer;">
+          </td>
+        </ng-template>
+        <td class="text-center text-nowrap">
           <div class="row">
             <div class="col col-md-12 text-center">
               <button mat-flat-button color="warn" style="width: 100%;" (click)="showUserAdd(user)">Update</button>
@@ -28,9 +48,4 @@
       </tr>
     </tbody>
   </table>
-</div>
-<div class="row">
-  <div class="col col-md-12 text-right">
-    <button mat-flat-button color="warn" style="width: 100%;" (click)="reloadPrivilege()">{{ btnText }}</button>
-  </div>
 </div>

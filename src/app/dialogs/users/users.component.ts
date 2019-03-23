@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { UserRegisterComponent } from '../user-register/user-register.component';
 import { Role } from 'src/app/interfaces/role';
+import { UserServicesService } from 'src/app/services/common/user-services.service';
 
 @Component({
   selector: 'app-users',
@@ -14,14 +15,16 @@ import { Role } from 'src/app/interfaces/role';
 })
 export class UsersComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private userServices: UserServicesService) {
     this.usersRef = db.collection<User>('users');
   }
   btnText = 'Reload Privilege';
   usersRef: AngularFirestoreCollection<User>;
   users: Observable<any[]>;
+  usersList: any;
 
   ngOnInit() {
+    /*
     this.users = this.usersRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data() as User;
@@ -29,6 +32,14 @@ export class UsersComponent implements OnInit {
         return data;
       });
     }));
+    */
+
+    this.userServices.getUsers().then((resp_usr => {
+      resp_usr.subscribe(users => {
+        this.usersList = users;
+      });
+    }));
+
 
   }
   showUserAdd(user) {

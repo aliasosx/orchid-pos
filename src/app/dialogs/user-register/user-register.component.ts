@@ -13,6 +13,7 @@ import * as uuid from 'uuid';
 import { User } from 'src/app/interfaces/user';
 import { Role } from 'src/app/interfaces/role';
 import { Observable } from 'rxjs';
+import { UserServicesService } from 'src/app/services/common/user-services.service';
 
 @Component({
   selector: 'app-user-register',
@@ -21,7 +22,8 @@ import { Observable } from 'rxjs';
 })
 export class UserRegisterComponent implements OnInit {
 
-  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router,
+  // tslint:disable-next-line: max-line-length
+  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private userService: UserServicesService,
     private dialogRef: MatDialogRef<UserRegisterComponent>, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.usersRef = db.collection<User>('users');
     this.rolesRef = db.collection<Role>('roles');
@@ -91,8 +93,8 @@ export class UserRegisterComponent implements OnInit {
     } else {
       console.log(this.userRegistrationForm);
       if (this.userRegistrationForm.valid) {
-
         this.saveBtnDisable = true;
+        /*
         this._firebaseAuth.auth.createUserWithEmailAndPassword(this.userRegistrationForm.get('email').value,
           this.userRegistrationForm.get('password').value.trim()).then((resp) => {
             if (this.userRegistrationForm.valid) {
@@ -107,6 +109,19 @@ export class UserRegisterComponent implements OnInit {
             this.message = err.message;
             this.showAlert = '';
           });
+        */
+
+        this.userService.createUser(this.userRegistrationForm.value).then(user_resp => {
+          user_resp.subscribe(user => {
+            if (user['status'] === 'sucess') {
+              this.dialogRef.close('success');
+            } else {
+              this.message = 'Error happend';
+              this.showAlert = '';
+            }
+          });
+        });
+
       } else {
         this.snackbar.open('Please correct all input form', 'OK', { duration: 2000 });
       }

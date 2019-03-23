@@ -19,5 +19,8 @@ export class UserServicesService {
   async getUsers() {
     return this._http.get(this.backendService + 'users', this.httpOptions);
   }
+  async createUser(user) {
+    return this._http.post(this.backendService + 'users', user, this.httpOptions);
+  }
 
 }

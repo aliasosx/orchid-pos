@@ -43,19 +43,19 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let cash of cashloads|async ; let i = index;">
+                <tr *ngFor="let cash of cashloads ; let i = index;">
 
                   <td class="text-center align-middle"> {{ i+1 }}</td>
-                  <td class="text-left align-middle">{{ cash.loadDateTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}
+                  <td class="text-left align-middle">{{ cash.loadDateTime| date: 'dd-MMM-yyyy H:mm:ss' }}
                   </td>
                   <td class="text-right align-middle">{{ cash.initBalance | number }}</td>
-                  <td class="text-center align-middle">{{ cash.openAuthorizedBy }}</td>
-                  <td class="text-center align-middle" *ngIf="cash.loadApproved == true;else loadApprovedTag">
+                  <td class="text-center align-middle">{{ cash.openAuthorizedNameBy }}</td>
+                  <td class="text-center align-middle" *ngIf="cash.loadApproved == 1;else loadApprovedTag">
                     <img mat-raised-button src=" ../../../assets/icons/Check_green_icon.svg.png"
                       style="max-width: 20px;cursor: pointer;">
                   </td>
                   <ng-template #loadApprovedTag>
-                    <td class="text-center align-middle" (click)="approvedLoadCash(cash.id, cash.cashloadId)">
+                    <td class="text-center align-middle" (click)="approvedLoadCash(cash.id)">
                       <img mat-raised-button src="../../../assets/icons/cancel.svg"
                         style="max-width: 20px;cursor: pointer;">
                     </td>
@@ -68,36 +68,49 @@
                   <td class="text-right align-middle">{{ cash.cashInHands | number }}</td>
                   <td class="text-right align-middle">{{ cash.closeBalance | number }}</td>
                   <td class="text-right align-middle">{{ cash.totalSellAmount | number }}</td>
-                  <td class="text-center align-middle">{{ cash.closeby }}</td>
+                  <td class="text-center align-middle">{{ cash.sellerName }}</td>
                   <td class="text-left align-middle" *ngIf="cash.closeDatetime; else nonclose">
-                    {{ cash.closeDatetime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+                    {{ cash.closeDatetime| date: 'dd-MMM-yyyy H:mm:ss' }}</td>
                   <ng-template #nonclose>
                     <td></td>
                   </ng-template>
-                  <td class="text-center align-middle">{{ cash.closeAuthorizedBy }}</td>
-                  <td class="text-center align-middle" *ngIf="cash.close ; else closeStat">Closed</td>
+                  <td class="text-center align-middle">{{ cash.closeAuthorizedNameBy }}</td>
+                  <td class="text-center align-middle" *ngIf="cash.closed == 1 ; else closeStat">Closed</td>
                   <ng-template #closeStat>
                     <td class="text-center align-middle">Open</td>
                   </ng-template>
 
-                  <td class="text-center align-middle" *ngIf="cash.closeApproved == true;else closeApprovedTag">
+                  <td class="text-center align-middle" *ngIf="cash.closeApproved == 1;else closeApprovedTag">
                     <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
                       style="max-width: 20px;cursor: pointer;">
                   </td>
                   <ng-template #closeApprovedTag>
-                    <td class="text-center align-middle" (click)="closeApproved(cash.id, cash.cashloadId ,cash.close)">
+                    <td class="text-center align-middle" (click)="closeApproved(cash)">
                       <img mat-raised-button src="../../../assets/icons/cancel.svg"
                         style="max-width: 20px;cursor: pointer;">
                     </td>
                   </ng-template>
 
                   <td class="text-left align-middle">{{ cash.note }}</td>
-                  <td class="text-center align-middle"><button mat-flat-button color="warn" style="width: 100%;"
-                      (click)="openCloseBalance(cash)">ປິດ</button>
+                  <td class="text-center align-middle" *ngIf="cash.closed === 1; else nonClose"><button mat-flat-button
+                      color="warn" style="width: 100%;" disabled (click)="openCloseBalance(cash)">ປິດ</button>
                   </td>
-                  <td class="text-center align-middle">
+
+                  <ng-template #nonClose>
+                    <td class="text-center align-middle"><button mat-flat-button color="warn" style="width: 100%;"
+                        (click)="openCloseBalance(cash)">ປິດ</button>
+                    </td>
+                  </ng-template>
+                  <td class="text-center align-middle" *ngIf="cash.closed === 1; else nonRemove">
                     <img mat-raised-button src="../../../assets/icons/baseline-delete-24px.svg"
-                      (click)="removeCashLoad(cash)" style="width: 20px;cursor: pointer;"></td>
+                      style="width: 20px;cursor: pointer;">
+                  </td>
+                  <ng-template #nonRemove>
+                    <td class="text-center align-middle">
+                      <img mat-raised-button src="../../../assets/icons/baseline-delete-24px.svg"
+                        (click)="removeCashLoad(cash)" style="width: 20px;cursor: pointer;">
+                    </td>
+                  </ng-template>
                 </tr>
               </tbody>
             </table>

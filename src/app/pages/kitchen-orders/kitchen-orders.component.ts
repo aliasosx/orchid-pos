@@ -14,18 +14,16 @@ import { Router } from '@angular/router';
 export class KitchenOrdersComponent implements OnInit {
 
   constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router) {
-
-
     if (localStorage.getItem('token')) {
       this.username_info = JSON.parse(localStorage.getItem('usrObj'));
+      this.ordersRef = db.collection<Order>('orders', ref => {
+        return ref.where('completed', '==', 0).orderBy('orderDateTime', 'asc');
+      });
       return;
     } else {
       router.navigateByUrl('login');
     }
 
-    this.ordersRef = db.collection<Order>('orders', ref => {
-      return ref.where('completed', '==', false).orderBy('orderDateTime', 'asc');
-    });
   }
   kitchenState;
   showList = '';
@@ -34,7 +32,7 @@ export class KitchenOrdersComponent implements OnInit {
   ordersRef: AngularFirestoreCollection<Order>;
   orders: Observable<any[]>;
 
-  kitchen = localStorage.getItem('kitchen');
+  kitchen = 'Food';
 
   orderList: any[] = [];
   order_tracks: any;

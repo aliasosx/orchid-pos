@@ -3,7 +3,7 @@ export interface Order {
   refno: string;
   qrRefno?: string;
   invoiceno: string;
-  ticket: number;
+  ticket: string;
   food: any;
   grandtotal: number;
   recieved: number;

@@ -15,6 +15,7 @@ import { PaymentCashComponent } from 'src/app/dialogs/payment-cash/payment-cash.
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 
 declare var swal: any;
 
@@ -26,7 +27,7 @@ declare var swal: any;
 export class PosComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router, private backendServices: BackendServiceService) {
     this.user = _firebaseAuth.authState;
     this.foodsRef = db.collection<Food>('foods');
     this.foodCategoriesRef = db.collection<FoodCategory>('food_categories', ref => {
@@ -306,7 +307,7 @@ export class PosComponent implements OnInit {
         if (res) {
           this.loadCurrentCartStat();
           this.totalCalculation();
-          this.snackbar.open('Order completed', 'ok', { duration: 1000, verticalPosition: 'top' });
+          this.snackbar.open('Order completed', 'ok', { duration: 1000 });
         } else {
           this.loadCurrentCartStat();
           this.totalCalculation();
@@ -316,65 +317,26 @@ export class PosComponent implements OnInit {
     }
   }
   async checkOpenCashBal() {
-    const currentDate = new DatePipe('en-us').transform(new Date(), 'dd-MMM-yyyy');
-    let cashloadsOb: Observable<any[]>;
-    cashloadsOb = await this.db.collection<CashLoad>('cashloads', ref => {
-      return ref.where('closeby', '==', localStorage.getItem('username')).where('closeApproved', '==', 0).where('close', '==', 0);
-    }).snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data() as CashLoad;
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    }));
-
-    let c = await cashloadsOb.subscribe(csh => {
-      if (csh.length > 0) {
-        console.log(csh.length);
-        // cashloadsOb.subscribe(cashloads => {
-        csh.forEach(casload => {
-          const loadDate = new DatePipe('en-us').transform(casload.loadDateTime.toDate(), 'dd-MMM-yyyy');
-          console.log(casload);
-          if (currentDate === loadDate) {
-            if (casload.loadApproved === true) {
-              console.log(casload.loadApproved);
-              this.snackbar.open('Cash opened and Approved', 'OK', { duration: 2000, verticalPosition: 'top' });
-            } else {
-              swal({
-                title: 'ເອົາເງິນເຂົ້າລີ້ນຊັກແລ້ວ ແຕ່ຍັງບໍ່ທັນໄດ້ຮັບການອະນຸມັດ !',
-                text: 'ເອົາເງິນເຂົ້າລີ້ນຊັກແລ້ວ ລໍຖ້າອະນຸມັດ',
-                icon: 'warning',
-                timer: 5000,
-                dangerMode: true,
-              }).then(() => {
-                this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
-                this.router.navigateByUrl('cashloads');
-              }).catch(() => {
-                this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
-                this.router.navigateByUrl('cashloads');
-              });
-            }
-          } else {
+    this.backendServices.checkCashstat(JSON.parse(localStorage.getItem('usrObj')).id).then((resp_csh_stat) => {
+      resp_csh_stat.subscribe(resp_csh => {
+        if (resp_csh['status'] === 0) {
+          swal({
+            title: 'ບໍ່ທັນເອົາເງິນເຂົ້າ ລີ້ນຊັກເງິນກ່ອນ',
+            text: 'ເອົາເງິນເຂົ້າ ລີ້ນຊັກເງິນກ່ອນເປິດການຂາຍທຸກຄັ້ງ',
+            icon: 'warning',
+            timer: 4000,
+            dangerMode: true,
+          }).then(() => {
             this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
             this.router.navigateByUrl('cashloads');
-          }
-        });
-        // });
-      } else {
-        swal({
-          title: 'ບໍ່ທັນເອົາເງິນເຂົ້າ ລີ້ນຊັກເງິນກ່ອນ',
-          text: 'ເອົາເງິນເຂົ້າ ລີ້ນຊັກເງິນກ່ອນເປິດການຂາຍທຸກຄັ້ງ',
-          icon: 'warning',
-          timer: 4000,
-          dangerMode: true,
-        }).then(() => {
-          this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
-          this.router.navigateByUrl('cashloads');
-        }).catch(() => {
-          this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
-          this.router.navigateByUrl('cashloads');
-        });
-      }
+          }).catch(() => {
+            this.snackbar.open('Please load cash before sell', 'OK', { duration: 2000 });
+            this.router.navigateByUrl('cashloads');
+          });
+        } else {
+          this.snackbar.open('Cash opened and Approved', 'OK', { duration: 2000 });
+        }
+      });
     });
 
   }

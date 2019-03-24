@@ -41,6 +41,7 @@ export class CloseBalanceComponent implements OnInit {
   disableCloseJob = false;
   btnDisable = false;
   userDisable = false;
+  eod: any;
 
   ngOnInit() {
     this.addCashload = new FormGroup({
@@ -56,14 +57,18 @@ export class CloseBalanceComponent implements OnInit {
       closeBalance: new FormControl(0),
       totalSellAmount: new FormControl(0),
       note: new FormControl(0),
-      close: new FormControl(false),
       closeDatetime: new FormControl(new Date()),
-      closeby: new FormControl(localStorage.getItem('username')),
+      closedby: new FormControl(JSON.parse(localStorage.getItem('usrObj')).username),
       closeAuthorizedBy: new FormControl(),
       closeApproved: new FormControl(),
-      cashloadId: new FormControl(),
       refno: new FormControl(),
       staff: new FormControl(),
+      openAuthorizedNameBy: new FormControl(),
+      closeAuthorizedNameBy: new FormControl(),
+      sellerName: new FormControl(),
+      closed: new FormControl(),
+      createdAt: new FormControl(),
+      updatedAt: new FormControl(),
     });
     if (this.data) {
       this.addCashload.setValue(this.data);
@@ -77,65 +82,20 @@ export class CloseBalanceComponent implements OnInit {
     }));
   }
   closeBalanceProcess() {
-    swal({
-      title: 'ແນ່ໃຈວ່າຈະປີດຍອດຂາຍ',
-      icon: 'warning',
-      dangerMode: true,
-    }).then(value => {
-
-      let sum_cash = 0;
-      let sum_bank = 0;
-      let total_cash = 0;
-      let totalSell = 0;
-
-      if (value) {
-        this.disableCloseJob = true;
-
-
-        // firebase
-        this.transactionsRef.get().subscribe(transactions => {
-          transactions.docs.forEach(async (transaction) => {
-            let transactionDate = this.datePipe.transform(transaction.data().transaction_date.toDate(), 'dd-MMM-yyyy');
-            let nowDate = this.datePipe.transform(new Date(), 'dd-MMM-yyyy');
-            // sum cash
-            if (transactionDate === nowDate && transaction.data().paymentBy === 'CASH' && transaction.data().settled === false) {
-              // tslint:disable-next-line: max-line-length
-              console.log(transactionDate + ' => ' + transaction.data().price + ' - ' + transaction.data().quantity + ' - ' + transaction.data().total_price);
-              sum_cash += transaction.data().total_price;
-              this.db.collection<Transaction>('transactions').doc(transaction.id).update({
-                settled: true,
-              });
-              // console.log(sum);
-            } else if (transactionDate === nowDate && transaction.data().paymentBy !== 'CASH' && transaction.data().settled === false) {
-              // tslint:disable-next-line: max-line-length
-              console.log(transactionDate + ' => ' + transaction.data().price + ' - ' + transaction.data().quantity + ' - ' + transaction.data().total_price);
-              sum_bank += transaction.data().total_price;
-              this.db.collection<Transaction>('transactions').doc(transaction.id).update({
-                settled: true,
-              });
-            } else {
-              swal({
-                title: 'ລາຍການທັງໝົດ ປິດແລ້ວ',
-                text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
-                icon: 'error',
-              });
-              return;
-            }
-
-            this.addCashload.get('eodCashBalance').setValue(sum_cash);
-            this.addCashload.get('eodBankBalance').setValue(sum_bank);
-            totalSell = sum_cash + sum_bank;
-            total_cash = this.addCashload.get('eodCashBalance').value + this.addCashload.get('initBalance').value;
-            this.addCashload.get('cashBalance').setValue(total_cash);
-            this.addCashload.get('totalSellAmount').setValue(totalSell);
-          });
+    this.disableCloseJob = false;
+    this.backendService.getEOD(JSON.parse(localStorage.getItem('usrObj')).id, this.data.id).then((eod_resp) => {
+      eod_resp.subscribe(eod => {
+        this.eod = eod;
+        this.eod.forEach(element => {
+          if (element.PaidType === 'BANK') {
+            this.addCashload.get('eodBankBalance').setValue(element.total);
+          } else if (element.PaidType === 'CASH') {
+            this.addCashload.get('eodCashBalance').setValue(element.total);
+          }
         });
-
-        // end firebase
-      } else {
-        this.disableCloseJob = false;
-        return;
-      }
+        // tslint:disable-next-line: max-line-length
+        this.addCashload.get('cashBalance').setValue(this.addCashload.get('eodCashBalance').value + this.addCashload.get('initBalance').value);
+      });
     });
   }
 
@@ -152,13 +112,41 @@ export class CloseBalanceComponent implements OnInit {
     }).then(value => {
       if (value) {
         if (this.addCashload.valid) {
-          this.addCashload.get('close').setValue(true);
+          this.addCashload.get('closed').setValue(1);
           this.addCashload.get('closeDatetime').setValue(new Date());
+          // update all transactions order as settled
 
-          this.db.collection<CashLoad>('cashloads').doc(this.data.id).update(this.addCashload.value).then(() => {
-            this.snackbar.open('Closed', 'OK', { duration: 1000 });
-            this.dialogRef.close('success');
+          this.backendService.settleOrder(this.data.id, { settled: 1 }).then(settleOrder => {
+            settleOrder.subscribe(async (rst) => {
+              if (rst['status'] === 'success') {
+                this.snackbar.open('Transactions settled by cashId  ' + this.data.id, 'OK', { duration: 1000 });
+                const csh = {
+                  eodBankBalance: this.addCashload.get('eodBankBalance').value,
+                  eodCashBalance: this.addCashload.get('eodCashBalance').value,
+                  cashInHands: this.addCashload.get('cashInHands').value,
+                  cashBalance: this.addCashload.get('cashBalance').value,
+                  totalSellAmount: this.addCashload.get('eodBankBalance').value + this.addCashload.get('eodCashBalance').value,
+                  closed: 1,
+                  closeDatetime: new Date(),
+                  closedby: JSON.parse(localStorage.getItem('usrObj')).id,
+                  note: this.addCashload.get('note').value,
+                };
+
+                let c = await this.backendService.cashLoadUpdate(this.data.id, csh).then((resp_csh) => {
+                  resp_csh.subscribe(c => {
+                    if (c) {
+                      this.snackbar.open('EOD closed  ' + c, 'OK', { duration: 1000 });
+                      this.dialogRef.close('success');
+                    }
+                  });
+                });
+              } else if (rst['status'] === 'err') {
+                this.snackbar.open('Transactions settled Error by cashId  ' + this.data.id, 'Fail', { duration: 1000 });
+                return;
+              }
+            });
           });
+
         }
       } else {
         return;

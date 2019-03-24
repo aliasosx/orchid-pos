@@ -25,6 +25,11 @@ export class BackendServiceService {
   async cashLoadUpdate(id, cashloadInst) {
     return this._http.put(this.backendService + 'cashloads/' + id, cashloadInst, this.httpOptions);
   }
+
+  async getCashload() {
+    return this._http.get(this.backendService + 'cashloads', this.httpOptions);
+  }
+
   async getUsers() {
     return this._http.get(this.backendService + 'users', this.httpOptions);
   }
@@ -45,6 +50,25 @@ export class BackendServiceService {
   }
   async getRoles() {
     return this._http.get(this.backendService + 'roles', this.httpOptions);
+  }
+  async checkCashstat(id) {
+    return this._http.get(this.backendService + 'cashload_stat/' + id, this.httpOptions);
+  }
+  async loadCurrentCashloadByUser(id) {
+    return this._http.get(this.backendService + 'cashloadByuser/' + id, this.httpOptions);
+  }
+  async getIncompleteOrder(id) {
+    return this._http.get(this.backendService + 'orderIncomplete/' + id, this.httpOptions);
+  }
+  async getEOD(id, cashloadId) {
+    const data = {
+      cashloadId: cashloadId
+    };
+    return this._http.post(this.backendService + 'orderEOD/' + id, data, this.httpOptions);
+  }
+
+  async settleOrder(cashloadId, order) {
+    return this._http.put(this.backendService + 'orderBatchSettle/' + cashloadId, order, this.httpOptions);
   }
 
 }

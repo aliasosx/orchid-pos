@@ -149,7 +149,7 @@ import { ApprovedUsersComponent } from './dialogs/approved-users/approved-users.
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,

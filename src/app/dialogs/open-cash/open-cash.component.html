@@ -7,18 +7,4 @@
       aria-label="Open Cash minimum 100,000 KIP" aria-describedby="basic-addon2" required formControlName="initBalance"
       (keydown.enter)="addInitialBalance()">
   </div>
-  <!--
-
-
-  <div class=" input-group mb-3">
-    <select class="form-control" formControlName="openAuthorizedBy">
-      <option value="" disabled>-----------------------</option>
-      <option value="{{ user.email }}" *ngFor="let user of users | async">{{ user.fullName }}</option>
-    </select>
-    <div class="input-group-append">
-      <button class="btn btn-outline-success" [disabled]="btnDisable" (click)="approveProcess()"
-        type="button">Approve</button>
-    </div>
-  </div>
-  -->
 </form>

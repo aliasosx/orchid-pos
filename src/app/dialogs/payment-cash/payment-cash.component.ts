@@ -90,6 +90,7 @@ export class PaymentCashComponent implements OnInit {
       username: new FormControl(this.username),
       status: new FormControl('processing'),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
+      cashloadId: new FormControl(),
     });
     this.generateQRDate();
     this.data.cart.forEach(element => {
@@ -113,13 +114,17 @@ export class PaymentCashComponent implements OnInit {
         return tickets;
       });
     }));
+    this.backendService.loadCurrentCashloadByUser(JSON.parse(localStorage.getItem('usrObj')).id).then((resp_csh) => {
+      resp_csh.subscribe(async (x) => {
+        let c = await this.orderForm.get('cashloadId').setValue(x[0].id);
+        this.snackbar.open('Cashload ID loaded ' + this.orderForm.get('cashloadId').value, 'OK', { duration: 1000 });
+      });
+    });
     this.prepaireItemToPrint();
   }
 
   prepaireItemToPrint() {
     const items = JSON.parse(localStorage.getItem('cart'));
-    // console.log(items);
-
     items.forEach(item => {
       this.items_Print.push({
         'food_name': item.food_name_en.substring(0, 15),
@@ -129,9 +134,7 @@ export class PaymentCashComponent implements OnInit {
     });
     console.log(this.items_Print);
   }
-  processOrderDetail() {
 
-  }
   paymentProcess() {
     this.paymentBtnDisabled = true;
     if (this.orderForm.valid && this.orderForm.get('username').value != null) {
@@ -153,7 +156,6 @@ export class PaymentCashComponent implements OnInit {
               let c = await this.backendService.createOrderDetail(orderDetail).then(async (resp_orderDetail) => {
                 resp_orderDetail.subscribe((y) => {
                   console.log('Order detail posted id ' + y['id']);
-
                 });
               });
             });

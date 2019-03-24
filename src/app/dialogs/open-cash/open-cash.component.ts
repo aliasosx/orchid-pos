@@ -50,11 +50,13 @@ export class OpenCashComponent implements OnInit {
       staff: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       closeAuthorizedBy: new FormControl(),
       closeApproved: new FormControl(0),
+      openAuthorizedNameBy: new FormControl(),
+      closeAuthorizedNameBy: new FormControl(),
+      sellerName: new FormControl(),
       note: new FormControl(),
       cashloadId: new FormControl(),
       refno: new FormControl(),
     });
-
     this.users = this.usersRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data() as User;
@@ -68,15 +70,11 @@ export class OpenCashComponent implements OnInit {
     if (this.addCashload.get('initBalance').value) {
       const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
       this.addCashload.get('refno').setValue(refno);
+      this.addCashload.get('sellerName').setValue(JSON.parse(localStorage.getItem('usrObj')).username);
+
       let c = await this.backendService.openCashload(this.addCashload.value).then((x) => {
         x.subscribe(async (cs) => {
-          // console.log(cs);
-          let xc = await this.addCashload.get('cashloadId').setValue(cs['id']);
-          let m = await this.db.collection<CashLoad>('cashloads').add(this.addCashload.value).then(async (resps) => {
-            this.dialogRef.close('success');
-          }).catch((err) => {
-            this.btnDisable = false;
-          });
+          this.dialogRef.close('success');
         });
       });
     }
@@ -99,7 +97,6 @@ export class OpenCashComponent implements OnInit {
                 console.log(user.data().userName);
                 let c = await this.addCashload.get('openAuthorizedBy').setValue(user.data().userName);
                 this.db.collection<CashLoad>('cashloads').add(this.addCashload.value).then((resps) => {
-                  console.log(resps);
                   this.dialogRef.close('success');
                 }).catch((err) => {
                   console.log(err.message);

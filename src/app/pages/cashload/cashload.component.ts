@@ -1,6 +1,5 @@
 import { ApprovedUsersComponent } from './../../dialogs/approved-users/approved-users.component';
 import { BackendServiceService } from './../../services/common/backend-service.service';
-import { FormGroup, FormControl } from '@angular/forms';
 import { CloseBalanceComponent } from './../../dialogs/close-balance/close-balance.component';
 import { CashLoad } from './../../interfaces/cashLoad';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
@@ -24,31 +23,50 @@ export class CashloadComponent implements OnInit {
   constructor(private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router, private db: AngularFirestore, private snackbar: MatSnackBar, private backendSrv: BackendServiceService) {
     if (localStorage.getItem('token')) {
       this.username_info = JSON.parse(localStorage.getItem('usrObj'));
-      this.cashloadsRef = db.collection<CashLoad>('cashloads', ref => {
-        return ref.orderBy('loadDateTime', 'asc');
-      });
+
       return;
     } else {
       router.navigateByUrl('login');
     }
   }
-  cashloadsRef: AngularFirestoreCollection<CashLoad>;
-  cashloads: Observable<any[]>;
+
   private user: Observable<firebase.User>;
   username_info: any;
-  ngOnInit() {
 
-    this.cashloads = this.cashloadsRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data() as CashLoad;
-        data['id'] = a.payload.doc.id;
-        return data;
+  cashloads: any;
+
+  ngOnInit() {
+    this.loadCashStartUp();
+  }
+
+  async loadCashStartUp() {
+    this.backendSrv.getCashload().then((cashload_resp) => {
+      cashload_resp.subscribe(cashloads => {
+        this.cashloads = cashloads;
       });
-    }));
+    });
   }
   openCash() {
-    const dialogRef = this.dialog.open(OpenCashComponent, {
-      width: '600px'
+    this.backendSrv.checkCashstat(JSON.parse(localStorage.getItem('usrObj')).id).then((st) => {
+      st.subscribe(c => {
+        if (parseInt(c['status']) > 0) {
+          swal({
+            title: 'ທ່ານໄດ້ເອົາເງິນເຂົ້າ ລີ້ນຊັກແລ້ວ',
+            text: 'ທ່ານສາມາດເອົາເງິນເຂົ້າລີ້ນຊັກ ໄດ້ພຽງ 1 ຄັ້ງ',
+            icon: 'error',
+          });
+          return;
+        } else {
+          const dialogRef = this.dialog.open(OpenCashComponent, {
+            width: '600px'
+          });
+          dialogRef.afterClosed().subscribe(async (resp) => {
+            if (resp === 'success') {
+              let c = await this.loadCashStartUp();
+            }
+          });
+        }
+      });
     });
   }
   removeCashLoad(cash) {
@@ -59,19 +77,18 @@ export class CashloadComponent implements OnInit {
         dangerMode: true,
       }).then((value) => {
         if (value) {
-          if (cash.closeApproved === true) {
+          if (cash.closeApproved === 1) {
             swal({
               title: 'ບໍ່ສາມາດລຶບໄດ້ ເພາະລາຍການຖືກປິດແລ້ວ',
               text: 'ລາຍການນີ້ ອະນຸມັດ ປິດສົມບູນແລ້ວ ບໍ່ສາມາດລຶບໄດ້ , ກະລຸນາຕິດຕໍ່ admin',
               icon: 'error'
             });
           } else {
-            this.backendSrv.removeCashload(cash.cashloadId).then((rsp) => {
-              rsp.subscribe(rs => {
+            this.backendSrv.removeCashload(cash.id).then(async (rsp) => {
+              rsp.subscribe(async (rs) => {
                 if (rs['status'] === 'success') {
-                  this.db.collection<CashLoad>('cashloads').doc(cash.id).delete().then(() => {
-                    this.snackbar.open('Record has been removed', 'OK', { duration: 1000 });
-                  });
+                  let c = await this.loadCashStartUp();
+                  this.snackbar.open('Record has been removed', 'OK', { duration: 1000 });
                 } else {
                   this.snackbar.open('Record cannot be remove', 'Fail', { duration: 1000 });
                 }
@@ -83,51 +100,42 @@ export class CashloadComponent implements OnInit {
     }
   }
   openCloseBalance(cash) {
-    if (cash.closeby === localStorage.getItem('username')) {
-      let c = this.db.collection<Order>('orders', ref => {
-        return ref.where('completed', '==', false).where('username', '==', localStorage.getItem('username'));
-      }).snapshotChanges().pipe(map(change => {
-        return change.map(a => {
-          const data = a.payload.doc.data() as Order;
-          data['id'] = a.payload.doc.id;
-          return data;
-        });
-      }));
-
-      c.subscribe(order => {
-        console.log(order.length);
-        if (order.length > 0) {
-          swal({
-            title: 'ມີລາຍການ Order ຄ້າງ ກະລຸນາກວດສອບໃໝ່',
-            text: 'Order still pending please clear all Orders',
-            icon: 'error',
-          });
-          return;
-        } else {
-          if (!cash.close) {
+    if (cash.staff === JSON.parse(localStorage.getItem('usrObj')).id && cash.loadApproved === 1 && cash.closeApproved === 0) {
+      this.backendSrv.getIncompleteOrder(JSON.parse(localStorage.getItem('usrObj')).id).then((resp_order_incomplete) => {
+        resp_order_incomplete.subscribe(rsp => {
+          if (parseInt(rsp['status']) > 0 && rsp['status'] !== 'error') {
+            swal({
+              title: 'ມີລາຍການ Order ຄ້າງ ກະລຸນາກວດສອບໃໝ່',
+              text: 'Order still pending please clear all Orders',
+              icon: 'error',
+            }).then(() => {
+              this.router.navigateByUrl('orders');
+            });
+            return;
+          } else {
             const dialogRef = this.dialog.open(CloseBalanceComponent, {
               width: '600px',
               data: cash
             });
-          } else {
-            swal({
-              title: 'ລາຍການທັງໝົດ ປິດແລ້ວ',
-              text: 'ບໍ່ສາມາດດຳເນິນການຕໍ່ໄດ້',
-              icon: 'error',
+            dialogRef.afterClosed().subscribe(c => {
+              if (c === 'success') {
+                this.loadCashStartUp();
+                this.snackbar.open('Batch has been closed', 'OK', { duration: 2000 });
+              }
             });
-            return;
           }
-        }
+        });
       });
+
     } else {
       swal({
-        title: 'ກະລຸນາເລຶອກລາຍການຂອງທ່ານເອງ',
+        title: 'ບໍ່ທັນສາມາດປິດໄດ້ !!!',
         icon: 'error'
       });
       return;
     }
   }
-  approvedLoadCash(id, cashloadId) {
+  approvedLoadCash(id) {
     if (id) {
       swal({
         title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດລາຍການນີ້',
@@ -135,28 +143,20 @@ export class CashloadComponent implements OnInit {
         dangerMode: true,
       }).then((value) => {
         if (value) {
-
           const dialogRef = this.dialog.open(ApprovedUsersComponent, {
             width: '600px',
           });
-
           dialogRef.afterClosed().subscribe(resp => {
-            // console.log(resp.user);
             if (resp.user) {
               const approveCash = {
                 openAuthorizedBy: resp.user.id,
+                openAuthorizedNameBy: resp.user.username,
                 loadApproved: 1
               };
-              this.backendSrv.cashLoadUpdate(cashloadId, approveCash).then((rs) => {
+              this.backendSrv.cashLoadUpdate(id, approveCash).then((rs) => {
                 rs.subscribe(r => {
-                  this.db.collection<CashLoad>('cashloads').doc(id).get().subscribe((cashload) => { // closeby
-                    this.db.collection<CashLoad>('cashloads').doc(id).update({
-                      loadApproved: true,
-                      openAuthorizedBy: resp.user.username,
-                    }).then(() => {
-                      this.snackbar.open('Operation success', 'OK', { duration: 1000 });
-                    });
-                  });
+                  this.loadCashStartUp();
+                  this.snackbar.open('Operation success', 'OK', { duration: 1000 });
                 });
               });
             } else {
@@ -167,8 +167,9 @@ export class CashloadComponent implements OnInit {
       });
     }
   }
-  closeApproved(id, cashloadId, closedFlg) {
-    if (id && closedFlg === 1) {
+
+  closeApproved(cash) {
+    if (cash.id && cash.closed === 1) {
       swal({
         title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດປິດລາຍການນີ້',
         icon: 'warning',
@@ -182,20 +183,15 @@ export class CashloadComponent implements OnInit {
             if (resp.user) {
               const approveCloseCash = {
                 closeAuthorizedBy: resp.user.id,
+                closeAuthorizedNameBy: resp.user.username,
                 closeApproved: 1
               };
-              this.backendSrv.cashLoadUpdate(cashloadId, approveCloseCash).then((rs) => {
-                rs.subscribe(r => {
-                  this.db.collection<CashLoad>('cashloads').doc(id).get().subscribe((cashload) => {
-                    if (cashload.data().closeby !== localStorage.getItem('username')) {
-                      this.db.collection<CashLoad>('cashloads').doc(id).update({
-                        closeApproved: true,
-                        closeAuthorizedBy: resp.user.username,
-                      }).then(() => {
-                        this.snackbar.open('Operation success', 'OK', { duration: 1000 });
-                      });
-                    }
-                  });
+              this.backendSrv.cashLoadUpdate(cash.id, approveCloseCash).then((respx) => {
+                respx.subscribe((x) => {
+                  if (x) {
+                    this.snackbar.open('Operation success', 'OK', { duration: 1000 });
+                    this.loadCashStartUp();
+                  }
                 });
               });
             }
@@ -204,10 +200,10 @@ export class CashloadComponent implements OnInit {
       });
     } else {
       swal({
-        title: 'ລາຍການຍັງບໍ່ທັນປິດ ກະລຸນາປິດກ່ອນ',
-        icon: 'error'
+        title: 'ຍັງບໍ່ສາມາດ ອະນຸມັດປິດລາຍການນີ້',
+        icon: 'error',
+        dangerMode: true,
       });
-      return;
     }
   }
 }

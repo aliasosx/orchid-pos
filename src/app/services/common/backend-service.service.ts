@@ -70,5 +70,10 @@ export class BackendServiceService {
   async settleOrder(cashloadId, order) {
     return this._http.put(this.backendService + 'orderBatchSettle/' + cashloadId, order, this.httpOptions);
   }
-
+  async getFoodTypes() {
+    return this._http.get(this.backendService + 'foodtypes', this.httpOptions);
+  }
+  async createFoodTypes(foodtype) {
+    return this._http.post(this.backendService + 'foodtypes', foodtype, this.httpOptions);
+  }
 }

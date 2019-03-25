@@ -37,7 +37,7 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {
   }
   openAddFoodCat() {
-    const dialogRef = this.dialog.open(AddFoodCategoryComponent, { width: '600px' });
+    const dialogRef = this.dialog.open(AddFoodCategoryComponent, { width: '800px' });
   }
   openExtendedFoodType() {
     const dialogRef = this.dialog.open(ExtendedFoodTypeComponent, { width: '600px' });

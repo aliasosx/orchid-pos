@@ -79,7 +79,7 @@ export class BackendServiceService {
   async updateFoodTypes(id, foodtype) {
     return this._http.put(this.backendService + 'foodtypes/' + id, foodtype, this.httpOptions);
   }
-
+  // subfood
   async getSubFood() {
     return this._http.get(this.backendService + 'subfoods', this.httpOptions);
   }
@@ -89,4 +89,16 @@ export class BackendServiceService {
   async updateSubFood(id, subfood) {
     return this._http.put(this.backendService + 'subfoods/' + id, subfood, this.httpOptions);
   }
+
+  // vendor
+  async getVendor() {
+    return this._http.get(this.backendService + 'vendors', this.httpOptions);
+  }
+  async createVendor(vendors) {
+    return this._http.post(this.backendService + 'vendors', vendors, this.httpOptions);
+  }
+  async updateVendor(id, vendors) {
+    return this._http.put(this.backendService + 'vendors/' + id, vendors, this.httpOptions);
+  }
 }
+

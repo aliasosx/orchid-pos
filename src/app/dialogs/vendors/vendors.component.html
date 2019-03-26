@@ -5,16 +5,26 @@
       <tr>
         <th scope="col" class="text-center">ລະຫັດຜຸ້ສະໜອງ</th>
         <th scope="col" class="text-center">ຊື່ຮ້ານ</th>
-        <th scope="col" class="text-center">ຜູ້ຮັບຜິດຊອບ</th>
-        <th scope="col" class="text-center">ຕິດຕໍ່</th>
+        <th scope="col" class="text-center">Enable</th>
+        <th scope="col" class="text-center">Remove</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let vendor of vendors | async">
-        <td class="text-center">{{ vendor.vendorId }}</td>
-        <td class="text-left">{{ vendor.shopName }}</td>
-        <td class="text-left">{{ vendor.contact }}</td>
-        <td class="text-left">{{ vendor.tel }}</td>
+      <tr *ngFor="let vendor of vendors ">
+        <td class="text-center">{{ vendor.vendorCode }}</td>
+        <td class="text-left">{{ vendor.vendorName }}</td>
+        <td class="text-center" *ngIf="vendor.enabled === 1; else disabledCat">
+          <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
+            style="max-width: 20px;cursor: pointer;" (click)="enabledToggle(vendor.id,vendor.enabled)">
+        </td>
+        <ng-template #disabledCat>
+          <td class="text-center align-middle">
+            <img mat-raised-button src="../../../assets/icons/baseline-remove-24px.svg"
+              style="max-width: 20px; cursor: pointer;" (click)="enabledToggle(vendor.id,vendor.enabled)">
+          </td>
+        </ng-template>
+        <td class=" text-center"><img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer"
+            (click)="deleteVendor(vendor)"></td>
       </tr>
     </tbody>
   </table>

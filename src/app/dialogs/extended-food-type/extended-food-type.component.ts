@@ -30,7 +30,7 @@ export class ExtendedFoodTypeComponent implements OnInit {
       'id': new FormControl(),
       'subFoodName': new FormControl(),
       'subFoodNameEn': new FormControl(),
-      'enabled': new FormControl(true),
+      'enabled': new FormControl(1),
       'createdAt': new FormControl(new Date()),
       'updatedAt': new FormControl(new Date()),
     });

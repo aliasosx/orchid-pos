@@ -32,11 +32,10 @@ export class AddExtendedFoodComponent implements OnInit {
   subFoods: any;
 
   ngOnInit() {
-    console.log(this.data);
     this.formAddSubFood = new FormGroup({
       'subFoodNameEn': new FormControl(),
       'subFoodName': new FormControl(),
-      'enabled': new FormControl(),
+      'enabled': new FormControl(1),
       'createdAt': new FormControl(),
       'updatedAt': new FormControl(),
     });
@@ -61,7 +60,7 @@ export class AddExtendedFoodComponent implements OnInit {
   // Update extended Food to master Food
   addExtendedFoodToMaster() {
     if (this.extendedFoodLists) {
-      let extendedFoods = {
+      const extendedFoods = {
         extendedFoods: this.extendedFoodLists
       };
       this.FoodsRef.doc(this.data.id).update(extendedFoods).then(() => {

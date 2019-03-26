@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>ເພີ່ມອາຫານ</h1>
+<form [formGroup]="subFoodForm">
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="subFoodId">ອາຫານຍ່ອຍ</label>
+      <select id="subFoodId" class="form-control" formControlName="subFoodId" required (change)="selectedFood($event)">
+        <option value="" disabled>------------</option>
+        <option value="{{ subfood.id }}" *ngFor="let subfood of subFoods">{{ subfood.subFoodName }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="cost">ຕົ້ນທຶນ</label>
+      <input type="number" class="form-control" formControlName="cost" placeholder="Cost">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="price">ລາຄາຂາຍ</label>
+      <input type="number" class="form-control" formControlName="price" placeholder="Selling Price">
+    </div>
+    <div class="form-group col-md-6">
+      <button mat-raised-button color="primary" style="position: absolute;width: 97%; top: 32px;" (click)="addToItem()"
+        class="form-control">ເພີ່ມອາຫານ</button>
+    </div>
+  </div>
+  <table class="table table-bordered table-hover">
+    <thead class="thead-light">
+      <th>Sub Food</th>
+      <th>Cost</th>
+      <th>Price</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.foodName }}</td>
+        <td>{{ item.cost | number }}</td>
+        <td>{{ item.price | number}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="col col-md-12">
+    <button mat-raised-button color="primary"  (click)="saveFood()"
+      class="form-control">ບັນທຶກ</button>
+  </div>
+</form>

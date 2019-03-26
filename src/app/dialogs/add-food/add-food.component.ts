@@ -1,16 +1,12 @@
-import { Food } from './../../interfaces/food';
-import { Kitchen } from './../../interfaces/kitchen';
-import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import * as uuid from 'uuid';
-import { MatDialogRef } from '@angular/material';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { AngularFirestore, } from 'angularfire2/firestore';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { Currency } from 'src/app/interfaces/currency';
-import { FoodCategory } from 'src/app/interfaces/foodCategory';
-import { ExtendedFoodType } from 'src/app/interfaces/extendedFoodType';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+import { AddSubFoodTranxComponent } from '../add-sub-food-tranx/add-sub-food-tranx.component';
 
 @Component({
   selector: 'app-add-food',
@@ -19,40 +15,29 @@ import { ExtendedFoodType } from 'src/app/interfaces/extendedFoodType';
 })
 export class AddFoodComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private storage: AngularFireStorage, private dialogRef: MatDialogRef<AddFoodComponent>) {
-    this.currenciesRef = db.collection<Currency>('currencies');
-    this.kitchensRef = db.collection<Kitchen>('kitchens');
-    this.categoriesRef = db.collection<FoodCategory>('food_categories');
-    this.foodsRef = db.collection<Food>('foods');
-    this.extendedFoodTypesRef = db.collection<ExtendedFoodType>('extendedFoodTypes');
-  }
+  // tslint:disable-next-line: max-line-length
+  constructor(private db: AngularFirestore, private storage: AngularFireStorage, private dialog: MatDialog, private dialogRef: MatDialogRef<AddFoodComponent>, private backendService: BackendServiceService) {
 
+  }
+  items: any[] = [];
   addFoodForm: FormGroup;
-  showAlert = "hidden";
-  photoSrc = "../../../assets/images/icons/search.svg";
+  showAlert = 'hidden';
+  photoSrc = '../../../assets/images/icons/search.svg';
   saveDisabled = false;
   progressBarValue;
 
-  currenciesRef: AngularFirestoreCollection<Currency>;
-  Currencies: Observable<any[]>
-
-  kitchensRef: AngularFirestoreCollection<Kitchen>;
-  kitchens: Observable<any[]>;
-
-  categoriesRef: AngularFirestoreCollection<FoodCategory>;
-  categories: Observable<any[]>;
-
-  extendedFoodTypesRef: AngularFirestoreCollection<ExtendedFoodType>;
-  extendedFoodTypes: Observable<any[]>;
-
-  foodsRef: AngularFirestoreCollection<Food>;
-
-  extendedFoods: any[];
+  foodtypes: any;
+  kitchens: any;
+  currencies: any;
+  subfoods: any;
+  foodTranxs: any[] = [];
 
   ngOnInit() {
     const uuid1 = uuid.v1();
-    //console.log(uuid1);
+    // console.log(uuid1);
+    /*
     this.addFoodForm = new FormGroup({
+      id: new FormControl(),
       foodId: new FormControl(uuid1),
       food_name: new FormControl(),
       food_name_en: new FormControl(),
@@ -70,23 +55,66 @@ export class AddFoodComponent implements OnInit {
       noted: new FormControl(),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
-
     });
 
     // Load startup
-
     this.Currencies = this.currenciesRef.valueChanges();
     this.kitchens = this.kitchensRef.valueChanges();
     this.categories = this.categoriesRef.valueChanges();
     this.extendedFoodTypes = this.extendedFoodTypesRef.valueChanges();
+    */
 
+
+    this.addFoodForm = new FormGroup({
+      id: new FormControl(),
+      foodId: new FormControl(uuid1),
+      food_name: new FormControl(),
+      food_name_en: new FormControl(),
+      food_photo: new FormControl(),
+      foodTypeId: new FormControl(),
+      cost: new FormControl(0),
+      price: new FormControl(0),
+      kitchenId: new FormControl(),
+      currencyId: new FormControl(),
+      updatedBy: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
+      isParent: new FormControl(0),
+      note: new FormControl(),
+      subfoodId: new FormControl(),
+      enabled: new FormControl(1),
+      createdAt: new FormControl(),
+      updatedAt: new FormControl(),
+      subfoods: new FormControl(),
+    });
+    this.loadStartUp();
+  }
+  async loadStartUp() {
+    await this.backendService.getFoodTypes().then((resp_ft) => {
+      resp_ft.subscribe(ft => {
+        this.foodtypes = ft;
+      });
+    });
+    await this.backendService.getKitchens().then((resp_ft) => {
+      resp_ft.subscribe(ft => {
+        this.kitchens = ft;
+      });
+    });
+    await this.backendService.getCurrencies().then((resp_ft) => {
+      resp_ft.subscribe(ft => {
+        this.currencies = ft;
+      });
+    });
+    await this.backendService.getSubfoods().then((resp_ft) => {
+      resp_ft.subscribe(ft => {
+        this.subfoods = ft;
+      });
+    });
   }
   uploadPhoto(event) {
     let selectedFiles: FileList;
     selectedFiles = event;
     if (selectedFiles.item(0)) {
-      let file = selectedFiles.item(0);
-      let uniqkey = 'pic' + Math.floor(Math.random() * 1000000);
+      const file = selectedFiles.item(0);
+      const uniqkey = 'pic' + Math.floor(Math.random() * 1000000);
       const uploadTask = this.storage.upload('/foods/' + uniqkey, file);
       uploadTask.percentageChanges().subscribe((value) => {
         this.progressBarValue = value.toFixed(2);
@@ -99,15 +127,33 @@ export class AddFoodComponent implements OnInit {
     }
   }
   createFood() {
-    if (this.addFoodForm.valid) {
+    if (this.addFoodForm.valid && this.items.length > 0) {
       this.addFoodForm.get('food_photo').setValue(this.photoSrc);
+      this.addFoodForm.get('subfoods').setValue(this.items);
       this.saveDisabled = true;
-      this.foodsRef.add(this.addFoodForm.value).then((res) => {
-        this.dialogRef.close('success');
+      this.backendService.createFood(this.addFoodForm.value).then((res) => {
+        res.subscribe(rs => {
+          if (rs['status'] === 'success') {
+            this.dialogRef.close('success');
+          } else {
+            console.log('Error');
+            return;
+          }
+        });
       });
     } else {
       this.saveDisabled = false;
       return;
+    }
+  }
+  selectedType(e) {
+    if (parseInt(e, 2) === 1) {
+      const dialog = this.dialog.open(AddSubFoodTranxComponent, {
+        width: '600px',
+      });
+      dialog.afterClosed().subscribe((a) => {
+        this.items = a;
+      });
     }
   }
 }

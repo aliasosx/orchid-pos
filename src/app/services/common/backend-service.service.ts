@@ -110,5 +110,23 @@ export class BackendServiceService {
   async updateUnit(id, units) {
     return this._http.put(this.backendService + 'units/' + id, units, this.httpOptions);
   }
+
+  // Food
+  async getFoods() {
+    return this._http.get(this.backendService + 'foods', this.httpOptions);
+  }
+  async createFood(food) {
+    console.log('OK');
+    return this._http.post(this.backendService + 'foods', food, this.httpOptions);
+  }
+  async updateFood(id, food) {
+    return this._http.put(this.backendService + 'foods/' + id, food, this.httpOptions);
+  }
+  async getCurrencies() {
+    return this._http.get(this.backendService + 'currencies', this.httpOptions);
+  }
+  async getSubfoods() {
+    return this._http.get(this.backendService + 'subfoods', this.httpOptions);
+  }
 }
 

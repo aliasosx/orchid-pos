@@ -81,6 +81,7 @@ import { OrdersHistoryComponent } from './pages/orders-history/orders-history.co
 import { ViewOrderDetailsComponent } from './dialogs/view-order-details/view-order-details.component';
 import { LoadingscreenComponent } from './pages/loadingscreen/loadingscreen.component';
 import { ApprovedUsersComponent } from './dialogs/approved-users/approved-users.component';
+import { AddSubFoodTranxComponent } from './dialogs/add-sub-food-tranx/add-sub-food-tranx.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { ApprovedUsersComponent } from './dialogs/approved-users/approved-users.
     ViewOrderDetailsComponent,
     LoadingscreenComponent,
     ApprovedUsersComponent,
+    AddSubFoodTranxComponent,
 
 
   ],
@@ -193,6 +195,7 @@ import { ApprovedUsersComponent } from './dialogs/approved-users/approved-users.
     ViewBilldetailsComponent,
     ViewOrderDetailsComponent,
     ApprovedUsersComponent,
+    AddSubFoodTranxComponent,
   ]
   ,
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe,],

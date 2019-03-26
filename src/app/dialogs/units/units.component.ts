@@ -1,3 +1,4 @@
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
@@ -15,33 +16,35 @@ declare var swal: any;
 })
 export class UnitsComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private snackbar: MatSnackBar) {
-    this.unitsRef = db.collection<Unit>('units');
+  constructor(private snackbar: MatSnackBar, private backendSevice: BackendServiceService) {
+
   }
 
   updateFlg = 'add';
   btnText = 'Add new';
   unitForm: FormGroup;
-  unitsRef: AngularFirestoreCollection<Unit>;
-  units: Observable<any[]>;
-
+  units: any;
   unitId;
 
   ngOnInit() {
     this.unitForm = new FormGroup({
       id: new FormControl(),
-      unitName: new FormControl(),
+      unit_name: new FormControl(),
       unit: new FormControl(),
-      valueInGram: new FormControl(0),
+      enabled: new FormControl(),
+      userId: new FormControl(),
+      createdAt: new FormControl(),
+      updatedAt: new FormControl(),
     });
+    this.loadStartrUp();
+  }
 
-    this.units = this.unitsRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data() as Unit;
-        data['id'] = a.payload.doc.id;
-        return data;
+  loadStartrUp() {
+    this.backendSevice.getUnit().then((units_rsp) => {
+      units_rsp.subscribe(rs => {
+        this.units = rs;
       });
-    }));
+    });
   }
   updateClickUnit(unit) {
     if (unit) {
@@ -53,21 +56,21 @@ export class UnitsComponent implements OnInit {
   }
   updateUnit() {
     if (this.unitForm.valid && this.updateFlg === 'update' && this.unitId) {
-      this.db.collection<Unit>('units').doc(this.unitId).update(this.unitForm.value).then(() => {
-        this.snackbar.open('Updated for id ' + this.unitId, 'OK', { duration: 1000 });
-        this.updateFlg = 'add';
-        this.unitId = '';
-        this.btnText = 'Add new';
-        this.unitForm.reset();
-      });
+
+      this.snackbar.open('Updated for id ' + this.unitId, 'OK', { duration: 1000 });
+      this.updateFlg = 'add';
+      this.unitId = '';
+      this.btnText = 'Add new';
+      this.unitForm.reset();
+
     } else if (this.unitForm.valid && this.updateFlg === 'add') {
-      this.db.collection<Unit>('units').add(this.unitForm.value).then(() => {
-        this.snackbar.open('Unit added', 'OK', { duration: 1000 });
-        this.updateFlg = 'add';
-        this.unitId = '';
-        this.btnText = 'Add new';
-        this.unitForm.reset();
-      });
+
+      this.snackbar.open('Unit added', 'OK', { duration: 1000 });
+      this.updateFlg = 'add';
+      this.unitId = '';
+      this.btnText = 'Add new';
+      this.unitForm.reset();
+
     }
   }
   removeUnit(unit) {
@@ -75,12 +78,12 @@ export class UnitsComponent implements OnInit {
       swal({
         title: 'ທ່ານຕ້ອງການລືບແທ້ບໍ?',
         text: 'ທ່ານບໍ່ສາມາດກູ້ຄືນຖ້າຫາກລຶບແລ້ວ',
-        icon: "warning",
+        icon: 'warning',
       }).then(value => {
         if (value) {
-          this.db.collection<Unit>('units').doc(unit.id).delete().then(() => {
-            this.snackbar.open('Unit deleted', 'OK', { duration: 1000 });
-          });
+
+          this.snackbar.open('Unit deleted', 'OK', { duration: 1000 });
+
         }
       });
     }

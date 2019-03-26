@@ -100,5 +100,15 @@ export class BackendServiceService {
   async updateVendor(id, vendors) {
     return this._http.put(this.backendService + 'vendors/' + id, vendors, this.httpOptions);
   }
+  // unit
+  async getUnit() {
+    return this._http.get(this.backendService + 'units', this.httpOptions);
+  }
+  async createUnit(units) {
+    return this._http.post(this.backendService + 'units', units, this.httpOptions);
+  }
+  async updateUnit(id, units) {
+    return this._http.put(this.backendService + 'units/' + id, units, this.httpOptions);
+  }
 }
 

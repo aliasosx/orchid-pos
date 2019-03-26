@@ -3,8 +3,8 @@
 
   <div class="row">
     <div class="form-group col-md-12">
-      <label for="unitName">Unit Name</label>
-      <input type="text" class="form-control" required id="unitName" formControlName="unitName">
+      <label for="unit_name">Unit Name</label>
+      <input type="text" class="form-control" required id="unit_name" formControlName="unit_name">
     </div>
     <div class="form-group col-md-12">
       <label for="unit">Unit</label>
@@ -24,15 +24,13 @@
         <th class="text-center">#</th>
         <th class="text-center">Unit</th>
         <th class="text-center">Unit Name</th>
-        <th class="text-center">Value in Gram</th>
         <th class="text-center">Remove</th>
       </thead>
       <tbody style="max-height: 200px;overflow-y: auto;">
-        <tr *ngFor="let unit of units | async; let i = index">
+        <tr *ngFor="let unit of units ; let i = index">
           <td class="text-center">{{ i + 1 }}</td>
-          <td class="text-left" style="cursor: pointer;" (click)="updateClickUnit(unit)">{{ unit.unitName }}</td>
+          <td class="text-left" style="cursor: pointer;" (click)="updateClickUnit(unit)">{{ unit.unit_name }}</td>
           <td class="text-left">{{ unit.unit }}</td>
-          <td class="text-right">{{ unit.valueInGram |number }}</td>
           <td class="text-center">
             <img src="../../../assets/icons/baseline-delete-24px.svg" (click)="removeUnit(unit)"
               style="cursor: pointer;">

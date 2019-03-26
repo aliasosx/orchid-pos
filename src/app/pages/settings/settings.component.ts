@@ -40,7 +40,7 @@ export class SettingsComponent implements OnInit {
     const dialogRef = this.dialog.open(AddFoodCategoryComponent, { width: '800px' });
   }
   openExtendedFoodType() {
-    const dialogRef = this.dialog.open(ExtendedFoodTypeComponent, { width: '600px' });
+    const dialogRef = this.dialog.open(ExtendedFoodTypeComponent, { width: '800px' });
   }
   openTicketMainternance() {
     const dialogRef = this.dialog.open(TicketsComponent, { width: '600px' });

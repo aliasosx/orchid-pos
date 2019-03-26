@@ -12,9 +12,11 @@
       <input type="text" class="form-control" formControlName="foodTypeName" id="foodTypeName" required>
     </div>
     <div class="form-group col-md-12 text-right">
-      <button mat-flat-button color="primary" style="width: 100px; margin-right: 5px;" (click)="addNewCate()">Add
+      <button mat-flat-button color="primary" style="width: 100px; margin-right: 5px;" [disabled]="disableSave"
+        (click)="addNewCate()">Add
         new</button>
-      <button mat-flat-button color="warn" style="width: 100px;" (click)="updateCat()">Update</button>
+      <button mat-flat-button color="warn" style="width: 100px;" (click)="updateCat()"
+        [disabled]="updateBtnDisabled">Update</button>
     </div>
   </div>
 </form>
@@ -27,17 +29,17 @@
       <th class="text-left">Remove</th>
     </thead>
     <tbody>
-      <tr *ngFor="let cat of foodTypes " (click)="addUpdate(cat)">
-        <td class="text-left">{{ cat.foodTypeNameEn }}</td>
-        <td class="text-left">{{ cat.foodTypeName }}</td>
+      <tr *ngFor="let cat of foodTypes ">
+        <td class="text-left" (click)="addUpdate(cat)">{{ cat.foodTypeNameEn }}</td>
+        <td class="text-left" (click)="addUpdate(cat)">{{ cat.foodTypeName }}</td>
         <td class="text-center" *ngIf="cat.enabled === 1; else disabledCat">
           <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
-            style="max-width: 20px;cursor: pointer;">
+            style="max-width: 20px;cursor: pointer;" (click)="enabledToggle(cat.id,cat.enabled)">
         </td>
         <ng-template #disabledCat>
           <td class="text-center align-middle">
             <img mat-raised-button src="../../../assets/icons/baseline-remove-24px.svg"
-              style="max-width: 20px; cursor: pointer;">
+              style="max-width: 20px; cursor: pointer;" (click)="enabledToggle(cat.id,cat.enabled)">
           </td>
         </ng-template>
         <td class=" text-center"><img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer"

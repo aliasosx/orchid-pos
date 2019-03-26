@@ -76,4 +76,17 @@ export class BackendServiceService {
   async createFoodTypes(foodtype) {
     return this._http.post(this.backendService + 'foodtypes', foodtype, this.httpOptions);
   }
+  async updateFoodTypes(id, foodtype) {
+    return this._http.put(this.backendService + 'foodtypes/' + id, foodtype, this.httpOptions);
+  }
+
+  async getSubFood() {
+    return this._http.get(this.backendService + 'subfoods', this.httpOptions);
+  }
+  async createSubFood(subfood) {
+    return this._http.post(this.backendService + 'subfoods', subfood, this.httpOptions);
+  }
+  async updateSubFood(id, subfood) {
+    return this._http.put(this.backendService + 'subfoods/' + id, subfood, this.httpOptions);
+  }
 }

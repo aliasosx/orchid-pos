@@ -6,10 +6,10 @@
     <mat-card-content>
       <div class="form-row">
         <div class="form-group col-md-2">
-          <label for="extendedFoodName">ປະເພດອາຫານຍ່ອຍ</label>
-          <select class="form-control" id="extendedFoodName" formControlName="extendedFoodName">
-            <option *ngFor="let extendedFoodType of extendedFoodTypes | async"
-              value="{{ extendedFoodType.extendedFoodName_lao }}">{{ extendedFoodType.extendedFoodName_lao }}</option>
+          <label for="subFoodName">ປະເພດອາຫານຍ່ອຍ</label>
+          <select class="form-control" id="subFoodName" formControlName="subFoodName">
+            <option *ngFor="let extendedFoodType of subFoods " value="{{ extendedFoodType.subFoodName }}">
+              {{ extendedFoodType.extendedFoodName_lao }}</option>
           </select>
         </div>
         <div class="form-group col-md-2">

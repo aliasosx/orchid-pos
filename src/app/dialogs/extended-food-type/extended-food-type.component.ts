@@ -1,3 +1,4 @@
+import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { ExtendedFoodType } from 'src/app/interfaces/extendedFoodType';
@@ -15,58 +16,113 @@ declare var swal: any;
 })
 export class ExtendedFoodTypeComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<ExtendedFoodTypeComponent>, private snackbarRef: MatSnackBar) {
-    this.extendedFoodTypesRef = db.collection('extendedFoodTypes');
+  // tslint:disable-next-line: max-line-length
+  constructor(private dialogRef: MatDialogRef<ExtendedFoodTypeComponent>, private snackbarRef: MatSnackBar, private backendService: BackendServiceService) {
+
   }
-  extendedFoodTypesRef: AngularFirestoreCollection<ExtendedFoodType>;
-  extendedFoodTypes: Observable<any[]>;
-
   extendedFoodTypeForm: FormGroup;
+  subFoods: any;
 
+  disableUpdateBtn;
+  disableSaveBtn;
   ngOnInit() {
     this.extendedFoodTypeForm = new FormGroup({
-      'extendedFoodName': new FormControl(),
-      'extendedFoodName_lao': new FormControl(),
+      'id': new FormControl(),
+      'subFoodName': new FormControl(),
+      'subFoodNameEn': new FormControl(),
       'enabled': new FormControl(true),
       'createdAt': new FormControl(new Date()),
-      'updateAt': new FormControl(new Date()),
+      'updatedAt': new FormControl(new Date()),
     });
-    this.extendedFoodTypes = this.extendedFoodTypesRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data() as ExtendedFoodType;
-        data['id'] = a.payload.doc.id;
-        return data;
+    this.loadStartUp();
+    this.disableUpdateBtn = true;
+    this.disableSaveBtn = false;
+  }
+
+  loadStartUp() {
+    this.backendService.getSubFood().then((resp) => {
+      resp.subscribe(r => {
+        this.subFoods = r;
       });
-    }));
+    });
   }
   addNewExtendedFoodType() {
     if (this.extendedFoodTypeForm.valid) {
-      this.extendedFoodTypesRef.add(this.extendedFoodTypeForm.value).then(() => {
-        this.extendedFoodTypeForm.reset();
-        this.snackbarRef.open('Add new food success', 'ok', { duration: 1000 });
+      this.backendService.createSubFood(this.extendedFoodTypeForm.value).then((resp) => {
+        resp.subscribe(rs => {
+          if (rs['status'] === 'success') {
+            this.extendedFoodTypeForm.reset();
+            this.snackbarRef.open('Add new food success', 'ok', { duration: 1000 });
+            this.loadStartUp();
+          }
+        });
       });
     } else {
       this.snackbarRef.open('Something wrong!', 'Fail', { duration: 1000 });
       return;
     }
   }
+
+  updateSubFood(subfood) {
+    if (subfood) {
+      this.disableSaveBtn = true;
+      this.disableUpdateBtn = false;
+      this.extendedFoodTypeForm.setValue(subfood);
+    }
+  }
+
+  updateSubFoodBe() {
+    if (this.extendedFoodTypeForm.valid) {
+      this.disableUpdateBtn = true;
+      this.backendService.updateSubFood(this.extendedFoodTypeForm.get('id').value, this.extendedFoodTypeForm.value).then((resp) => {
+        resp.subscribe(rs => {
+          if (rs['status'] === 'success') {
+            this.snackbarRef.open('Update sub food success', 'ok', { duration: 1000 });
+            this.disableUpdateBtn = true;
+            this.disableSaveBtn = false;
+            this.extendedFoodTypeForm.reset();
+            this.loadStartUp();
+          }
+        });
+      });
+    }
+  }
   deleteExtendedFoodType(ext) {
     if (ext) {
       swal({
-        title: "ທ່ານຕ້ອງການລຶບແທ້ບໍ?",
-        text: "ຫຼັງຈາກລືບລາຍການແລ້ວບໍ່ສາມາທີ່ຈະຈກູ້ຄືນໄດ້",
-        icon: "warning",
+        title: 'ທ່ານຕ້ອງການລຶບແທ້ບໍ?',
+        text: 'ຫຼັງຈາກລືບລາຍການແລ້ວບໍ່ສາມາທີ່ຈະຈກູ້ຄືນໄດ້',
+        icon: 'warning',
         buttons: true,
         dangerMode: true,
       }).then((res) => {
         if (res) {
-          this.extendedFoodTypesRef.doc(ext.id).delete().then(() => {
-            this.snackbarRef.open('Delete success', 'ok', { duration: 1000 });
-          });
+
+          this.snackbarRef.open('Delete success', 'ok', { duration: 1000 });
+
         } else {
           return;
         }
       });
     }
+  }
+  enabledToggle(subfood) {
+    let enblr;
+    const enblrSf = !subfood.enabled;
+
+    if (enblrSf === true) {
+      enblr = 1;
+    } else if (enblrSf === false) {
+      enblr = 0;
+    }
+    const sf = {
+      enabled: enblr
+    };
+    this.backendService.updateSubFood(subfood.id, sf).then((resp) => {
+      resp.subscribe(rs => {
+        this.snackbarRef.open('Update sub food success', 'ok', { duration: 1000 });
+        this.loadStartUp();
+      });
+    });
   }
 }

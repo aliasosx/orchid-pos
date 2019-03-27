@@ -63,8 +63,6 @@ export class AddFoodComponent implements OnInit {
     this.categories = this.categoriesRef.valueChanges();
     this.extendedFoodTypes = this.extendedFoodTypesRef.valueChanges();
     */
-
-
     this.addFoodForm = new FormGroup({
       id: new FormControl(),
       foodId: new FormControl(uuid1),
@@ -77,7 +75,7 @@ export class AddFoodComponent implements OnInit {
       kitchenId: new FormControl(),
       currencyId: new FormControl(),
       updatedBy: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
-      isParent: new FormControl(0),
+      isParent: new FormControl(),
       note: new FormControl(),
       subfoodId: new FormControl(),
       enabled: new FormControl(1),
@@ -103,6 +101,7 @@ export class AddFoodComponent implements OnInit {
         this.currencies = ft;
       });
     });
+
     await this.backendService.getSubfoods().then((resp_ft) => {
       resp_ft.subscribe(ft => {
         this.subfoods = ft;
@@ -141,6 +140,19 @@ export class AddFoodComponent implements OnInit {
           }
         });
       });
+    } else if (this.addFoodForm.valid) {
+      this.addFoodForm.get('food_photo').setValue(this.photoSrc);
+      this.saveDisabled = true;
+      this.backendService.createFood(this.addFoodForm.value).then((res) => {
+        res.subscribe(rs => {
+          if (rs['status'] === 'success') {
+            this.dialogRef.close('success');
+          } else {
+            console.log('Error');
+            return;
+          }
+        });
+      });
     } else {
       this.saveDisabled = false;
       return;
@@ -154,6 +166,8 @@ export class AddFoodComponent implements OnInit {
       dialog.afterClosed().subscribe((a) => {
         this.items = a;
       });
+    } else {
+      return;
     }
   }
 }

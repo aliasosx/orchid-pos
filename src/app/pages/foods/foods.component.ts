@@ -1,8 +1,8 @@
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { ViewExtendedFoodComponent } from './../../dialogs/view-extended-food/view-extended-food.component';
 import { ViewFoodComponent } from './../../dialogs/view-food/view-food.component';
 import { AddFoodComponent } from './../../dialogs/add-food/add-food.component';
 import { Observable } from 'rxjs';
-import { Food } from 'src/app/interfaces/food';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { MatDialog, MatSnackBar } from '@angular/material';
@@ -21,37 +21,38 @@ declare var swal: any;
 export class FoodsComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router) {
-
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbarRef: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router, private besrv: BackendServiceService) {
     if (localStorage.getItem('token')) {
       this.username_info = JSON.parse(localStorage.getItem('usrObj'));
       return;
     } else {
       router.navigateByUrl('login');
     }
-
-
-    this.foodsRef = db.collection('foods');
   }
   private user: Observable<firebase.User>;
   username_info: any;
-  foodname: string;
-  foodsRef: AngularFirestoreCollection<Food>;
-  foods: Observable<any[]>;
+  foodname: any;
+  foods: any;
+  foodList: any[] = [];
 
   ngOnInit() {
-    this.foods = this.db.collection('foods', ref => {
-      return ref.orderBy('food_name', 'asc');
-    }).snapshotChanges().pipe(map(changes => {
-      return changes.map(a => {
-        const data = a.payload.doc.data() as Food;
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    }));
+    this.loadStartUp();
+  }
+
+  loadStartUp() {
+    this.besrv.getFoodDisplay().then((foods) => {
+      this.foods = foods;
+    });
+
+    this.foods.forEach(element => {
+
+    });
   }
   openAddFood() {
     const dialogRef = this.dialog.open(AddFoodComponent, { width: '900px' });
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadStartUp();
+    });
   }
   openViewFood(food) {
     const dialogRef = this.dialog.open(ViewFoodComponent, { width: '900px', data: food });
@@ -65,7 +66,7 @@ export class FoodsComponent implements OnInit {
       dangerMode: true,
     }).then((res) => {
       if (res) {
-        this.foodsRef.doc(food.id).delete();
+        // this.foodsRef.doc(food.id).delete();
       } else {
         return;
       }
@@ -74,7 +75,7 @@ export class FoodsComponent implements OnInit {
   openAddExtendedFood(food) {
     console.log(food.extendedFoods);
     try {
-      if (food.extendedFoods.length == 0) {
+      if (food.extendedFoods.length === 0) {
         const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });
       } else if (food.extendedFoods == null) {
         const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });

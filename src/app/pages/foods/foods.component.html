@@ -40,9 +40,9 @@
             <td class="text-left align-middle">{{ food.food_name_en }}</td>
             <td class="text-center align-middle">{{ food.cost |number }}</td>
             <td class="text-center align-middle">{{ food.price |number }}</td>
-            <td class="text-center align-middle">{{ food.currency }}</td>
-            <td class="text-center align-middle">{{ food.food_category }}</td>
-            <td class="text-center align-middle" *ngIf="food.parent_food == 'master'; else normalFood"><img
+            <td class="text-center align-middle">{{ food.currency_name }}</td>
+            <td class="text-center align-middle">{{ food.foodTypeName }}</td>
+            <td class="text-center align-middle" *ngIf="food.isParent === 1 ; else normalFood"><img
                 src="../../../assets/icons/baseline-add_circle_outline-24px.svg" style="cursor: pointer;"
                 (click)="openAddExtendedFood(food)">
             </td>
@@ -50,7 +50,7 @@
               <td class="text-center align-middle">{{ food.parent_food }}</td>
             </ng-template>
             <td class="text-center align-middle">{{ food.kitchen }}</td>
-            <td class="text-center align-middle" *ngIf="food.parent_food == 'master'; else childFood"
+            <td class="text-center align-middle" *ngIf="food.isParent === 1; else childFood"
               (click)="openViewExtendedFood(food)">
               <table class="table table-bordered" style="width: 100%;margin: 0;">
                 <thead class="thead-light">

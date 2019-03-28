@@ -66,6 +66,8 @@ export class NavbarComponent implements OnInit {
         // console.log(m);
         this.userMenus = m;
       });
+    }).catch((err) => {
+      this.router.navigateByUrl('login');
     });
   }
 

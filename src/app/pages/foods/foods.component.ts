@@ -42,11 +42,21 @@ export class FoodsComponent implements OnInit {
   loadStartUp() {
     this.besrv.getFoodDisplay().then((foods) => {
       this.foods = foods;
+
+      this.foods.subscribe(async (fds) => {
+        fds.forEach(async (element) => {
+          await console.log('Food ' + element.food_name + ' with ');
+
+          await this.besrv.getSubfoodById(element.id).then((sf) => {
+            sf.subscribe(fs => {
+
+            });
+          });
+        });
+      });
+
     });
 
-    this.foods.forEach(element => {
-
-    });
   }
   openAddFood() {
     const dialogRef = this.dialog.open(AddFoodComponent, { width: '900px' });

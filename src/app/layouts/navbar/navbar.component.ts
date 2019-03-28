@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { User } from 'firebase';
-import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { NewpasswordComponent } from 'src/app/dialogs/newpassword/newpassword.component';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -58,24 +57,19 @@ export class NavbarComponent implements OnInit {
     this.RestaurantInfos = this.restaurantInfoRef.valueChanges();
     this.loadMenus();
   }
-
   loadMenus() {
     this.userMenus = [];
     this.authService.getMenuByUsrId().then(menus => {
       menus.subscribe(m => {
-        // console.log(m);
         this.userMenus = m;
       });
-    }).catch((err) => {
-      this.router.navigateByUrl('login');
     });
   }
-
   logOut() {
-    localStorage.removeItem('username');
-    localStorage.removeItem('kitchen');
-    localStorage.removeItem('usrObj');
     localStorage.removeItem('token');
+    localStorage.removeItem('usrObj');
+    localStorage.removeItem('users');
+    localStorage.removeItem('username');
     this.navBarShow = 'hidden';
     this.router.navigateByUrl('login');
   }
@@ -85,7 +79,7 @@ export class NavbarComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (!result) { return; }
-      let currUser = this._firebaseAuth.auth.currentUser;
+      const currUser = this._firebaseAuth.auth.currentUser;
       currUser.updatePassword(result).then(() => {
         swal({
           title: 'password update successful',

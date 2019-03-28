@@ -22,8 +22,8 @@ import {
   MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule,
 } from '@angular/material';
 
-import { HttpClientModule } from '@angular/common/http';
-
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from './interceptors/httpconfig.interceptor';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { FoodsComponent } from './pages/foods/foods.component';
 import { ProductsComponent } from './pages/products/products.component';
@@ -198,7 +198,11 @@ import { AddSubFoodTranxComponent } from './dialogs/add-sub-food-tranx/add-sub-f
     AddSubFoodTranxComponent,
   ]
   ,
-  providers: [{ provide: FirestoreSettingsToken, useValue: {} }, DatePipe,],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
+    { provide: FirestoreSettingsToken, useValue: {} },
+    DatePipe,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

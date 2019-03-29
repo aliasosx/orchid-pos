@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 import { AddExtendedFoodComponent } from 'src/app/dialogs/add-extended-food/add-extended-food.component';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { FoodTranx } from 'src/app/interfaces/foodtranx';
 
 declare var swal: any;
 
@@ -42,20 +43,23 @@ export class FoodsComponent implements OnInit {
   loadStartUp() {
     this.besrv.getFoodDisplay().then((foods) => {
       this.foods = foods;
-
+      let x = [];
       this.foods.subscribe(async (fds) => {
         fds.forEach(async (element) => {
-          await console.log('Food ' + element.food_name + ' with ');
-
-          await this.besrv.getSubfoodById(element.id).then((sf) => {
-            sf.subscribe(fs => {
-
+          const pre_food = element;
+          // const pre_subfood;
+          this.besrv.getSubfoodById(element.id).subscribe(xe => {
+            this.foodList.push({
+              food: pre_food,
+              subFood: xe
             });
           });
+
         });
       });
 
     });
+    console.log(this.foodList);
 
   }
   openAddFood() {

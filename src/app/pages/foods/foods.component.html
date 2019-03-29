@@ -32,25 +32,25 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let food of foods |async |foodPipe: foodname; let i = index">
-            <td class="text-center align-middle"> {{i+1}} </td>
-            <td class="text-center align-middle"><img src="{{ food.food_photo }}" class="foodPhoto shadow"
+          <tr *ngFor="let food of foodList |foodPipe: foodname; let i = index">
+            <td class="text-center align-middle"> {{ i+1 }} </td>
+            <td class="text-center align-middle"><img src="{{ food.food.food_photo }}" class="foodPhoto shadow"
                 (click)="openViewFood(food)" style="cursor: pointer; width: 300px;"></td>
-            <td class="text-left align-middle">{{ food.food_name }}</td>
-            <td class="text-left align-middle">{{ food.food_name_en }}</td>
-            <td class="text-center align-middle">{{ food.cost |number }}</td>
-            <td class="text-center align-middle">{{ food.price |number }}</td>
-            <td class="text-center align-middle">{{ food.currency_name }}</td>
-            <td class="text-center align-middle">{{ food.foodTypeName }}</td>
+            <td class="text-left align-middle">{{ food.food.food_name }}</td>
+            <td class="text-left align-middle">{{ food.food.food_name_en }}</td>
+            <td class="text-center align-middle">{{ food.food.cost |number }}</td>
+            <td class="text-center align-middle">{{ food.food.price |number }}</td>
+            <td class="text-center align-middle">{{ food.food.currency_name }}</td>
+            <td class="text-center align-middle">{{ food.food.foodTypeName }}</td>
             <td class="text-center align-middle" *ngIf="food.isParent === 1 ; else normalFood"><img
                 src="../../../assets/icons/baseline-add_circle_outline-24px.svg" style="cursor: pointer;"
                 (click)="openAddExtendedFood(food)">
             </td>
             <ng-template #normalFood>
-              <td class="text-center align-middle">{{ food.parent_food }}</td>
+              <td class="text-center align-middle">{{ food.food.parent_food }}</td>
             </ng-template>
-            <td class="text-center align-middle">{{ food.kitchen }}</td>
-            <td class="text-center align-middle" *ngIf="food.isParent === 1; else childFood"
+            <td class="text-center align-middle">{{ food.food.kitchen }}</td>
+            <td class="text-center align-middle" *ngIf="food.food.isParent === 1; else childFood"
               (click)="openViewExtendedFood(food)">
               <table class="table table-bordered" style="width: 100%;margin: 0;">
                 <thead class="thead-light">
@@ -59,7 +59,7 @@
             <th class="text-center align-middle">ລາຄາຂາຍ</th>
             </thead>
         <tbody>
-          <tr *ngFor="let extFood of food.extendedFoods">
+          <tr *ngFor="let extFood of food.subFood">
             <td class="text-left align-left">{{ extFood.extendedFoodName }}</td>
             <td class="text-right align-middle">{{ extFood.cost |number}}</td>
             <td class="text-right align-middle">{{ extFood.price |number}}</td>

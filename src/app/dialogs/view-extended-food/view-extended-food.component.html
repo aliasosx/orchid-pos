@@ -5,26 +5,23 @@
   <mat-card>
     <mat-card-content>
       <div class="form-row">
-        <div class="form-group col-md-2">
-          <label for="extendedFoodName">ປະເພດອາຫານຍ່ອຍ</label>
-          <select class="form-control" id="extendedFoodName" formControlName="extendedFoodName">
-            <option *ngFor="let extendedFoodType of extendedFoodTypes | async"
-              value="{{ extendedFoodType.extendedFoodName_lao }}">{{ extendedFoodType.extendedFoodName_lao }}</option>
+        <div class="form-group col-md-3">
+          <label for="subFoodId">ປະເພດອາຫານຍ່ອຍ</label>
+          <select class="form-control" id="subFoodId" formControlName="subFoodId">
+            <option *ngFor="let extendedFoodType of extendedFoodTypes " value="{{ extendedFoodType.id }}">
+              {{ extendedFoodType.subFoodName }}</option>
           </select>
         </div>
-        <div class="form-group col-md-2">
+        <div class="form-group col-md-3">
           <label for="cost">ຕົ້ນທຶນ</label>
           <input type="number" class="form-control text-right" formControlName="cost">
         </div>
-        <div class="form-group col-md-2">
+        <div class="form-group col-md-3">
           <label for="price">ລາຄາຂາຍ</label>
           <input type="number" class="form-control text-right" formControlName="price">
         </div>
-        <div class="form-group col-md-4">
-          <label for="notetxt">ໝາຍເຫດ</label>
-          <input type="text" class="form-control" id="notetxt" formControlName="noted">
-        </div>
-        <div class="form-group col-md-2">
+
+        <div class="form-group col-md-3">
           <label for="addBtn">ເພີ່ມ</label>
           <button mat-flat-button color="primary" class="form-control" id="addBtn"
             (click)="addExtendedFoodToMaster()">Add</button>
@@ -46,10 +43,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let extendedFoodList of extendedFoodLists">
-            <td class="text-left" (click)="updateFood(extendedFoodList)">{{ extendedFoodList.extendedFoodName }}</td>
+            <td class="text-left" (click)="updateFood(extendedFoodList)">{{ extendedFoodList.subFoodName }}</td>
             <td class="text-right">{{ extendedFoodList.cost |number }}</td>
             <td class="text-right">{{ extendedFoodList.price | number}}</td>
-            <td class="text-left">{{ extendedFoodList.noted }}</td>
+            <td class="text-left">{{ extendedFoodList.note }}</td>
             <td class="text-center"><img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer"
                 (click)="removeitem(extendedFoodList)"></td>
           </tr>

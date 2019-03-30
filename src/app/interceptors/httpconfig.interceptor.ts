@@ -43,6 +43,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
           localStorage.removeItem('users');
           localStorage.removeItem('username');
           alert('Unauthorized Request - In case of Auth Token Expired , Please re-login');
+          this.router.navigateByUrl('login');
         }
       }
     }));

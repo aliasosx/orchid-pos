@@ -32,12 +32,16 @@ export class AddExtendedFoodComponent implements OnInit {
   subFoods: any;
 
   ngOnInit() {
+
     this.formAddSubFood = new FormGroup({
       'subFoodNameEn': new FormControl(),
       'subFoodName': new FormControl(),
       'enabled': new FormControl(1),
+      'cost': new FormControl(1),
+      'price': new FormControl(1),
       'createdAt': new FormControl(),
       'updatedAt': new FormControl(),
+      'noted': new FormControl(),
     });
 
     this.extendedFoodTypes = this.extendedFoodTypesRef.snapshotChanges().pipe(map(change => {
@@ -53,11 +57,17 @@ export class AddExtendedFoodComponent implements OnInit {
         this.subFoods = sf;
       });
     });
+
+    if (this.data) {
+      this.data.subFood.forEach(element => {
+        this.extendedFoodLists.push(element);
+      });
+    }
   }
   addExtendedFood() {
     this.extendedFoodLists.push(this.formAddSubFood.value);
   }
-  // Update extended Food to master Food
+
   addExtendedFoodToMaster() {
     if (this.extendedFoodLists) {
       const extendedFoods = {
@@ -76,7 +86,6 @@ export class AddExtendedFoodComponent implements OnInit {
   }
   removeitem(doc) {
     this.extendedFoodLists.forEach((item, index) => {
-      //if (item === doc) this.extendedFoodLists.splice(index, 1);
       console.log(item + ' - ' + index);
     });
   }

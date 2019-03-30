@@ -8,8 +8,8 @@
         <div class="form-group col-md-2">
           <label for="subFoodName">ປະເພດອາຫານຍ່ອຍ</label>
           <select class="form-control" id="subFoodName" formControlName="subFoodName">
-            <option *ngFor="let extendedFoodType of subFoods " value="{{ extendedFoodType.subFoodName }}">
-              {{ extendedFoodType.extendedFoodName_lao }}</option>
+            <option *ngFor="let extendedFoodType of subFoods " value="{{ extendedFoodType.id }}">
+              {{ extendedFoodType.subFoodName }}</option>
           </select>
         </div>
         <div class="form-group col-md-2">
@@ -22,7 +22,7 @@
         </div>
         <div class="form-group col-md-4">
           <label for="notetxt">ໝາຍເຫດ</label>
-          <input type="text" class="form-control" id="notetxt" formControlName="noted">
+          <input type="text" class="form-control" id="notetxt">
         </div>
         <div class="form-group col-md-2">
           <label for="addBtn">ເພີ່ມ</label>
@@ -46,10 +46,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let extendedFoodList of extendedFoodLists">
-            <td class="text-left">{{ extendedFoodList.extendedFoodName }}</td>
+            <td class="text-left">{{ extendedFoodList.subFoodName }}</td>
             <td class="text-right">{{ extendedFoodList.cost |number }}</td>
             <td class="text-right">{{ extendedFoodList.price | number}}</td>
-            <td class="text-left">{{ extendedFoodList.noted }}</td>
+            <td class="text-left"></td>
             <td class="text-center"><img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer"
                 (click)="removeitem(extendedFoodList)"></td>
           </tr>

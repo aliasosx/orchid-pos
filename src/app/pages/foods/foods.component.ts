@@ -41,9 +41,9 @@ export class FoodsComponent implements OnInit {
   }
 
   loadStartUp() {
+    this.foodList = [];
     this.besrv.getFoodDisplay().then((foods) => {
       this.foods = foods;
-      let x = [];
       this.foods.subscribe(async (fds) => {
         fds.forEach(async (element) => {
           const pre_food = element;
@@ -57,10 +57,7 @@ export class FoodsComponent implements OnInit {
 
         });
       });
-
     });
-    console.log(this.foodList);
-
   }
   openAddFood() {
     const dialogRef = this.dialog.open(AddFoodComponent, { width: '900px' });
@@ -87,7 +84,6 @@ export class FoodsComponent implements OnInit {
     });
   }
   openAddExtendedFood(food) {
-    console.log(food.extendedFoods);
     try {
       if (food.extendedFoods.length === 0) {
         const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });

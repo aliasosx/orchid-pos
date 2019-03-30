@@ -38,18 +38,25 @@
                 (click)="openViewFood(food)" style="cursor: pointer; width: 300px;"></td>
             <td class="text-left align-middle">{{ food.food.food_name }}</td>
             <td class="text-left align-middle">{{ food.food.food_name_en }}</td>
-            <td class="text-center align-middle">{{ food.food.cost |number }}</td>
-            <td class="text-center align-middle">{{ food.food.price |number }}</td>
+            <td class="text-center align-middle" *ngIf="food.food.isParent === 0; else isParentFoodPrice">
+              {{ food.food.cost |number }}</td>
+            <td class="text-center align-middle" *ngIf="food.food.isParent === 0; else isParentFoodPrice">
+              {{ food.food.price |number }}</td>
+
+            <ng-template #isParentFoodPrice>
+              <td class="text-center align-middle">0</td>
+            </ng-template>
             <td class="text-center align-middle">{{ food.food.currency_name }}</td>
             <td class="text-center align-middle">{{ food.food.foodTypeName }}</td>
-            <td class="text-center align-middle" *ngIf="food.isParent === 1 ; else normalFood"><img
+
+            <td class="text-center align-middle" *ngIf="food.food.isParent === 1 ; else normalFood"><img
                 src="../../../assets/icons/baseline-add_circle_outline-24px.svg" style="cursor: pointer;"
                 (click)="openAddExtendedFood(food)">
             </td>
             <ng-template #normalFood>
-              <td class="text-center align-middle">{{ food.food.parent_food }}</td>
+              <td class="text-center align-middle">{{ food.food.isParent }}</td>
             </ng-template>
-            <td class="text-center align-middle">{{ food.food.kitchen }}</td>
+            <td class="text-center align-middle">{{ food.food.kitchenName }}</td>
             <td class="text-center align-middle" *ngIf="food.food.isParent === 1; else childFood"
               (click)="openViewExtendedFood(food)">
               <table class="table table-bordered" style="width: 100%;margin: 0;">
@@ -60,7 +67,7 @@
             </thead>
         <tbody>
           <tr *ngFor="let extFood of food.subFood">
-            <td class="text-left align-left">{{ extFood.extendedFoodName }}</td>
+            <td class="text-left align-left">{{ extFood.subFoodName }}</td>
             <td class="text-right align-middle">{{ extFood.cost |number}}</td>
             <td class="text-right align-middle">{{ extFood.price |number}}</td>
           </tr>
@@ -80,7 +87,6 @@
         </div>
       </td>
       </tr>
-
       </tbody>
       </table>
     </div>

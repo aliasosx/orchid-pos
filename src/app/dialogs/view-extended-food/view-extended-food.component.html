@@ -24,7 +24,7 @@
         <div class="form-group col-md-3">
           <label for="addBtn">ເພີ່ມ</label>
           <button mat-flat-button color="primary" class="form-control" id="addBtn"
-            (click)="addExtendedFoodToMaster()">Add</button>
+            (click)="addExtendedFoodToMaster()">{{ btnSaveCaption }}</button>
         </div>
       </div>
     </mat-card-content>
@@ -42,8 +42,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let extendedFoodList of extendedFoodLists">
-            <td class="text-left" (click)="updateFood(extendedFoodList)">{{ extendedFoodList.subFoodName }}</td>
+          <tr *ngFor="let extendedFoodList of subFoods">
+            <td class="text-left" style="cursor: pointer" (click)="updateFood(extendedFoodList)">
+              {{ extendedFoodList.subFoodName }}</td>
             <td class="text-right">{{ extendedFoodList.cost |number }}</td>
             <td class="text-right">{{ extendedFoodList.price | number}}</td>
             <td class="text-left">{{ extendedFoodList.note }}</td>
@@ -59,6 +60,7 @@
       </table>
     </mat-card-content>
     <mat-card-footer>
+
     </mat-card-footer>
   </mat-card>
 </form>

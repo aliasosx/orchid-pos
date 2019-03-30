@@ -1,14 +1,10 @@
-import { AngularFirestoreCollection } from 'angularfire2/firestore';
+
 import { Observable } from 'rxjs';
-import { FoodCategory } from './../../interfaces/foodCategory';
-import { Kitchen } from './../../interfaces/kitchen';
-import { Currency } from './../../interfaces/currency';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { AngularFirestore } from 'angularfire2/firestore';
 import { Component, OnInit, Inject } from '@angular/core';
-import { Food } from 'src/app/interfaces/food';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 
 @Component({
   selector: 'app-view-food',
@@ -17,57 +13,90 @@ import { Food } from 'src/app/interfaces/food';
 })
 export class ViewFoodComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<ViewFoodComponent>, private storage: AngularFireStorage, @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.currenciesRef = db.collection<Currency>('currencies');
-    this.kitchensRef = db.collection<Kitchen>('kitchens');
-    this.categoriesRef = db.collection<FoodCategory>('food_categories');
-    this.foodsRef = db.collection<Food>('foods');
+  // tslint:disable-next-line: max-line-length
+  constructor(private dialogRef: MatDialogRef<ViewFoodComponent>, private storage: AngularFireStorage, private be: BackendServiceService, @Inject(MAT_DIALOG_DATA) public data: any) {
+
   }
   addFoodForm: FormGroup;
   progressBarValue;
-  photoSrc = "../../../assets/images/icons/search.svg";
+  photoSrc = '../../../assets/images/icons/search.svg';
 
-  currenciesRef: AngularFirestoreCollection<Currency>;
-  Currencies: Observable<any[]>
-
-  kitchensRef: AngularFirestoreCollection<Kitchen>;
-  kitchens: Observable<any[]>;
-
-  categoriesRef: AngularFirestoreCollection<FoodCategory>;
-  categories: Observable<any[]>;
-
-  foodsRef: AngularFirestoreCollection<Food>;
-
+  foodTypes: any;
+  currencies: Observable<any>;
+  kitchens: any;
   saveDisabled = false;
 
   ngOnInit() {
     this.addFoodForm = new FormGroup({
       id: new FormControl(),
-      foodId: new FormControl(),
       food_name: new FormControl(),
       food_name_en: new FormControl(),
       food_photo: new FormControl(),
-      food_category: new FormControl(),
-      cost: new FormControl(0),
-      price: new FormControl(0),
-      currency: new FormControl('KIP'),
-      parent_food: new FormControl(false),
-      is_childFood: new FormControl(false),
-      kitchen: new FormControl(),
-      userName: new FormControl('administrator'),
+      foodTypeId: new FormControl(),
+      isParent: new FormControl(),
+
+      price: new FormControl(),
+      cost: new FormControl(),
+
+      kitchenId: new FormControl(),
+      updatedBy: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       enabled: new FormControl(true),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
-      extendedFoods: new FormControl(),
-      noted: new FormControl(),
+      note: new FormControl(),
     });
     // Load startup
-    this.Currencies = this.currenciesRef.valueChanges();
-    this.kitchens = this.kitchensRef.valueChanges();
-    this.categories = this.categoriesRef.valueChanges();
-    this.photoSrc = this.data.food_photo;
-    this.addFoodForm.setValue(this.data);
+
+    this.loadStartUp();
+
   }
+
+  async loadStartUp() {
+    let d = await this.loadFoodById();
+    let e = await this.loadFoodType();
+    let f = await this.loadKitchens();
+
+  }
+  async loadFoodById() {
+    let c = await this.be.getFoodsById(this.data.food.id).then(fd => {
+      fd.subscribe(async (food) => {
+        food[0].cost = 0;
+        food[0].price = 0;
+        let m = await this.addFoodForm.setValue(food[0]);
+        this.photoSrc = await food[0].food_photo;
+        let c = await this.loadFoodTranx(this.data.food.id);
+      });
+    });
+  }
+
+  async loadFoodTranx(id) {
+    if (this.data.food.isParent === 0) {
+      this.be.getFoodTranxByFoodId(id).subscribe(async (subfoods) => {
+        this.addFoodForm.get('cost').setValue(subfoods[0].cost);
+        this.addFoodForm.get('price').setValue(subfoods[0].price);
+      });
+    } else {
+      return;
+    }
+  }
+  async loadFoodType() {
+    let c = await this.be.getFoodTypes().then(resp => {
+      resp.subscribe(foodtypes => {
+        this.foodTypes = foodtypes;
+      });
+    });
+  }
+  async loadCurrency() {
+    this.currencies = await this.be.getCurrencies();
+  }
+  async loadKitchens() {
+    let c = await this.be.getKitchens().then((ks) => {
+      ks.subscribe(ksc => {
+        this.kitchens = ksc;
+      });
+    });
+  }
+
   uploadPhoto(event) {
     let selectedFiles: FileList;
     selectedFiles = event;
@@ -81,8 +110,8 @@ export class ViewFoodComponent implements OnInit {
       uploadTask.then((snapshot: firebase.storage.UploadTaskSnapshot) => {
         snapshot.ref.getDownloadURL().then(url => {
           this.photoSrc = url; // Image url
-          //console.log(url);
-        })
+          // console.log(url);
+        });
       });
     }
   }
@@ -91,8 +120,16 @@ export class ViewFoodComponent implements OnInit {
     this.saveDisabled = true;
     if (this.addFoodForm.valid) {
       this.addFoodForm.get('food_photo').setValue(this.photoSrc);
-      this.db.collection('foods').doc(this.data.id).update(this.addFoodForm.value);
-      this.dialogRef.close('success');
+      this.be.updateFood(this.addFoodForm.get('id').value, this.addFoodForm.value).then((resp) => {
+        resp.subscribe(rs => {
+          if (rs['status'] === 'success') {
+            this.dialogRef.close('success');
+          } else {
+            alert('Error happend');
+          }
+        });
+      });
+
     } else {
       this.saveDisabled = false;
       return;

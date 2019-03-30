@@ -115,6 +115,15 @@ export class BackendServiceService {
   async getFoods() {
     return this._http.get(this.backendService + 'foods', this.httpOptions);
   }
+  async getFoodsById(id) {
+    if (id) {
+      return this._http.get(this.backendService + 'foods/' + id, this.httpOptions);
+    } else {
+      alert('No ID');
+    }
+
+  }
+
   async createFood(food) {
     console.log('OK');
     return this._http.post(this.backendService + 'foods', food, this.httpOptions);
@@ -131,8 +140,14 @@ export class BackendServiceService {
   async getFoodDisplay() {
     return this._http.get(this.backendService + 'foodsDisplay', this.httpOptions);
   }
-  getSubfoodById(id) {
+  async getSubfoodById(id) {
     return this._http.get(this.backendService + 'subfoodByFoodId/' + id, this.httpOptions);
+  }
+  updateFoodTranxById(id, foodTranx) {
+    return this._http.put(this.backendService + 'foodtranxs/' + id, foodTranx, this.httpOptions);
+  }
+  getFoodTranxByFoodId(id) {
+    return this._http.get(this.backendService + 'foodtranxs/' + id, this.httpOptions);
   }
 }
 

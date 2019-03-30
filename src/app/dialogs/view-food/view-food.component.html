@@ -10,8 +10,8 @@
     <div class="col col-md-8">
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="foodId">ລະຫັດອາຫານ</label>
-          <input type="text" class="form-control" id="foodId" readonly formControlName="foodId" required>
+          <label for="id">ລະຫັດອາຫານ</label>
+          <input type="text" class="form-control" id="id" readonly formControlName="id" required>
         </div>
         <div class="form-group col-md-6">
           <label for="food_name">ອາຫານ</label>
@@ -22,44 +22,38 @@
           <input type="text" class="form-control" id="food_name_en" formControlName="food_name_en" required>
         </div>
         <div class="form-group col-md-6">
-          <label for="food_category">ຈັດໃນໝວດ</label>
-          <select class="form-control" id="food_category" required formControlName="food_category">
+          <label for="foodTypeId">ຈັດໃນໝວດ</label>
+          <select class="form-control" id="foodTypeId" required formControlName="foodTypeId">
             <option value="" disabled>-----------</option>
-            <option *ngFor="let c of categories |async" value="{{ c.foodCategoryNameLao }}">{{ c.foodCategoryNameLao }}
+            <option *ngFor="let c of foodTypes " value="{{ c.id }}">{{ c.foodTypeName }}
             </option>
           </select>
         </div>
         <div class="form-group col-md-6">
-          <label for="kitchenName">ຫ້ອງຄົວ</label>
-          <select class="form-control" id="kitchenName" required formControlName="kitchen">
+          <label for="kitchenId">ຫ້ອງຄົວ</label>
+          <select class="form-control" id="kitchenId" required formControlName="kitchenId">
             <option value="" disabled>-----------</option>
-            <option *ngFor="let k of kitchens |async" value="{{ k.kitchenName }}">{{ k.kitchenName }}</option>
+            <option *ngFor="let k of kitchens " value="{{ k.id }}">{{ k.kitchenName }}</option>
           </select>
         </div>
         <div class="form-group col-md-6">
-          <label for="cost">ຕົ້ນທືນ</label>
-          <input type="number" class="form-control" id="cost" formControlName="cost" required>
+          <label for="isParent">ປະເພດ</label>
+          <select class="form-control" id="isParent" required formControlName="isParent">
+            <option value="0">common</option>
+            <option value="1">master</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="cost">ຕົ້ນທຶນ</label>
+          <input type="number" class="form-control" id="cost" formControlName="cost">
         </div>
         <div class="form-group col-md-6">
           <label for="price">ລາຄາຂາຍ</label>
-          <input type="number" class="form-control" id="price" formControlName="price" required>
+          <input type="number" class="form-control" id="price" formControlName="price">
         </div>
         <div class="form-group col-md-6">
-          <label for="currency">ສະກູນ</label>
-          <select class="form-control" id="currency" required formControlName="currency">
-            <option *ngFor="let c of Currencies |async" value="{{ c.currencyName }}">{{ c.currencyName }}</option>
-          </select>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="parent_food">ປະເພດ</label>
-          <select class="form-control" id="parent_food" required formControlName="parent_food">
-            <option value="common">common</option>
-            <option value="master">master</option>
-          </select>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="noted">ໝາຍເຫດ</label>
-          <input type="text" class="form-control" id="noted" formControlName="noted">
+          <label for="note">ໝາຍເຫດ</label>
+          <input type="text" class="form-control" id="note" formControlName="note">
         </div>
       </div>
       <div class="row">

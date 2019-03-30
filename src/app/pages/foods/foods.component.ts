@@ -47,11 +47,12 @@ export class FoodsComponent implements OnInit {
       this.foods.subscribe(async (fds) => {
         fds.forEach(async (element) => {
           const pre_food = element;
-          // const pre_subfood;
-          this.besrv.getSubfoodById(element.id).subscribe(xe => {
-            this.foodList.push({
-              food: pre_food,
-              subFood: xe
+          this.besrv.getSubfoodById(element.id).then(xex => {
+            xex.subscribe(xe => {
+              this.foodList.push({
+                food: pre_food,
+                subFood: xe
+              });
             });
           });
 
@@ -61,12 +62,23 @@ export class FoodsComponent implements OnInit {
   }
   openAddFood() {
     const dialogRef = this.dialog.open(AddFoodComponent, { width: '900px' });
-    dialogRef.afterClosed().subscribe(() => {
-      this.loadStartUp();
+    dialogRef.afterClosed().subscribe((rs) => {
+      if (rs === 'success') {
+        this.loadStartUp();
+      } else {
+        return;
+      }
     });
   }
-  openViewFood(food) {
-    const dialogRef = this.dialog.open(ViewFoodComponent, { width: '900px', data: food });
+  async openViewFood(food) {
+    const dialogRef = await this.dialog.open(ViewFoodComponent, { width: '900px', data: food });
+    dialogRef.afterClosed().subscribe((rs) => {
+      if (rs === 'success') {
+        this.loadStartUp();
+      } else {
+        return;
+      }
+    });
   }
   deleteFood(food) {
     swal({
@@ -84,10 +96,11 @@ export class FoodsComponent implements OnInit {
     });
   }
   openAddExtendedFood(food) {
+    const cnt = food.subFood.length;
     try {
-      if (food.extendedFoods.length === 0) {
+      if (cnt === 0) {
         const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });
-      } else if (food.extendedFoods == null) {
+      } else if (food.subFood == null) {
         const dialogRef = this.dialog.open(AddExtendedFoodComponent, { width: '800px', data: food });
       } else {
         this.snackbarRef.open('Already have member, please use Other', 'Ok', { duration: 2000, verticalPosition: 'top' });
@@ -98,8 +111,12 @@ export class FoodsComponent implements OnInit {
     }
 
   }
-  openViewExtendedFood(food) {
+  async openViewExtendedFood(food) {
     const dialogRef = this.dialog.open(ViewExtendedFoodComponent, { width: '800px', data: food });
+    let c = await dialogRef.afterClosed().subscribe(() => {
+      console.log('Loadded');
+      this.loadStartUp();
+    });
   }
   searchBy(msg) {
 

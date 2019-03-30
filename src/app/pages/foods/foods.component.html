@@ -54,7 +54,9 @@
                 (click)="openAddExtendedFood(food)">
             </td>
             <ng-template #normalFood>
-              <td class="text-center align-middle">{{ food.food.isParent }}</td>
+              <td class="text-center align-middle"><img
+                  src="../../../assets/icons/covered-food-tray-on-a-hand-of-hotel-room-service.svg"
+                  style="max-width: 30px;cursor: pointer;"></td>
             </ng-template>
             <td class="text-center align-middle">{{ food.food.kitchenName }}</td>
             <td class="text-center align-middle" *ngIf="food.food.isParent === 1; else childFood"

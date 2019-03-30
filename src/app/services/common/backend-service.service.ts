@@ -125,7 +125,6 @@ export class BackendServiceService {
   }
 
   async createFood(food) {
-    console.log('OK');
     return this._http.post(this.backendService + 'foods', food, this.httpOptions);
   }
   async updateFood(id, food) {
@@ -148,6 +147,9 @@ export class BackendServiceService {
   }
   getFoodTranxByFoodId(id) {
     return this._http.get(this.backendService + 'foodtranxs/' + id, this.httpOptions);
+  }
+  createFoodTranx(foodtranx) {
+    return this._http.post(this.backendService + 'foodtranxs', foodtranx, this.httpOptions);
   }
 }
 

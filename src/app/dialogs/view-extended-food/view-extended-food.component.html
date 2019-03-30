@@ -7,7 +7,9 @@
       <div class="form-row">
         <div class="form-group col-md-3">
           <label for="subFoodId">ປະເພດອາຫານຍ່ອຍ</label>
-          <select class="form-control" id="subFoodId" formControlName="subFoodId">
+          <select class="form-control" id="subFoodId" formControlName="subFoodId"
+            (change)="checkChange($event.target.value)">
+            <option value="" disabled>------------</option>
             <option *ngFor="let extendedFoodType of extendedFoodTypes " value="{{ extendedFoodType.id }}">
               {{ extendedFoodType.subFoodName }}</option>
           </select>

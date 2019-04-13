@@ -137,7 +137,7 @@ export class PaymentCashComponent implements OnInit {
 
   paymentProcess() {
     this.paymentBtnDisabled = true;
-    if (this.orderForm.valid && this.orderForm.get('username').value != null) {
+    if (this.orderForm.valid && this.orderForm.get('username').value != null && this.ticketSelectedId.id) {
       // add Order to Backend
       this.backendService.createOrder(this.orderForm.value).then(async (resp_order) => {
         resp_order.subscribe(async (x) => {
@@ -162,6 +162,7 @@ export class PaymentCashComponent implements OnInit {
             // load data to order realtime db
             this.db.collection('orders').add(this.orderForm.value).then((res) => {
               this.ticketSelectedId.used = true;
+              console.log(this.ticketSelectedId);
               this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
                 if (this.bankDataResponse) {
                   this.qrPaymentsRef.add(this.bankDataResponse).then(() => {
@@ -196,7 +197,7 @@ export class PaymentCashComponent implements OnInit {
         });
       });
     } else {
-      this.snackbar.open('Data incorrect', 'Fail', { duration: 1000, verticalPosition: 'top' });
+      this.snackbar.open('Data incorrect', 'Fail', { duration: 2000, verticalPosition: 'top' });
       this.paymentBtnDisabled = false;
       return;
     }
@@ -228,6 +229,7 @@ export class PaymentCashComponent implements OnInit {
       });
     })).subscribe(t => {
       t.forEach(_ticket => {
+        console.log(_ticket);
         this.ticketSelectedId = _ticket;
       });
     });

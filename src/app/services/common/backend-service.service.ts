@@ -139,7 +139,13 @@ export class BackendServiceService {
   async getFoodDisplay() {
     return this._http.get(this.backendService + 'foodsDisplay', this.httpOptions);
   }
+  async getFoodDisplayById(id) {
+    return this._http.get(this.backendService + 'foodsDisplayByType/' + id, this.httpOptions);
+  }
   async getSubfoodById(id) {
+    return this._http.get(this.backendService + 'subfoodByFoodId/' + id, this.httpOptions);
+  }
+  getSubfoodsById(id): any {
     return this._http.get(this.backendService + 'subfoodByFoodId/' + id, this.httpOptions);
   }
   updateFoodTranxById(id, foodTranx) {

@@ -6,9 +6,9 @@
           <mat-tab-group class="mat-tabBody" (selectedTabChange)="loadFoodPage($event)">
             <mat-tab label="ທັງໝົດ">
               <div class="row main-container">
-                <div class="col col-sm-12 col-md-3 shadow item text-center" *ngFor="let food of foods | async">
+                <div class="col col-sm-12 col-md-3 shadow item text-center" *ngFor="let food of foods ">
                   <div class="pricetag">
-                    <span class="h5" *ngIf="food.price != 0; else choosePrice">{{ food.price | number}}</span>
+                    <span class="h5" *ngIf="food.isParent === 0; else choosePrice">{{ food.price | number}}</span>
                     <ng-template #choosePrice>
                       <span class="h4" style="color: orange;">ເລືອກ</span>
                     </ng-template>
@@ -21,11 +21,11 @@
                 </div>
               </div>
             </mat-tab>
-            <mat-tab *ngFor="let foodCategory of FoodCategories |async" label="{{ foodCategory.foodCategoryNameLao }}">
+            <mat-tab *ngFor="let foodCategory of foodTypes " label="{{ foodCategory.foodTypeName  }}">
               <div class="row main-container">
-                <div class="col col-sm-12 col-md-3 shadow item text-center" *ngFor="let food of foods | async">
+                <div class="col col-sm-12 col-md-3 shadow item text-center" *ngFor="let food of foods ">
                   <div class="pricetag">
-                    <span class="h5" *ngIf="food.price != 0; else choosePrice">{{ food.price | number}}</span>
+                    <span class="h5" *ngIf="food.isParent === 0; else choosePrice">{{ food.price | number}}</span>
                     <ng-template #choosePrice>
                       <span class="h4" style="color: orange;">ເລືອກ</span>
                     </ng-template>

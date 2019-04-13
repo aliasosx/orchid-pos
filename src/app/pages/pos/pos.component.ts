@@ -50,7 +50,7 @@ export class PosComponent implements OnInit {
   username: string = localStorage.getItem('username');
 
   foodsRef: AngularFirestoreCollection<Food>;
-  foods: Observable<any[]>;
+  // foods: Observable<any[]>;
 
   cartsRef: AngularFirestoreCollection<Cart>;
   carts: Observable<any[]>;
@@ -66,9 +66,12 @@ export class PosComponent implements OnInit {
   virtualCart: Cart[] = [];
   disablePaymentBtn = false;
 
+  foodTypes: any;
+  foods: any;
   ngOnInit() {
-    this.FoodCategories = this.foodCategoriesRef.valueChanges();
+
     if (this.username) {
+      this.loadFoodTypes();
       this.loadFoodPage({ index: 0 });
       this.totalCalculation();
       if (localStorage.getItem('cart')) {
@@ -77,26 +80,33 @@ export class PosComponent implements OnInit {
     } else {
       this.snackbar.open('Internet connection issue !!', 'OK', { duration: 2000 });
     }
+
   }
+
+  loadFoodTypes() {
+    this.backendServices.getFoodTypes().then(foodtypes => {
+      foodtypes.subscribe(ft => {
+        this.foodTypes = ft;
+      });
+    });
+  }
+
   loadFoodPage(page) {
+
     if (page.index === 0) {
-      this.foods = this.db.collection<Food>('foods').snapshotChanges().pipe(map(change => {
-        return change.map(a => {
-          const foods = a.payload.doc.data();
-          foods['id'] = a.payload.doc.id;
-          return foods;
+      this.backendServices.getFoodDisplay().then(foods => {
+        foods.subscribe(fd => {
+          this.foods = fd;
         });
-      }));
+      });
     } else {
-      this.foods = this.db.collection<Food>('foods', ref => {
-        return ref.where('food_category', '==', page.tab.textLabel);
-      }).snapshotChanges().pipe(map(change => {
-        return change.map(a => {
-          const foods = a.payload.doc.data();
-          foods['id'] = a.payload.doc.id;
-          return foods;
+
+      this.backendServices.getFoodDisplayById(page.tab.textLabel).then(foods => {
+        foods.subscribe(fd => {
+          this.foods = fd;
         });
-      }));
+      });
+
     }
   }
 
@@ -118,12 +128,12 @@ export class PosComponent implements OnInit {
     });
   }
   foodChoosed(food) {
-    if (food.price === 0) {
+    if (food.isParent === 1) {
       this.openSubFood(food);
     } else {
       const item = {
         'id': food.id,
-        'foodId': food.foodId,
+        'foodId': food.id,
         'food': food.food_name,
         'food_name_en': food.food_name_en,
         'food_category': food.food_category,
@@ -131,7 +141,7 @@ export class PosComponent implements OnInit {
         'cost': food.cost,
         'quantity': 1,
         'total': food.price * 1,
-        'username': this.username,
+        'username': JSON.parse(localStorage.getItem('usrObj')).username,
         'kitchen': food.kitchen,
       };
       this.addCartsToDb(item);
@@ -167,9 +177,8 @@ export class PosComponent implements OnInit {
       items.forEach(item => {
         this.total += item.total;
       });
-      // console.log(this.total);
+      // this.loadCurrentCartStat();
     } else {
-      // console.log(this.total);
       return;
     }
   }
@@ -255,6 +264,7 @@ export class PosComponent implements OnInit {
           return;
         }
         this.totalCalculation();
+        this.loadCurrentCartStat();
       } else {
         return;
       }

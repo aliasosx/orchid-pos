@@ -4,6 +4,9 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Food } from 'src/app/interfaces/food';
 import { Observable } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+import { map } from 'rxjs/operators';
+import { Subfood } from 'src/app/interfaces/subfood';
 
 @Component({
   selector: 'app-subfoods',
@@ -12,22 +15,29 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class SubfoodsComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<SubfoodsComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private snackbar: MatSnackBar) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<SubfoodsComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private snackbar: MatSnackBar, private be: BackendServiceService) {
     this.foodsRef = db.collection<Food>('foods', ref => {
       return ref.where('id', '==', this.data.food.id);
     });
   }
-  btnDisable = false;
+  selectedSubfood: string;
+  quantitySelected: number;
 
+  btnDisable = false;
+  pre_subfood: any;
   foodsRef: AngularFirestoreCollection<Food>;
   foods: Observable<any[]>;
   // extendedFoods
   extendedFoodList: any;
   subFoodsForm: FormGroup;
-  username: string = 'administrator';
+  username;
+
+  subfoods: any;
+
   ngOnInit() {
     // load food data
-
+    // console.log(this.data.food_name);
     this.subFoodsForm = new FormGroup({
       'id': new FormControl(this.data.food.id),
       'food': new FormControl(this.data.food.food_name),
@@ -38,29 +48,54 @@ export class SubfoodsComponent implements OnInit {
       'total': new FormControl(0),
       'username': new FormControl(this.data.username),
       'kitchen': new FormControl(),
-      'foodId': new FormControl(),
+      'foodId': new FormControl(this.data.food.id),
       'food_category': new FormControl(),
     });
     this.extendedFoodList = this.data.food.extendedFoods;
+    this.getExtendedFoods();
   }
-  selectedFood(event) {
-    this.extendedFoodList.forEach(element => {
-      if (element.extendedFoodName == event) {
-        this.subFoodsForm.get('subFood').setValue(element.extendedFoodName);
-        this.subFoodsForm.get('price').setValue(element.price);
-        this.subFoodsForm.get('cost').setValue(element.cost);
-        this.subFoodsForm.get('cost').setValue(element.cost);
-        this.subFoodsForm.get('kitchen').setValue(this.data.food.kitchen);
-        this.subFoodsForm.get('foodId').setValue(this.data.food.foodId);
-        this.subFoodsForm.get('food_category').setValue(this.data.food.food_category);
-      }
+  async selectedFood(event) {
+    this.selectedSubfood = event.target.options[event.target.options.selectedIndex].text;
+    const c = await this.foodCalculation();
+  }
+  async quantitySelect() {
+    // console.log(this.subFoodsForm.get('quantity').value);
+    const c = await this.foodCalculation();
+  }
+  async foodCalculation() {
+    const c = await this.be.getSubfoodsById(this.data.food.id).subscribe(sf => {
+      sf.forEach(element => {
+        if (element.subFoodName === this.selectedSubfood) {
+          this.pre_subfood = {
+            food: this.data.food.food_name + ' - ' + this.selectedSubfood,
+            food_name_en: this.data.food.food_name_en,
+            quantity: this.subFoodsForm.get('quantity').value,
+            price: element.price,
+            cost: element.cost,
+            total: element.price * this.subFoodsForm.get('quantity').value,
+            kitchen: this.data.food.kitchenName,
+            foodId: element.foodId,
+            food_category: this.data.food.food_category,
+            username: this.data.username,
+          };
+        }
+      });
     });
   }
+
+  async getExtendedFoods() {
+    let c = await this.be.getSubfoodById(this.data.food.id).then((subfoods) => {
+      subfoods.subscribe(sf => {
+        this.subfoods = sf;
+      });
+    });
+  }
+
   addFood() {
-    if (this.subFoodsForm.valid) {
+    if (this.subFoodsForm.valid && this.pre_subfood) {
       this.btnDisable = true;
-      this.subFoodsForm.get('total').setValue(this.subFoodsForm.get('price').value * this.subFoodsForm.get('quantity').value);
-      this.dialogRef.close(this.subFoodsForm.value);
+      // this.subFoodsForm.get('total').setValue(this.subFoodsForm.get('price').value * this.subFoodsForm.get('quantity').value);
+      this.dialogRef.close(this.pre_subfood);
     } else {
       this.snackbar.open('Data incomplete please check!', 'Fails', { duration: 1000, verticalPosition: 'top' });
     }

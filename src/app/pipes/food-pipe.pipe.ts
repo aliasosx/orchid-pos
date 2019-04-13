@@ -7,7 +7,8 @@ import { Food } from '../interfaces/food';
 export class FoodPipePipe implements PipeTransform {
 
   transform(value: any[], foodname: string): any {
-    if (!foodname) return value;
+    console.log(value);
+    if (!foodname) { return value; }
     return value.filter(food => food['food_name'].indexOf(foodname) != -1);
   }
 

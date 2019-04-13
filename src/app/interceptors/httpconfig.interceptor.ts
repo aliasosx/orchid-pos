@@ -32,17 +32,14 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(tap((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) {
-        // console.log('Service Response thr Interceptor');
+        console.log('Service Response thr Interceptor');
       }
     }, (err: any) => {
       if (err instanceof HttpErrorResponse) {
         console.log('err.status', err);
         if (err.status === 401 || err.status === 403) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('usrObj');
-          localStorage.removeItem('users');
-          localStorage.removeItem('username');
-          alert('Unauthorized Request - In case of Auth Token Expired , Please re-login');
+          localStorage.clear();
+          // alert('Unauthorized Request - In case of Auth Token Expired , Please re-login');
           this.router.navigateByUrl('login');
         }
       }

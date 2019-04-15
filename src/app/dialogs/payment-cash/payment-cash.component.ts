@@ -137,9 +137,10 @@ export class PaymentCashComponent implements OnInit {
 
   paymentProcess() {
     this.paymentBtnDisabled = true;
-    console.log(this.bankDataResponse);
+    // console.log(this.bankDataResponse);
 
-    if (this.orderForm.valid && this.orderForm.get('username').value != null && this.ticketSelectedId.id) {
+    // tslint:disable-next-line: max-line-length
+    if (this.orderForm.valid && this.orderForm.get('username').value != null && this.ticketSelectedId.id && this.orderForm.get('recieved').value) {
       // add Order to Backend
       // Check Cash
       if (this.orderForm.get('paymentType').value === 'CASH') {
@@ -192,6 +193,8 @@ export class PaymentCashComponent implements OnInit {
                     });
                   }
                 });
+              }).catch((err) => {
+                console.log(err);
               });
 
             } else {

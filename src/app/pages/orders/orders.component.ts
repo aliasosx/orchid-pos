@@ -83,8 +83,10 @@ export class OrdersComponent implements OnInit {
     if (this.foodUpdateStatus === false) {
       //  Clear cache
       this.foodsList = [];
-      // console.log(_food.done);
-      if (_food.done == true) {
+      console.log(order);
+      console.log(_food);
+      console.log(_food.done);
+      if (_food.done === true) {
         _food.done = false;
       } else if (_food.done === false) {
         _food.done = true;
@@ -96,7 +98,7 @@ export class OrdersComponent implements OnInit {
           const o = _order.data() as Order;
           //  populate food data
           o.food.forEach(element => {
-            if (element.id === _food.id) {
+            if (element.foodId === _food.foodId) {
               element.done = _food.done;
               this.foodsList.push(element);
             } else {

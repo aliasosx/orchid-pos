@@ -49,7 +49,7 @@
               <td class="text-center align-middle" style="color: red; font-weight: bold;"></td>
             </ng-template>
             <td class="text-center align-middle" *ngIf="food.done == true; else undone">
-              <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png" disable
+              <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
                 style="max-width: 20px;cursor: pointer;" (click)="updateFoodDone(order,food)">
             </td>
             <ng-template #undone>

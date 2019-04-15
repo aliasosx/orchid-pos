@@ -1,3 +1,4 @@
+import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { MatDialog } from '@angular/material';
@@ -17,7 +18,8 @@ declare var swal: any;
 })
 export class ProductsComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router, private be: BackendServiceService) {
 
     if (localStorage.getItem('token')) {
       this.username_info = localStorage.getItem('usrObj');
@@ -27,7 +29,7 @@ export class ProductsComponent implements OnInit {
     }
 
   }
-  title: string = 'Products';
+  title = 'Products';
   productsRef: AngularFirestoreCollection<Product>;
   private productDoc: AngularFirestoreDocument<Product>;
   product: Product;
@@ -37,6 +39,8 @@ export class ProductsComponent implements OnInit {
 
   private user: Observable<firebase.User>;
   username_info: any;
+
+  productsShow: any;
 
   ngOnInit() {
     this.products = this.db.collection('products', ref => {
@@ -48,14 +52,26 @@ export class ProductsComponent implements OnInit {
         return data;
       });
     }));
+    this.loadProducts();
   }
+
+  async loadProducts() {
+    let a = this.be.getAllProducts().then(p => {
+      p.subscribe(products => {
+        this.productsShow = products;
+      });
+    });
+  }
+
   openAddNewDialog() {
     const dialogRef = this.dialog.open(AddProductsComponent, {
       width: '600px'
     });
     dialogRef.afterClosed().subscribe(res => {
-      if (res == 'success') {
+      if (res === 'success') {
+        this.loadProducts();
         swal('Products has been saved', 'Product add', 'success', { timer: 1500 });
+
       } else {
         return;
       }
@@ -65,17 +81,32 @@ export class ProductsComponent implements OnInit {
 
   deleteProduct(product) {
     swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this imaginary file!",
-      icon: "warning",
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this imaginary file!',
+      icon: 'warning',
       buttons: true,
       dangerMode: true,
     }).then((res) => {
       if (res) {
+        /*
         this.db.collection('products').doc(product.id).delete();
-        //swal('Products has been deleted', 'Product', 'success');
+        // swal('Products has been deleted', 'Product', 'success');
+        */
+
+        this.be.deleteProduct(product.pid).then(rsp => {
+          rsp.subscribe(r => {
+            if (r['status'] === 'success') {
+              this.loadProducts();
+              swal('Products has been deleted', 'Product', 'success', { timer: 1000 });
+            } else {
+              swal('Something went wrong !', 'Product', 'error', { timer: 1000 });
+              return;
+            }
+          });
+        });
+
       } else {
-        swal("Delete canceled");
+        swal('Delete canceled', 'Product', 'error', { timer: 1000 });
       }
     });
   }
@@ -85,9 +116,9 @@ export class ProductsComponent implements OnInit {
       data: product
     });
     dialogRef.afterClosed().subscribe(res => {
-      if (res == 'success') {
+      if (res === 'success') {
         swal('Products has been saved', 'Test', 'success');
       }
-    })
+    });
   }
 }

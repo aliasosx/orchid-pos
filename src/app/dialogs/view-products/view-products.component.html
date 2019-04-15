@@ -8,21 +8,28 @@
     </div>
     <div class="form-group col-md-6">
       <label for="productCode">Product code</label>
-      <input type="text" class="form-control" id="productCode" placeholder="Product code" formControlName="productCode"
+      <input type="text" class="form-control" id="productCode" placeholder="Product code" formControlName="product_code"
         required>
     </div>
     <div class="form-group col-md-6">
       <label for="productName">Product Name</label>
-      <input type="text" class="form-control" id="productName" placeholder="Product Name" formControlName="productName"
+      <input type="text" class="form-control" id="productName" placeholder="Product Name" formControlName="product_name"
         required>
     </div>
 
     <div class="form-group col-md-6">
       <label for="productTypeCode">Product Types</label>
-      <select class="form-control" formControlName="productTypeCode" required>
+      <select class="form-control" formControlName="categoryId" required>
         <option value="-1" disabled>------</option>
-        <option *ngFor="let productType of productTypes | async" value="{{ productType.productTypeCode }}">{{
-          productType.productTypeCode }}</option>
+        <option *ngFor="let productType of productCategories" value="{{ productType.id }}">{{
+          productType.category_name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="foodId">Food Name</label>
+      <select class="form-control" id="foodId" formControlName="foodId">
+        <option disabled value="-1">------</option>
+        <option value="{{ food.id }}" *ngFor="let food of foods ">{{ food.food_name }}</option>
       </select>
     </div>
 
@@ -31,9 +38,16 @@
       <input type="number" class="form-control" id="cost" placeholder="Cost" formControlName="cost" required>
     </div>
     <div class="form-group col-md-6">
+      <label for="Currency">Currency</label>
+      <select class="form-control" formControlName="currencyId" required>
+        <option value="-1" disabled>------</option>
+        <option *ngFor="let currency of currencies " value="{{ currency.id }}">{{ currency.currency_name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
       <label for="cost">Minimum Quantity</label>
-      <input type="number" class="form-control" id="minimumQuantity" placeholder="Minimum Quantity"
-        formControlName="minimumQuantity" required>
+      <input type="number" class="form-control" id="minimum" placeholder="Minimum Quantity" formControlName="minimum"
+        required>
     </div>
     <div class="form-group col-md-6">
       <label for="currentQuantity">Current Quantity</label>
@@ -42,17 +56,22 @@
     </div>
     <div class="form-group col-md-6">
       <label for="currentQuantity">Unit</label>
-      <select class="form-control" formControlName="unit" required>
+      <select class="form-control" formControlName="unitId" required>
         <option value="-1" disabled>------</option>
-        <option *ngFor="let unit of units | async" value="{{ unit.unit }}">{{ unit.unitName }}</option>
+        <option *ngFor="let unit of units " value="{{ unit.id }}">{{ unit.unit_name }}</option>
       </select>
     </div>
     <div class="form-group col-md-6">
       <label for="currentQuantity">Vendor</label>
-      <select class="form-control" formControlName="vendorId" required>
+      <select class="form-control" formControlName="supplierId" required>
         <option value="-1" disabled>------</option>
-        <option *ngFor="let vendor of vendors | async" value="{{ vendor.shopName }}">{{ vendor.shopName }}</option>
+        <option *ngFor="let vendor of suppliers" value="{{ vendor.id }}">{{ vendor.vendorName }}</option>
       </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="expireDate">Expire</label>
+      <input type="date" class="form-control" id="expireDate" placeholder="expireDate" formControlName="expireDate"
+        required>
     </div>
   </div>
   <div class="text-center">

@@ -94,6 +94,7 @@ export class BackendServiceService {
   async getVendor() {
     return this._http.get(this.backendService + 'vendors', this.httpOptions);
   }
+
   async createVendor(vendors) {
     return this._http.post(this.backendService + 'vendors', vendors, this.httpOptions);
   }
@@ -130,6 +131,7 @@ export class BackendServiceService {
   async updateFood(id, food) {
     return this._http.put(this.backendService + 'foods/' + id, food, this.httpOptions);
   }
+  // Display
   async getCurrencies() {
     return this._http.get(this.backendService + 'currencies', this.httpOptions);
   }
@@ -156,6 +158,28 @@ export class BackendServiceService {
   }
   createFoodTranx(foodtranx) {
     return this._http.post(this.backendService + 'foodtranxs', foodtranx, this.httpOptions);
+  }
+  async getAllProducts() {
+    return this._http.get(this.backendService + 'productsDisplay', this.httpOptions);
+  }
+  async getProductById(id) {
+    return this._http.get(this.backendService + 'product/' + id, this.httpOptions);
+  }
+  async updateProduct(product) {
+    return this._http.put(this.backendService + 'product/' + product.id, product, this.httpOptions);
+  }
+
+
+  async deleteProduct(id) {
+    return this._http.delete(this.backendService + 'product/' + id, this.httpOptions);
+  }
+
+  async getProductCategories() {
+    return this._http.get(this.backendService + 'categories', this.httpOptions);
+  }
+
+  async createProduct(product) {
+    return this._http.post(this.backendService + 'products', product, this.httpOptions);
   }
 
   // Reports

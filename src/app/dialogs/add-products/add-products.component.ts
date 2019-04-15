@@ -1,3 +1,4 @@
+import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
@@ -18,14 +19,13 @@ import { map } from 'rxjs/operators';
 })
 export class AddProductsComponent implements OnInit {
 
-  constructor(private dialog: MatDialog, private db: AngularFirestore, private DialogRef: MatDialogRef<AddProductsComponent>) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private dialog: MatDialog, private db: AngularFirestore, private be: BackendServiceService, private DialogRef: MatDialogRef<AddProductsComponent>) {
     this.vendorsRef = this.db.collection<Vendor>('vendors');
     this.productTypesRef = this.db.collection<ProductType>('productTypes');
     this.productsRef = this.db.collection<Product>('products');
-    this.unitsRef = this.db.collection<Unit>('units');
-    this.foodsRef = db.collection<Food>('foods');
   }
-  showAlert = "hidden";
+  showAlert = 'hidden';
   addProductForm: FormGroup;
   vendor: Vendor;
   vendorsRef: AngularFirestoreCollection<Vendor>;
@@ -41,13 +41,12 @@ export class AddProductsComponent implements OnInit {
   productsRef: AngularFirestoreCollection<Product>;
   productDoc: AngularFirestoreDocument<Product>;
 
-  unitsRef: AngularFirestoreCollection<Unit>
-  unitsDoc: AngularFirestoreDocument<Unit>
-  units: Observable<any[]>;
 
-  foodsRef: AngularFirestoreCollection<Food>;
-  foodsDoc: AngularFirestoreDocument<Food>;
-  foods: Observable<any[]>;
+  foods: any;
+  productCategories: any;
+  suppliers: any;
+  units: any;
+  currencies: any;
 
   ngOnInit() {
     let uid = uuid.v4();
@@ -55,45 +54,95 @@ export class AddProductsComponent implements OnInit {
     this.addProductForm = new FormGroup({
       uuids: new FormControl(uid),
       barcode: new FormControl(refno),
-      productCode: new FormControl(),
-      productName: new FormControl(),
-      cost: new FormControl(),
-      minimumQuantity: new FormControl(0),
+      product_code: new FormControl(),
+      product_name: new FormControl(),
+      cost: new FormControl(0),
+      minimum: new FormControl(0),
       currentQuantity: new FormControl(0),
-      productTypeCode: new FormControl(),
-      userId: new FormControl(),
-      vendorId: new FormControl(),
+      categoryId: new FormControl(),
+      currencyId: new FormControl(),
+      supplierId: new FormControl(),
+      userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       foodId: new FormControl(),
+      expireDate: new FormControl(),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
-      unit: new FormControl(),
+      unitId: new FormControl(),
     });
     this.vendors = this.db.collection('vendors').valueChanges();
     this.productTypes = this.db.collection('productTypes').valueChanges();
-    this.units = this.unitsRef.valueChanges();
-    this.foods = this.foodsRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data();
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    }));
-    this.addProductForm.get('userId').setValue('administrator');
+
+
+    // this.addProductForm.get('userId').setValue('administrator');
+
+    this.loadFoods();
+    this.loadProductTypes();
+    this.loadUnits();
+    this.loadSuppliers();
+    this.loadCurrencies();
   }
   addProduct() {
     if (this.addProductForm.valid) {
+      /*
       this.product = this.addProductForm.value;
       this.productsRef.add(this.product).then(res => {
         this.DialogRef.close('success');
       });
+      */
+
+      this.be.createProduct(this.addProductForm.value).then(rsp => {
+        rsp.subscribe(r => {
+          if (r['status'] === 'success') {
+            this.DialogRef.close('success');
+          } else {
+            return;
+          }
+        });
+      });
+
     }
   }
-  checkProductCode(productCode) {
-    //console.log(productCode);
+
+  loadFoods() {
+    this.be.getFoods().then(f => {
+      f.subscribe(foods => {
+        this.foods = foods;
+      });
+    });
   }
+  loadProductTypes() {
+    this.be.getProductCategories().then(c => {
+      c.subscribe(cat => {
+        this.productCategories = cat;
+      });
+    });
+  }
+  loadUnits() {
+    this.be.getUnit().then(c => {
+      c.subscribe(cat => {
+        this.units = cat;
+      });
+    });
+  }
+  loadSuppliers() {
+    this.be.getVendor().then(c => {
+      c.subscribe(cat => {
+        this.suppliers = cat;
+      });
+    });
+  }
+  loadCurrencies() {
+    this.be.getCurrencies().then(c => {
+      c.subscribe(cat => {
+        this.currencies = cat;
+      });
+    });
+  }
+
+
   padding(num: number, size: number) {
-    let s = num + "";
-    while (s.length < size) s = "0" + s;
+    let s = num + '';
+    while (s.length < size) { s = '0' + s; }
     return s;
   }
 }

@@ -1,3 +1,4 @@
+import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
@@ -15,63 +16,109 @@ import * as uuid from 'uuid';
 })
 export class ViewProductsComponent implements OnInit {
 
-  constructor(private dialog: MatDialog, private db: AngularFirestore, private DialogRef: MatDialogRef<ViewProductsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.vendorsRef = this.db.collection<Vendor>('vendors');
-    this.productTypesRef = this.db.collection<ProductType>('productTypes');
-    this.productsRef = this.db.collection<Product>('products');
-    this.unitsRef = this.db.collection<Unit>('units');
+  // tslint:disable-next-line: max-line-length
+  constructor(private dialog: MatDialog, private db: AngularFirestore, private be: BackendServiceService, private DialogRef: MatDialogRef<ViewProductsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
-  vendor: Vendor;
-  vendorsRef: AngularFirestoreCollection<Vendor>;
-  vendorDoc: AngularFirestoreDocument<Vendor>;
-  vendors: Observable<any[]>;
 
-  unitsRef: AngularFirestoreCollection<Unit>;
-  unitDoc: AngularFirestoreDocument<Unit>;
-  units: Observable<any[]>;
-
-  productTypesRef: AngularFirestoreCollection<ProductType>;
-  productTypeDoc: AngularFirestoreDocument<ProductType>;
-  productType: ProductType;
-  productTypes: Observable<any[]>;
-
-  product: Product;
-  productsRef: AngularFirestoreCollection<Product>;
-  productDoc: AngularFirestoreDocument<Product>;
   addProductForm: FormGroup;
+  foods: any;
+  productCategories: any;
+  units: any;
+  suppliers: any;
+  currencies: any;
+
 
   ngOnInit() {
     let uid = uuid.v4();
     this.addProductForm = new FormGroup({
-      uuids: new FormControl(uid),
       id: new FormControl(),
       barcode: new FormControl(),
-      productCode: new FormControl(),
-      productName: new FormControl(),
-      cost: new FormControl(),
-      minimumQuantity: new FormControl(0),
+      product_code: new FormControl(),
+      product_name: new FormControl(),
+      product_description: new FormControl(),
+      price: new FormControl(),
+      quantity: new FormControl(),
+      photo: new FormControl(),
+      cost: new FormControl(0),
+      minimum: new FormControl(0),
       currentQuantity: new FormControl(0),
-      productTypeCode: new FormControl(),
-      userId: new FormControl(),
-      vendorId: new FormControl(),
+      categoryId: new FormControl(),
+      currencyId: new FormControl(),
+      supplierId: new FormControl(),
+      userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
+      foodId: new FormControl(),
+      expireDate: new FormControl(),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
-      unit: new FormControl(),
-      foodId: new FormControl(),
+      unitId: new FormControl(),
     });
 
-    this.vendors = this.db.collection('vendors').valueChanges();
-    this.productTypes = this.db.collection('productTypes').valueChanges();
-    this.units = this.db.collection('units').valueChanges();
+    // this.addProductForm.setValue(this.data);
 
-    this.addProductForm.setValue(this.data);
+    this.loadProductTypes();
+    this.loadUnits();
+    this.loadSuppliers();
+    this.loadCurrencies();
+    this.loadFoods();
+
+    this.loadproductById(this.data.pid);
   }
   updateProduct() {
     if (this.addProductForm.valid) {
-      this.db.collection('products').doc(this.data.id).update(this.addProductForm.value);
-      this.DialogRef.close('success');
+      this.be.updateProduct(this.addProductForm.value).then(rsp => {
+        rsp.subscribe(r => {
+          if (r['status'] === 'success') {
+            this.DialogRef.close('success');
+          } else {
+            return;
+          }
+        });
+      });
+
     }
 
   }
+  loadproductById(id) {
+    this.be.getProductById(id).then(p => {
+      p.subscribe(product => {
+        this.addProductForm.setValue(product);
+      });
+    });
+  }
 
+  loadFoods() {
+    this.be.getFoods().then(f => {
+      f.subscribe(foods => {
+        this.foods = foods;
+      });
+    });
+  }
+  loadProductTypes() {
+    this.be.getProductCategories().then(c => {
+      c.subscribe(cat => {
+        this.productCategories = cat;
+      });
+    });
+  }
+  loadUnits() {
+    this.be.getUnit().then(c => {
+      c.subscribe(cat => {
+        this.units = cat;
+      });
+    });
+  }
+  loadSuppliers() {
+    this.be.getVendor().then(c => {
+      c.subscribe(cat => {
+        this.suppliers = cat;
+      });
+    });
+  }
+  loadCurrencies() {
+    this.be.getCurrencies().then(c => {
+      c.subscribe(cat => {
+        this.currencies = cat;
+      });
+    });
+  }
 }

@@ -82,6 +82,7 @@ import { ViewOrderDetailsComponent } from './dialogs/view-order-details/view-ord
 import { LoadingscreenComponent } from './pages/loadingscreen/loadingscreen.component';
 import { ApprovedUsersComponent } from './dialogs/approved-users/approved-users.component';
 import { AddSubFoodTranxComponent } from './dialogs/add-sub-food-tranx/add-sub-food-tranx.component';
+import { ScreenLoadingComponent } from './loadings/screen-loading/screen-loading.component';
 
 @NgModule({
   declarations: [
@@ -143,6 +144,7 @@ import { AddSubFoodTranxComponent } from './dialogs/add-sub-food-tranx/add-sub-f
     LoadingscreenComponent,
     ApprovedUsersComponent,
     AddSubFoodTranxComponent,
+    ScreenLoadingComponent,
 
 
   ],
@@ -196,6 +198,7 @@ import { AddSubFoodTranxComponent } from './dialogs/add-sub-food-tranx/add-sub-f
     ViewOrderDetailsComponent,
     ApprovedUsersComponent,
     AddSubFoodTranxComponent,
+    ScreenLoadingComponent,
   ]
   ,
   providers: [

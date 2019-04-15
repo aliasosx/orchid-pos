@@ -40,6 +40,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
         if (err.status === 401 || err.status === 403) {
           localStorage.clear();
           // alert('Unauthorized Request - In case of Auth Token Expired , Please re-login');
+          window.location.reload();
           this.router.navigateByUrl('login');
         }
       }

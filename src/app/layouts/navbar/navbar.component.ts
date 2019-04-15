@@ -26,6 +26,7 @@ export class NavbarComponent implements OnInit {
       this.username_info = JSON.parse(localStorage.getItem('usrObj'));
       this.username = this.username_info.username;
       this.restaurantInfoRef = db.collection<RestaurantInfo>('restaurant_info');
+      this.RestaurantInfos = this.restaurantInfoRef.valueChanges();
       this.loadMenus();
     } else {
       this.navBarShow = 'hidden';
@@ -54,8 +55,7 @@ export class NavbarComponent implements OnInit {
   userMenus: any;
 
   ngOnInit() {
-    this.RestaurantInfos = this.restaurantInfoRef.valueChanges();
-    this.loadMenus();
+
   }
   loadMenus() {
     this.userMenus = [];

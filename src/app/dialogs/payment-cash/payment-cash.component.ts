@@ -150,6 +150,7 @@ export class PaymentCashComponent implements OnInit {
                 const orderDetail = {
                   orderId: this.orderForm.get('orderId').value,
                   foodId: food.foodId,
+                  subfoodId: food.subfoodId,
                   foodName: food.food,
                   cost: food.cost,
                   price: food.price,
@@ -210,6 +211,7 @@ export class PaymentCashComponent implements OnInit {
                 const orderDetail = {
                   orderId: this.orderForm.get('orderId').value,
                   foodId: food.foodId,
+                  subfoodId: food.subfoodId,
                   foodName: food.food,
                   cost: food.cost,
                   price: food.price,
@@ -267,6 +269,7 @@ export class PaymentCashComponent implements OnInit {
                 const orderDetail = {
                   orderId: this.orderForm.get('orderId').value,
                   foodId: food.foodId,
+                  subfoodId: food.subfoodId,
                   foodName: food.food,
                   cost: food.cost,
                   price: food.price,

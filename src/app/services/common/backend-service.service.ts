@@ -157,5 +157,49 @@ export class BackendServiceService {
   createFoodTranx(foodtranx) {
     return this._http.post(this.backendService + 'foodtranxs', foodtranx, this.httpOptions);
   }
+
+  // Reports
+  async reportRevByDateRange(startDt, endDt) {
+    const reportDt = {
+      startDt,
+      endDt
+    };
+    return this._http.post(this.backendService + 'reportsRevByDateRange', reportDt, this.httpOptions);
+  }
+  async reportRevByUsersByDateRange(startDt, endDt) {
+    const reportDt = {
+      startDt,
+      endDt
+    };
+    return this._http.post(this.backendService + 'reportsRevByUsersByDateRange', reportDt, this.httpOptions);
+  }
+  async reportRevByKitchenByDateRange(startDt, endDt) {
+    const reportDt = {
+      startDt,
+      endDt
+    };
+    return this._http.post(this.backendService + 'reportsRevByKitchenByDateRange', reportDt, this.httpOptions);
+  }
+  async reportRevByFoodTypeByDateRange(startDt, endDt) {
+    const reportDt = {
+      startDt,
+      endDt
+    };
+    return this._http.post(this.backendService + 'reportsRevByFoodTypeByDateRange', reportDt, this.httpOptions);
+  }
+  async reportRevByPaymentByDateRange(startDt, endDt) {
+    const reportDt = {
+      startDt,
+      endDt
+    };
+    return this._http.post(this.backendService + 'reportsRevByPaymentByDateRange', reportDt, this.httpOptions);
+  }
+  async reportsRevByFoodsByDateRange(startDt, endDt) {
+    const reportDt = {
+      startDt,
+      endDt
+    };
+    return this._http.post(this.backendService + 'reportsRevByFoodsByDateRange', reportDt, this.httpOptions);
+  }
 }
 

@@ -66,9 +66,11 @@ export class SubfoodsComponent implements OnInit {
     const c = await this.be.getSubfoodsById(this.data.food.id).subscribe(sf => {
       sf.forEach(element => {
         if (element.subFoodName === this.selectedSubfood) {
+          console.log(element.sfId);
           this.pre_subfood = {
             food: this.data.food.food_name + ' - ' + this.selectedSubfood,
             food_name_en: this.data.food.food_name_en,
+            subfoodId: element.sfId,
             quantity: this.subFoodsForm.get('quantity').value,
             price: element.price,
             cost: element.cost,

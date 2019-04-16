@@ -6,11 +6,14 @@
   </mat-card-header>
   <mat-card-content>
     <div class="row">
-      <div class="col col-md-10">
+      <div class="col col-md-8">
         <input type="text" class="form-control" style="width: 100%" placeholder="Search" [(ngModel)]="searchProduct">
       </div>
       <div class="col col-md-2 text-right">
         <button mat-raised-button color="primary" style="width: 100%;" (click)="openAddNewDialog()">Add new</button>
+      </div>
+      <div class="col col-md-2 text-right">
+        <button mat-raised-button color="primary" style="width: 100%;" (click)="reloadProduct()">Reload</button>
       </div>
     </div>
 

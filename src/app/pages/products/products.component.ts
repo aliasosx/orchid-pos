@@ -62,7 +62,9 @@ export class ProductsComponent implements OnInit {
       });
     });
   }
-
+  reloadProduct() {
+    this.loadProducts();
+  }
   openAddNewDialog() {
     const dialogRef = this.dialog.open(AddProductsComponent, {
       width: '600px'
@@ -117,7 +119,8 @@ export class ProductsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(res => {
       if (res === 'success') {
-        swal('Products has been saved', 'Test', 'success');
+        this.loadProducts();
+        swal('Product modified', 'Product has been updated', 'success', { timer: 1000 });
       }
     });
   }

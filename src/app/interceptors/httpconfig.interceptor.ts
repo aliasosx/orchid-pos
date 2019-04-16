@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+declare var swal: any;
 // import { ErrorDialogService } from '../error-dialog/errordialog.service';
 import {
   HttpInterceptor,
@@ -35,7 +36,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(tap((event: HttpEvent<any>) => {
 
       if (event instanceof HttpResponse) {
-        console.log('Service Response thr Interceptor');
+        // console.log('Service Response thr Interceptor');
         dialogRef = this.dialogLoading.open(ScreenLoadingComponent, {
           width: '600px',
         });
@@ -49,6 +50,10 @@ export class HttpConfigInterceptor implements HttpInterceptor {
           // alert('Unauthorized Request - In case of Auth Token Expired , Please re-login');
           window.location.reload();
           this.router.navigateByUrl('login');
+        } else {
+
+          // swal('Internet connection issue', 'Internet connection down please contact admin', 'error', { timmer: 3000 });
+          // window.location.reload();
         }
       }
     }
@@ -56,5 +61,4 @@ export class HttpConfigInterceptor implements HttpInterceptor {
       dialogRef.close();
     }));
   }
-
 }

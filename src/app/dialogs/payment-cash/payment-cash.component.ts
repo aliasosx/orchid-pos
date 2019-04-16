@@ -39,6 +39,29 @@ export class PaymentCashComponent implements OnInit {
       return ref.where('enabled', '==', true).orderBy('paymentCode', 'asc');
     });
     this.qrPaymentsRef = db.collection<QrBankResponseData>('qrPayments');
+
+    const uuid1 = uuid.v4();
+    const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
+    this.orderForm = new FormGroup({
+      orderId: new FormControl(uuid1),
+      refno: new FormControl(refno),
+      ticket: new FormControl(),
+      qrRefno: new FormControl(),
+      food: new FormControl(),
+      grandtotal: new FormControl(this.data.total),
+      recieved: new FormControl(this.data.total),
+      change: new FormControl(0),
+      paymentType: new FormControl(),
+      invoiceno: new FormControl(),
+      orderDateTime: new FormControl(new Date()),
+      orderFinishTime: new FormControl(),
+      settled: new FormControl(0),
+      completed: new FormControl(0),
+      username: new FormControl(this.username),
+      status: new FormControl('processing'),
+      userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
+      cashloadId: new FormControl(),
+    });
   }
   username: string;
   cartRef: AngularFirestoreCollection<Cart>;
@@ -70,34 +93,23 @@ export class PaymentCashComponent implements OnInit {
   items_Print: any = [];
 
   ngOnInit() {
-    const uuid1 = uuid.v4();
-    const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
-    this.orderForm = new FormGroup({
-      orderId: new FormControl(uuid1),
-      refno: new FormControl(refno),
-      ticket: new FormControl(),
-      qrRefno: new FormControl(),
-      food: new FormControl(),
-      grandtotal: new FormControl(this.data.total),
-      recieved: new FormControl(this.data.total),
-      change: new FormControl(0),
-      paymentType: new FormControl(),
-      invoiceno: new FormControl(),
-      orderDateTime: new FormControl(new Date()),
-      orderFinishTime: new FormControl(),
-      settled: new FormControl(0),
-      completed: new FormControl(0),
-      username: new FormControl(this.username),
-      status: new FormControl('processing'),
-      userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
-      cashloadId: new FormControl(),
-    });
-    this.generateQRDate();
-    this.data.cart.forEach(element => {
+    this.loadData();
+  }
+  async loadData() {
+    // this.snackbar.open('Loading data...', 'OK', { duration: 1000 });
+    console.log('Loading data...');
+
+
+
+    let c = await this.loadInitialData();
+  }
+  async loadInitialData() {
+    let c = await this.generateQRDate();
+    let a = await this.data.cart.forEach(element => {
       element['done'] = false;
       this.foodList.push(element);
     });
-    this.paymentTypes = this.paymentTypesRef.snapshotChanges().pipe(map(change => {
+    this.paymentTypes = await this.paymentTypesRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data();
         data['id'] = a.payload.doc.id;
@@ -105,24 +117,25 @@ export class PaymentCashComponent implements OnInit {
       });
     }));
 
-    this.orderForm.get('food').setValue(this.foodList);
+    let d = await this.orderForm.get('food').setValue(this.foodList);
 
-    this.tickets = this.ticketsRef.snapshotChanges().pipe(map(change => {
+    this.tickets = await this.ticketsRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const tickets = a.payload.doc.data();
         tickets['id'] = a.payload.doc.id;
         return tickets;
       });
     }));
-    this.backendService.loadCurrentCashloadByUser(JSON.parse(localStorage.getItem('usrObj')).id).then((resp_csh) => {
+    let e = await this.backendService.loadCurrentCashloadByUser(JSON.parse(localStorage.getItem('usrObj')).id).then((resp_csh) => {
       resp_csh.subscribe(async (x) => {
         let c = await this.orderForm.get('cashloadId').setValue(x[0].id);
         this.snackbar.open('Cashload ID loaded ' + this.orderForm.get('cashloadId').value, 'OK', { duration: 1000 });
       });
     });
-    this.prepaireItemToPrint();
+    let m = await this.prepaireItemToPrint();
+    // this.snackbar.open('Complete Loading data', 'OK', { duration: 1000 });
+    console.log('Complete Loading data');
   }
-
   prepaireItemToPrint() {
     const items = JSON.parse(localStorage.getItem('cart'));
     items.forEach(item => {
@@ -143,6 +156,7 @@ export class PaymentCashComponent implements OnInit {
     if (this.orderForm.valid && this.orderForm.get('username').value != null && this.ticketSelectedId.id && this.orderForm.get('recieved').value) {
       // add Order to Backend
       // Check Cash
+
       if (this.orderForm.get('paymentType').value === 'CASH') {
         this.backendService.createOrder(this.orderForm.value).then(async (resp_order) => {
           resp_order.subscribe(async (x) => {
@@ -166,7 +180,11 @@ export class PaymentCashComponent implements OnInit {
                 });
               });
               // load data to order realtime db
-              this.db.collection('orders').add(this.orderForm.value).then((res) => {
+              console.log('Real time database will process');
+              console.log(this.orderForm.value);
+              let m = await this.db.collection('orders').add(this.orderForm.value).then((res) => {
+                console.log(this.orderForm.value);
+                console.log(res);
                 this.ticketSelectedId.used = true;
                 this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
                   if (this.bankDataResponse) {
@@ -358,7 +376,11 @@ export class PaymentCashComponent implements OnInit {
     })).subscribe(t => {
       t.forEach(_ticket => {
         console.log(_ticket);
-        this.ticketSelectedId = _ticket;
+        if (_ticket.id) {
+          this.ticketSelectedId = _ticket;
+        } else {
+          this.snackbar.open('Data incorrect on load , please Close and re-open payamnt', 'Fail', { duration: 3000 });
+        }
       });
     });
   }

@@ -60,8 +60,9 @@ export class ViewProductsComponent implements OnInit {
     this.loadSuppliers();
     this.loadCurrencies();
     this.loadFoods();
-
-    this.loadproductById(this.data.pid);
+    if (this.data) {
+      this.loadproductById(this.data.pid);
+    }
   }
   updateProduct() {
     if (this.addProductForm.valid) {
@@ -74,9 +75,7 @@ export class ViewProductsComponent implements OnInit {
           }
         });
       });
-
     }
-
   }
   loadproductById(id) {
     this.be.getProductById(id).then(p => {

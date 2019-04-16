@@ -153,7 +153,7 @@ import { ScreenLoadingComponent } from './loadings/screen-loading/screen-loading
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,

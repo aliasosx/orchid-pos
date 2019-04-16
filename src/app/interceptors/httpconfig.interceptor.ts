@@ -37,9 +37,11 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
       if (event instanceof HttpResponse) {
         // console.log('Service Response thr Interceptor');
+        /*
         dialogRef = this.dialogLoading.open(ScreenLoadingComponent, {
           width: '600px',
         });
+        */
       }
 
     }, (err: any) => {

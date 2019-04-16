@@ -29,9 +29,6 @@ export class PaymentCashComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
   constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data, private printerService: PrinterServiceService, private backendService: BackendServiceService) {
     this.username = data.username;
-    this.cartRef = db.collection<Cart>('carts', ref => {
-      return ref.where('username', '==', this.username);
-    });
     this.ticketsRef = db.collection<Ticket>('tickets', ref => {
       return ref.where('used', '==', false).orderBy('ticket', 'asc');
     });
@@ -64,8 +61,6 @@ export class PaymentCashComponent implements OnInit {
     });
   }
   username: string;
-  cartRef: AngularFirestoreCollection<Cart>;
-  carts: Observable<any[]>;
 
   paymentBtnDisabled = false;
 
@@ -93,20 +88,21 @@ export class PaymentCashComponent implements OnInit {
   items_Print: any = [];
 
   ngOnInit() {
+    // console.log(this.data.cart);
     this.loadData();
   }
   async loadData() {
     // this.snackbar.open('Loading data...', 'OK', { duration: 1000 });
     console.log('Loading data...');
-
-
-
     let c = await this.loadInitialData();
   }
   async loadInitialData() {
     let c = await this.generateQRDate();
     let a = await this.data.cart.forEach(element => {
+      console.log(element);
       element['done'] = false;
+      element['food_category'] = 'NA';
+      element['kitchen'] = 'NA';
       this.foodList.push(element);
     });
     this.paymentTypes = await this.paymentTypesRef.snapshotChanges().pipe(map(change => {
@@ -247,7 +243,11 @@ export class PaymentCashComponent implements OnInit {
                 });
               });
               // load data to order realtime db
-              this.db.collection('orders').add(this.orderForm.value).then((res) => {
+              console.log('Real time database will process');
+              console.log(this.orderForm.value);
+              let m = await this.db.collection('orders').add(this.orderForm.value).then((res) => {
+                console.log(this.orderForm.value);
+                console.log(res);
                 this.ticketSelectedId.used = true;
                 this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
                   if (this.bankDataResponse) {
@@ -305,7 +305,11 @@ export class PaymentCashComponent implements OnInit {
                 });
               });
               // load data to order realtime db
-              this.db.collection('orders').add(this.orderForm.value).then((res) => {
+              console.log('Real time database will process');
+              console.log(this.orderForm.value);
+              let m = await this.db.collection('orders').add(this.orderForm.value).then((res) => {
+                console.log(this.orderForm.value);
+                console.log(res);
                 this.ticketSelectedId.used = true;
                 this.ticketsRef.doc(this.ticketSelectedId.id).update(this.ticketSelectedId).then(() => {
                   if (this.bankDataResponse) {

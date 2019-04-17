@@ -161,7 +161,7 @@ import { ScreenLoadingComponent } from './loadings/screen-loading/screen-loading
     FormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
-    MatMenuModule, MatTooltipModule,
+    MatMenuModule, MatTooltipModule, MatStepperModule,
     HttpClientModule,
   ],
   entryComponents: [

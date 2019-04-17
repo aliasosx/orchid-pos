@@ -60,7 +60,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
       }
     }
     ), finalize(() => {
-      dialogRef.close();
+      // dialogRef.close();
     }));
   }
 }

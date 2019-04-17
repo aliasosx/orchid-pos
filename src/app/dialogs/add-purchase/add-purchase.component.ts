@@ -9,6 +9,7 @@ import { StockHistory } from 'src/app/interfaces/stockHistory';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { StockServicesService } from 'src/app/services/stock-services.service';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 declare var swal: any;
 
 @Component({
@@ -18,14 +19,17 @@ declare var swal: any;
 })
 export class AddPurchaseComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private DialogRef: MatDialogRef<AddPurchaseComponent>, private storage: AngularFireStorage, private stockService: StockServicesService) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private db: AngularFirestore, private DialogRef: MatDialogRef<AddPurchaseComponent>, private storage: AngularFireStorage, private stockService: StockServicesService, private be: BackendServiceService) {
     this.purchasesRef = db.collection<Purchase>('purchases');
     this.vendorsRef = db.collection<Vendor>('vendors');
-    this.productsRef = db.collection<Product>('products');
     this.stockHistoriesRef = db.collection<StockHistory>('stockHistories');
   }
   saveDisabled = false;
   addFormPurchase: FormGroup;
+  addFormPurchaseDetail: FormGroup;
+  suppliers: any;
+
   purchasesRef: AngularFirestoreCollection<Purchase>;
   purchasesDoc: AngularFirestoreDocument<Purchase>;
   purchases: Observable<any[]>;
@@ -34,63 +38,83 @@ export class AddPurchaseComponent implements OnInit {
   vendorsRef: AngularFirestoreCollection<Vendor>;
   vendorDoc: AngularFirestoreDocument<Vendor>;
 
-  products: Observable<any[]>;
-  productsRef: AngularFirestoreCollection<Product>;
-  productsDoc: AngularFirestoreDocument<Product>;
 
   stockHistoriesRef: AngularFirestoreCollection<StockHistory>;
   stockHistoriesDoc: AngularFirestoreDocument<StockHistory>;
   stockHistories: Observable<any[]>;
 
   file: File;
+  progressBarValue;
 
   productsForUpdate: Observable<Product[]>;
   productForUpdateCollect: AngularFirestoreCollection<Product>;
 
+  productsNote: Observable<Product[]>;
+  productNotesCollect: AngularFirestoreCollection<Product>;
+  billPhoto = '../../../assets/icons/blue-10-512.png';
+  purchase: any;
+  products: any;
   ngOnInit() {
     this.addFormPurchase = new FormGroup({
       billNo: new FormControl(),
-      productName: new FormControl(),
-      quantity: new FormControl(0),
-      price: new FormControl(0),
-      total: new FormControl(0),
-      purchaseDate: new FormControl(new Date()),
-      vendor: new FormControl(),
-      userName: new FormControl(localStorage.getItem('username')),
-      noted: new FormControl(),
-      bills: new FormControl(),
+      billAmount: new FormControl(0),
+      billDate: new FormControl(new Date()),
+      billPhoto: new FormControl(this.billPhoto),
+      supplierId: new FormControl(),
+      userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
+      approved: new FormControl(0),
+      approveBy: new FormControl(),
+      approvedDate: new FormControl(),
     });
+
+    this.addFormPurchaseDetail = new FormGroup({
+      purchaseId: new FormControl(),
+      productId: new FormControl(),
+      price: new FormControl(0),
+      quantity: new FormControl(0),
+      remarks: new FormControl(),
+    });
+
+    this.loadSuppliers();
+    this.loadProducts();
+
     this.vendors = this.db.collection('vendors').valueChanges();
     this.products = this.db.collection('products').valueChanges();
   }
   addPurchase() {
     if (this.addFormPurchase.valid) {
-      this.addFormPurchase.get('userName').setValue('Administrator');
       this.saveDisabled = true;
-      this.purchasesRef.add(this.addFormPurchase.value).then(res => {
-        console.log(res);
-        if (res) {
-          this.productForUpdateCollect = this.db.collection('products', ref => {
-            return ref.where('productName', '==', this.addFormPurchase.get('productName').value);
-          });
-          this.productForUpdateCollect.get().subscribe(products => {
-            products.docs.forEach(product => {
-              this.updateStock(product.data(), res, product.id);
-            });
-          });
-        } else {
-          return
-        }
+      this.be.createPurchaseBilling(this.addFormPurchase.value).then(async (rsp) => {
+        rsp.subscribe(r => {
+          this.purchase = r;
+          this.addFormPurchaseDetail.get('purchaseId').setValue(r['id']);
+        });
       });
     } else {
       swal('something went wrong!', 'Please correct data info before submit', 'error');
       return;
     }
+
+  }
+  loadProducts() {
+    this.be.getAllProducts().then(c => {
+      c.subscribe(cat => {
+        this.products = cat;
+      });
+    });
+  }
+  loadSuppliers() {
+    this.be.getVendor().then(c => {
+      c.subscribe(cat => {
+        this.suppliers = cat;
+      });
+    });
   }
   totalCal() {
+    // tslint:disable-next-line: max-line-length
     this.addFormPurchase.get('total').setValue(parseInt(this.addFormPurchase.get('quantity').value) * parseInt(this.addFormPurchase.get('price').value));
   }
-  progressBarValue;
+
   uploadBills(event) {
     let selectedFiles: FileList;
     selectedFiles = event;
@@ -104,15 +128,14 @@ export class AddPurchaseComponent implements OnInit {
       });
       uploadTask.then((snapshot: firebase.storage.UploadTaskSnapshot) => {
         snapshot.ref.getDownloadURL().then(url => {
-          this.addFormPurchase.get('bills').setValue(url); // Image url
+          this.addFormPurchase.get('billPhoto').setValue(url); // Image url
         }).catch((err) => {
           alert(err);
         });
       });
     }
   }
-  productsNote: Observable<Product[]>;
-  productNotesCollect: AngularFirestoreCollection<Product>;
+
 
   async testQuery() {
     const c = await this.stockService.getLatestQuantityByProductName(this.addFormPurchase.get('productName')).then(resp => {

@@ -27,7 +27,11 @@
             <td class="text-center">{{ i+1 }}</td>
             <td class="text-center">{{ order.ticket }}</td>
             <td class="text-center">{{ order.orderDateTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
-            <td class="text-center">{{ order.orderFinishTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+            <td class="text-center" *ngIf="order.orderFinishTime ;else notFinish">
+              {{ order.orderFinishTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+            <ng-template #notFinish>
+              <td class="text-center">Processing</td>
+            </ng-template>
             <td class="text-center">{{ order.invoiceno }}</td>
             <td class="text-center">{{ order.refno }}</td>
             <td class="text-right">{{ order.grandtotal |number }}</td>

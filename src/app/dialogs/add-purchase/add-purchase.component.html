@@ -1,69 +1,79 @@
 <h1 mat-dialog-title>Purchase</h1>
+
+<mat-horizontal-stepper #stepper>
+  <mat-step [stepControl]="addFormPurchase">
+    <form [formGroup]="addFormPurchase">
+      <ng-template matStepLabel>Fill Purchase Billing</ng-template>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="billNo">Bill Or Invoice No</label>
+          <input type="text" class="form-control" id="billNo" placeholder="Bill Number" formControlName="billNo"
+            required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="billAmount">Billing Amount</label>
+          <input type="number" class="form-control" id="billAmount" placeholder="billAmount"
+            formControlName="billAmount" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="billDate">Purchase Date</label>
+          <input type="date" class="form-control" id="billDate" placeholder="billDate" formControlName="billDate"
+            required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="supplierId">Vendor</label>
+          <select class="form-control" id="supplierId" formControlName="supplierId" required>
+            <option value="-1">--------</option>
+            <option value="{{ vendor.id }}" *ngFor="let vendor of suppliers">{{ vendor.vendorName }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-12">
+          <label for="bills">Bills photo</label>
+          <button mat-raised-button color="primary" class="form-control" (click)="fileupload.click()" id="bills">Upload
+            Bill</button>
+          <input type="file" class="form-control" style="display:none" placeholder="Bills" #fileupload
+            (change)="uploadBills($event.target.files)">
+        </div>
+        <div class="form-group col-md-12">
+          <mat-progress-bar color="primary" mode="determinate" [value]="progressBarValue">
+          </mat-progress-bar>
+        </div>
+      </div>
+      <div class="text-center">
+        <button mat-raised-button color="primary" [disabled]="saveDisabled" style="width: 100%;" (click)="addPurchase()"
+          matStepperNext>Save</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="addFormPurchaseDetail">
+    <form [formGroup]="addFormPurchaseDetail">
+      <ng-template matStepLabel>Fill Purchase Billing Details</ng-template>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="purchaseId">purchase code</label>
+          <input type="number" class="form-control" id="purchaseId" readonly placeholder="Purchase no auto populate"
+            formControlName="purchaseId" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="productId">Product Name</label>
+          <select class="form-control" formControlName="productId" required>
+            <option value="-1" disabled>--------</option>
+            <option value="{{ product.id }}" *ngFor="let product of products">{{ product.product_name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>
+
+<!--
 <ul>
   <li *ngFor="let note of productsNote |async">
     {{ note.cost }}
   </li>
 </ul>
 
-<form [formGroup]="addFormPurchase">
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="billNo">Bill Or Invoice No</label>
-      <input type="text" class="form-control" id="billNo" placeholder="Bill Number" formControlName="billNo" required>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="productName">Product Name</label>
-      <select class="form-control" formControlName="productName" required>
-        <option value="-1" disabled>--------</option>
-        <option value="{{ product.productName }}" *ngFor="let product of products | async">{{ product.productName }}
-        </option>
-      </select>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="quantity">Quantity</label>
-      <input type="number" class="form-control" id="quantity" placeholder="quantity" formControlName="quantity"
-        (keyup)="totalCal()" required>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="price">Price</label>
-      <input type="number" class="form-control" id="price" placeholder="price" formControlName="price" required
-        (keyup)="totalCal()">
-    </div>
-    <div class="form-group col-md-6">
-      <label for="total">Total</label>
-      <input type="number" class="form-control" readonly id="total" placeholder="total" formControlName="total"
-        required>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="purchaseDate">Purchase Date</label>
-      <input type="date" class="form-control" id="purchaseDate" placeholder="purchaseDate"
-        formControlName="purchaseDate" required>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="vendor">Vendor</label>
-      <select class="form-control" id="total" formControlName="vendor" required>
-        <option value="-1">--------</option>
-        <option value="{{ vendor.shopName }}" *ngFor="let vendor of vendors |async">{{ vendor.shopName }}</option>
-      </select>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="paymentDate">Note</label>
-      <input type="text" class="form-control" id="noted" placeholder="noted" formControlName="noted">
-    </div>
-    <div class="form-group col-md-12">
-      <label for="bills">Bills</label>
-      <button mat-raised-button color="primary" class="form-control" (click)="fileupload.click()" id="bills">Upload
-        Bill</button>
-      <input type="file" class="form-control" style="display:none" placeholder="Bills" #fileupload
-        (change)="uploadBills($event.target.files)">
-    </div>
-    <div class="form-group col-md-12">
-      <mat-progress-bar color="primary" mode="determinate" [value]="progressBarValue">
-      </mat-progress-bar>
-    </div>
-  </div>
-  <div class="text-center">
-    <button mat-raised-button color="primary" [disabled]="saveDisabled" style="width: 100%;"
-      (click)="addPurchase()">Save</button>
-  </div>
-</form>
+
+-->

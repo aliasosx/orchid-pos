@@ -226,5 +226,9 @@ export class BackendServiceService {
     };
     return this._http.post(this.backendService + 'reportsRevByFoodsByDateRange', reportDt, this.httpOptions);
   }
+  // Purchase
+  async createPurchaseBilling(purchase) {
+    return this._http.post(this.backendService + 'purchases', purchase, this.httpOptions);
+  }
 }
 

@@ -83,12 +83,6 @@ export class AddProductsComponent implements OnInit {
   }
   addProduct() {
     if (this.addProductForm.valid) {
-      /*
-      this.product = this.addProductForm.value;
-      this.productsRef.add(this.product).then(res => {
-        this.DialogRef.close('success');
-      });
-      */
 
       this.be.createProduct(this.addProductForm.value).then(rsp => {
         rsp.subscribe(r => {

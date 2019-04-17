@@ -18,17 +18,12 @@ declare var swal: any;
 export class PurchaseComponent implements OnInit {
 
   constructor(private db: AngularFirestore, private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router) {
-
-
     if (localStorage.getItem('token')) {
       this.username_info = JSON.parse(localStorage.getItem('usrObj'));
       return;
     } else {
       router.navigateByUrl('login');
     }
-
-
-
     this.purchasesRef = db.collection<Purchase>('purchases');
   }
   private user: Observable<firebase.User>;
@@ -43,8 +38,8 @@ export class PurchaseComponent implements OnInit {
         const data = a.payload.doc.data() as Purchase;
         data['id'] = a.payload.doc.id;
         return data;
-      })
-    }))
+      });
+    }));
   }
   addPurchase() {
     const dialogAddRef = this.dialog.open(AddPurchaseComponent, {
@@ -53,9 +48,9 @@ export class PurchaseComponent implements OnInit {
   }
   deletePurchase(purchase) {
     swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this imaginary file!",
-      icon: "warning",
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this imaginary file!',
+      icon: 'warning',
       buttons: true,
       dangerMode: true,
     }).then((res) => {
@@ -63,7 +58,7 @@ export class PurchaseComponent implements OnInit {
         this.db.collection('purchases').doc(purchase.id).delete();
         swal('purchases has been deleted', 'Purchase', 'success');
       } else {
-        //swal("Delete canceled");
+        // swal('Delete canceled');
         return;
       }
     });

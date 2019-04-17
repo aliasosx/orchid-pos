@@ -153,7 +153,7 @@ export class OrdersComponent implements OnInit {
                 this.snackbarRef.open('Order completed', 'ok', { duration: 1000 });
                 let c = await this.releaseTicket(order.ticket);
                 this.updateUserActivity('Make order complete by Order ID ' + order.orderId);
-                this.updateTransactionLog(order);
+                // this.updateTransactionLog(order);
               });
               // end firebase
             }

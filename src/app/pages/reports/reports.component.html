@@ -19,7 +19,7 @@
                   <input matInput id="fromDate" [matDatepicker]="Frmpicker" class="form-control"
                     placeholder="Choose a date" (dateInput)="fromDateEvent($event)">
                   <mat-datepicker-toggle matSuffix [for]="Frmpicker"></mat-datepicker-toggle>
-                  <mat-datepicker #Frmpicker></mat-datepicker>
+                  <mat-datepicker touchUi #Frmpicker></mat-datepicker>
                 </div>
               </div>
               <div class="col col-md-2" class="lead">
@@ -28,7 +28,7 @@
                   <input matInput id="ToDate" [matDatepicker]="toPicker" class="form-control"
                     placeholder="Choose a date" (dateInput)="toDateEvent($event)">
                   <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                  <mat-datepicker #toPicker></mat-datepicker>
+                  <mat-datepicker touchUi #toPicker></mat-datepicker>
                 </div>
               </div>
               <div class="col col-md-2">

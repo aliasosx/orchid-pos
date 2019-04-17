@@ -188,6 +188,7 @@ export class BackendServiceService {
       startDt,
       endDt
     };
+    console.log(reportDt);
     return this._http.post(this.backendService + 'reportsRevByDateRange', reportDt, this.httpOptions);
   }
   async reportRevByUsersByDateRange(startDt, endDt) {

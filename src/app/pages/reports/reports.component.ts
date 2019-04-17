@@ -174,7 +174,6 @@ export class ReportsComponent implements OnInit {
 
   fromDateEvent(e) {
     this.fromDate = e.target.value;
-    // console.log(new DatePipe('en-us').transform(this.fromDate, 'dd-MMM-yyyy'));
   }
   toDateEvent(e) {
     this.toDateEnd = e.target.value;

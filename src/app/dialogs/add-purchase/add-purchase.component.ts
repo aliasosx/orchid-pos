@@ -1,6 +1,7 @@
+import { ApprovedUsersComponent } from './../approved-users/approved-users.component';
 import { Component, OnInit, Inject } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Purchase } from 'src/app/interfaces/purchase';
 import { Vendor } from 'src/app/interfaces/vendor';
@@ -20,7 +21,7 @@ declare var swal: any;
 export class AddPurchaseComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private DialogRef: MatDialogRef<AddPurchaseComponent>, private storage: AngularFireStorage, private stockService: StockServicesService, private be: BackendServiceService, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data) {
+  constructor(private db: AngularFirestore, private DialogRef: MatDialogRef<AddPurchaseComponent>, private storage: AngularFireStorage, private stockService: StockServicesService, private be: BackendServiceService, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data, private dialog: MatDialog) {
     this.purchasesRef = db.collection<Purchase>('purchases');
     this.vendorsRef = db.collection<Vendor>('vendors');
     this.stockHistoriesRef = db.collection<StockHistory>('stockHistories');
@@ -61,11 +62,13 @@ export class AddPurchaseComponent implements OnInit {
   totalAmount = 0;
   units: any;
   unitQuantity = 0;
+  billTotalAmount = 0;
 
   ngOnInit() {
     if (this.data) {
       this.addFormPurchase = new FormGroup({
         id: new FormControl(),
+        approveNameBy: new FormControl(),
         billRefno: new FormControl(),
         billNo: new FormControl(),
         billAmount: new FormControl(0),
@@ -123,6 +126,7 @@ export class AddPurchaseComponent implements OnInit {
     this.loadSuppliers();
     this.loadProducts();
     this.loadUnits();
+    this.loadTotalBilling(this.addFormPurchaseDetail.get('purchaseId').value);
   }
 
   loadPurchaseData(id) {
@@ -136,27 +140,28 @@ export class AddPurchaseComponent implements OnInit {
 
   async addPurchase() {
     if (this.addFormPurchase.valid) {
-      console.log(this.addFormPurchase.value);
+      // console.log(this.addFormPurchase.value);
       this.saveDisabled = true;
       this.be.createPurchaseBilling(this.addFormPurchase.value).then(async (rsp) => {
         rsp.subscribe(async (r) => {
           this.purchase = r;
           let c = await this.addFormPurchaseDetail.get('purchaseId').setValue(r['id']);
           let d = await this.loadPurchaseDetails(r['id']);
+          this.loadTotalBilling(r['id']);
           this.snackbar.open('Billing has been submited by id: ' + r['billNo']);
         });
       });
     } else {
-      swal('something went wrong!', 'Please correct data info before submit', 'error');
+      swal('something went wrong!', 'Please correct data info before submit', 'error', { timer: 1000 });
       return;
     }
-
   }
   deletePurchaseDetail(purchaseDetailId) {
     if (purchaseDetailId.pid) {
       this.be.deletePurchaseDetail(purchaseDetailId.pid).then(rsp => {
         rsp.subscribe(r => {
           this.loadPurchaseDetails(this.addFormPurchaseDetail.get('purchaseId').value);
+          this.loadTotalBilling(this.addFormPurchaseDetail.get('purchaseId').value);
           this.snackbar.open('billing has been deleted id ' + purchaseDetailId.pid, 'OK', { duration: 1000 });
         });
       });
@@ -166,7 +171,7 @@ export class AddPurchaseComponent implements OnInit {
   async loadPurchaseDetails(id) {
     let c = await this.be.getPurchaseDetailById(id).then(rsp => {
       rsp.subscribe(r => {
-        console.log(r);
+        // console.log(r);
         this.productList = r;
       });
     });
@@ -177,7 +182,7 @@ export class AddPurchaseComponent implements OnInit {
       // this.unitQuantity = this.addFormPurchaseDetail.get('quantity').value / unitQ['quantityPerUnit'];
       unitQ.subscribe(u => {
         // tslint:disable-next-line: max-line-length
-        this.addFormPurchaseDetail.get('pricePerUnit').setValue(this.addFormPurchaseDetail.get('price').value / (u['quantityPerUnit'] * this.addFormPurchaseDetail.get('billQuantity').value));
+        this.addFormPurchaseDetail.get('pricePerUnit').setValue(Math.round(this.addFormPurchaseDetail.get('price').value / (u['quantityPerUnit'] * this.addFormPurchaseDetail.get('billQuantity').value)));
         this.addFormPurchaseDetail.get('quantity').setValue(this.addFormPurchaseDetail.get('billQuantity').value * u['quantityPerUnit']);
         this.totalCalculate();
       });
@@ -248,8 +253,8 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   updateStock(product, purchase, id) {
-    console.log('Stock hist update');
-    console.log(product);
+    // console.log('Stock hist update');
+    // console.log(product);
     const stockhist = {
       productId: id,
       productName: product.productName,
@@ -261,37 +266,57 @@ export class AddPurchaseComponent implements OnInit {
       purchaseDetailId: purchase,
       username: localStorage.getItem('username'),
       createdAt: new Date(),
-    }
+    };
     this.db.collection('stockHistories').add(stockhist).then((resp) => {
-      console.log(resp);
+      // console.log(resp);
       this.updateCurrentStock(product, stockhist.currentQuantity, id);
     }).catch((err) => {
-      console.log(err);
+      // console.log(err);
     });
   }
   updateCurrentStock(product, CurrentQuantity, id) {
-    console.log('Stock product update');
+    // console.log('Stock product update');
     const _product: Product = product;
-    console.log(product);
+    // console.log(product);
     _product.currentQuantity = CurrentQuantity;
     this.db.collection('products').doc(id).update(_product).then((resp) => {
       this.DialogRef.close('success');
     });
   }
+
+  loadTotalBilling(id) {
+    this.be.checkOverBill(id).then(rsp => {
+      this.be.checkOverBill(id).then(rsp => {
+        rsp.subscribe(r => {
+          this.billTotalAmount = r[0].BillTotal;
+        });
+      });
+    });
+  }
   async checkOverBill(id) {
     this.be.checkOverBill(id).then(rsp => {
       rsp.subscribe(r => {
-        if (this.addFormPurchaseDetail.get('total').value + r['BillTotal'] < this.addFormPurchase.get('billAmount').value) {
-          this.be.createPurchaseDetail(this.addFormPurchaseDetail.value).then(rsp => {
-            rsp.subscribe(rs => {
-              console.log(rs);
+        this.billTotalAmount = r[0].BillTotal;
+        if (r[0].BillTotal) {
+          if (this.addFormPurchaseDetail.get('total').value + r[0].BillTotal < this.addFormPurchase.get('billAmount').value) {
+            this.be.createPurchaseDetail(this.addFormPurchaseDetail.value).then(rspx => {
+              rspx.subscribe(rs => {
+                this.loadPurchaseDetails(rs['purchaseId']);
+                // this.snackbar.open('Billing detail added', 'OK', { duration: 1000 });
+                swal('ທ່ານບໍ່ສາມາດເພີ່ມ ລາຍການ ເກິນຈຳນວນໃນໃບບິນໄດ້', 'You cannot add over Bill amount');
+              });
+            });
+          } else if (this.addFormPurchaseDetail.get('total').value + r[0].BillTotal > this.addFormPurchase.get('billAmount').value) {
+            this.snackbar.open('Bill Amount Over on list cannot be add more', 'OK', { duration: 2000 });
+            return;
+          }
+        } else {
+          this.be.createPurchaseDetail(this.addFormPurchaseDetail.value).then(rspx => {
+            rspx.subscribe(rs => {
               this.loadPurchaseDetails(rs['purchaseId']);
               this.snackbar.open('Billing detail added', 'OK', { duration: 1000 });
             });
           });
-        } else {
-          this.snackbar.open('Bill Amount Over on list cannot be add more', 'OK', { duration: 2000 });
-          return;
         }
       });
     });

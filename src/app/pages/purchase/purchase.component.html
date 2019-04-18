@@ -36,11 +36,12 @@
           </td>
           <ng-template #unapproved>
             <td class="text-center">
-              <img mat-raised-button src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;">
+              <img mat-raised-button src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;"
+                (click)="approvedLoadPurchase(purchase.pid)">
             </td>
           </ng-template>
-          <td class="text-left">{{ purchase.approvedBy }}</td>
-          <td class="text-left">{{ purchase.approvedDate }}</td>
+          <td class="text-center">{{ purchase.approveNameBy }}</td>
+          <td class="text-center">{{ purchase.approvedDate | date: 'dd-MMM-yyyy H:mm:ss'}}</td>
           <td class="text-left">{{ purchase.noted }}</td>
           <td class="text-center"><button mat-raised-button color="warn"
               (click)="deletePurchase(purchase)">Delete</button><span class="spaceDiv"></span><button mat-raised-button

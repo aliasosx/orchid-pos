@@ -1,3 +1,4 @@
+import { ApprovedUsersComponent } from './../../dialogs/approved-users/approved-users.component';
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
@@ -68,9 +69,9 @@ export class PurchaseComponent implements OnInit {
           rsp.subscribe(r => {
             if (r['status'] === 'success') {
               this.loadPurchase();
-              swal('purchases has been deleted', 'Purchase', 'success');
+              swal('purchases has been deleted', 'Purchase', 'success', { timer: 1000 });
             } else {
-              swal('purchases cennot be delete', 'Purchase', 'error');
+              swal('purchases cennot be delete', 'Purchase', 'error', { timer: 2000 });
             }
           });
 
@@ -89,7 +90,7 @@ export class PurchaseComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(res => {
       if (res === 'success') {
-        swal('Purchase has been saved', 'Test', 'success');
+        swal('Purchase has been saved', 'Test', 'success', { timer: 1000 });
       }
     });
   }
@@ -101,5 +102,43 @@ export class PurchaseComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       // this.purchases();
     });
+  }
+  approvedLoadPurchase(id) {
+    if (id) {
+      swal({
+        title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດລາຍການນີ້',
+        icon: 'warning',
+        dangerMode: true,
+      }).then((value) => {
+        if (value) {
+          const dialogRef = this.dialog.open(ApprovedUsersComponent, {
+            width: '600px',
+          });
+          dialogRef.afterClosed().subscribe(resp => {
+            if (resp.user) {
+              const approvePurchase = {
+                approveBy: resp.user.id,
+                approveNameBy: resp.user.username,
+                approvedDate: new Date(),
+                approved: 1
+              };
+              this.be.approvePurchase(id, approvePurchase).then((rsp) => {
+                rsp.subscribe(r => {
+                  console.log(r);
+                  if (r['status'] === 'success') {
+                    swal('Approved', 'Purchase approved by ' + resp.user.username, 'success', { timer: 1000 });
+                    this.loadPurchase();
+                  } else {
+                    swal('Cannot be process !', 'Error happend please check with admin', 'error', { timer: 1000 });
+                  }
+                });
+              });
+            } else {
+              return;
+            }
+          });
+        }
+      });
+    }
   }
 }

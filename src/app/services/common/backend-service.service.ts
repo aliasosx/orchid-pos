@@ -258,5 +258,8 @@ export class BackendServiceService {
   async checkOverBill(id) {
     return this._http.get(this.backendService + 'overBillingAmountCheck/' + id, this.httpOptions);
   }
+  async approvePurchase(id, purchase) {
+    return this._http.put(this.backendService + 'purchases/' + id, purchase, this.httpOptions);
+  }
 }
 

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Purchase } from 'src/app/interfaces/purchase';
 import { Vendor } from 'src/app/interfaces/vendor';
@@ -20,7 +20,7 @@ declare var swal: any;
 export class AddPurchaseComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private DialogRef: MatDialogRef<AddPurchaseComponent>, private storage: AngularFireStorage, private stockService: StockServicesService, private be: BackendServiceService) {
+  constructor(private db: AngularFirestore, private DialogRef: MatDialogRef<AddPurchaseComponent>, private storage: AngularFireStorage, private stockService: StockServicesService, private be: BackendServiceService, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data) {
     this.purchasesRef = db.collection<Purchase>('purchases');
     this.vendorsRef = db.collection<Vendor>('vendors');
     this.stockHistoriesRef = db.collection<StockHistory>('stockHistories');
@@ -51,43 +51,99 @@ export class AddPurchaseComponent implements OnInit {
 
   productsNote: Observable<Product[]>;
   productNotesCollect: AngularFirestoreCollection<Product>;
+
   billPhoto = '../../../assets/icons/blue-10-512.png';
   purchase: any;
   products: any;
+
+  productList: any;
+  productName = '';
+  totalAmount = 0;
+  units: any;
+  unitQuantity = 0;
+
   ngOnInit() {
-    this.addFormPurchase = new FormGroup({
-      billNo: new FormControl(),
-      billAmount: new FormControl(0),
-      billDate: new FormControl(new Date()),
-      billPhoto: new FormControl(this.billPhoto),
-      supplierId: new FormControl(),
-      userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
-      approved: new FormControl(0),
-      approveBy: new FormControl(),
-      approvedDate: new FormControl(),
-    });
+    if (this.data) {
+      this.addFormPurchase = new FormGroup({
+        id: new FormControl(),
+        billRefno: new FormControl(),
+        billNo: new FormControl(),
+        billAmount: new FormControl(0),
+        billDate: new FormControl(new Date()),
+        billPhoto: new FormControl(this.billPhoto),
+        supplierId: new FormControl(),
+        userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
+        approved: new FormControl(0),
+        approveBy: new FormControl(),
+        approvedDate: new FormControl(),
+        createdAt: new FormControl(),
+        updatedAt: new FormControl(),
+      });
 
-    this.addFormPurchaseDetail = new FormGroup({
-      purchaseId: new FormControl(),
-      productId: new FormControl(),
-      price: new FormControl(0),
-      quantity: new FormControl(0),
-      remarks: new FormControl(),
-    });
+      this.addFormPurchaseDetail = new FormGroup({
+        purchaseId: new FormControl(),
+        productId: new FormControl(),
+        price: new FormControl(0),
+        billQuantity: new FormControl(0),
+        quantity: new FormControl(0),
+        total: new FormControl(0),
+        unitId: new FormControl(),
+        pricePerUnit: new FormControl(0),
+        remarks: new FormControl(),
+      });
 
+      this.saveDisabled = true;
+      this.addFormPurchaseDetail.get('purchaseId').setValue(this.data.pid);
+      this.loadPurchaseData(this.data.pid);
+    } else {
+      this.addFormPurchase = new FormGroup({
+        billNo: new FormControl(),
+        billAmount: new FormControl(0),
+        billDate: new FormControl(new Date()),
+        billPhoto: new FormControl(this.billPhoto),
+        supplierId: new FormControl(),
+        userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
+        approved: new FormControl(0),
+        approveBy: new FormControl(),
+        approvedDate: new FormControl(),
+      });
+
+      this.addFormPurchaseDetail = new FormGroup({
+        purchaseId: new FormControl(),
+        productId: new FormControl(),
+        price: new FormControl(0),
+        billQuantity: new FormControl(0),
+        quantity: new FormControl(0),
+        total: new FormControl(0),
+        unitId: new FormControl(),
+        pricePerUnit: new FormControl(0),
+        remarks: new FormControl(),
+      });
+    }
     this.loadSuppliers();
     this.loadProducts();
-
-    this.vendors = this.db.collection('vendors').valueChanges();
-    this.products = this.db.collection('products').valueChanges();
+    this.loadUnits();
   }
-  addPurchase() {
+
+  loadPurchaseData(id) {
+    this.be.getPurchaseById(id).then(rsp => {
+      rsp.subscribe(r => {
+        this.addFormPurchase.setValue(r);
+        this.loadPurchaseDetails(id);
+      });
+    });
+  }
+
+  async addPurchase() {
     if (this.addFormPurchase.valid) {
+      console.log(this.addFormPurchase.value);
       this.saveDisabled = true;
       this.be.createPurchaseBilling(this.addFormPurchase.value).then(async (rsp) => {
-        rsp.subscribe(r => {
+        rsp.subscribe(async (r) => {
           this.purchase = r;
-          this.addFormPurchaseDetail.get('purchaseId').setValue(r['id']);
+          let c = await this.addFormPurchaseDetail.get('purchaseId').setValue(r['id']);
+          let d = await this.loadPurchaseDetails(r['id']);
+          this.snackbar.open('Billing has been submited by id: ' + r['billNo']);
         });
       });
     } else {
@@ -96,8 +152,64 @@ export class AddPurchaseComponent implements OnInit {
     }
 
   }
+  deletePurchaseDetail(purchaseDetailId) {
+    if (purchaseDetailId.pid) {
+      this.be.deletePurchaseDetail(purchaseDetailId.pid).then(rsp => {
+        rsp.subscribe(r => {
+          this.loadPurchaseDetails(this.addFormPurchaseDetail.get('purchaseId').value);
+          this.snackbar.open('billing has been deleted id ' + purchaseDetailId.pid, 'OK', { duration: 1000 });
+        });
+      });
+    }
+  }
+
+  async loadPurchaseDetails(id) {
+    let c = await this.be.getPurchaseDetailById(id).then(rsp => {
+      rsp.subscribe(r => {
+        console.log(r);
+        this.productList = r;
+      });
+    });
+  }
+
+  getUnitsDetail(event) {
+    this.be.getUnitById(event.target.value).then(unitQ => {
+      // this.unitQuantity = this.addFormPurchaseDetail.get('quantity').value / unitQ['quantityPerUnit'];
+      unitQ.subscribe(u => {
+        // tslint:disable-next-line: max-line-length
+        this.addFormPurchaseDetail.get('pricePerUnit').setValue(this.addFormPurchaseDetail.get('price').value / (u['quantityPerUnit'] * this.addFormPurchaseDetail.get('billQuantity').value));
+        this.addFormPurchaseDetail.get('quantity').setValue(this.addFormPurchaseDetail.get('billQuantity').value * u['quantityPerUnit']);
+        this.totalCalculate();
+      });
+    });
+  }
+
+  productSelectText(event) {
+    this.productName = event.target.options[event.target.options.selectedIndex].text;
+  }
+  loadUnits() {
+    this.be.getUnit().then(c => {
+      c.subscribe(cat => {
+        this.units = cat;
+      });
+    });
+  }
+  totalCalculate() {
+    // tslint:disable-next-line: max-line-length
+    this.totalAmount = parseInt(this.addFormPurchaseDetail.get('pricePerUnit').value) * parseInt(this.addFormPurchaseDetail.get('quantity').value);
+    this.addFormPurchaseDetail.get('total').setValue(this.totalAmount);
+  }
+
+  addProductTolist() {
+    if (this.addFormPurchaseDetail.valid) {
+      this.checkOverBill(this.addFormPurchaseDetail.get('purchaseId').value);
+    } else {
+      this.snackbar.open('Form incorrect please fill all Field required', 'OK', { duration: 1000 });
+    }
+  }
+
   loadProducts() {
-    this.be.getAllProducts().then(c => {
+    this.be.getProducts().then(c => {
       c.subscribe(cat => {
         this.products = cat;
       });
@@ -110,11 +222,10 @@ export class AddPurchaseComponent implements OnInit {
       });
     });
   }
-  totalCal() {
-    // tslint:disable-next-line: max-line-length
-    this.addFormPurchase.get('total').setValue(parseInt(this.addFormPurchase.get('quantity').value) * parseInt(this.addFormPurchase.get('price').value));
-  }
 
+  closePurchase() {
+    this.DialogRef.close('success');
+  }
   uploadBills(event) {
     let selectedFiles: FileList;
     selectedFiles = event;
@@ -136,12 +247,6 @@ export class AddPurchaseComponent implements OnInit {
     }
   }
 
-
-  async testQuery() {
-    const c = await this.stockService.getLatestQuantityByProductName(this.addFormPurchase.get('productName')).then(resp => {
-      console.log(resp);
-    });
-  }
   updateStock(product, purchase, id) {
     console.log('Stock hist update');
     console.log(product);
@@ -171,6 +276,24 @@ export class AddPurchaseComponent implements OnInit {
     _product.currentQuantity = CurrentQuantity;
     this.db.collection('products').doc(id).update(_product).then((resp) => {
       this.DialogRef.close('success');
+    });
+  }
+  async checkOverBill(id) {
+    this.be.checkOverBill(id).then(rsp => {
+      rsp.subscribe(r => {
+        if (this.addFormPurchaseDetail.get('total').value + r['BillTotal'] < this.addFormPurchase.get('billAmount').value) {
+          this.be.createPurchaseDetail(this.addFormPurchaseDetail.value).then(rsp => {
+            rsp.subscribe(rs => {
+              console.log(rs);
+              this.loadPurchaseDetails(rs['purchaseId']);
+              this.snackbar.open('Billing detail added', 'OK', { duration: 1000 });
+            });
+          });
+        } else {
+          this.snackbar.open('Bill Amount Over on list cannot be add more', 'OK', { duration: 2000 });
+          return;
+        }
+      });
     });
   }
 }

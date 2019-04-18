@@ -105,6 +105,9 @@ export class BackendServiceService {
   async getUnit() {
     return this._http.get(this.backendService + 'units', this.httpOptions);
   }
+  async getUnitById(id) {
+    return this._http.get(this.backendService + 'units/' + id, this.httpOptions);
+  }
   async createUnit(units) {
     return this._http.post(this.backendService + 'units', units, this.httpOptions);
   }
@@ -161,6 +164,9 @@ export class BackendServiceService {
   }
   async getAllProducts() {
     return this._http.get(this.backendService + 'productsDisplay', this.httpOptions);
+  }
+  async getProducts() {
+    return this._http.get(this.backendService + 'products', this.httpOptions);
   }
   async getProductById(id) {
     return this._http.get(this.backendService + 'product/' + id, this.httpOptions);
@@ -229,6 +235,28 @@ export class BackendServiceService {
   // Purchase
   async createPurchaseBilling(purchase) {
     return this._http.post(this.backendService + 'purchases', purchase, this.httpOptions);
+  }
+  async createPurchaseDetail(purchaseDetail) {
+    return this._http.post(this.backendService + 'purchasedetails', purchaseDetail, this.httpOptions);
+  }
+  async deletePurchaseDetail(id) {
+    return this._http.delete(this.backendService + 'purchasedetails/' + id, this.httpOptions);
+  }
+
+  async getPurchaseDetailById(id) {
+    return this._http.get(this.backendService + 'purchasesDetailByPurchaseId/' + id, this.httpOptions);
+  }
+  async getPurchaseById(id) {
+    return this._http.get(this.backendService + 'billingAmountCheck/' + id, this.httpOptions);
+  }
+  async getPurchaseShow() {
+    return this._http.get(this.backendService + 'purchasesDisplay', this.httpOptions);
+  }
+  async deletePurchase(id) {
+    return this._http.delete(this.backendService + 'purchases/' + id, this.httpOptions);
+  }
+  async checkOverBill(id) {
+    return this._http.get(this.backendService + 'overBillingAmountCheck/' + id, this.httpOptions);
   }
 }
 

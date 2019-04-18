@@ -1,5 +1,4 @@
 <h1 mat-dialog-title>Purchase</h1>
-
 <mat-horizontal-stepper #stepper>
   <mat-step [stepControl]="addFormPurchase">
     <form [formGroup]="addFormPurchase">
@@ -56,24 +55,97 @@
         </div>
         <div class="form-group col-md-6">
           <label for="productId">Product Name</label>
-          <select class="form-control" formControlName="productId" required>
-            <option value="-1" disabled>--------</option>
+          <select class="form-control" formControlName="productId" required (change)="productSelectText($event)">
+            <option value="" disabled>--------</option>
             <option value="{{ product.id }}" *ngFor="let product of products">{{ product.product_name }}
             </option>
           </select>
         </div>
+        <div class="form-group col-md-6">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="price">Bill Price</label>
+              <input type="number" class="form-control" id="price" placeholder="Price" formControlName="price"
+                (keyup)="totalCalculate()" required>
+            </div>
+            <div class="col-md-6">
+              <label for="billQuantity">Bill Quantity</label>
+              <input type="number" class="form-control" id="billQuantity" placeholder="billQuantity"
+                formControlName="billQuantity" (keyup)="totalCalculate()" required>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="unitId">Unit</label>
+              <select class="form-control" formControlName="unitId" required (change)="getUnitsDetail($event)">
+                <option value="" disabled>--------</option>
+                <option value="{{ unit.id }}" *ngFor="let unit of units">{{ unit.unit_name }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="pricePerUnit">Price per unit</label>
+              <input type="number" class="form-control" id="pricePerUnit" readonly placeholder="pricePerUnit"
+                formControlName="pricePerUnit" (keyup)="totalCalculate()" required>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="quantity">Quantity</label>
+              <input type="number" class="form-control" id="quantity" placeholder="Quantity" formControlName="quantity"
+                required>
+            </div>
+            <div class="col-md-6">
+              <label for="total">Total Amount</label>
+              <input type="number" class="form-control" id="total" readonly placeholder="Total" formControlName="total">
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="remarks">Note</label>
+          <input type="text" class="form-control" id="remarks" placeholder="Description" formControlName="remarks">
+        </div>
+        <div class="form-group col-md-12 text-right">
+          <button mat-raised-button color="primary" style="position: relative; right: 1px;"
+            (click)="addProductTolist()">Add</button>
+          <button mat-raised-button color="warn" style="position: relative; right: 1px; margin-left: 2px;"
+            (click)="closePurchase()">Close</button>
+        </div>
       </div>
-
+      <mat-divider></mat-divider>
+      <div class="card">
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <th class="text-center">#</th>
+            <th class="text-center">BillId</th>
+            <th class="text-center">Product</th>
+            <th class="text-center">Price</th>
+            <th class="text-center">Quantity</th>
+            <th class="text-center">Total</th>
+            <th class="text-center">Note</th>
+            <th class="text-center">Remove</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of productList; let i = index">
+              <td class="text-center">{{ product.pid }}</td>
+              <td class="text-center">{{ product.purchaseId }}</td>
+              <td class="text-left">{{ product.product_name }}</td>
+              <td class="text-right">{{ product.price |number }}</td>
+              <td class="text-right">{{ product.quantity | number}}</td>
+              <td class="text-right">{{ product.total | number}}</td>
+              <td class="text-left">{{ product.remarks }}</td>
+              <td class="text-center">
+                <img src="../../../assets/icons/baseline-delete-24px.svg" style="max-width: 30px;cursor: pointer;"
+                  (click)="deletePurchaseDetail(product)">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </form>
   </mat-step>
 </mat-horizontal-stepper>
-
-<!--
-<ul>
-  <li *ngFor="let note of productsNote |async">
-    {{ note.cost }}
-  </li>
-</ul>
-
-
--->

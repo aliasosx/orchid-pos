@@ -9,37 +9,44 @@
     <table class="table table-bordered">
       <thead class="thead-light">
         <tr>
-          <th scope="col" class="text-left" style="width: 30px;">ລະຫັດ</th>
-          <th scope="col" class="text-left">ເລກບິນ</th>
-          <th scope="col" class="text-left">ສິນຄ້າ</th>
-          <th scope="col" class="text-right">ຈຳນວນ</th>
-          <th scope="col" class="text-right">ລາຄາຕໍ່ໜ່ວຍ</th>
-          <th scope="col" class="text-right">ຍອດລວມ</th>
+          <th scope="col" class="text-center" style="width: 30px;">ລະຫັດ</th>
+          <th scope="col" class="text-center">ເລກບິນ</th>
+          <th scope="col" class="text-center">ຍອດລວມ</th>
           <th scope="col" class="text-center">ວັນທີ່ຊື້</th>
-          <th scope="col" class="text-left">ຜູ້ສະໜອງ</th>
+          <th scope="col" class="text-center">ຜູ້ສະໜອງ</th>
           <th scope="col" class="text-center">ຜຸ້ຊື້</th>
-          <th scope="col" class="text-left">ໝາຍເຫດ</th>
+          <th scope="col" class="text-center">ອະນຸມັດ</th>
+          <th scope="col" class="text-center">ຜູ້ອະນຸມັດ</th>
+          <th scope="col" class="text-center">ວັນທີ່ອະນຸມັດ</th>
+          <th scope="col" class="text-center">ໝາຍເຫດ</th>
           <th scope="col" class="text-center">ຈັດການ</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let purchase of purchases | async">
-          <td class="text-left" (click)="updatePurchase(purchase)">{{ purchase.id }}</td>
-          <td class="text-left" (click)="updatePurchase(purchase)">{{ purchase.billNo.trim() }}</td>
-          <td class="text-left" (click)="updatePurchase(purchase)">{{ purchase.productName.trim() }}</td>
-          <td class="text-right">{{ purchase.quantity |number}}</td>
-          <td class="text-right">{{ purchase.price |number}}</td>
-          <td class="text-right">{{ purchase.total |number }}</td>
-          <td class="text-center">{{ purchase.purchaseDate | date }}</td>
-          <td class="text-left">{{ purchase.vendor }}</td>
-          <td class="text-center">{{ purchase.userName }}</td>
+        <tr *ngFor="let purchase of purchases">
+          <td class="text-center" (click)="viewPurchase(purchase)">{{ purchase.pid }}</td>
+          <td class="text-center" (click)="viewPurchase(purchase)">{{ purchase.billNo }}</td>
+          <td class="text-right">{{ purchase.billAmount | number}}</td>
+          <td class="text-center">{{ purchase.billDate | date: 'dd-MMM-yyyy' }}</td>
+          <td class="text-left">{{ purchase.supplier_name }}</td>
+          <td class="text-left">{{ purchase.username }}</td>
+          <td class="text-center" *ngIf="purchase.approved; else unapproved">
+            <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
+              style="max-width: 20px;cursor: pointer;">
+          </td>
+          <ng-template #unapproved>
+            <td class="text-center">
+              <img mat-raised-button src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;">
+            </td>
+          </ng-template>
+          <td class="text-left">{{ purchase.approvedBy }}</td>
+          <td class="text-left">{{ purchase.approvedDate }}</td>
           <td class="text-left">{{ purchase.noted }}</td>
           <td class="text-center"><button mat-raised-button color="warn"
               (click)="deletePurchase(purchase)">Delete</button><span class="spaceDiv"></span><button mat-raised-button
-              color="primary" (click)="updatePurchase(purchase)">Update</button></td>
+              color="primary" (click)="viewPurchase(purchase) ">View</button></td>
         </tr>
       </tbody>
     </table>
-
   </mat-card-content>
 </mat-card>

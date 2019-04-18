@@ -1,3 +1,4 @@
+import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { MatDialog } from '@angular/material';
@@ -17,33 +18,41 @@ declare var swal: any;
 })
 export class PurchaseComponent implements OnInit {
 
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private _firebaseAuth: AngularFireAuth, private router: Router, private be: BackendServiceService) {
     if (localStorage.getItem('token')) {
       this.username_info = JSON.parse(localStorage.getItem('usrObj'));
       return;
     } else {
       router.navigateByUrl('login');
     }
-    this.purchasesRef = db.collection<Purchase>('purchases');
+
   }
   private user: Observable<firebase.User>;
   username_info: any;
-  purchasesRef: AngularFirestoreCollection<Purchase>;
-  purchaseDoc: AngularFirestoreDocument<Purchase>;
-  purchases: Observable<any[]>;
+
+  purchases: any;
 
   ngOnInit() {
-    this.purchases = this.db.collection('purchases').snapshotChanges().pipe(map(changes => {
-      return changes.map(a => {
-        const data = a.payload.doc.data() as Purchase;
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    }));
+    this.loadPurchase();
   }
+
+  async loadPurchase() {
+    this.be.getPurchaseShow().then(rsp => {
+
+      rsp.subscribe(r => {
+        this.purchases = r;
+      });
+    });
+  }
+
   addPurchase() {
     const dialogAddRef = this.dialog.open(AddPurchaseComponent, {
-      width: '600px',
+      width: '800px',
+      disableClose: true,
+    });
+    dialogAddRef.afterClosed().subscribe(() => {
+      this.loadPurchase();
     });
   }
   deletePurchase(purchase) {
@@ -55,8 +64,18 @@ export class PurchaseComponent implements OnInit {
       dangerMode: true,
     }).then((res) => {
       if (res) {
-        this.db.collection('purchases').doc(purchase.id).delete();
-        swal('purchases has been deleted', 'Purchase', 'success');
+        this.be.deletePurchase(purchase.pid).then(rsp => {
+          rsp.subscribe(r => {
+            if (r['status'] === 'success') {
+              this.loadPurchase();
+              swal('purchases has been deleted', 'Purchase', 'success');
+            } else {
+              swal('purchases cennot be delete', 'Purchase', 'error');
+            }
+          });
+
+        });
+
       } else {
         // swal('Delete canceled');
         return;
@@ -69,10 +88,18 @@ export class PurchaseComponent implements OnInit {
       data: purchase
     });
     dialogRef.afterClosed().subscribe(res => {
-      if (res == 'success') {
+      if (res === 'success') {
         swal('Purchase has been saved', 'Test', 'success');
       }
-    })
+    });
   }
-
+  viewPurchase(purchase) {
+    const dialogRef = this.dialog.open(AddPurchaseComponent, {
+      width: '800px',
+      data: purchase,
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      // this.purchases();
+    });
+  }
 }

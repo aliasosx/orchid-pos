@@ -16,7 +16,8 @@ export const environment = {
     url: 'https://letterp.000webhostapp.com/letterp.php',
   },
   backendUrl: {
-    url: 'http://localhost:5000/letterp-inventory/us-central1/api/'
+    // url: 'http://localhost:5000/letterp-inventory/us-central1/api/'
+    url: 'http://139.59.192.33:3000/'
   }
 };
 

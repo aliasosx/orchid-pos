@@ -16,7 +16,7 @@
                   <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail"
                     (click)="foodChoosed(food)">
                   <div class="title align-middle">
-                    <span class="h6 font-weight-light">{{ food.food_name }}</span>
+                    <span class="h6 font-weight-light" (click)="foodChoosed(food)">{{ food.food_name }}</span>
                   </div>
                 </div>
               </div>
@@ -33,7 +33,7 @@
                   <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail"
                     (click)="foodChoosed(food)">
                   <div class="title align-middle">
-                    <span class="h6 font-weight-light">{{ food.food_name }}</span>
+                    <span class="h6 font-weight-light" (click)="foodChoosed(food)">{{ food.food_name }}</span>
                   </div>
                 </div>
               </div>

@@ -1,40 +1,57 @@
-<mat-card>
+<mat-card class="topHeader">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title class="text-nowrap">ລາຍການ Order ອາຫານ <h4 style="position: absolute;top: 30px; right: 16px;">
-        ປະຈຳວັນທີ {{  currentDate| date: 'dd-MMM-yyyy'}}</h4>
-    </mat-card-title>
-    <mat-card-subtitle>Oder by current date</mat-card-subtitle>
+    <mat-card-title>Reports For Kitchen Admin</mat-card-title>
+    <mat-card-subtitle>report by categories</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content>
-    <div class="row">
-      <table class="table  table-bordered table-hover">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col" class="text-center h5">#</th>
-            <th scope="col" class="text-center h5">ຄິວ</th>
-            <th scope="col" class="text-center h5">ອາຫານ</th>
-            <th scope="col" class="text-center h5">ຈຳນວນ</th>
-            <th scope="col" class="text-center h5">ເວລາສັ່ງ</th>
-            <th scope="col" class="text-center h5">ລະຫັດບິນ</th>
-            <th scope="col" class="text-center h5">ລະຫັດອ້າງອິງ</th>
-            <th scope="col" class="text-center h5">ຂາຍໂດຍ</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let transaction of transactions | async; let i = index">
-            <td class="text-center h5" style="width: 10px;">{{ i + 1 }}</td>
-            <td class="text-center h5" style="width: 25px;">{{ transaction.ticket }}</td>
-            <td class="text-left h5" style="width: 400px;">{{ transaction.foodName }}</td>
-            <td class="text-center h5 " style="width: 100px;">{{ transaction.quantity }}</td>
-            <td class="text-center h5" style="width: 300px;">
-              {{ transaction.transaction_date.toDate()|date: 'dd-MMM-yyyy H:mm:ss' }}</td>
-            <td class="text-center h5" style="width: 200px;">{{ transaction.invoiceno }}</td>
-            <td class="text-center h5" style="width: 200px;">{{ transaction.refno }}</td>
-            <td class="text-center h5" style="width: 200px;">{{ transaction.username }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </mat-card-content>
 </mat-card>
+<mat-card-content>
+  <div class="row">
+    <div class="col col-md-12">
+      <div class="mainReportDetail" [ngClass]="viewReport">
+        <div class="card">
+          <div class="card-header">
+            <div class="h5">
+              ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ <span class="font-weight-bold h4"
+                style="color: brown;">{{ currentDate | date: 'dd-MMM-yyyy' }}</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="card">
+                <div class="card-header h4">
+                  ຍອດຂາຍຕາມອາຫານ
+                </div>
+                <div class="card-body">
+                  <div>
+                    <table class="table table-bordered table-hover" style="margin: 0;">
+                      <thead class="thead-light">
+                        <th class="text-center h6">#</th>
+                        <th class="text-center h6">ອາຫານ</th>
+                        <th class="text-center h6">ຈຳນວນ</th>
+                        <th class="text-center h6"></th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let trx of foodsTransactions ; let i  = index">
+                          <td class="text-center">{{ i+1 }}</td>
+                          <td class="text-left text-nowrap" style="width: 300px;">{{ trx.oFoodName }}</td>
+                          <td class="text-right">{{ trx.quantity |number }}</td>
+                          <td class="text-right">ຈານ</td>
+                        </tr>
+                        <tr>
+                          <td class="text-center h6" colspan="2">ລວມ</td>
+                          <td class="text-right h6">{{ totalDiscs | number }}</td>
+                          <td class="text-center h6"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card-content>

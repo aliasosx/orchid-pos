@@ -194,7 +194,6 @@ export class BackendServiceService {
       startDt,
       endDt
     };
-    console.log(reportDt);
     return this._http.post(this.backendService + 'reportsRevByDateRange', reportDt, this.httpOptions);
   }
   async reportRevByUsersByDateRange(startDt, endDt) {
@@ -232,6 +231,16 @@ export class BackendServiceService {
     };
     return this._http.post(this.backendService + 'reportsRevByFoodsByDateRange', reportDt, this.httpOptions);
   }
+
+  async reportsKitchenAdmin(startDt, endDt, kitchen) {
+    const reportDt = {
+      startDt,
+      endDt
+    };
+    return this._http.post(this.backendService + 'kitchen-report-admin/' + kitchen, reportDt, this.httpOptions);
+  }
+
+
   // Purchase
   async createPurchaseBilling(purchase) {
     return this._http.post(this.backendService + 'purchases', purchase, this.httpOptions);

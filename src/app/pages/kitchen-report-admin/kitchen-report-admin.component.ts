@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Transaction } from 'src/app/interfaces/transaction';
-import { Observable } from 'rxjs';
-import { DatePipe } from '@angular/common';
-import { Food } from 'src/app/interfaces/food';
-import { map } from 'rxjs/operators';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-kitchen-report-admin',
@@ -13,110 +9,52 @@ import { map } from 'rxjs/operators';
 })
 export class KitchenReportAdminComponent implements OnInit {
 
-  constructor(private db: AngularFirestore) {
-    this.transactionsRef = db.collection<Transaction>('transactions', ref => {
-      return ref.where('kitchen', '==', 'Food');
-    });
+  constructor(private be: BackendServiceService) {
   }
   viewReport = 'hidden';
 
   initDate: Date;
+  foodsTransactions: any;
+  grandTotal = 0;
+  startDate: Date;
+  foodList: any[] = [];
 
-  transactionsRef: AngularFirestoreCollection<Transaction>;
-  transactions: Observable<any[]>;
-  transactionsReport: any[] = [];
-  transactionCount = 0;
-  transactionVolume = 0;
-
-
-  foodsRef: AngularFirestoreCollection<Food>;
-  foods: Observable<any[]>;
-  foodsTransactions: any[] = [];
-  foodsCountTranx = 0;
-  foodsAmountTranx = 0;
-  foodsCostTranx = 0;
+  dateFrom: FormGroup;
 
   ngOnInit() {
-
+    this.dateFrom = new FormGroup({
+      initDate: new FormControl(new Date()),
+    });
+    this.startDate = this.dateFrom.get('initDate').value;
+    this.loadReport();
   }
   async loadReport() {
-    this.transactions = this.transactionsRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const data = a.payload.doc.data() as Transaction;
-        data['id'] = a.payload.doc.id;
-        return data;
-      });
-    }));
-
-    this.transactions.subscribe(tranxs => {
-      this.transactionCount = 0;
-      this.transactionVolume = 0;
-      this.loadReportByFoods(tranxs);
-    });
-  }
-  dateEvent(e) {
-    if (e) {
-      this.initDate = e.target.value;
-    }
-  }
-  async loadReportByFoods(tranxs) {
-    this.foodsAmountTranx = 0;
-    this.foodsTransactions = [];
-
-    this.foodsRef = await this.db.collection<Food>('foods');
-    this.foods = await this.foodsRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const foods = a.payload.doc.data() as Food;
-        foods['id'] = a.payload.doc.id;
-        return foods;
-      });
-    }));
-    let c = await this.foods.subscribe(foods => {
-      this.foodsTransactions = [];
-      foods.forEach(food => {
-        let _foodName = '';
-        this.foodsAmountTranx = 0;
-        this.foodsCountTranx = 0;
-        this.foodsCostTranx = 0;
-
-        let _cost = 0;
-
-        tranxs.forEach(tranx => {
-          const tranxDate = new DatePipe('en-us').transform(tranx.transaction_date.toDate(), 'dd-MMM-yyyy');
-          const selectedDate = new DatePipe('en-us').transform(this.initDate, 'dd-MMM-yyyy');
-
-          if (tranxDate === selectedDate) {
-            if (tranx.foodId === food.foodId) {
-              _foodName = tranx.foodName;
-              this.foodsCountTranx += parseInt(tranx.quantity);
-              this.foodsAmountTranx += parseInt(tranx.total_price);
-              this.foodsCostTranx += parseInt(tranx.total_cost);
-              _cost = parseInt(tranx.cost);
-            }
-          }
-        });
-        if (this.foodsCountTranx > 0) {
-          this.foodsTransactions.push({
-            foodname: _foodName,
-            foodQuantity: this.foodsCountTranx,
-            foodAmount: this.foodsAmountTranx,
-            foodCost: this.foodsCostTranx,
-            cost: _cost,
+    this.be.reportsKitchenAdmin(this.startDate, '', 'Food').then(rsp => {
+      this.foodList = [];
+      let _total = 0;
+      rsp.subscribe(r => {
+        this.foodsTransactions = r;
+        this.foodList.push(r);
+        this.foodList.forEach(f => {
+          f.forEach(element => {
+            _total += parseInt(element.total_cost);
           });
+        });
+        console.log(_total);
+        this.grandTotal = _total;
+        if (_total > 0) {
+          this.viewReport = '';
+        } else {
+          this.viewReport = 'hidden';
         }
-      });
-      this.foodsTransactions.sort((a, b) => {
-        const firstAmount = a.foodAmount;
-        const secondAmount = b.foodAmount;
-        let comparison = 0;
-        if (firstAmount > secondAmount) {
-          comparison = -1;
-        } else if (firstAmount < secondAmount) {
-          comparison = 1;
-        }
-        return comparison;
       });
     });
-    this.viewReport = '';
+  }
+  async dateEvent(e) {
+    if (e) {
+      this.initDate = new Date(e.target.value);
+      this.startDate = this.initDate;
+      let c = await this.loadReport();
+    }
   }
 }

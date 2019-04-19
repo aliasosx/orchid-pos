@@ -12,36 +12,40 @@
             Report Date
           </div>
           <div class="card-body">
-            <div class="row">
-              <div class="col col-md-2">
-                <label for="fromDate" class="lead">ເລີ່ມຈາກວັນທີ</label>
-                <div class="input-group mb-1">
-                  <input matInput id="fromDate" [matDatepicker]="Frmpicker" class="form-control"
-                    placeholder="Choose a date" (dateInput)="fromDateEvent($event)">
-                  <mat-datepicker-toggle matSuffix [for]="Frmpicker"></mat-datepicker-toggle>
-                  <mat-datepicker touchUi #Frmpicker></mat-datepicker>
+            <form [formGroup]="dateForm">
+              <div class="row">
+
+                <div class="col col-md-2">
+                  <label for="fromDate" class="lead">ເລີ່ມຈາກວັນທີ</label>
+                  <div class="input-group mb-1">
+                    <input matInput id="fromDate" [matDatepicker]="Frmpicker" class="form-control"
+                      formControlName="startDate" placeholder="Choose a date" (dateInput)="fromDateEvent($event)">
+                    <mat-datepicker-toggle matSuffix [for]="Frmpicker"></mat-datepicker-toggle>
+                    <mat-datepicker #Frmpicker></mat-datepicker>
+                  </div>
                 </div>
-              </div>
-              <div class="col col-md-2" class="lead">
-                <label for="fromDate">ຮອດວັນທີ</label>
-                <div class="input-group mb-1">
-                  <input matInput id="ToDate" [matDatepicker]="toPicker" class="form-control"
-                    placeholder="Choose a date" (dateInput)="toDateEvent($event)">
-                  <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                  <mat-datepicker touchUi #toPicker></mat-datepicker>
+                <div class="col col-md-2" class="lead">
+                  <label for="fromDate">ຮອດວັນທີ</label>
+                  <div class="input-group mb-1">
+                    <input matInput id="ToDate" [matDatepicker]="toPicker" class="form-control"
+                      formControlName="endDate" placeholder="Choose a date" (dateInput)="toDateEvent($event)">
+                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toPicker></mat-datepicker>
+                  </div>
                 </div>
-              </div>
-              <div class="col col-md-2">
-                <label for="fromDate"></label>
-                <div class="input-group mb-1">
-                  <button mat-raised-button color="primary" (click)="loadReport()"
-                    style="margin-top: 18px;width: 200px;">Submit</button>
+                <div class="col col-md-2">
+                  <label for="fromDate"></label>
+                  <div class="input-group mb-1">
+                    <button mat-raised-button color="primary" (click)="loadReport()"
+                      style="margin-top: 18px;width: 200px;">Submit</button>
+                  </div>
                 </div>
+                <div class="col col-md-4">
+                  <span>{{ reportProcess }}</span>
+                </div>
+
               </div>
-              <div class="col col-md-4">
-                <span>{{ reportProcess }}</span>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
         <!-- ----------------------------------------------------------------------------------  -->
@@ -49,11 +53,7 @@
           <div class="card">
             <div class="card-header">
               <div class="lead">
-                ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ
-                <span class="font-weight-bold" style="font-weight: bold;color: rgb(245, 101, 6);">
-                  {{ fromDate | date: 'dd-MMM-yyyy' }} <span class="ml-2 mr-2">-</span>
-                  {{ toEndDateDiff |date: 'dd-MMM-yyyy' }}
-                </span>
+                ລາຍງານຍອດຂາຍ
               </div>
             </div>
             <div class="card-body">

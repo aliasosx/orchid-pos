@@ -14,6 +14,7 @@ import { FoodCategory } from 'src/app/interfaces/foodCategory';
 import { Food } from 'src/app/interfaces/food';
 import { PaymentType } from 'src/app/interfaces/paymentType';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-reports',
@@ -54,7 +55,6 @@ export class ReportsComponent implements OnInit {
 
   fromDate: Date;
   toDateEnd: Date;
-  toEndDateDiff: Date;
 
   grandtotalAmount = 0;
   grandtotalCount = 0;
@@ -102,11 +102,21 @@ export class ReportsComponent implements OnInit {
 
   reportProcess: string;
 
-  ngOnInit() {
+  startDate: Date;
+  endDate: Date;
 
+  dateForm: FormGroup;
+
+  ngOnInit() {
+    this.dateForm = new FormGroup({
+      startDate: new FormControl(new Date()),
+      endDate: new FormControl(new Date()),
+    });
+    this.startDate = this.dateForm.get('startDate').value;
+    this.endDate = this.dateForm.get('endDate').value;
   }
   async rptRevByDateRange() {
-    this.be.reportRevByDateRange(this.fromDate, this.toDateEnd).then(rpt => {
+    this.be.reportRevByDateRange(this.startDate, this.endDate).then(rpt => {
       rpt.subscribe(r => {
         this.revByDateRange = r;
         this.grandtotalCount = r[0].count;
@@ -117,7 +127,7 @@ export class ReportsComponent implements OnInit {
     });
   }
   async rptRevByUsersByDateRange() {
-    this.be.reportRevByUsersByDateRange(this.fromDate, this.toDateEnd).then(rpt => {
+    this.be.reportRevByUsersByDateRange(this.startDate, this.endDate).then(rpt => {
       rpt.subscribe(r => {
         this.revByUsersDateRange = r;
       });
@@ -125,28 +135,28 @@ export class ReportsComponent implements OnInit {
   }
 
   async rptRevByKitchenByDateRange() {
-    this.be.reportRevByKitchenByDateRange(this.fromDate, this.toDateEnd).then(rpt => {
+    this.be.reportRevByKitchenByDateRange(this.startDate, this.endDate).then(rpt => {
       rpt.subscribe(r => {
         this.revByKitchenDateRange = r;
       });
     });
   }
   async rptRevByFoodTypeByDateRange() {
-    this.be.reportRevByFoodTypeByDateRange(this.fromDate, this.toDateEnd).then(rpt => {
+    this.be.reportRevByFoodTypeByDateRange(this.startDate, this.endDate).then(rpt => {
       rpt.subscribe(r => {
         this.revByFoodTypeDateRange = r;
       });
     });
   }
   async rptRevByPaymentByDateRange() {
-    this.be.reportRevByPaymentByDateRange(this.fromDate, this.toDateEnd).then(rpt => {
+    this.be.reportRevByPaymentByDateRange(this.startDate, this.endDate).then(rpt => {
       rpt.subscribe(r => {
         this.revByPaymentDateRange = r;
       });
     });
   }
   async rptRevByFoodsByDateRange() {
-    this.be.reportsRevByFoodsByDateRange(this.fromDate, this.toDateEnd).then(rpt => {
+    this.be.reportsRevByFoodsByDateRange(this.startDate, this.endDate).then(rpt => {
       rpt.subscribe(r => {
         this.revByFoodsDateRange = r;
       });
@@ -154,11 +164,12 @@ export class ReportsComponent implements OnInit {
   }
 
   async loadReport() {
+    if (this.startDate != null && this.endDate != null) {
 
-    if (this.toDateEnd != null && this.fromDate != null) {
+      console.log(this.startDate + ' - ' + this.endDate);
+
       this.reportProcess = 'Processing ...';
       this.viewReport = '';
-      this.toDateEnd.setDate(this.toDateEnd.getDate());
       let c = await this.rptRevByDateRange();
       let d = await this.rptRevByUsersByDateRange();
       let e = await this.rptRevByKitchenByDateRange();
@@ -169,15 +180,14 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-
-
-
   fromDateEvent(e) {
-    this.fromDate = e.target.value;
+    this.fromDate = new Date(e.target.value);
+    this.startDate = this.fromDate;
+    this.startDate.setDate(this.fromDate.getDate() + 1);
   }
   toDateEvent(e) {
-    this.toDateEnd = e.target.value;
-    this.toEndDateDiff = e.target.value;
-    this.toDateEnd.setDate(this.toDateEnd.getDate());
+    this.toDateEnd = new Date(e.target.value);
+    this.endDate = this.toDateEnd;
+    this.endDate.setDate(this.toDateEnd.getDate() + 1);
   }
 }

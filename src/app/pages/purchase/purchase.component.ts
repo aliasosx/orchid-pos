@@ -46,7 +46,6 @@ export class PurchaseComponent implements OnInit {
       });
     });
   }
-
   addPurchase() {
     const dialogAddRef = this.dialog.open(AddPurchaseComponent, {
       width: '800px',
@@ -58,8 +57,8 @@ export class PurchaseComponent implements OnInit {
   }
   deletePurchase(purchase) {
     swal({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this imaginary file!',
+      title: 'ທ່ານແນ່ໃຈບໍ?',
+      text: 'ການລຶບ ແມ່ນບໍ່ສາມາດກູ້ຄຶນໄດ້ !',
       icon: 'warning',
       buttons: true,
       dangerMode: true,
@@ -69,16 +68,15 @@ export class PurchaseComponent implements OnInit {
           rsp.subscribe(r => {
             if (r['status'] === 'success') {
               this.loadPurchase();
-              swal('purchases has been deleted', 'Purchase', 'success', { timer: 1000 });
+              swal('ລາຍການຖືກລຶບແລ້ວ', 'ລາຍການຊື້ຂາຍຖືກລຶບແລ້ວ', 'success', { timer: 1000 });
             } else {
-              swal('purchases cennot be delete', 'Purchase', 'error', { timer: 2000 });
+              swal('ບໍ່ສາມາດລຶືບລາຍການນີ້ໄດ້', 'ບໍ່ສາມາດລຶບລາຍການທີ່ຖືກອະນຸມັດແລ້ວໄດ້ ຫຼ​ື ມີລາຍການໃນບິນຄ້າງ', 'error', { timer: 2000 });
             }
           });
 
         });
 
       } else {
-        // swal('Delete canceled');
         return;
       }
     });

@@ -93,6 +93,7 @@ export class AddPurchaseComponent implements OnInit {
         unitId: new FormControl(),
         pricePerUnit: new FormControl(0),
         remarks: new FormControl(),
+        userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       });
 
       this.saveDisabled = true;
@@ -121,6 +122,7 @@ export class AddPurchaseComponent implements OnInit {
         unitId: new FormControl(),
         pricePerUnit: new FormControl(0),
         remarks: new FormControl(),
+        userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       });
     }
     this.loadSuppliers();
@@ -303,11 +305,11 @@ export class AddPurchaseComponent implements OnInit {
               rspx.subscribe(rs => {
                 this.loadPurchaseDetails(rs['purchaseId']);
                 // this.snackbar.open('Billing detail added', 'OK', { duration: 1000 });
-                swal('ທ່ານບໍ່ສາມາດເພີ່ມ ລາຍການ ເກິນຈຳນວນໃນໃບບິນໄດ້', 'You cannot add over Bill amount');
+                swal('ທ່ານບໍ່ສາມາດເພີ່ມ ລາຍການ ເກິນຈຳນວນໃນໃບບິນໄດ້', 'You cannot add over Bill amount',  'error', { timer: 2000 });
               });
             });
           } else if (this.addFormPurchaseDetail.get('total').value + r[0].BillTotal > this.addFormPurchase.get('billAmount').value) {
-            this.snackbar.open('Bill Amount Over on list cannot be add more', 'OK', { duration: 2000 });
+            swal('ທ່ານບໍ່ສາມາດເພີ່ມ ລາຍການ ເກິນຈຳນວນໃນໃບບິນໄດ້', 'You cannot add over Bill amount', 'error', { timer: 2000 });
             return;
           }
         } else {

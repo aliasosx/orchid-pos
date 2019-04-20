@@ -3,7 +3,7 @@
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>Purchase Management</mat-card-title>
     <mat-card-subtitle>Summary Purchase billing and Stock update</mat-card-subtitle>
-    <button mat-stroked-button color="primary" class="floatButton" (click)="addPurchase()">add new Purchase</button>
+    <button mat-raised-button color="warn" class="floatButton" (click)="addPurchase()">ຊື້ເຄື່ອງເຂົ້າ</button>
   </mat-card-header>
   <mat-card-content>
     <table class="table table-bordered">
@@ -11,6 +11,7 @@
         <tr>
           <th scope="col" class="text-center" style="width: 30px;">ລະຫັດ</th>
           <th scope="col" class="text-center">ເລກບິນ</th>
+          <th scope="col" class="text-center">ເລກອ້າງອິງ</th>
           <th scope="col" class="text-center">ຍອດລວມ</th>
           <th scope="col" class="text-center">ວັນທີ່ຊື້</th>
           <th scope="col" class="text-center">ຜູ້ສະໜອງ</th>
@@ -24,28 +25,32 @@
       </thead>
       <tbody>
         <tr *ngFor="let purchase of purchases">
-          <td class="text-center" (click)="viewPurchase(purchase)">{{ purchase.pid }}</td>
-          <td class="text-center" (click)="viewPurchase(purchase)">{{ purchase.billNo }}</td>
-          <td class="text-right">{{ purchase.billAmount | number}}</td>
-          <td class="text-center">{{ purchase.billDate | date: 'dd-MMM-yyyy' }}</td>
-          <td class="text-left">{{ purchase.supplier_name }}</td>
-          <td class="text-left">{{ purchase.username }}</td>
-          <td class="text-center" *ngIf="purchase.approved; else unapproved">
+          <td class="text-center align-middle" style="cursor: pointer" (click)="viewPurchase(purchase)">
+            {{ purchase.pid }}</td>
+          <td class="text-center align-middle" style="cursor: pointer" (click)="viewPurchase(purchase)">
+            {{ purchase.billNo }}</td>
+          <td class="text-center align-middle" style="cursor: pointer" (click)="viewPurchase(purchase)">
+            {{ purchase.billRefno }}</td>
+          <td class=" text-right align-middle">{{ purchase.billAmount | number}}</td>
+          <td class="text-center align-middle">{{ purchase.billDate | date: 'dd-MMM-yyyy' }}</td>
+          <td class="text-left align-middle">{{ purchase.supplier_name }}</td>
+          <td class="text-left align-middle">{{ purchase.username }}</td>
+          <td class="text-center align-middle" *ngIf="purchase.approved; else unapproved">
             <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
               style="max-width: 20px;cursor: pointer;">
           </td>
           <ng-template #unapproved>
-            <td class="text-center">
+            <td class="text-center align-middle">
               <img mat-raised-button src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;"
                 (click)="approvedLoadPurchase(purchase.pid)">
             </td>
           </ng-template>
-          <td class="text-center">{{ purchase.approveNameBy }}</td>
-          <td class="text-center">{{ purchase.approvedDate | date: 'dd-MMM-yyyy H:mm:ss'}}</td>
-          <td class="text-left">{{ purchase.noted }}</td>
-          <td class="text-center"><button mat-raised-button color="warn"
-              (click)="deletePurchase(purchase)">Delete</button><span class="spaceDiv"></span><button mat-raised-button
-              color="primary" (click)="viewPurchase(purchase) ">View</button></td>
+          <td class="text-center align-middle">{{ purchase.approveNameBy }}</td>
+          <td class="text-center align-middle">{{ purchase.approvedDate | date: 'dd-MMM-yyyy H:mm:ss'}}</td>
+          <td class="text-left align-middle">{{ purchase.noted }}</td>
+          <td class="text-center align-middle"><button mat-raised-button color="warn"
+              (click)="deletePurchase(purchase)">ລຶບ</button><span class="spaceDiv"></span><button mat-raised-button
+              color="primary" (click)="viewPurchase(purchase) ">ກວດລາຍລະອຽດບິນ</button></td>
         </tr>
       </tbody>
     </table>

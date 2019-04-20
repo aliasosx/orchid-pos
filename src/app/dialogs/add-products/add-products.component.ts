@@ -61,7 +61,7 @@ export class AddProductsComponent implements OnInit {
       currentQuantity: new FormControl(0),
       categoryId: new FormControl(),
       currencyId: new FormControl(),
-      supplierId: new FormControl(),
+      vendorId: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       foodId: new FormControl(),
       expireDate: new FormControl(),

@@ -20,8 +20,8 @@
             required>
         </div>
         <div class="form-group col-md-6">
-          <label for="supplierId">Vendor</label>
-          <select class="form-control" id="supplierId" formControlName="supplierId" required>
+          <label for="vendorId">Vendor</label>
+          <select class="form-control" id="vendorId" formControlName="vendorId" required>
             <option value="-1">--------</option>
             <option value="{{ vendor.id }}" *ngFor="let vendor of suppliers">{{ vendor.vendorName }}</option>
           </select>

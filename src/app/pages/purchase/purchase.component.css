@@ -8,6 +8,7 @@
   position: absolute;
   top: 12px;
   right: 15px;
+  width: 200px;
 }
 .example-header-image {
   background-image: url('../../../assets/icons/baseline-shopping_basket-24px.svg');

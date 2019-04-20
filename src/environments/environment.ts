@@ -17,7 +17,7 @@ export const environment = {
   },
   backendUrl: {
     // url: 'http://localhost:5000/letterp-inventory/us-central1/api/'
-    url: 'http://139.59.192.33:3000/'
+    url: 'http://localhost:3000/'
   }
 };
 

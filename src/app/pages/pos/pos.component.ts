@@ -127,6 +127,7 @@ export class PosComponent implements OnInit {
     });
   }
   foodChoosed(food) {
+    console.log(food);
     if (food.isParent === 1) {
       this.openSubFood(food);
     } else {
@@ -141,7 +142,7 @@ export class PosComponent implements OnInit {
         'quantity': 1,
         'total': food.price * 1,
         'username': JSON.parse(localStorage.getItem('usrObj')).username,
-        'kitchen': food.kitchen,
+        'kitchen': food.kitchenName,
       };
       this.addCartsToDb(item);
     }

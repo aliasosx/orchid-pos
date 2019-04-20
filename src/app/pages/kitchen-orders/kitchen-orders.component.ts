@@ -5,6 +5,7 @@ import { Observable, from } from 'rxjs';
 import { map, filter, groupBy, mergeMap, toArray } from 'rxjs/operators';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 
 @Component({
   selector: 'app-kitchen-orders',
@@ -12,10 +13,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./kitchen-orders.component.css']
 })
 export class KitchenOrdersComponent implements OnInit {
-
-  constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router, private be: BackendServiceService) {
     if (localStorage.getItem('token')) {
       this.username_info = JSON.parse(localStorage.getItem('usrObj'));
+      this.getKitchenById(JSON.parse(localStorage.getItem('usrObj')).kitchenId);
       this.ordersRef = db.collection<Order>('orders', ref => {
         return ref.where('completed', '==', 0).orderBy('orderDateTime', 'asc');
       });
@@ -23,8 +25,8 @@ export class KitchenOrdersComponent implements OnInit {
     } else {
       router.navigateByUrl('login');
     }
-
   }
+
   kitchenState;
   showList = '';
   private user: Observable<firebase.User>;
@@ -32,18 +34,35 @@ export class KitchenOrdersComponent implements OnInit {
   ordersRef: AngularFirestoreCollection<Order>;
   orders: Observable<any[]>;
 
-  kitchen = 'Food';
+  kitchen = '';
 
   orderList: any[] = [];
   order_tracks: any;
 
-  ngOnInit() {
-    this.orders = this.ordersRef.snapshotChanges().pipe(map(change => {
+  async ngOnInit() {
+    this.orders = await this.ordersRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const orders = a.payload.doc.data() as Order;
         orders['id'] = a.payload.doc.id;
+        console.log(this.kitchen);
+        orders['food'] = a.payload.doc.data().food.filter(b => b.kitchen.toUpperCase() === this.kitchen.toUpperCase());
         return orders;
       });
     }));
+    /*
+    this.orders.subscribe(od => {
+      od.forEach(o => {
+        console.log(o);
+      });
+    });
+    */
+  }
+  async getKitchenById(id) {
+    this.be.getKitchenById(id).then(async (rsp) => {
+      rsp.subscribe(async (kitchen) => {
+        // console.log(kitchen);
+        this.kitchen = kitchen['kitchenName'];
+      });
+    });
   }
 }

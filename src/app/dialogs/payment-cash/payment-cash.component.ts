@@ -99,10 +99,9 @@ export class PaymentCashComponent implements OnInit {
   async loadInitialData() {
     let c = await this.generateQRDate();
     let a = await this.data.cart.forEach(element => {
-      console.log(element);
       element['done'] = false;
       element['food_category'] = 'NA';
-      element['kitchen'] = 'NA';
+      // element['kitchen'] = 'NA';
       this.foodList.push(element);
     });
     this.paymentTypes = await this.paymentTypesRef.snapshotChanges().pipe(map(change => {

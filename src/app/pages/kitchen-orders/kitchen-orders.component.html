@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Kitchen Order</mat-card-title>
+    <mat-card-title>ລາຍການາສັ່ງອາຫານໃນປະຈຸບັນ</mat-card-title>
     <mat-card-subtitle>Currnent Orders</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
@@ -10,7 +10,7 @@
       <div class="col col-md-6 col-sm-12" *ngFor="let order of orders |async " [ngClass]="showList">
         <div class="card mt-2">
           <div class="card-header text-center h4">
-            ລາຍການອາຫານ ເວລາ {{ order.orderDateTime.toDate() | date: 'HH:mm:ss' }}
+            ລາຍການອາຫານສັ້ງ ເວລາ {{ order.orderDateTime.toDate() | date: 'HH:mm:ss' }}
           </div>
           <div class="card-body">
             <div class="row">
@@ -28,7 +28,6 @@
                       style="width: 10px;">
                       {{ order.ticket }}</td>
                     <tr *ngFor="let food of order.food">
-
                       <td class="text-left h5 text-nowrap" style="width: 400px;">{{ food.food }}</td>
                       <td class="text-center" style="width: 20px;">{{ food.quantity |number }}</td>
                       <td class="text-left" style="color: red; width: 200px;">{{ food.note }}</td>

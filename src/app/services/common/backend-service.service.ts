@@ -159,6 +159,11 @@ export class BackendServiceService {
   getFoodTranxByFoodId(id) {
     return this._http.get(this.backendService + 'foodtranxs/' + id, this.httpOptions);
   }
+
+  async getFoodById(id) {
+    return this._http.get(this.backendService + 'foods/' + id, this.httpOptions);
+  }
+
   createFoodTranx(foodtranx) {
     return this._http.post(this.backendService + 'foodtranxs', foodtranx, this.httpOptions);
   }
@@ -175,6 +180,9 @@ export class BackendServiceService {
     return this._http.put(this.backendService + 'product/' + product.id, product, this.httpOptions);
   }
 
+  async getKitchenById(id) {
+    return this._http.get(this.backendService + 'kitchens/' + id, this.httpOptions);
+  }
 
   async deleteProduct(id) {
     return this._http.delete(this.backendService + 'product/' + id, this.httpOptions);

@@ -18,6 +18,8 @@
             <th scope="col" class="text-center">ຍອດລວມ</th>
             <th scope="col" class="text-center">ປະເພດການຈ່າຍ</th>
             <th scope="col" class="text-center">ສະຖານະ</th>
+            <th scope="col" class="text-center">ສະຖານະ</th>
+            <th scope="col" class="text-center">ເຫດຜົນຍົກເລິກ</th>
             <th scope="col" class="text-center">ລາຍການອາຫານ</th>
             <th scope="col" class="text-center">ຜູ້ຂາຍ</th>
           </tr>
@@ -36,7 +38,21 @@
             <td class="text-center">{{ order.refno }}</td>
             <td class="text-right">{{ order.grandtotal |number }}</td>
             <td class="text-center">{{ order.paymentType }}</td>
-            <td class="text-center" *ngIf="order.status=='completed'; else cancelStatus">
+
+            <ng-container [ngSwitch]="order.status">
+              <td class="text-center" *ngSwitchCase="'completed'">
+                <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;">
+              </td>
+              <td class="text-center" *ngSwitchCase="'cancel'">
+                <img src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;">
+              </td>
+              <td class="text-center" *ngSwitchDefault>
+                <img src="../../../assets/icons/lg.dual-gear-loading-icon.gif" style="max-width: 30px;cursor: pointer;">
+              </td>
+            </ng-container>
+
+            <!--
+            <td class="text-center" *ngIf="order.status=='completed';cancelStatus">
               <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
                 style="max-width: 20px;cursor: pointer;">
             </td>
@@ -44,6 +60,17 @@
               <td class="text-center">
                 <img mat-raised-button src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;">
               </td>
+            </ng-template>
+            -->
+
+
+
+
+
+            <td class="text-center">{{ order.status }}</td>
+            <td class="text-center" *ngIf="order.remarks; else noreason">{{ order.remarks }}</td>
+            <ng-template #noreason>
+              <td class="text-center">N/A</td>
             </ng-template>
             <td class="text-center">
               <button mat-raised-button color="primary" (click)="openOrderDetail(order)">ກວດສອບລາຍການ</button>

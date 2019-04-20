@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { Bom } from 'src/app/interfaces/bom';
 import { StockServicesService } from 'src/app/services/stock-services.service';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+import { CancelRemarksComponent } from 'src/app/dialogs/cancel-remarks/cancel-remarks.component';
 
 declare var swal: any;
 
@@ -180,42 +181,56 @@ export class OrdersComponent implements OnInit {
           swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
           return;
         } else {
-          const cancelOrder = {
-            completed: 1,
-            orderFinishTime: new Date(),
-            status: 'canceled'
-          };
-          this.backendService.updateOrder(order.orderId, cancelOrder).then(async (resp_cancel_Order) => {
-            resp_cancel_Order.subscribe(async (cancel_order) => {
-              if (cancel_order['status'] === 'success') {
-                // firebase db
-                let currentConsumingTime;
-                let a = await this.orderRef.doc(order.id).get().subscribe(o => {
-                  let currDate: any = new Date();
-                  let StartDate: any;
-                  if (o.exists) {
-                    StartDate = o.data().orderDateTime.toDate();
-                    currentConsumingTime = (currDate - StartDate) / 60000;
-                    if (currentConsumingTime > 10) {
-                      swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
-                      return;
-                    } else {
-                      this.orderRef.doc(order.id).update({
-                        completed: true,
-                        orderFinishTime: new Date(),
-                        status: 'cancel',
-                        username: this.username,
-                      }).then(async () => {
-                        this.updateUserActivity('Make order Cancel by Order ID ' + order.orderId);
-                        this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000 });
-                        let c = await this.releaseTicket(order.ticket);
-                      });
-                    }
+          // open Remark form
+
+          const remarkDialogRef = this.dialog.open(CancelRemarksComponent, {
+            width: '600px',
+          });
+
+          remarkDialogRef.afterClosed().subscribe(remark => {
+            if (remark) {
+              const cancelOrder = {
+                completed: 1,
+                orderFinishTime: new Date(),
+                status: 'canceled',
+                remarks: remark,
+              };
+              this.backendService.updateOrder(order.orderId, cancelOrder).then(async (resp_cancel_Order) => {
+                resp_cancel_Order.subscribe(async (cancel_order) => {
+                  if (cancel_order['status'] === 'success') {
+                    // firebase db
+                    let currentConsumingTime;
+                    let a = await this.orderRef.doc(order.id).get().subscribe(o => {
+                      let currDate: any = new Date();
+                      let StartDate: any;
+                      if (o.exists) {
+                        StartDate = o.data().orderDateTime.toDate();
+                        currentConsumingTime = (currDate - StartDate) / 60000;
+                        if (currentConsumingTime > 10) {
+                          swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
+                          return;
+                        } else {
+                          this.orderRef.doc(order.id).update({
+                            completed: true,
+                            orderFinishTime: new Date(),
+                            status: 'cancel',
+                            username: this.username,
+                            remarks: remark,
+                          }).then(async () => {
+                            this.updateUserActivity('Make order Cancel by Order ID ' + order.orderId);
+                            this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000 });
+                            let c = await this.releaseTicket(order.ticket);
+                          });
+                        }
+                      }
+                    });
+                    // end
                   }
                 });
-                // end
-              }
-            });
+              });
+            } else {
+              swal('ໃສ່ເຫດຜົນການຍົກເລິກກ່ອນ', 'ບໍ່ສາມາດດຳເນິນການໄດ້', 'error', { timer: 3000 });
+            }
           });
         }
       }

@@ -83,6 +83,7 @@ import { LoadingscreenComponent } from './pages/loadingscreen/loadingscreen.comp
 import { ApprovedUsersComponent } from './dialogs/approved-users/approved-users.component';
 import { AddSubFoodTranxComponent } from './dialogs/add-sub-food-tranx/add-sub-food-tranx.component';
 import { ScreenLoadingComponent } from './loadings/screen-loading/screen-loading.component';
+import { CancelRemarksComponent } from './dialogs/cancel-remarks/cancel-remarks.component';
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { ScreenLoadingComponent } from './loadings/screen-loading/screen-loading
     ApprovedUsersComponent,
     AddSubFoodTranxComponent,
     ScreenLoadingComponent,
+    CancelRemarksComponent,
 
 
   ],
@@ -199,6 +201,7 @@ import { ScreenLoadingComponent } from './loadings/screen-loading/screen-loading
     ApprovedUsersComponent,
     AddSubFoodTranxComponent,
     ScreenLoadingComponent,
+    CancelRemarksComponent,
   ]
   ,
   providers: [

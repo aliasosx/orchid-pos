@@ -1,0 +1,9 @@
+<h1 mat-dialog-title class="text-center h4">ສາເຫດຍົກເລິກ</h1>
+<form [formGroup]="addRemarkForm">
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <input type="text" step="1" class="form-control text-left" minlength="6" formControlName="remarks" required
+        (keydown.enter)="addRemark()">
+    </div>
+  </div>
+</form>

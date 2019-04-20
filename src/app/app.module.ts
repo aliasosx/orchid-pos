@@ -19,7 +19,7 @@ import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
   // tslint:disable-next-line: max-line-length
-  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule,
+  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule, MatInputModule,
 } from '@angular/material';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -163,7 +163,7 @@ import { CancelRemarksComponent } from './dialogs/cancel-remarks/cancel-remarks.
     FormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
-    MatMenuModule, MatTooltipModule, MatStepperModule,
+    MatMenuModule, MatTooltipModule, MatStepperModule, MatInputModule,
     HttpClientModule,
   ],
   entryComponents: [

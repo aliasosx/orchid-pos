@@ -3,10 +3,18 @@
     <mat-card-content>
       <div class="row">
         <div class="col col-md-7">
+
+          <div class="col col-md-12">
+
+            <input type="text" class="form-control" placeholder="ຄົ້ນຫາ" [(ngModel)]="searchFoodName">
+
+          </div>
+
           <mat-tab-group class="mat-tabBody" (selectedTabChange)="loadFoodPage($event)">
             <mat-tab label="ທັງໝົດ">
               <div class="row main-container">
-                <div class="col col-sm-12 col-md-3 shadow item text-center" *ngFor="let food of foods ">
+                <div class="col col-sm-12 col-md-3 shadow item text-center"
+                  *ngFor="let food of foods |foodPipe: searchFoodName">
                   <div class="pricetag">
                     <span class="h5" *ngIf="food.isParent === 0; else choosePrice">{{ food.price | number}}</span>
                     <ng-template #choosePrice>

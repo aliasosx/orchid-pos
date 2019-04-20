@@ -68,6 +68,9 @@ export class PosComponent implements OnInit {
 
   foodTypes: any;
   foods: any;
+
+  searchFoodName: any;
+
   ngOnInit() {
 
     if (this.username) {

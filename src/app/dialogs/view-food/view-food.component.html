@@ -45,11 +45,18 @@
         </div>
         <div class="form-group col-md-6">
           <label for="cost">ຕົ້ນທຶນ</label>
-          <input type="number" class="form-control" id="cost" formControlName="cost">
+          <input type="number" class="form-control" [readOnly]="priceCostDisable" id="cost" formControlName="cost">
         </div>
         <div class="form-group col-md-6">
           <label for="price">ລາຄາຂາຍ</label>
-          <input type="number" class="form-control" id="price" formControlName="price">
+          <input type="number" class="form-control" [readOnly]="priceCostDisable" id="price" formControlName="price">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="discId">ຈານ</label>
+          <select class="form-control" id="discId" required formControlName="discId">
+            <option value="" disabled>-----------</option>
+            <option *ngFor="let d of discs" value="{{ d.id }}">{{ d.disc_name }}</option>
+          </select>
         </div>
         <div class="form-group col-md-6">
           <label for="note">ໝາຍເຫດ</label>

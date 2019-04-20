@@ -86,6 +86,18 @@ export class BackendServiceService {
   async createSubFood(subfood) {
     return this._http.post(this.backendService + 'subfoods', subfood, this.httpOptions);
   }
+
+  async getDiscs() {
+    return this._http.get(this.backendService + 'discs', this.httpOptions);
+  }
+
+  async getCommonFoodsList() {
+    return this._http.get(this.backendService + 'foodscommonlist', this.httpOptions);
+  }
+  async getFoodParentsList() {
+    return this._http.get(this.backendService + 'foodsParentlist', this.httpOptions);
+  }
+
   async updateSubFood(id, subfood) {
     return this._http.put(this.backendService + 'subfoods/' + id, subfood, this.httpOptions);
   }
@@ -278,5 +290,10 @@ export class BackendServiceService {
   async approvePurchase(id, purchase) {
     return this._http.put(this.backendService + 'purchases/' + id, purchase, this.httpOptions);
   }
+
+  async removeItemFromMasterFood(subFoodId, foodId, tranxFoodId) {
+    return this._http.delete(this.backendService + 'subfoods/' + tranxFoodId + '/' + subFoodId + '/' + foodId, this.httpOptions);
+  }
+
 }
 

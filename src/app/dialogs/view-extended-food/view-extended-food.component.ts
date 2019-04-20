@@ -31,7 +31,7 @@ export class ViewExtendedFoodComponent implements OnInit {
     this.formAddSubFood = new FormGroup({
       'id': new FormControl(),
       'sfId': new FormControl(),
-      'foodId': new FormControl(this.data.food.id),
+      'foodId': new FormControl(this.data.pFood.fid),
       'subFoodId': new FormControl(),
       'subFoodName': new FormControl(),
       'subFoodNameEn': new FormControl(),
@@ -61,14 +61,12 @@ export class ViewExtendedFoodComponent implements OnInit {
   removeExtenedFoodList(extendedFoodList) {
 
   }
-  async addExtendedFoodToMaster() {
-    console.log(this.addnewFlg);
-    console.log(this.updateFlg);
-    if (this.addnewFlg === true) {
 
-      this.formAddSubFood.get('foodId').setValue(this.data.food.id);
+  async addExtendedFoodToMaster() {
+    if (this.addnewFlg === true) {
+      this.formAddSubFood.get('foodId').setValue(this.data.pFood.fid);
       let c = await this.besrv.createFoodTranx({
-        foodId: this.data.food.id,
+        foodId: this.data.pFood.fid,
         subfoodId: parseInt(this.formAddSubFood.get('subFoodId').value),
         price: parseInt(this.formAddSubFood.get('price').value),
         cost: parseInt(this.formAddSubFood.get('cost').value),
@@ -108,10 +106,15 @@ export class ViewExtendedFoodComponent implements OnInit {
     this.extendedFoodLists.push(this.formAddSubFood.value);
   }
   removeitem(doc) {
-
+    // console.log(doc);
+    this.besrv.removeItemFromMasterFood(doc.subFoodId, doc.foodId, doc.id).then(rsp => {
+      rsp.subscribe(r => {
+        this.loadInitData();
+      });
+    });
   }
   async loadInitData() {
-    let c = await this.besrv.getSubfoodById(this.data.food.id).then(subfoods => {
+    let c = await this.besrv.getSubfoodById(this.data.pFood.fid).then(subfoods => {
       subfoods.subscribe(sf => {
         this.subFoods = sf;
       });

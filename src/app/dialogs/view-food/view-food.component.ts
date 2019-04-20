@@ -25,6 +25,9 @@ export class ViewFoodComponent implements OnInit {
   currencies: Observable<any>;
   kitchens: any;
   saveDisabled = false;
+  discs: any;
+  priceCostDisable = false;
+  masterFood = false;
 
   ngOnInit() {
     this.addFoodForm = new FormGroup({
@@ -33,11 +36,10 @@ export class ViewFoodComponent implements OnInit {
       food_name_en: new FormControl(),
       food_photo: new FormControl(),
       foodTypeId: new FormControl(),
-      isParent: new FormControl(),
-
+      isParent: new FormControl({ disable: true }),
+      discId: new FormControl(),
       price: new FormControl(),
       cost: new FormControl(),
-
       kitchenId: new FormControl(),
       updatedBy: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       enabled: new FormControl(true),
@@ -47,6 +49,15 @@ export class ViewFoodComponent implements OnInit {
     });
     // Load startup
 
+    // console.log(this.data);
+
+    if (this.data.pFood) {
+      this.masterFood = true;
+      this.priceCostDisable = true;
+    } else {
+      this.masterFood = false;
+      this.priceCostDisable = false;
+    }
     this.loadStartUp();
 
   }
@@ -55,22 +66,46 @@ export class ViewFoodComponent implements OnInit {
     let d = await this.loadFoodById();
     let e = await this.loadFoodType();
     let f = await this.loadKitchens();
-
+    let g = await this.loadDiscs();
   }
   async loadFoodById() {
-    let c = await this.be.getFoodsById(this.data.food.id).then(fd => {
-      fd.subscribe(async (food) => {
-        food[0].cost = 0;
-        food[0].price = 0;
-        let m = await this.addFoodForm.setValue(food[0]);
-        this.photoSrc = await food[0].food_photo;
-        let c = await this.loadFoodTranx(this.data.food.id);
+
+    if (this.masterFood === false) {
+      let c = await this.be.getFoodsById(this.data.fid).then(fd => {
+        fd.subscribe(async (food) => {
+          // console.log(food);
+          food['cost'] = 0;
+          food['price'] = 0;
+          let m = await this.addFoodForm.setValue(food);
+          this.photoSrc = await food['food_photo'];
+          let c = await this.loadFoodTranx(this.data.fid);
+        });
+      });
+    } else if (this.masterFood === true) {
+      let c = await this.be.getFoodsById(this.data.pFood.fid).then(fd => {
+        fd.subscribe(async (food) => {
+          console.log(food);
+          food['cost'] = 0;
+          food['price'] = 0;
+          let m = await this.addFoodForm.setValue(food);
+          this.photoSrc = await food['food_photo'];
+          let c = await this.loadFoodTranx(this.data.pFood.fid);
+        });
+      });
+    }
+
+  }
+
+  async loadDiscs() {
+    this.be.getDiscs().then(d => {
+      d.subscribe(discs => {
+        this.discs = discs;
       });
     });
   }
 
   async loadFoodTranx(id) {
-    if (this.data.food.isParent === 0) {
+    if (this.data.isParent === 0) {
       this.be.getFoodTranxByFoodId(id).subscribe(async (subfoods) => {
         this.addFoodForm.get('cost').setValue(subfoods[0].cost);
         this.addFoodForm.get('price').setValue(subfoods[0].price);

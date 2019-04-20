@@ -6,11 +6,10 @@ import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { map } from 'rxjs/operators';
 import { AddExtendedFoodComponent } from 'src/app/dialogs/add-extended-food/add-extended-food.component';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
-import { FoodTranx } from 'src/app/interfaces/foodtranx';
+
 
 declare var swal: any;
 
@@ -35,31 +34,47 @@ export class FoodsComponent implements OnInit {
   foodname: any;
   foods: any;
   foodList: any[] = [];
+  commonFoods: any;
+  parentsFoods: any;
 
   ngOnInit() {
+    // this.loadStartUp();
     this.loadStartUp();
   }
 
   loadStartUp() {
+    this.loadCommonFoods();
+    this.loadParentsFoods();
+  }
+
+  loadCommonFoods() {
+    this.besrv.getCommonFoodsList().then(foods => {
+      foods.subscribe(commonFoods => {
+        // console.log(commonFoods);
+        this.commonFoods = commonFoods;
+      });
+    });
+  }
+  loadParentsFoods() {
     this.foodList = [];
-    this.besrv.getFoodDisplay().then((foods) => {
-      this.foods = foods;
-      this.foods.subscribe(async (fds) => {
-        fds.forEach(async (element) => {
-          const pre_food = element;
-          this.besrv.getSubfoodById(element.id).then(xex => {
-            xex.subscribe(xe => {
+    this.besrv.getFoodParentsList().then(foods => {
+      foods.subscribe(fd => {
+        this.parentsFoods = fd;
+        this.parentsFoods.forEach(pFood => {
+          // console.log(pFood);
+          this.besrv.getSubfoodById(pFood.fid).then(sFood => {
+            sFood.subscribe(subFood => {
               this.foodList.push({
-                food: pre_food,
-                subFood: xe
+                pFood: pFood,
+                sFood: subFood
               });
             });
           });
-
         });
       });
     });
   }
+
   openAddFood() {
     const dialogRef = this.dialog.open(AddFoodComponent, { width: '900px' });
     dialogRef.afterClosed().subscribe((rs) => {
@@ -114,7 +129,7 @@ export class FoodsComponent implements OnInit {
   async openViewExtendedFood(food) {
     const dialogRef = this.dialog.open(ViewExtendedFoodComponent, { width: '800px', data: food });
     let c = await dialogRef.afterClosed().subscribe(() => {
-      console.log('Loadded');
+      // console.log('Loadded');
       this.loadStartUp();
     });
   }

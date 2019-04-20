@@ -7,6 +7,7 @@ import { AngularFirestore, } from 'angularfire2/firestore';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { AddSubFoodTranxComponent } from '../add-sub-food-tranx/add-sub-food-tranx.component';
+declare var swal: any;
 
 @Component({
   selector: 'app-add-food',
@@ -31,38 +32,11 @@ export class AddFoodComponent implements OnInit {
   currencies: any;
   subfoods: any;
   foodTranxs: any[] = [];
+  discs: any;
 
   ngOnInit() {
     const uuid1 = uuid.v1();
-    // console.log(uuid1);
-    /*
-    this.addFoodForm = new FormGroup({
-      id: new FormControl(),
-      foodId: new FormControl(uuid1),
-      food_name: new FormControl(),
-      food_name_en: new FormControl(),
-      food_photo: new FormControl(),
-      food_category: new FormControl(),
-      cost: new FormControl(0),
-      price: new FormControl(0),
-      currency: new FormControl('KIP'),
-      parent_food: new FormControl(false),
-      extendedFoods: new FormControl(),
-      is_childFood: new FormControl(false),
-      kitchen: new FormControl(),
-      userName: new FormControl('administrator'),
-      enabled: new FormControl(true),
-      noted: new FormControl(),
-      createdAt: new FormControl(new Date()),
-      updatedAt: new FormControl(new Date()),
-    });
 
-    // Load startup
-    this.Currencies = this.currenciesRef.valueChanges();
-    this.kitchens = this.kitchensRef.valueChanges();
-    this.categories = this.categoriesRef.valueChanges();
-    this.extendedFoodTypes = this.extendedFoodTypesRef.valueChanges();
-    */
     this.addFoodForm = new FormGroup({
       id: new FormControl(),
       foodId: new FormControl(uuid1),
@@ -73,6 +47,7 @@ export class AddFoodComponent implements OnInit {
       cost: new FormControl(0),
       price: new FormControl(0),
       kitchenId: new FormControl(),
+      discId: new FormControl(),
       currencyId: new FormControl(),
       updatedBy: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       isParent: new FormControl(),
@@ -84,6 +59,7 @@ export class AddFoodComponent implements OnInit {
       subfoods: new FormControl(),
     });
     this.loadStartUp();
+    this.loadDiscs();
   }
   async loadStartUp() {
     await this.backendService.getFoodTypes().then((resp_ft) => {
@@ -108,6 +84,15 @@ export class AddFoodComponent implements OnInit {
       });
     });
   }
+
+  async loadDiscs() {
+    this.backendService.getDiscs().then(d => {
+      d.subscribe(discs => {
+        this.discs = discs;
+      });
+    });
+  }
+
   uploadPhoto(event) {
     let selectedFiles: FileList;
     selectedFiles = event;
@@ -135,7 +120,8 @@ export class AddFoodComponent implements OnInit {
           if (rs['status'] === 'success') {
             this.dialogRef.close('success');
           } else {
-            console.log('Error');
+            swal('ລາຍການອາຫານນີ້ມີແລ້ວ ກະລຸນາເລືອກອາຫານໃໝ່', 'Food already exist!', 'error', { timer: 3000 });
+            this.saveDisabled = false;
             return;
           }
         });
@@ -148,7 +134,8 @@ export class AddFoodComponent implements OnInit {
           if (rs['status'] === 'success') {
             this.dialogRef.close('success');
           } else {
-            console.log('Error');
+            swal('ລາຍການອາຫານນີ້ມີແລ້ວ ກະລຸນາເລືອກອາຫານໃໝ່', 'Food already exist!', 'error', { timer: 3000 });
+            this.saveDisabled = false;
             return;
           }
         });

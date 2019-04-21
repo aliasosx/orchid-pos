@@ -13,6 +13,6 @@ export const environment = {
   },
   backendUrl: {
     // url: 'https://us-central1-letterp-inventory.cloudfunctions.net/api/'
-    url: 'http://139.59.192.33:3000/'
+    url: 'http://localhost:3000/'
   }
 };

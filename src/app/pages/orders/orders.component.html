@@ -29,8 +29,13 @@
             </td>
             <td class="text-center align-middle" style="width: 100px;">{{ order.invoiceno }}</td>
             <td class="text-center align-middle" style="width: 150px;">{{ order.grandtotal |number }}</td>
-            <td class="text-center align-middle" style="width: 200px;">{{ order.paymentType }}</td>
-            <td class="text-center align-middle" style="width: 100px;">{{ order.status }}</td>
+            <td class="text-center align-middle" style="width: 150px;">{{ order.paymentType }}</td>
+
+
+            <td class="text-center align-middle" style="width: 80px;" *ngIf="order.status=='processing'">
+              <img src="../../../assets/icons/lg.dual-gear-loading-icon.gif" style="max-width: 30px;cursor: pointer;">
+            </td>
+
             <td class="align-middle">
               <table class="table table-hover">
                 <thead class="thead-light">

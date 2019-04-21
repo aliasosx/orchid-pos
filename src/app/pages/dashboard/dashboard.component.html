@@ -6,46 +6,29 @@
     <mat-card-subtitle>Summary all Status</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <!--
+    <div class="float-refresh">
+      <img src="../../../assets/icons/updated.svg" (click)="reloadReport()"
+        style="position: absolute;max-width: 30px; cursor: pointer;right: 15px;top:20px">
+    </div>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <div>
       <div class="row">
         <div class="col-md-4 col-xl-3">
           <div class="card bg-c-blue order-card">
             <div class="card-block">
-              <h5 class="m-b-20">ຍອດຂາຍທັງໝົດ</h5>
-              <h5 class="text-right"><i class="fa fa-rocket f-left"></i><span></span>
-              </h5>
-              <p class="m-b-0">ຍອດການຂາຍ<span class="f-right">{{ transactionCount |number }} ລາຍການ</span></p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 col-xl-3">
-          <div class="card bg-c-blue order-card">
-            <div class="card-block">
-              <h5 class="m-b-20">ຍອດຂາຍ ຂອງວັນ </h5>
-              <h4 class="text-right"><i
-                  class="fa fa-rocket f-left"></i><span>{{ transactionAmountDiary |number }}</span>
-              </h4>
-              <p class="m-b-0">ຍອດການຂາຍ<span class="f-right">{{ transactionCountDairy |number }} ລາຍການ</span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 col-xl-3">
-          <div class="card bg-c-blue order-card">
-            <div class="card-block">
-              <h5 class="m-b-20">ຍອດຂາຍ ຕາມຄົວ ປະຈໍາວັນທີ {{ currentDate | date: 'dd-MMM-yyyy' }}</h5>
-              <div *ngFor="let rp of reportByKitchen">
-                <h4 class="text-right" *ngIf="rp.kitchenAmount > 0">
-                  <div class="f-left">
-                    {{ rp.kitchen }}</div><span>{{ rp.kitchenAmount | number}}</span>
-                </h4>
-                <p *ngIf="rp.kitchenAmount > 0" class="m-b-0">ຍອດການຂາຍ<span class="f-right">
-                    {{ rp.kitchenCount | number }} ລາຍການ</span>
-              </div>
+              <div class="m-b-20 h4">ຍອດຂາຍ ຂອງວັນ {{ currentDate |date: 'dd-MMM-yyyy'}}</div>
+              <mat-divider></mat-divider>
+              <br />
+              <ng-container *ngFor="let summaryReport of summaryReports">
+                <div class="row">
+                  <div class="col col-md-6 h5">ຍອດການຂາຍ</div>
+                  <div class="col col-md-6 h5 text-right">{{ summaryReport.grandTotal |number }} ກິບ</div>
+                </div>
+                <div class="row">
+                  <div class="col col-md-6 h5">ຈຳນວນ</div>
+                  <div class="col col-md-6 h5 text-right">{{ summaryReport.count |number }} ໜ່ວຍ</div>
+                </div>
+              </ng-container>
 
             </div>
           </div>
@@ -53,21 +36,54 @@
         <div class="col-md-4 col-xl-3">
           <div class="card bg-c-blue order-card">
             <div class="card-block">
-              <h5 class="m-b-20">ຍອດການຈ່າຍ</h5>
-              <div *ngFor="let p of paymentMethodReport">
-                <h4 class="text-right" *ngIf="p.paymentAmount > 0">
-                  <div class="f-left">
-                    {{ p.paymentMethod }}</div><span>{{ p.paymentAmount | number }}</span>
-                </h4>
-                <p *ngIf="p.paymentAmount > 0" class="m-b-0 h5">ຍອດການຂາຍ<span
-                    class="f-right h5">{{ p.paymentCount | number}} ລາຍການ</span></p>
-              </div>
+              <div class="m-b-20 h4">ຍອດຂາຍ ຕາມຄົວ</div>
+              <mat-divider></mat-divider>
+              <br />
+              <ng-container *ngFor="let summaryReportsKitchen of summaryReportsKitchens ; let i = index">
+                <div class="row">
+                  <div class="col col-md-4 h5 text-left">{{ summaryReportsKitchen.kitchenName }}</div>
+                  <div class="col col-md-4 h5 text-right"><span style="margin-right: 10px;">ຈຳນວນ
+                    </span>{{ summaryReportsKitchen.count |number }}
+                  </div>
+                  <div class="col col-md-4 h5 text-right">{{ summaryReportsKitchen.total_price |number }} ກິບ</div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-blue order-card">
+            <div class="card-block">
+              <div class="m-b-20 h4">ຍອດການຈ່າຍຕາມປະເພດ</div>
+              <mat-divider></mat-divider>
+              <br />
+              <ng-container *ngFor=" let summaryReportsPayment of summaryReportsPayments">
+                <div class="row">
+                  <div class="col col-md-6 h5 text-left">{{ summaryReportsPayment.paymentType }}</div>
+                  <div class="col col-md-6 h5 text-right">{{ summaryReportsPayment.grandTotal |number }} ກິບ</div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-blue order-card">
+            <div class="card-block">
+              <div class="m-b-20 h4">ຍອດການຂາຍຕາມພະນັກງານ</div>
+              <mat-divider></mat-divider>
+              <br />
+              <ng-container *ngFor="let summaryReportsUser of summaryReportsUsers">
+                <div class="row">
+                  <div class="col col-md-6 h5 text-left">{{ summaryReportsUser.username }}</div>
+                  <div class="col col-md-6 h5 text-right">{{ summaryReportsUser.grandTotal |number }} ກິບ</div>
+                </div>
+              </ng-container>
             </div>
           </div>
         </div>
       </div>
     </div>
-    -->
+
   </mat-card-content>
 
 </mat-card>

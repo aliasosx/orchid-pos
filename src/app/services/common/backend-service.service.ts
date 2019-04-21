@@ -262,6 +262,18 @@ export class BackendServiceService {
     return this._http.post(this.backendService + 'kitchen-report-admin/' + kitchen, reportDt, this.httpOptions);
   }
 
+  async getSummaryDiaryReport() {
+    return this._http.get(this.backendService + 'dashboardDiarySummary', this.httpOptions);
+  }
+  async getSummaryKitchenReport() {
+    return this._http.get(this.backendService + 'dashboardKitchenSummary', this.httpOptions);
+  }
+  async getSummaryPaymentTypeReport() {
+    return this._http.get(this.backendService + 'dashboardPaymentTypeSummary', this.httpOptions);
+  }
+  async getSummaryUsersReport() {
+    return this._http.get(this.backendService + 'dashboardUsersSummary', this.httpOptions);
+  }
 
   // Purchase
   async createPurchaseBilling(purchase) {

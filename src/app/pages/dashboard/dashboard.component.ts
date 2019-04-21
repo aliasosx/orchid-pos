@@ -25,8 +25,48 @@ export class DashboardComponent implements OnInit {
   username_info: any;
 
   username;
+  currentDate: Date = new Date();
+  summaryReports: any;
+  summaryReportsKitchens: any;
+  summaryReportsPayments: any;
+  summaryReportsUsers: any;
 
   ngOnInit() {
-
+    this.loadDiaryTransactionsAmount();
   }
+  reloadReport() {
+    this.loadDiaryPaymentTypeAmount();
+  }
+  loadDiaryTransactionsAmount() {
+    this.be.getSummaryDiaryReport().then(rsp => {
+      rsp.subscribe(r => {
+        this.summaryReports = r;
+      });
+    });
+    this.loadDiaryTransactionsKitchenAmount();
+  }
+  loadDiaryTransactionsKitchenAmount() {
+    this.be.getSummaryKitchenReport().then(rsp => {
+      rsp.subscribe(r => {
+        this.summaryReportsKitchens = r;
+      });
+    });
+    this.loadDiaryPaymentTypeAmount();
+  }
+  loadDiaryPaymentTypeAmount() {
+    this.be.getSummaryPaymentTypeReport().then(rsp => {
+      rsp.subscribe(r => {
+        this.summaryReportsPayments = r;
+      });
+    });
+    this.loadDiaryUsersAmount();
+  }
+  loadDiaryUsersAmount() {
+    this.be.getSummaryUsersReport().then(rsp => {
+      rsp.subscribe(r => {
+        this.summaryReportsUsers = r;
+      });
+    });
+  }
+
 }

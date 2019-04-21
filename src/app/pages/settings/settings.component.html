@@ -8,43 +8,49 @@
     </p>
   </mat-card-header>
   <mat-card-content>
-    <div class="row mainrow">
-      <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
-        <img src="../../../assets/icons/notepad.svg" class="gridImg" (click)="openAddFoodCat()">
-        <div class="textTitle h5">ປະເພດອາຫານ</div>
+
+    <ng-container *ngIf="roleId == 1">
+      <div class="row mainrow">
+        <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
+          <img src="../../../assets/icons/notepad.svg" class="gridImg" (click)="openAddFoodCat()">
+          <div class="textTitle h5">ປະເພດອາຫານ</div>
+        </div>
+        <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
+          <img src="../../../assets/icons/groceries.svg" class="gridImg" (click)="openExtendedFoodType()">
+          <div class="textTitle h5">ອາຫານຍ່ອຍ</div>
+        </div>
+        <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
+          <img src="../../../assets/icons/rectangles.svg" class="gridImg" (click)="openTicketMainternance()">
+          <div class="textTitle h5">Ticket</div>
+        </div>
+        <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
+          <img src="../../../assets/icons/payment-method.svg" class="gridImg" (click)="openPaymentType()">
+          <div class="textTitle h5">Payment Types</div>
+        </div>
+        <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
+          <img src="../../../assets/icons/bank.svg" class="gridImg" (click)="openBanking()">
+          <div class="textTitle h5">ທະນາຄານ</div>
+        </div>
+        <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
+          <img src="../../../assets/images/icons/265667.svg" class="gridImg" (click)="openAddUser()">
+          <div class="textTitle h5">Users</div>
+        </div>
+        <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
+          <img src="../../../assets/icons/store.svg" class="gridImg" (click)="openVendors()">
+          <div class="textTitle h5">Vendor</div>
+        </div>
+        <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
+          <img src="../../../assets/icons/weight.svg" class="gridImg" (click)="openUnit()">
+          <div class="textTitle h5">Unit</div>
+        </div>
+        <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
+          <img src="../../../assets/icons/app.svg" class="gridImg" (click)="openStaffBenefit()">
+          <div class="textTitle h5">Staff Benefits</div>
+        </div>
       </div>
-      <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
-        <img src="../../../assets/icons/groceries.svg" class="gridImg" (click)="openExtendedFoodType()">
-        <div class="textTitle h5">ອາຫານຍ່ອຍ</div>
-      </div>
-      <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
-        <img src="../../../assets/icons/rectangles.svg" class="gridImg" (click)="openTicketMainternance()">
-        <div class="textTitle h5">Ticket</div>
-      </div>
-      <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
-        <img src="../../../assets/icons/payment-method.svg" class="gridImg" (click)="openPaymentType()">
-        <div class="textTitle h5">Payment Types</div>
-      </div>
-      <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
-        <img src="../../../assets/icons/bank.svg" class="gridImg" (click)="openBanking()">
-        <div class="textTitle h5">ທະນາຄານ</div>
-      </div>
-      <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
-        <img src="../../../assets/images/icons/265667.svg" class="gridImg" (click)="openAddUser()">
-        <div class="textTitle h5">Users</div>
-      </div>
-      <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
-        <img src="../../../assets/icons/store.svg" class="gridImg" (click)="openVendors()">
-        <div class="textTitle h5">Vendor</div>
-      </div>
-      <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
-        <img src="../../../assets/icons/weight.svg" class="gridImg" (click)="openUnit()">
-        <div class="textTitle h5">Unit</div>
-      </div>
-      <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
-        <img src="../../../assets/icons/app.svg" class="gridImg" (click)="openStaffBenefit()">
-        <div class="textTitle h5">Staff Benefits</div>
-      </div>
-    </div>
+    </ng-container>
+
+
+
   </mat-card-content>
 </mat-card>

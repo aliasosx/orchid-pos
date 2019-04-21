@@ -29,10 +29,11 @@ export class SettingsComponent implements OnInit {
     } else {
       router.navigateByUrl('login');
     }
-
   }
   private user: Observable<firebase.User>;
   username_info: any;
+
+  roleId = JSON.parse(localStorage.getItem('usrObj')).roleId;
 
   ngOnInit() {
   }

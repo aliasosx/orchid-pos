@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
   summaryReportsKitchens: any;
   summaryReportsPayments: any;
   summaryReportsUsers: any;
-
+  roleId = JSON.parse(localStorage.getItem('usrObj')).roleId;
   ngOnInit() {
     this.loadDiaryTransactionsAmount();
   }

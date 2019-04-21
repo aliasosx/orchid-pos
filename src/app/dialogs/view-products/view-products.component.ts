@@ -1,12 +1,7 @@
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Vendor } from 'src/app/interfaces/vendor';
-import { ProductType } from 'src/app/interfaces/productType';
-import { Product } from 'src/app/interfaces/product';
-import { Unit } from 'src/app/interfaces/unit';
-import { Observable } from 'rxjs';
+import { AngularFirestore, } from 'angularfire2/firestore';
 import { FormGroup, FormControl } from '@angular/forms';
 import * as uuid from 'uuid';
 @Component({
@@ -44,7 +39,7 @@ export class ViewProductsComponent implements OnInit {
       currentQuantity: new FormControl(0),
       categoryId: new FormControl(),
       currencyId: new FormControl(),
-      vendorId: new FormControl(),
+      supplierId: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       foodId: new FormControl(),
       expireDate: new FormControl(),
@@ -107,7 +102,7 @@ export class ViewProductsComponent implements OnInit {
     });
   }
   loadSuppliers() {
-    this.be.getVendor().then(c => {
+    this.be.getSuppliers().then(c => {
       c.subscribe(cat => {
         this.suppliers = cat;
       });

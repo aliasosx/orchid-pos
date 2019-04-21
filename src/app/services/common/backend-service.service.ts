@@ -106,7 +106,9 @@ export class BackendServiceService {
   async getVendor() {
     return this._http.get(this.backendService + 'vendors', this.httpOptions);
   }
-
+  async getSuppliers() {
+    return this._http.get(this.backendService + 'suppliers', this.httpOptions);
+  }
   async createVendor(vendors) {
     return this._http.post(this.backendService + 'vendors', vendors, this.httpOptions);
   }

@@ -155,7 +155,7 @@ import { CancelRemarksComponent } from './dialogs/cancel-remarks/cancel-remarks.
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,

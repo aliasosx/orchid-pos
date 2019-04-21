@@ -61,7 +61,7 @@ export class AddProductsComponent implements OnInit {
       currentQuantity: new FormControl(0),
       categoryId: new FormControl(),
       currencyId: new FormControl(),
-      vendorId: new FormControl(),
+      supplierId: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       foodId: new FormControl(),
       expireDate: new FormControl(),
@@ -119,7 +119,7 @@ export class AddProductsComponent implements OnInit {
     });
   }
   loadSuppliers() {
-    this.be.getVendor().then(c => {
+    this.be.getSuppliers().then(c => {
       c.subscribe(cat => {
         this.suppliers = cat;
       });

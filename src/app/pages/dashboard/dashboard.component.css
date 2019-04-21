@@ -56,3 +56,7 @@ body{
 .f-right {
   float: right;
 }
+.card-header {
+  background: black;
+  color: white;
+}

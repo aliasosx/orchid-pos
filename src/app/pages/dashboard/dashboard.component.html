@@ -85,8 +85,78 @@
           </div>
         </div>
       </ng-container>
+      <ng-container *ngIf="roleId > 1">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center display-4" style="color: rgb(51, 50, 49)">
+              Welcome to Letter P restaurant
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="row">
+      <div class="col col-md-4 col-sm-12">
+        <div class="card">
+          <div class="card-header text-center">
+            <span class="text-center h4">ແຈ້ງການ</span>
+          </div>
+          <div class="card-body">
+            <ul class="list-group" *ngFor="let notice of notices| async">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col col-md-2">ເນື້ອໃນ</div>
+                  <div class="col col-md-10">{{ notice.message }}</div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col col-md-2">ໂດຍ :</div>
+                  <div class="col col-md-10">{{ notice.noticeBy }}</div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col col-md-2">ເວລາ :</div>
+                  <div class="col col-md-10">{{ notice.noticeDate.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col col-md-4 col-sm-12">
+        <div class="card">
+          <div class="card-header text-center">
+            <span class="text-center h4">ຂໍ້ຄວາມ</span>
+          </div>
+          <div class="list-group">
+            <div class="card-body" style="max-height: 200px;overflow: auto;">
+              <a class="list-group-item list-group-item-action flex-column align-items-start"
+                *ngFor="let message of messages | async">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ message.userName }}</h5>
+                  <small class="text-muted">{{ message.dateTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</small>
+                </div>
+                <p class="mb-1">{{ message.message }}</p>
+                <small class="text-muted">Letter'P Private messaging</small>
+              </a>
+            </div>
+          </div>
+          <div class="card-footer">
+            <form [formGroup]="messageForm">
+              <div class="form-group">
+                <label for="formGroupExampleInput">Message</label>
+                <input type="text" autocomplete="off" class="form-control" id="formGroupExampleInput"
+                  placeholder="Type a message and enter to send" formControlName="message" (keyup)="sendMsg($event)">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col col-md-4 col-sm-12">
 
-
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

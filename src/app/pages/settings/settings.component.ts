@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { UsersComponent } from 'src/app/dialogs/users/users.component';
 import { StaffBenefitComponent } from 'src/app/dialogs/staff-benefit/staff-benefit.component';
 import { UnitsComponent } from 'src/app/dialogs/units/units.component';
+import { CouponListComponent } from 'src/app/dialogs/coupon-list/coupon-list.component';
 
 @Component({
   selector: 'app-settings',
@@ -73,8 +74,8 @@ export class SettingsComponent implements OnInit {
     });
   }
   openCoupon() {
-    const dialogRef = this.dialog.open(CouponViewComponent, {
-      width: '600px'
+    const dialogRef = this.dialog.open(CouponListComponent, {
+      width: '900px',
     });
   }
 }

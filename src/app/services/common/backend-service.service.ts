@@ -275,6 +275,33 @@ export class BackendServiceService {
     return this._http.get(this.backendService + 'dashboardUsersSummary', this.httpOptions);
   }
 
+  // Coupon
+  async getCouponById(id) {
+    return this._http.get(this.backendService + 'discountById/' + id, this.httpOptions);
+  }
+  async getCoupons() {
+    return this._http.get(this.backendService + 'discounts', this.httpOptions);
+  }
+  async getCouponsById(id) {
+    return this._http.get(this.backendService + 'discounts/' + id, this.httpOptions);
+  }
+
+  async getCouponsTranx() {
+    return this._http.get(this.backendService + 'discountDetails', this.httpOptions);
+  }
+
+  async createCoupon(coupon) {
+    return this._http.post(this.backendService + 'discount', coupon, this.httpOptions);
+  }
+
+  async updateCoupon(id, coupon) {
+    return this._http.put(this.backendService + 'discount/' + id, coupon, this.httpOptions);
+  }
+
+  async createCouponTranx(couponTranx) {
+    return this._http.post(this.backendService + 'discountTranx', couponTranx, this.httpOptions);
+  }
+
   // Purchase
   async createPurchaseBilling(purchase) {
     return this._http.post(this.backendService + 'purchases', purchase, this.httpOptions);

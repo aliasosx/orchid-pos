@@ -3,17 +3,14 @@
     <mat-card-content>
       <div class="row">
         <div class="col col-md-7">
-
           <div class="col col-md-12">
-
             <input type="text" class="form-control" placeholder="ຄົ້ນຫາ" [(ngModel)]="searchFoodName">
-
           </div>
 
           <mat-tab-group class="mat-tabBody" (selectedTabChange)="loadFoodPage($event)">
             <mat-tab label="ທັງໝົດ">
               <div class="row main-container">
-                <div class="col col-sm-12 col-md-3 shadow item text-center"
+                <div class="col col-sm-12 col-md-3 shadow item text-center" (click)="foodChoosed(food)"
                   *ngFor="let food of foods |foodPipe: searchFoodName">
                   <div class="pricetag">
                     <span class="h5" *ngIf="food.isParent === 0; else choosePrice">{{ food.price | number}}</span>
@@ -21,10 +18,9 @@
                       <span class="h4" style="color: orange;">ເລືອກ</span>
                     </ng-template>
                   </div>
-                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail"
-                    (click)="foodChoosed(food)">
+                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail">
                   <div class="title align-middle">
-                    <span class="h6 font-weight-light" (click)="foodChoosed(food)">{{ food.food_name }}</span>
+                    <span class="h6 font-weight-light">{{ food.food_name }}</span>
                   </div>
                 </div>
               </div>
@@ -38,10 +34,9 @@
                       <span class="h4" style="color: orange;">ເລືອກ</span>
                     </ng-template>
                   </div>
-                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail"
-                    (click)="foodChoosed(food)">
+                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail">
                   <div class="title align-middle">
-                    <span class="h6 font-weight-light" (click)="foodChoosed(food)">{{ food.food_name }}</span>
+                    <span class="h6 font-weight-light">{{ food.food_name }}</span>
                   </div>
                 </div>
               </div>

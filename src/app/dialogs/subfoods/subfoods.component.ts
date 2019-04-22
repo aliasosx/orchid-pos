@@ -5,8 +5,6 @@ import { Food } from 'src/app/interfaces/food';
 import { Observable } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
-import { map } from 'rxjs/operators';
-import { Subfood } from 'src/app/interfaces/subfood';
 
 @Component({
   selector: 'app-subfoods',
@@ -93,10 +91,9 @@ export class SubfoodsComponent implements OnInit {
     });
   }
 
-  addFood() {
+  async addFood() {
     if (this.subFoodsForm.valid && this.pre_subfood) {
       this.btnDisable = true;
-      // this.subFoodsForm.get('total').setValue(this.subFoodsForm.get('price').value * this.subFoodsForm.get('quantity').value);
       this.dialogRef.close(this.pre_subfood);
     } else {
       this.snackbar.open('Data incomplete please check!', 'Fails', { duration: 1000, verticalPosition: 'top' });

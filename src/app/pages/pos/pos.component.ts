@@ -130,7 +130,7 @@ export class PosComponent implements OnInit {
     });
   }
   foodChoosed(food) {
-    console.log(food);
+    // console.log(food);
     if (food.isParent === 1) {
       this.openSubFood(food);
     } else {

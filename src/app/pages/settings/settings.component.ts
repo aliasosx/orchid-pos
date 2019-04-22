@@ -1,3 +1,4 @@
+import { CouponViewComponent } from './../../dialogs/coupon-view/coupon-view.component';
 import { BankingComponent } from './../../dialogs/banking/banking.component';
 import { AddFoodCategoryComponent } from './../../dialogs/add-food-category/add-food-category.component';
 import { MatDialog } from '@angular/material';
@@ -68,6 +69,11 @@ export class SettingsComponent implements OnInit {
   }
   openUnit() {
     const dialogRef = this.dialog.open(UnitsComponent, {
+      width: '600px'
+    });
+  }
+  openCoupon() {
+    const dialogRef = this.dialog.open(CouponViewComponent, {
       width: '600px'
     });
   }

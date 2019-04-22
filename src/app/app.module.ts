@@ -84,6 +84,7 @@ import { ApprovedUsersComponent } from './dialogs/approved-users/approved-users.
 import { AddSubFoodTranxComponent } from './dialogs/add-sub-food-tranx/add-sub-food-tranx.component';
 import { ScreenLoadingComponent } from './loadings/screen-loading/screen-loading.component';
 import { CancelRemarksComponent } from './dialogs/cancel-remarks/cancel-remarks.component';
+import { CouponViewComponent } from './dialogs/coupon-view/coupon-view.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +148,7 @@ import { CancelRemarksComponent } from './dialogs/cancel-remarks/cancel-remarks.
     AddSubFoodTranxComponent,
     ScreenLoadingComponent,
     CancelRemarksComponent,
+    CouponViewComponent,
 
 
   ],
@@ -202,6 +204,7 @@ import { CancelRemarksComponent } from './dialogs/cancel-remarks/cancel-remarks.
     AddSubFoodTranxComponent,
     ScreenLoadingComponent,
     CancelRemarksComponent,
+    CouponViewComponent,
   ]
   ,
   providers: [

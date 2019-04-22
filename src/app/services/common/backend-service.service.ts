@@ -336,5 +336,9 @@ export class BackendServiceService {
     return this._http.delete(this.backendService + 'subfoods/' + tranxFoodId + '/' + subFoodId + '/' + foodId, this.httpOptions);
   }
 
+  // firebase call
+  async getBanks() {
+    return this._http.get(this.backendService + 'getbanks', this.httpOptions);
+  }
 }
 

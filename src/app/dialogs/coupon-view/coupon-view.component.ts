@@ -3,6 +3,7 @@ import { BackendServiceService } from './../../services/common/backend-service.s
 import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { copyStyles } from '@angular/animations/browser/src/util';
 
 @Component({
   selector: 'app-coupon-view',
@@ -127,7 +128,12 @@ export class CouponViewComponent implements OnInit {
     }
   }
   closeDialog() {
-    this.dialogRef.close('done');
+    // this.dialogRef.close('done');
+    this.be.getBanks().then(rsp => {
+      rsp.subscribe(r => {
+        console.log(r);
+      });
+    });
   }
   loadUpdateData() {
     console.log(this.data);

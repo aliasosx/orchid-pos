@@ -285,10 +285,28 @@ export class BackendServiceService {
   async getCouponsById(id) {
     return this._http.get(this.backendService + 'discounts/' + id, this.httpOptions);
   }
-
+  async getDiscountTranxByDiscountId(discountId) {
+    return this._http.get(this.backendService + 'discountAllTranxByDiscountId/' + discountId, this.httpOptions);
+  }
   async getCouponsTranx() {
     return this._http.get(this.backendService + 'discountDetails', this.httpOptions);
   }
+  async getOneCouponById(id) {
+    return this._http.get(this.backendService + 'discountDetailById/' + id, this.httpOptions);
+  }
+
+  async updateCouponTranx(id, couponTranx) {
+    return this._http.put(this.backendService + 'discountTranx/' + id, couponTranx, this.httpOptions);
+  }
+
+  async updateCouponTranxValid(id, couponTranx) {
+    return this._http.put(this.backendService + 'discountTranxValid/' + id, couponTranx, this.httpOptions);
+  }
+
+  async updateCouponTranxEnable(id, couponTranx) {
+    return this._http.put(this.backendService + 'discountTranxEnable/' + id, couponTranx, this.httpOptions);
+  }
+
 
   async createCoupon(coupon) {
     return this._http.post(this.backendService + 'discount', coupon, this.httpOptions);

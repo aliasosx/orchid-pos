@@ -15,7 +15,7 @@ export class CouponViewComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
   constructor(private be: BackendServiceService, private dialogRef: MatDialogRef<CouponViewComponent>, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data) { }
   couponForm: FormGroup;
-  couponDetails: FormGroup;
+  couponDetailsForm: FormGroup;
 
   updateFlag = 'add';
   btnText = 'Create';
@@ -25,8 +25,7 @@ export class CouponViewComponent implements OnInit {
   currencies: any;
 
   subFoodsShow = 'hidden';
-  displayCoupon: any;
-
+  displayCoupons: any;
 
   ngOnInit() {
     this.couponForm = new FormGroup({
@@ -43,7 +42,7 @@ export class CouponViewComponent implements OnInit {
       updatedAt: new FormControl(),
     });
 
-    this.couponDetails = new FormGroup({
+    this.couponDetailsForm = new FormGroup({
       id: new FormControl(),
       discountId: new FormControl(),
       foodId: new FormControl(),
@@ -102,7 +101,7 @@ export class CouponViewComponent implements OnInit {
   loadCouponList(id) {
     this.be.getCouponById(id).then(rsp => {
       rsp.subscribe(coupons => {
-        this.displayCoupon = coupons;
+        this.displayCoupons = coupons;
       });
     });
   }
@@ -111,7 +110,7 @@ export class CouponViewComponent implements OnInit {
       this.be.createCoupon(this.couponForm.value).then(rsp => {
         rsp.subscribe(rsp_coupon => {
           console.log(rsp_coupon);
-          this.couponDetails.get('discountId').setValue(rsp_coupon['id']);
+          this.couponDetailsForm.get('discountId').setValue(rsp_coupon['id']);
         });
       });
     } else if (this.couponForm.valid && this.updateFlag === 'view') {
@@ -119,12 +118,26 @@ export class CouponViewComponent implements OnInit {
     }
   }
   createCouponDetail() {
-    if (this.couponDetails.valid) {
-      this.be.createCouponTranx(this.couponDetails.value).then(rsp => {
-        rsp.subscribe(couponDetail => {
-          this.loadCouponList(this.couponDetails['discountId']);
+    // console.log(this.updateFlag);
+
+    if (this.couponDetailsForm.valid) {
+      if (this.updateFlag === 'add') {
+        this.be.createCouponTranx(this.couponDetailsForm.value).then(rsp => {
+          rsp.subscribe(couponDetail => {
+            this.loadCouponList(this.couponDetailsForm['discountId']);
+          });
         });
-      });
+      } else if (this.updateFlag === 'view') {
+        this.be.updateCouponTranx(this.couponDetailsForm.get('id').value, this.couponDetailsForm.value).then(rsp => {
+          rsp.subscribe(couponTranx => {
+            this.couponDetailsForm.reset();
+            this.loadUpdateData();
+          });
+        });
+      }
+    } else {
+      // console.log(this.couponDetailsForm);
+      this.snackBar.open('Form not complete!!', 'OK', { duration: 1000 });
     }
   }
   closeDialog() {
@@ -139,8 +152,20 @@ export class CouponViewComponent implements OnInit {
     console.log(this.data);
     if (this.data) {
       this.loadCouponById(this.data);
+      this.loadDisplayCoupon();
     }
   }
+
+  loadCouponDetailsUpdate() {
+    this.be.getDiscountTranxByDiscountId(this.data).then(rsp => {
+      rsp.subscribe(discountTranx => {
+        if (discountTranx) {
+          this.couponDetailsForm.setValue(discountTranx[0]);
+        }
+      });
+    });
+  }
+
   loadCouponById(id) {
     this.be.getCouponsById(id).then(rsp => {
       rsp.subscribe(coupon => {
@@ -158,7 +183,7 @@ export class CouponViewComponent implements OnInit {
         rsp.subscribe(r => {
           if (r[0] === 1) {
             this.snackBar.open('Update done', 'OK', { duration: 1000 });
-            this.loadCouponTranx();
+            this.loadCouponDetailsUpdate();
           }
         });
       });
@@ -166,10 +191,65 @@ export class CouponViewComponent implements OnInit {
       this.snackBar.open('Form invalid', 'OK', { duration: 1000 });
     }
   }
-  loadCouponTranx() {
-    this.be.getCouponsTranx().then(rsp => {
+
+  loadDisplayCoupon() {
+    this.be.getDiscountTranxByDiscountId(this.data).then(rsp => {
+      rsp.subscribe(discountTranxs => {
+        console.log(discountTranxs);
+        this.displayCoupons = discountTranxs;
+      });
+    });
+  }
+  loadCouponUpdate(couponId) {
+    if (couponId) {
+      this.be.getOneCouponById(couponId).then(rsp => {
+        rsp.subscribe(coupontranxs => {
+          this.couponDetailsForm.setValue(coupontranxs);
+        });
+      });
+    }
+  }
+
+
+  toggleEnable(event) {
+    const enable = !event;
+
+    let _enabled;
+    if (enable === false) {
+      _enabled = 0;
+    } else if (enable === true) {
+      _enabled = 1;
+    }
+
+    const couponTranx = {
+      enabled: _enabled
+    };
+    this.be.updateCouponTranxEnable(this.data, couponTranx).then(rsp => {
       rsp.subscribe(r => {
-        this.couponDetails.setValue(r);
+
+        this.loadUpdateData();
+        this.snackBar.open('Updated', 'OK', { duration: 1000 });
+      });
+    });
+  }
+  toggleValid(event) {
+    const enable = !event;
+    let _enabled;
+    if (enable === false) {
+      _enabled = 0;
+    } else if (enable === true) {
+      _enabled = 1;
+    }
+
+    const couponTranx = {
+      discount_valid: _enabled
+    };
+
+    this.be.updateCouponTranxValid(this.data, couponTranx).then(rsp => {
+      rsp.subscribe(r => {
+
+        this.loadUpdateData();
+        this.snackBar.open('Updated', 'OK', { duration: 1000 });
       });
     });
   }

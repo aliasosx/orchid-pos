@@ -22,12 +22,22 @@
         <td class="text-center">{{ coupon.discount_valid_from | date: 'dd-MMM-yyyy' }}</td>
         <td class="text-center">{{ coupon.discount_valid_thru | date: 'dd-MMM-yyyy' }}</td>
         <td class="text-center">{{ coupon.discount_limit_time }}</td>
-        <td class="text-center" *ngIf="coupon.discount_valid">
+        <td class="text-center" *ngIf="coupon.discount_valid; notValid">
           <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;">
         </td>
-        <td class="text-center" *ngIf="coupon.enabled">
+        <ng-template #notValid>
+          <td class="text-center">
+            <img src="../../../assets/icons/baseline-remove-24px.svg" style="max-width: 20px;cursor: pointer;">
+          </td>
+        </ng-template>
+        <td class="text-center" *ngIf="coupon.enabled; else notEnable">
           <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;">
         </td>
+        <ng-template #notEnable>
+          <td class="text-center">
+            <img src="../../../assets/icons/baseline-remove-24px.svg" style="max-width: 20px;cursor: pointer;">
+          </td>
+        </ng-template>
       </tr>
     </tbody>
   </table>

@@ -42,7 +42,7 @@
     <mat-divider class="mt-1 mb-3"></mat-divider>
   </mat-step>
   <mat-step [stepControl]="couponForm">
-    <form [formGroup]="couponDetails">
+    <form [formGroup]="couponDetailsForm">
       <ng-template matStepLabel>Coupon details</ng-template>
       <div class="form-row">
         <div class="form-group col-md-6">
@@ -59,14 +59,14 @@
         </div>
         <div class="form-group col-md-6">
           <label for="subfoodId">Subfood name</label>
-          <select class="form-control" id="subfoodId" formControlName="subfoodId" required>
+          <select class="form-control" id="subfoodId" formControlName="subfoodId">
             <option value="-1" disabled>------</option>
             <option value="{{ subFood.sfId }}" *ngFor="let subFood of subFoods">{{ subFood.subFoodName }}</option>
           </select> </div>
         <div class="form-group col-md-6">
           <label for="discount">Discount Amount</label>
-          <input type="number" class="form-control text-right" id="discount" placeholder="Subfood name"
-            formControlName="discount" required>
+          <input type="number" class="form-control text-right" id="discount" placeholder="Discount amount"
+            formControlName="discount">
         </div>
         <div class="form-group col-md-6">
           <label for="currencyId">Currency</label>
@@ -86,16 +86,50 @@
     </form>
     <mat-divider class="mt-1 mb-3"></mat-divider>
     <div class="row">
-      <table class="table">
-        <thead>
-          <th>Coupon code</th>
-          <th>Food name</th>
-          <th>Discount</th>
-          <th>Valid From</th>
-          <th>Valid Thru</th>
-          <th>Valid</th>
-          <th>Enable</th>
+      <table class="table table table-bordered">
+        <thead class="thead-dark">
+          <th class="text-center">Coupon code</th>
+          <th class="text-center">Food name</th>
+          <th class="text-center">Discount</th>
+          <th class="text-center">Valid From</th>
+          <th class="text-center">Valid Thru</th>
+          <th class="text-center">Valid</th>
+          <th class="text-center">Enable</th>
         </thead>
+
+        <tbody>
+          <tr *ngFor="let displayCoupon of displayCoupons">
+            <td class="text-left" style="cursor: pointer" (click)="loadCouponUpdate(displayCoupon.dId)">
+              {{ displayCoupon.discount_code }}</td>
+            <td class="text-left">{{ displayCoupon.food_name }}</td>
+            <td class="text-right">{{ displayCoupon.discount | number }}</td>
+            <td class="text-center">{{ displayCoupon.discount_valid_from |date: 'dd-MMM-yyyy'}}</td>
+            <td class="text-center">{{ displayCoupon.discount_valid_thru |date: 'dd-MMM-yyyy' }}</td>
+            <td class="text-center" *ngIf="displayCoupon.discount_valid; else noValid">
+              <img src="../../../assets/icons/Check_green_icon.svg.png"
+                (click)="toggleValid(displayCoupon.discount_valid)" style="max-width: 20px;cursor: pointer;">
+            </td>
+
+            <ng-template #noValid>
+              <td class="text-center">
+                <img src="../../../assets/icons/baseline-remove-24px.svg"
+                  (click)="toggleValid(displayCoupon.discount_valid)" style="max-width: 20px;cursor: pointer;">
+              </td>
+            </ng-template>
+
+            <td class="text-center" *ngIf="displayCoupon.enabled; else unEnable">
+              <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;"
+                (click)="toggleEnable(displayCoupon.enabled)">
+            </td>
+            <ng-template #unEnable>
+              <td class="text-center">
+                <img src="../../../assets/icons/baseline-remove-24px.svg"
+                  (click)="toggleEnable(displayCoupon.discount_valid)" style="max-width: 20px;cursor: pointer;">
+              </td>
+            </ng-template>
+
+          </tr>
+        </tbody>
       </table>
     </div>
   </mat-step>

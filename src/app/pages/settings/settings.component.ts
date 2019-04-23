@@ -75,7 +75,7 @@ export class SettingsComponent implements OnInit {
   }
   openCoupon() {
     const dialogRef = this.dialog.open(CouponListComponent, {
-      width: '900px',
+      width: '1024px',
     });
   }
 }

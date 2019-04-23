@@ -1,7 +1,4 @@
-import { DatePipe } from '@angular/common';
-import { CashLoad } from 'src/app/interfaces/cashLoad';
 import { AddQuantityComponent } from './../../dialogs/add-quantity/add-quantity.component';
-import { map } from 'rxjs/operators';
 import { Food } from 'src/app/interfaces/food';
 import { Observable } from 'rxjs';
 import { FoodCategory } from './../../interfaces/foodCategory';
@@ -35,7 +32,7 @@ export class PosComponent implements OnInit {
     });
     if (localStorage.getItem('token')) {
       this.username_info = JSON.parse(localStorage.getItem('usrObj'));
-      this.loadFoodPage({ index: 0 });
+      this.loadFoodPage();
     } else {
       router.navigateByUrl('login');
     }
@@ -70,12 +67,14 @@ export class PosComponent implements OnInit {
   foods: any;
 
   searchFoodName: any;
+  selectedCate: any;
+
 
   ngOnInit() {
 
     if (this.username) {
       this.loadFoodTypes();
-      this.loadFoodPage({ index: 0 });
+      this.loadFoodPage();
       this.totalCalculation();
       if (localStorage.getItem('cart')) {
         this.virtualCart = JSON.parse(localStorage.getItem('cart'));
@@ -94,22 +93,12 @@ export class PosComponent implements OnInit {
     });
   }
 
-  loadFoodPage(page) {
-    if (page.index === 0) {
-      this.backendServices.getFoodDisplay().then(foods => {
-        foods.subscribe(fd => {
-          this.foods = fd;
-        });
+  loadFoodPage() {
+    this.backendServices.getFoodDisplay().then(foods => {
+      foods.subscribe(fd => {
+        this.foods = fd;
       });
-    } else {
-
-      this.backendServices.getFoodDisplayById(page.tab.textLabel).then(foods => {
-        foods.subscribe(fd => {
-          this.foods = fd;
-        });
-      });
-
-    }
+    });
   }
 
   openSubFood(food) {
@@ -355,5 +344,8 @@ export class PosComponent implements OnInit {
       });
     });
 
+  }
+  onSelect(selected) {
+    console.log(this.selectedCate);
   }
 }

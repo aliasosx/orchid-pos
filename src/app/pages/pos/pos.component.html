@@ -3,10 +3,57 @@
     <mat-card-content>
       <div class="row">
         <div class="col col-md-7">
-          <div class="col col-md-12">
-            <input type="text" class="form-control" placeholder="ຄົ້ນຫາ" [(ngModel)]="searchFoodName">
+          <div class="row mb-2">
+            <div class="col col-md-6">
+              <input type="text" class="form-control" placeholder="ຄົ້ນຫາ ຕາມຊື່ອາຫານ" [(ngModel)]="searchFoodName">
+            </div>
+            <div class="col col-md-6">
+              <select id="foodCategories" class="form-control" [(ngModel)]="selectedCate"
+                (ngModelChange)="onSelect(selectedCate)" [selectedIndex]=0>
+                <option value="0">ທັງໝົດ</option>
+                <option value="{{ foodCategory.id }}" *ngFor="let foodCategory of foodTypes">
+                  {{ foodCategory.foodTypeName }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <mat-divider class="mb-2"></mat-divider>
+          <div class="row">
+            <div class="row main-container">
+              <div class="col col-sm-12 col-md-3 shadow item text-center"
+                *ngFor="let food of foods |foodPipe: searchFoodName |foodCategoryPipe: selectedCate"
+                (click)="foodChoosed(food)">
+                <ng-container *ngIf="food.foodTypeId==21">
+                  <div class="promotion-div">
+                    <img src="../../../assets/icons/promo-tag.png"
+                      style="max-width: 100px;position: absolute;left: 1px;">
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="food.tag">
+                  <div class="bestSeller-div">
+                    <img src="../../../assets/icons/Best-Seller-PNG-Clipart.png"
+                      style="max-width: 100px;position: absolute;left: 1px;">
+                  </div>
+                </ng-container>
+
+
+                <div class="pricetag">
+                  <span class="h5" *ngIf="food.isParent === 0; else choosePrice">{{ food.price | number}}</span>
+                  <ng-template #choosePrice>
+                    <span class="h4" style="color: rgb(255, 94, 0);">ເລືອກ</span>
+                  </ng-template>
+                </div>
+                <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail">
+                <div class="title ">
+                  <div class="align-bottom">
+                    <span class="font-weight-light lead ">{{ food.food_name }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
+          <!--
           <mat-tab-group class="mat-tabBody" (selectedTabChange)="loadFoodPage($event)">
             <mat-tab label="ທັງໝົດ">
               <div class="row main-container">
@@ -42,6 +89,7 @@
               </div>
             </mat-tab>
           </mat-tab-group>
+          -->
         </div>
         <div class="col col-md-5">
           <mat-card class="mainPaymentDiv">

@@ -2,7 +2,7 @@
   <mat-card class="col col-md-12">
     <mat-card-content>
       <div class="row">
-        <div class="col col-md-7">
+        <div class="col col-md-7 col-sm-12">
           <div class="row mb-2">
             <div class="col col-md-6">
               <input type="text" class="form-control" placeholder="ຄົ້ນຫາ ຕາມຊື່ອາຫານ" [(ngModel)]="searchFoodName">
@@ -52,46 +52,8 @@
               </div>
             </div>
           </div>
-
-          <!--
-          <mat-tab-group class="mat-tabBody" (selectedTabChange)="loadFoodPage($event)">
-            <mat-tab label="ທັງໝົດ">
-              <div class="row main-container">
-                <div class="col col-sm-12 col-md-3 shadow item text-center" (click)="foodChoosed(food)"
-                  *ngFor="let food of foods |foodPipe: searchFoodName">
-                  <div class="pricetag">
-                    <span class="h5" *ngIf="food.isParent === 0; else choosePrice">{{ food.price | number}}</span>
-                    <ng-template #choosePrice>
-                      <span class="h4" style="color: orange;">ເລືອກ</span>
-                    </ng-template>
-                  </div>
-                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail">
-                  <div class="title align-middle">
-                    <span class="h6 font-weight-light">{{ food.food_name }}</span>
-                  </div>
-                </div>
-              </div>
-            </mat-tab>
-            <mat-tab *ngFor="let foodCategory of foodTypes " label="{{ foodCategory.foodTypeName  }}">
-              <div class="row main-container">
-                <div class="col col-sm-12 col-md-3 shadow item text-center" *ngFor="let food of foods ">
-                  <div class="pricetag">
-                    <span class="h5" *ngIf="food.isParent === 0; else choosePrice">{{ food.price | number}}</span>
-                    <ng-template #choosePrice>
-                      <span class="h4" style="color: orange;">ເລືອກ</span>
-                    </ng-template>
-                  </div>
-                  <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail">
-                  <div class="title align-middle">
-                    <span class="h6 font-weight-light">{{ food.food_name }}</span>
-                  </div>
-                </div>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
-          -->
         </div>
-        <div class="col col-md-5">
+        <div class="col col-md-5 col-sm-12">
           <mat-card class="mainPaymentDiv">
             <mat-card-title>ອາຫານທີ່ເລຶອກໄວ້ </mat-card-title>
             <mat-divider></mat-divider>

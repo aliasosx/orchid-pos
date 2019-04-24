@@ -46,6 +46,7 @@ export class ViewFoodComponent implements OnInit {
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
       note: new FormControl(),
+      tag: new FormControl(),
     });
     // Load startup
 

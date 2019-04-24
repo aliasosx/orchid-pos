@@ -87,6 +87,7 @@ import { CancelRemarksComponent } from './dialogs/cancel-remarks/cancel-remarks.
 import { CouponViewComponent } from './dialogs/coupon-view/coupon-view.component';
 import { CouponListComponent } from './dialogs/coupon-list/coupon-list.component';
 import { FoodCategoryPipePipe } from './pipes/food-category-pipe.pipe';
+import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 
 @NgModule({
   declarations: [
@@ -153,6 +154,7 @@ import { FoodCategoryPipePipe } from './pipes/food-category-pipe.pipe';
     CouponViewComponent,
     CouponListComponent,
     FoodCategoryPipePipe,
+    TestPagesComponent,
 
 
   ],

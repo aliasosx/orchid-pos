@@ -39,6 +39,11 @@ export class DashboardComponent implements OnInit {
   summaryReportsKitchens: any;
   summaryReportsPayments: any;
   summaryReportsUsers: any;
+
+  summaryReports_letterp: any;
+  summaryReports_kitchen_letterp: any;
+
+
   roleId = JSON.parse(localStorage.getItem('usrObj')).roleId;
 
   noticeRef: AngularFirestoreCollection<Notice>;
@@ -109,6 +114,7 @@ export class DashboardComponent implements OnInit {
         this.summaryReportsUsers = r;
       });
     });
+    this.loadOldReportSummary();
   }
   sendMsg(event) {
     if (event.key === 'Enter') {
@@ -119,8 +125,15 @@ export class DashboardComponent implements OnInit {
           console.log('Message send');
         });
       }
-
     }
+  }
+  loadOldReportSummary() {
+    this.be.getOldSummaryReport().then(rsp => {
+      rsp.subscribe(r => {
+        this.summaryReports_letterp = r[0].summaryReports;
+        this.summaryReports_kitchen_letterp = r[0].summaryReportsKitchen;
+      });
+    });
   }
 
 }

@@ -275,6 +275,14 @@ export class BackendServiceService {
     return this._http.get(this.backendService + 'dashboardUsersSummary', this.httpOptions);
   }
 
+  // Old system
+  async getOldSummaryReport() {
+    return this._http.get(this.backendService + 'letterpReportTotalRevAtCurrent', this.httpOptions);
+  }
+
+
+  // End Reports
+
   // Coupon
   async getCouponById(id) {
     return this._http.get(this.backendService + 'discountById/' + id, this.httpOptions);

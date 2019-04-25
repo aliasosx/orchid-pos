@@ -1,3 +1,4 @@
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TestPagesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private be: BackendServiceService) { }
 
   ngOnInit() {
+  }
+  testCommand() {
+    this.be.getBanks().then(rsp => {
+      rsp.subscribe(r => {
+        console.log(r);
+      });
+    });
   }
 
 }

@@ -154,8 +154,8 @@
                 <br />
                 <ng-container *ngFor=" let foods of summaryReports_Foods_letterp; let i = index">
                   <div class="row">
-                    <div class="col col-md-6 h6 text-left">{{ foods.food_name }}</div>
-                    <div class="col col-md-1 h6 text-right">{{ foods.quantity | number }}</div>
+                    <div class="col col-md-5 h6 text-left">{{ foods.food_name }}</div>
+                    <div class="col col-md-2 h6 text-right">{{ foods.quantity | number }}</div>
                     <div class="col col-md-5 h6 text-right">{{ foods.total_price |number }} ກິບ</div>
                   </div>
                 </ng-container>

@@ -42,7 +42,8 @@ export class DashboardComponent implements OnInit {
 
   summaryReports_letterp: any;
   summaryReports_kitchen_letterp: any;
-
+  summaryReports_staff_letterp: any;
+  summaryReports_Foods_letterp: any;
 
   roleId = JSON.parse(localStorage.getItem('usrObj')).roleId;
 
@@ -132,6 +133,8 @@ export class DashboardComponent implements OnInit {
       rsp.subscribe(r => {
         this.summaryReports_letterp = r[0].summaryReports;
         this.summaryReports_kitchen_letterp = r[0].summaryReportsKitchen;
+        this.summaryReports_staff_letterp = r[0].summaryReportsStaff;
+        this.summaryReports_Foods_letterp = r[0].summaryReportsFoods;
       });
     });
   }

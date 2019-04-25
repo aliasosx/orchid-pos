@@ -3,3 +3,21 @@
   background-image: url('../../../assets/icons/baseline-all_inbox-24px.svg');
   background-size: cover;
 }
+.gridImg{
+  max-width: 180px;
+  min-width: 180px;
+  cursor: pointer;
+}
+.mainrow {
+  align-content: center;
+  text-align: center;
+}
+.textTitle{
+  position: relative;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+.item-grid {
+  max-width: 220px;
+  margin-left: 20px;
+}

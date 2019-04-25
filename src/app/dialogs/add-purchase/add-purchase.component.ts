@@ -26,6 +26,8 @@ export class AddPurchaseComponent implements OnInit {
     this.vendorsRef = db.collection<Vendor>('vendors');
     this.stockHistoriesRef = db.collection<StockHistory>('stockHistories');
   }
+
+  showProductlist = false;
   saveDisabled = false;
   addFormPurchase: FormGroup;
   addFormPurchaseDetail: FormGroup;
@@ -66,6 +68,7 @@ export class AddPurchaseComponent implements OnInit {
 
   ngOnInit() {
     if (this.data) {
+      this.showProductlist = true;
       this.addFormPurchase = new FormGroup({
         id: new FormControl(),
         approveNameBy: new FormControl(),
@@ -210,6 +213,7 @@ export class AddPurchaseComponent implements OnInit {
   addProductTolist() {
     if (this.addFormPurchaseDetail.valid) {
       this.checkOverBill(this.addFormPurchaseDetail.get('purchaseId').value);
+      this.showProductlist = true;
     } else {
       this.snackbar.open('Form incorrect please fill all Field required', 'OK', { duration: 1000 });
     }

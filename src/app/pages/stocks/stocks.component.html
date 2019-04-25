@@ -5,40 +5,98 @@
     <mat-card-subtitle>Stock statistics</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <div class="form-group row">
-      <div class="col col-sm-12 col-md-12">
-        <input type="text" class="form-control" placeholder="ຄົ້ນຫາ..." [(ngModel)]="searchProduct">
-      </div>
-    </div>
-    <div>
-      <table class="table table-bordered table-hover">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col" class="text-center">ວັນທີ່ຊື້</th>
-            <th scope="col" class="text-center">ລະຫັດສິນຄ້າ</th>
-            <th scope="col" class="text-center">ສິນຄ້າ</th>
-            <th scope="col" class="text-center">ຍອດຍົກມາ</th>
-            <th scope="col" class="text-center">ປ່ຽນແປງ</th>
-            <th scope="col" class="text-center">ຍອດປະຈຸບັນ</th>
-            <th scope="col" class="text-center">ມາຈາກ</th>
-            <th scope="col" class="text-center">orderId</th>
-            <th scope="col" class="text-center">ຜູ້ໃຊ້</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let stock of stocks |async | stocksPipe: searchProduct">
-            <td class="text-center">{{ stock.updateDate.toDate() | date: 'dd-MMM-yyyy H:mm:ss'}}</td>
-            <td class="text-left">{{ stock.productId  }}</td>
-            <td class="text-left">{{ stock.productName  }}</td>
-            <td class="text-right">{{ stock.beforeQuantity  | number }}</td>
-            <td class="text-right">{{ stock.stockChange | number }}</td>
-            <td class="text-right">{{ stock.currentQuantity | number }}</td>
-            <td class="text-center">{{ stock.updateSource  }}</td>
-            <td class="text-center">{{ stock.orderId  }}</td>
-            <td class="text-center">{{ stock.username  }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="container-fluid">
+      <ng-container>
+        <div class="row">
+          <div class="col col-md-4">
+            <div class="row mainrow" style="margin-left: 260px;">
+              <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid" (click)="openPurchaseProduct()">
+                <img src="../../../assets/icons/shopping-bag.svg" class="gridImg">
+                <div class="textTitle h4">ຊື້ເຂົ້າສາງ</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col col-md-4">
+            <div class="row mainrow" style="margin-left: 160px;">
+              <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid"
+                (click)="showStockList = !showStockList">
+                <img src="../../../assets/icons/warehouse.svg" class="gridImg">
+                <div class="textTitle h4">ຈັດການສາງ</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col col-md-4">
+            <div class="row mainrow">
+              <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid">
+                <img src="../../../assets/icons/notepad.svg" class="gridImg">
+                <div class="textTitle h4">ອອກຂາຍ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="showStockList">
+        <div class="row">
+          <div class="col">
+            <div class="text-center mb-4">
+              <h4>ລາຍການເຄື່ອງໃນສາງປະຈຸບັນ</h4>
+            </div>
+          </div>
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <th class="text-center h6">#</th>
+              <th class="text-left h6">ລະຫັດ</th>
+              <th class="text-left h6">ຊື່ສິນຄ້າ</th>
+              <th class="text-right h6">ຕົ້ນທຶນ</th>
+              <th class="text-right h6">ຍອດຍົກມາ</th>
+              <th class="text-right h6">ນຳໃຊ້</th>
+              <th class="text-right h6">ຍອດຍັງເຫຼືອ</th>
+              <th class="text-right h6">ຈຳນວນຕໍ່າສຸດ</th>
+              <th class="text-left h6">ເຂົ້າສາງວັນທີ</th>
+              <th class="text-left h6">ອັບເດດວັນທີ</th>
+              <th class="text-left h6">ອັບເດດໂດຍ</th>
+              <th class="text-left h6">ເນື້ອໃນ</th>
+              <th class="text-center h6">ການຈັດການ</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let st of stocksShow; let i = index">
+                <td class="text-center">{{ i+1 }}</td>
+                <td>{{ st.stock_refno }}</td>
+                <td>{{ st.product_name }}</td>
+                <td class="text-right">{{ st.cost | number }}</td>
+                <td class="text-right">{{ st.previous_quantity | number }}</td>
+                <td class="text-right">{{ st.used_quantity  | number}}</td>
+                <td class="text-right">{{ st.currentQuantity | number }}</td>
+                <td class="text-right">{{ st.minimum | number }}</td>
+                <td class="text-left">{{ st.createdAt | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+                <td class="text-left">{{ st.updatedAt | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+                <td class="text-left">{{ st.username  }}</td>
+                <td class="text-left">{{ st.remarks  }}</td>
+                <td class="text-center">
+                  <div class="row">
+                    <div class="col col-md-12">
+                      <img src="../../../assets/icons/visibility-button.svg"
+                        style="width: 25px; cursor: pointer; margin-right: 5px">
+                      <img src="../../../assets/icons/pencil.svg"
+                        style="width: 25px; cursor: pointer; margin-right: 5px">
+                      <img src="../../../assets/icons/icon.svg" style="width: 25px; cursor: pointer; ">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="13">* ຈຳນວນທີ່ເປັນບວກແມ່ນການເພີ່ມຂື້ນ ອາດຈະມາຈາກການຊຶ້ເຂົ້າຕື່ມ
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </ng-container>
     </div>
   </mat-card-content>
 </mat-card>

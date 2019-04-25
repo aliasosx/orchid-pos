@@ -366,5 +366,12 @@ export class BackendServiceService {
   async getBanks() {
     return this._http.get(this.backendService + 'getbanks', this.httpOptions);
   }
+
+  // Stock
+
+  async getShowStocks() {
+    return this._http.get(this.backendService + 'showStocks', this.httpOptions);
+  }
+
 }
 

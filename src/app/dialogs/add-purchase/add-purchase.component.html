@@ -1,35 +1,37 @@
-<h1 mat-dialog-title>Purchase</h1>
+<h1 mat-dialog-title>ຊື່ເຄື່ອງເຂົ້າສາງ</h1>
 <mat-horizontal-stepper #stepper>
   <mat-step [stepControl]="addFormPurchase">
     <form [formGroup]="addFormPurchase">
-      <ng-template matStepLabel>Fill Purchase Billing</ng-template>
+      <ng-template matStepLabel>
+        <h5>ຂໍ້ມູນໃບບິນ</h5>
+      </ng-template>
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="billNo">Bill Or Invoice No</label>
+          <label for="billNo">ເລກບິນ</label>
           <input type="text" class="form-control" id="billNo" placeholder="Bill Number" formControlName="billNo"
             required>
         </div>
         <div class="form-group col-md-6">
-          <label for="billAmount">Billing Amount</label>
-          <input type="number" class="form-control" id="billAmount" placeholder="billAmount"
+          <label for="billAmount">ມູນຄ່າລວມຂອງບິນ</label>
+          <input type="number" class="form-control text-right" id="billAmount" placeholder="billAmount"
             formControlName="billAmount" required>
         </div>
         <div class="form-group col-md-6">
-          <label for="billDate">Purchase Date</label>
+          <label for="billDate">ວັນທີ່ຊື້</label>
           <input type="date" class="form-control" id="billDate" placeholder="billDate" formControlName="billDate"
             required>
         </div>
         <div class="form-group col-md-6">
-          <label for="vendorId">Vendor</label>
+          <label for="vendorId">ຜູ້ສະໜອງ</label>
           <select class="form-control" id="vendorId" formControlName="vendorId" required>
             <option value="-1">--------</option>
             <option value="{{ vendor.id }}" *ngFor="let vendor of suppliers">{{ vendor.vendorName }}</option>
           </select>
         </div>
         <div class="form-group col-md-12">
-          <label for="bills">Bills photo</label>
-          <button mat-raised-button color="primary" class="form-control" (click)="fileupload.click()" id="bills">Upload
-            Bill</button>
+          <label for="bills">ບັນທືກໃບບິນ</label>
+          <button mat-raised-button color="primary" class="form-control" (click)="fileupload.click()"
+            id="bills">ເປີດໃບບິນ</button>
           <input type="file" class="form-control" style="display:none" placeholder="Bills" #fileupload
             (change)="uploadBills($event.target.files)">
         </div>
@@ -40,21 +42,23 @@
       </div>
       <div class="text-center">
         <button mat-raised-button color="primary" [disabled]="saveDisabled" style="width: 100%;" (click)="addPurchase()"
-          matStepperNext>Save</button>
+          matStepperNext>ບັນທືກໃບບິນ</button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="addFormPurchaseDetail">
     <form [formGroup]="addFormPurchaseDetail">
-      <ng-template matStepLabel>Fill Purchase Billing Details</ng-template>
+      <ng-template matStepLabel>
+        <h5>ລາຍລະອຽດສິນຄ້າ</h5>
+      </ng-template>
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="purchaseId">purchase code</label>
+          <label for="purchaseId">ລະຫັດໃບບິນ</label>
           <input type="number" class="form-control" id="purchaseId" readonly placeholder="Purchase no auto populate"
             formControlName="purchaseId" required>
         </div>
         <div class="form-group col-md-6">
-          <label for="productId">Product Name</label>
+          <label for="productId">ຊື່ສິນຄ້າ</label>
           <select class="form-control" formControlName="productId" required (change)="productSelectText($event)">
             <option value="" disabled>--------</option>
             <option value="{{ product.id }}" *ngFor="let product of products">{{ product.product_name }}
@@ -63,97 +67,97 @@
         </div>
         <div class="form-group col-md-6">
           <div class="row">
-            <div class="col-md-6">
-              <label for="price">Bill Price</label>
-              <input type="number" class="form-control" id="price" placeholder="Price" formControlName="price"
-                (keyup)="totalCalculate()" required>
+            <div class="col-md-4">
+              <label for="price">ລາຄາລວມ</label>
+              <input type="number" class="form-control text-right" id="price" placeholder="Price"
+                formControlName="price" (keyup)="totalCalculate()" required>
             </div>
-            <div class="col-md-6">
-              <label for="billQuantity">Bill Quantity</label>
-              <input type="number" class="form-control" id="billQuantity" placeholder="billQuantity"
+            <div class="col-md-4">
+              <label for="billQuantity">ຈຳນວນຕາມຫົວໜ່ວຍ</label>
+              <input type="number" class="form-control  text-right" id="billQuantity" placeholder="billQuantity"
                 formControlName="billQuantity" (keyup)="totalCalculate()" required>
             </div>
-          </div>
-        </div>
-        <div class="form-group col-md-6">
-          <div class="row">
-            <div class="col-md-6">
-              <label for="unitId">Unit</label>
+            <div class="col-md-4">
+              <label for="unitId">ຫົວໜ່ວຍນັບ</label>
               <select class="form-control" formControlName="unitId" required (change)="getUnitsDetail($event)">
                 <option value="" disabled>--------</option>
                 <option value="{{ unit.id }}" *ngFor="let unit of units">{{ unit.unit_name }}
                 </option>
               </select>
             </div>
-            <div class="col-md-6">
-              <label for="pricePerUnit">Price per unit</label>
-              <input type="number" class="form-control" id="pricePerUnit" readonly placeholder="pricePerUnit"
-                formControlName="pricePerUnit" (keyup)="totalCalculate()" required>
-            </div>
           </div>
         </div>
         <div class="form-group col-md-6">
           <div class="row">
-            <div class="col-md-6">
-              <label for="quantity">Quantity</label>
-              <input type="number" class="form-control" id="quantity" placeholder="Quantity" formControlName="quantity"
-                required>
+            <div class="col-md-4">
+              <label for="pricePerUnit">ລາຄາຕໍ່ໜ່ວຍ</label>
+              <input type="number" class="form-control  text-right" id="pricePerUnit" readonly
+                placeholder="pricePerUnit" formControlName="pricePerUnit" (keyup)="totalCalculate()" required>
             </div>
-            <div class="col-md-6">
-              <label for="total">Total Amount</label>
-              <input type="number" class="form-control" id="total" readonly placeholder="Total" formControlName="total">
+            <div class="col-md-4">
+              <label for="quantity">ຈຳນວນທັງໝົດ</label>
+              <input type="number" class="form-control  text-right" readonly id="quantity" placeholder="Quantity"
+                formControlName="quantity" required>
+            </div>
+            <div class="col-md-4">
+              <label for="total">ລາຄາລວມທັງໝົດ</label>
+              <input type="number" class="form-control  text-right" id="total" readonly placeholder="Total"
+                formControlName="total">
             </div>
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label for="remarks">Note</label>
-          <input type="text" class="form-control" id="remarks" placeholder="Description" formControlName="remarks">
+          <label for="remarks">ໝາຍເຫດ</label>
+          <input type="text" class="form-control" id="remarks" formControlName="remarks">
         </div>
-        <div class="form-group col-md-12 text-right">
-          <button mat-raised-button color="primary" style="position: relative; right: 1px;"
-            (click)="addProductTolist()">Add</button>
-          <button mat-raised-button color="warn" style="position: relative; right: 1px; margin-left: 2px;"
-            (click)="closePurchase()">Close</button>
+        <div class="form-group col-md-6">
+          <button mat-raised-button color="primary" style="position: relative; top:32px; width:100px"
+            (click)="addProductTolist()">ເພິ່ມລາຍການ</button>
+
+          <button mat-raised-button color="warn" style="position: relative;  margin-left: 5px; top:32px; width:100px"
+            (click)="closePurchase()">ປິດ</button>
         </div>
       </div>
       <mat-divider></mat-divider>
-      <div class="card">
-        <table class="table table-bordered">
-          <thead class="thead-light">
-            <th class="text-center">#</th>
-            <th class="text-center">BillId</th>
-            <th class="text-center">Product</th>
-            <th class="text-center">Price</th>
-            <th class="text-center">Quantity</th>
-            <th class="text-center">Total</th>
-            <th class="text-center">Note</th>
-            <th class="text-center">Remove</th>
-          </thead>
-          <tbody>
-            <tr *ngFor="let product of productList; let i = index">
-              <td class="text-center">{{ product.pid }}</td>
-              <td class="text-center">{{ product.purchaseId }}</td>
-              <td class="text-left">{{ product.product_name }}</td>
-              <td class="text-right">{{ product.price |number }}</td>
-              <td class="text-right">{{ product.quantity | number}}</td>
-              <td class="text-right">{{ product.total | number}}</td>
-              <td class="text-left">{{ product.remarks }}</td>
-              <td class="text-center">
-                <img src="../../../assets/icons/baseline-delete-24px.svg" style="max-width: 30px;cursor: pointer;"
-                  (click)="deletePurchaseDetail(product)">
+      <ng-container *ngIf="showProductlist">
+        <div class="card">
+          <table class="table table-bordered">
+            <thead class="thead-light">
+              <th class="text-center">#</th>
+              <th class="text-center">BillId</th>
+              <th class="text-center">Product</th>
+              <th class="text-center">Price</th>
+              <th class="text-center">Quantity</th>
+              <th class="text-center">Total</th>
+              <th class="text-center">Note</th>
+              <th class="text-center">Remove</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of productList; let i = index">
+                <td class="text-center">{{ product.pid }}</td>
+                <td class="text-center">{{ product.purchaseId }}</td>
+                <td class="text-left">{{ product.product_name }}</td>
+                <td class="text-right">{{ product.price |number }}</td>
+                <td class="text-right">{{ product.quantity | number}}</td>
+                <td class="text-right">{{ product.total | number}}</td>
+                <td class="text-left">{{ product.remarks }}</td>
+                <td class="text-center">
+                  <img src="../../../assets/icons/baseline-delete-24px.svg" style="max-width: 30px;cursor: pointer;"
+                    (click)="deletePurchaseDetail(product)">
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <td colspan="5" class="text-right">
+                Total
               </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <td colspan="5" class="text-right">
-              Total
-            </td>
-            <td class="text-right" style="font-weight: bold">
-              {{ billTotalAmount| number}}
-            </td>
-          </tfoot>
-        </table>
-      </div>
+              <td class="text-right" style="font-weight: bold">
+                {{ billTotalAmount| number}}
+              </td>
+            </tfoot>
+          </table>
+        </div>
+      </ng-container>
     </form>
   </mat-step>
 </mat-horizontal-stepper>

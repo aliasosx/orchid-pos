@@ -163,7 +163,7 @@ import { TestPagesComponent } from './pages/test-pages/test-pages.component';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,

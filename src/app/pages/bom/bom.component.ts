@@ -1,3 +1,4 @@
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddbomComponent } from 'src/app/dialogs/addbom/addbom.component';
@@ -15,7 +16,7 @@ declare var swal: any;
 })
 export class BomComponent implements OnInit {
 
-  constructor(private dialog: MatDialog, private db: AngularFirestore, private snackbar: MatSnackBar) {
+  constructor(private dialog: MatDialog, private db: AngularFirestore, private snackbar: MatSnackBar, private be: BackendServiceService) {
     this.bomsRef = db.collection<Bom>('boms');
   }
 
@@ -33,7 +34,7 @@ export class BomComponent implements OnInit {
   }
   openAddBOM() {
     this.dialog.open(AddbomComponent, {
-      width: '800px'
+      width: '600px'
     });
   }
   openUpdateBOM(bom) {

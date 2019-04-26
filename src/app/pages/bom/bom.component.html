@@ -14,58 +14,45 @@
       </div>
     </div>
 
-    <div>
-      <table class="table table-bordered">
+    <div class="table-responsive-lg">
+      <table class="table table-bordered table-hover">
         <thead class="thead-dark">
           <tr>
             <th scope="col" class="text-center font-weight-bold">#</th>
             <th scope="col" class="text-center font-weight-bold">ອາຫານ</th>
-            <th scope="col" class="text-center font-weight-bold">ຕົ້ນທືນ</th>
-            <th scope="col" class="text-center font-weight-bold">ລາຄາຂາຍ</th>
-            <th scope="col" class="text-center font-weight-bold">ປະເພດ</th>
-            <th scope="col" class="text-center font-weight-bold">ຄົວ</th>
+            <th scope="col" class="text-center font-weight-bold">ຄຳອະທີບາຍ</th>
+            <th scope="col" class="text-center font-weight-bold">ວັນທີ່ສ້າງ</th>
             <th scope="col" class="text-center font-weight-bold">ສ່ວນປະກອບ</th>
-            <th scope="col" class="text-center font-weight-bold">ແກ້ໄຂ</th>
+            <th scope="col" class="text-center font-weight-bold">ຜູ້ສ້າງ</th>
+            <th scope="col" class="text-center font-weight-bold">ນຳໃຊ້</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let bom of boms | async; let i = index">
-            <td class="text-center align-middle" style="width: 50px; font-size: 1.2em">{{ i + 1  }}</td>
-            <td class="text-left align-middle" style="width: 300px;font-size: 1.2em">{{ bom.food.food_name }}</td>
-            <td class="text-right align-middle" style="width: 100px;font-size: 1.2em">{{ bom.food.cost | number }}</td>
-            <td class="text-right align-middle" style="width: 100px;font-size: 1.2em">{{ bom.food.price | number }}</td>
-            <td class="text-center align-middle" style="width: 100px;font-size: 1.2em">{{ bom.food.food_category }}</td>
-            <td class="text-center align-middle" style="width: 100px;font-size: 1.2em">{{ bom.food.kitchen }}</td>
-            <td class="text-center align-middle" style="width: 300px;font-size: 1.2em">
-              <table class="table table-bordered">
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col" class="text-center">ວັດຖຸດິບ</th>
-                    <th scope="col" class="text-center">ຈຳນວນ</th>
-                    <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let product of bom.products">
-                    <td class="text-left">{{ product.productName }}</td>
-                    <td class="text-right">{{ product.bom_quantity | number }}</td>
-                    <td class="text-center">{{ product.unit }}</td>
-                  </tr>
-                </tbody>
-              </table>
+          <tr *ngFor="let bom of boms['boms']; let i = index">
+            <td class="text-center align-middle" style="width: 50px; cursor: pointer;">{{ i + 1  }}</td>
+            <td class="text-left align-middle" style="width: 200px;">{{ bom.bomName }}</td>
+            <td class="text-left align-middle" style="width: 200px;">{{ bom.note }}</td>
+            <td class="text-center align-middle" style="width: 200px;">{{ bom.createdAt | date: 'dd-MMM-yyyy' }}</td>
+            <td class="text-center align-middle" *ngIf="bom.bomDetail; else addNewBomDetail">
+              OK
             </td>
-            <td class="text-center align-middle" style="width: 150px;">
-              <div class="row">
-                <div class="col col-md-6">
-                  <button mat-raised-button color="primary" style="width: 100px;"
-                    (click)="openUpdateBOM(bom)">Update</button>
-                </div>
-                <div class="col col-md-6">
-                  <button mat-raised-button color="warn" style="width: 100px;"
-                    (click)="removeBom(bom.id)">Remove</button>
-                </div>
-              </div>
+            <ng-template #addNewBomDetail>
+              <td class="text-center align-middle">
+                <img mat-raised-button src="../../../assets/icons/plus.svg" style="max-width: 25px;cursor: pointer;"
+                  (click)="openAddBomChild(bom.bid)">
+              </td>
+            </ng-template>
+            <td class="text-center align-middle" style="width: 100px;">{{ bom.username }}</td>
+            <td class="text-center align-middle" style="width: 100px;" *ngIf="bom.enabled;else disabledBom">
+              <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
+                style="max-width: 25px;cursor: pointer;" (click)="toggleEnabled(bom.bid,bom.enabled)">
             </td>
+            <ng-template #disabledBom>
+              <td class="text-center align-middle" style="width: 100px;">
+                <img mat-raised-button src="../../../assets/icons/cancel.svg" style="max-width: 25px;cursor: pointer;"
+                  (click)="toggleEnabled(bom.bid,bom.enabled)">
+              </td>
+            </ng-template>
           </tr>
         </tbody>
       </table>

@@ -27,12 +27,14 @@ export class AddbomComponent implements OnInit {
   async ngOnInit() {
     this.addBomForm = new FormGroup({
       bomName: new FormControl(),
+      foodId: new FormControl(),
       note: new FormControl(),
       enabled: new FormControl(1),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
     });
+    this.loadFoods();
   }
   createBom() {
     if (this.addBomForm.valid) {
@@ -50,5 +52,15 @@ export class AddbomComponent implements OnInit {
       this.snackBar.open('Form incomplete!', 'OK', { duration: 1000 });
       return;
     }
+  }
+  closeDialog() {
+    this.dialogRef.close();
+  }
+  loadFoods() {
+    this.be.getFoods().then(rsp => {
+      rsp.subscribe(foods => {
+        this.foods = foods;
+      });
+    });
   }
 }

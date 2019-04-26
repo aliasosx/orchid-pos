@@ -6,6 +6,8 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Bom } from 'src/app/interfaces/bom';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { BomService } from 'src/app/services/bom.service';
+import { AddChildBomComponent } from 'src/app/dialogs/add-child-bom/add-child-bom.component';
 
 declare var swal: any;
 
@@ -16,26 +18,34 @@ declare var swal: any;
 })
 export class BomComponent implements OnInit {
 
-  constructor(private dialog: MatDialog, private db: AngularFirestore, private snackbar: MatSnackBar, private be: BackendServiceService) {
-    this.bomsRef = db.collection<Bom>('boms');
+  // tslint:disable-next-line: max-line-length
+  constructor(private dialog: MatDialog, private db: AngularFirestore, private snackbar: MatSnackBar, private be: BackendServiceService, private bomService: BomService) {
   }
-
-  bomsRef: AngularFirestoreCollection<Bom>;
-  boms: Observable<any[]>;
-
+  boms: any;
   ngOnInit() {
-    this.boms = this.bomsRef.snapshotChanges().pipe(map(change => {
-      return change.map(a => {
-        const boms = a.payload.doc.data() as Bom;
-        boms['id'] = a.payload.doc.id;
-        return boms;
+    this.loadBoms();
+  }
+  loadBoms() {
+    this.bomService.getBoms().then(b => {
+      b.subscribe(boms => {
+        console.log(boms);
+        this.boms = boms[0];
       });
-    }));
+    });
   }
   openAddBOM() {
-    this.dialog.open(AddbomComponent, {
-      width: '600px'
+    const dialogRef = this.dialog.open(AddbomComponent, {
+      width: '600px',
+      disableClose: true,
     });
+    dialogRef.afterClosed().subscribe(resp => {
+      if (resp = 'success') {
+        this.loadBoms();
+      } else {
+        return;
+      }
+    });
+
   }
   openUpdateBOM(bom) {
     this.dialog.open(AddbomComponent, {
@@ -57,5 +67,26 @@ export class BomComponent implements OnInit {
         }
       });
     }
+  }
+  toggleEnabled(id, value) {
+    let cond = 0;
+    if (value === 1) {
+      cond = 0;
+    } else if (value === 0) {
+      cond = 1;
+    }
+    console.log(cond);
+    const bom = {
+      enabled: cond,
+    };
+    this.bomService.updateBoms(id, bom).then(rsp => {
+      rsp.subscribe(r => {
+        this.loadBoms();
+        this.snackbar.open('updated', 'OK', { duration: 1000 });
+      });
+    });
+  }
+  openAddBomChild(bid) {
+    const dialogRef = this.dialog.open(AddChildBomComponent, { width: '800px', data: bid });
   }
 }

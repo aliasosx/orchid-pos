@@ -280,6 +280,9 @@ export class BackendServiceService {
     return this._http.get(this.backendService + 'letterpReportTotalRevAtCurrent', this.httpOptions);
   }
 
+  async getAllDashboardReports() {
+    return this._http.get(this.backendService + 'dashboardReports', this.httpOptions);
+  }
 
   // End Reports
 

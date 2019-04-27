@@ -45,6 +45,16 @@ export class DashboardComponent implements OnInit {
   summaryReports_staff_letterp: any;
   summaryReports_Foods_letterp: any;
 
+  allReports: any;
+
+  dashboardSummaryReports: any;
+  dashboardKitchenReports: any;
+  dashboardPaymentReports: any;
+  dashboardUserReports: any;
+  dashboardFoodsReports: any;
+
+
+
   roleId = JSON.parse(localStorage.getItem('usrObj')).roleId;
 
   noticeRef: AngularFirestoreCollection<Notice>;
@@ -56,7 +66,7 @@ export class DashboardComponent implements OnInit {
 
   messageForm: FormGroup;
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.messageForm = new FormGroup({
       userName: new FormControl(JSON.parse(localStorage.getItem('usrObj')).fullname),
@@ -81,6 +91,8 @@ export class DashboardComponent implements OnInit {
     }));
 
     this.loadDiaryTransactionsAmount();
+    let c = await this.loadAllDiaryReports();
+
   }
   reloadReport() {
     this.loadDiaryPaymentTypeAmount();
@@ -138,5 +150,17 @@ export class DashboardComponent implements OnInit {
       });
     });
   }
-
+  async loadAllDiaryReports() {
+    this.be.getAllDashboardReports().then(rsp => {
+      rsp.subscribe(r => {
+        console.log(r);
+        this.allReports = r;
+        this.dashboardSummaryReports = r[0].summary_reports;
+        this.dashboardKitchenReports = r[0].diary_kitchen_reports;
+        this.dashboardPaymentReports = r[0].diary_payment_reports;
+        this.dashboardUserReports = r[0].diary_user_reports;
+        this.dashboardFoodsReports = r[0].diary_foods_reports;
+      });
+    });
+  }
 }

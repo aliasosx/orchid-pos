@@ -13,7 +13,82 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <div>
       <ng-container *ngIf="roleId == 1">
+        <!-- current report -->
         <div class="row">
+          <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-blue order-card">
+              <div class="card-block">
+                <div class="m-b-20 h4" style="margin-bottom: 20px;">ຍອດຂາຍ ຂອງວັນ {{ currentDate |date: 'dd-MMM-yyyy'}}
+                </div>
+                <mat-divider></mat-divider>
+                <br />
+                <ng-container *ngFor="let summaryReport of summaryReports">
+                  <div class="row">
+                    <div class="col col-md-6 h5">ຍອດການຂາຍ</div>
+                    <div class="col col-md-6 h5 text-right">{{ summaryReport.grandTotal |number }} ກິບ</div>
+                  </div>
+                  <div class="row">
+                    <div class="col col-md-6 h5">ຈຳນວນ</div>
+                    <div class="col col-md-6 h5 text-right">{{ summaryReport.count |number }} ໜ່ວຍ</div>
+                  </div>
+                </ng-container>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-blue order-card">
+              <div class="card-block">
+                <div class="m-b-20 h4" style="margin-bottom: 20px;">ຍອດຂາຍ ຕາມຄົວ</div>
+                <mat-divider></mat-divider>
+                <br />
+                <ng-container *ngFor="let summaryReportsKitchen of summaryReportsKitchens ; let i = index">
+                  <div class="row">
+                    <div class="col col-md-4 h5 text-left">{{ summaryReportsKitchen.kitchenName }}</div>
+                    <div class="col col-md-4 h5 text-right"><span style="margin-right: 10px;">ຈຳນວນ
+                      </span>{{ summaryReportsKitchen.count |number }}
+                    </div>
+                    <div class="col col-md-4 h5 text-right">{{ summaryReportsKitchen.total_price |number }} ກິບ</div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-blue order-card">
+              <div class="card-block">
+                <div class="m-b-20 h4" style="margin-bottom: 20px;">ຍອດການຈ່າຍຕາມປະເພດ</div>
+                <mat-divider></mat-divider>
+                <br />
+                <ng-container *ngFor=" let summaryReportsPayment of summaryReportsPayments">
+                  <div class="row">
+                    <div class="col col-md-6 h5 text-left">{{ summaryReportsPayment.paymentType }}</div>
+                    <div class="col col-md-6 h5 text-right">{{ summaryReportsPayment.grandTotal |number }} ກິບ</div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-blue order-card">
+              <div class="card-block">
+                <div class="m-b-20 h4" style="margin-bottom: 20px;">ຍອດການຂາຍຕາມພະນັກງານ
+                </div>
+                <mat-divider></mat-divider>
+                <br />
+                <ng-container *ngFor="let summaryReportsUser of summaryReportsUsers">
+                  <div class="row">
+                    <div class="col col-md-6 h5 text-left">{{ summaryReportsUser.username }}</div>
+                    <div class="col col-md-6 h5 text-right">{{ summaryReportsUser.grandTotal |number }} ກິບ</div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <!-- update report -->
+
+
+
           <div class="col-md-4 col-xl-3">
             <div class="card bg-c-blue order-card">
               <div class="card-block">
@@ -91,7 +166,8 @@
           <div class="col-md-4 col-xl-3">
             <div class="card bg-c-blue order-card">
               <div class="card-block">
-                <div class="m-b-20 h4" style="margin-bottom: 20px;">ຍອດຂາຍ ຂອງວັນ {{ currentDate |date: 'dd-MMM-yyyy'}}
+                <div class="m-b-20 h4" style="margin-bottom: 20px;">ຍອດຂາຍ ຂອງວັນ
+                  {{ currentDate |date: 'dd-MMM-yyyy'}}
                   ລະບົບເກົ່າ
                 </div>
                 <mat-divider></mat-divider>

@@ -19,9 +19,9 @@
   width: 90%;
   text-align: center;
   vertical-align: bottom;
-  height: 100hv;
-  background-color: rgb(247, 242, 242);
-  color: rgb(7, 7, 7);
+  height: 60px;
+  background-color: rgb(8, 8, 8);
+  color: rgb(226, 223, 223);
   opacity: 0.7;
   font-weight: bold;
 }

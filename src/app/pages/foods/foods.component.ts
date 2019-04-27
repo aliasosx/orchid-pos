@@ -136,5 +136,12 @@ export class FoodsComponent implements OnInit {
   searchBy(msg) {
 
   }
+  toggleEnaledFood(id, enabled) {
+    console.log(enabled);
+    const foodEnabled = {
+      enabled
+    };
+    // this.besrv.updateFood(id)
+  }
 }
 

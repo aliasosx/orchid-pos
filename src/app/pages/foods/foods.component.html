@@ -50,23 +50,24 @@
                   <td class="text-center align-middle" style="max-width: 10px;">{{ commonfood.disc_name }}</td>
                   <td class="text-center align-middle" style="max-width: 50 px;">{{ commonfood.foodTypeName }}</td>
                   <td class="text-center align-middle" style="max-width: 20px;">
-                    <img mat-raised-button src="../../../assets/icons/shield.svg"
-                      style="max-width: 30px;cursor: pointer;">
+                    <img src="../../../assets/icons/shield.svg" style="max-width: 30px;cursor: pointer;">
                   </td>
                   <td class="text-center align-middle" style="max-width: 50px;">{{ commonfood.kitchenName }}</td>
-                  <td class="text-center align-middle" *ngIf="commonfood.enabled; unEnabled">
-                    <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
+
+                  <td class="text-center align-middle" *ngIf="commonfood.enabled; else unEnabled">
+                    <img src="../../../assets/icons/Check_green_icon.svg.png" (click)="toggleEnaledFood(commonfood)"
                       style="max-width: 20px;cursor: pointer;">
                   </td>
                   <ng-template #unEnabled>
                     <td class="text-center align-middle">
-                      <img mat-raised-button src="../../../assets/icons/cancel.svg"
+                      <img src="../../../assets/icons/cancel.svg" (click)="toggleEnaledFood(commonfood)"
                         style="max-width: 20px;cursor: pointer;">
                     </td>
                   </ng-template>
+
                   <td class="text-center align-middle">
-                    <img mat-raised-button src="../../../assets/icons/baseline-delete-24px.svg"
-                      style="max-width: 25px;cursor: pointer;">
+                    <img src="../../../assets/icons/baseline-delete-24px.svg" style="max-width: 25px;cursor: pointer;"
+                      (click)="deleteFood(commonfood)">
                   </td>
                 </tr>
               </tbody>
@@ -142,14 +143,14 @@
             </table>
             </td>
 
-            <td class="text-center align-middle" *ngIf="parentFood.pFood.enabled; unEnabled">
-              <img src="../../../assets/icons/Check_green_icon.svg.png" (click)="toggleEnaledFood(parentFood)"
+            <td class="text-center align-middle" *ngIf="parentFood.pFood.enabled; else unEnabled">
+              <img src="../../../assets/icons/Check_green_icon.svg.png" (click)="toggleEnaledPFood(parentFood)"
                 style="max-width: 25px;cursor: pointer;">
             </td>
             <ng-template #unEnabled>
               <td class="text-center align-middle">
                 <img src="../../../assets/icons/cancel.svg" style="max-width: 25px;cursor: pointer;"
-                  (click)="toggleEnaledFood(parentFood)">
+                  (click)="toggleEnaledPFood(parentFood)">
               </td>
             </ng-template>
             <td class="text-center align-middle">

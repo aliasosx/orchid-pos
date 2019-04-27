@@ -38,7 +38,6 @@ export class FoodsComponent implements OnInit {
   parentsFoods: any;
 
   ngOnInit() {
-    // this.loadStartUp();
     this.loadStartUp();
   }
 
@@ -46,11 +45,43 @@ export class FoodsComponent implements OnInit {
     this.loadCommonFoods();
     this.loadParentsFoods();
   }
-  toggleEnaledFood(id, enabled) {
-    console.log(id + ' => ' + enabled);
+  toggleEnaledFood(foods) {
+    console.log(foods);
+    let enabled;
+    if (foods.enabled === 1) {
+      enabled = 0;
+    } else if (foods.enabled === 0) {
+      enabled = 1;
+    }
     const foodEnabled = {
       enabled
     };
+    this.besrv.updateFood(foods.fid, foodEnabled).then(rsp => {
+      rsp.subscribe(r => {
+        if (r['status'] === 'success') {
+          this.loadStartUp();
+        }
+      });
+    });
+  }
+  toggleEnaledPFood(foods) {
+    console.log(foods.pFood.fid);
+    let enabled;
+    if (foods.pFood.enabled === 1) {
+      enabled = 0;
+    } else if (foods.pFood.enabled === 0) {
+      enabled = 1;
+    }
+    const foodEnabled = {
+      enabled
+    };
+    this.besrv.updateFood(foods.pFood.fid, foodEnabled).then(rsp => {
+      rsp.subscribe(r => {
+        if (r['status'] === 'success') {
+          this.loadStartUp();
+        }
+      });
+    });
   }
   loadCommonFoods() {
     this.besrv.getCommonFoodsList().then(foods => {
@@ -99,7 +130,7 @@ export class FoodsComponent implements OnInit {
       }
     });
   }
-  async deleteFood(id) {
+  async deleteFood(food) {
     swal({
       title: 'ທ່ານຕ້ອງການລຶບແທ້ບໍ?',
       text: 'ຫຼັງຈາກລືບລາຍການແລ້ວບໍ່ສາມາທີ່ຈະຈກູ້ຄືນໄດ້',
@@ -108,7 +139,16 @@ export class FoodsComponent implements OnInit {
       dangerMode: true,
     }).then((res) => {
       if (res) {
-        console.log(id);
+        const jsonDeleteFood = {
+          deleted: 1,
+        };
+        this.besrv.updateFood(food.fid, jsonDeleteFood).then(rsp => {
+          rsp.subscribe(r => {
+            if (r['status'] === 'success') {
+              this.loadStartUp();
+            }
+          });
+        });
       } else {
         return;
       }
@@ -137,7 +177,5 @@ export class FoodsComponent implements OnInit {
       this.loadStartUp();
     });
   }
-
-
 }
 

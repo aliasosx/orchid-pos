@@ -22,14 +22,29 @@ export class BomComponent implements OnInit {
   constructor(private dialog: MatDialog, private db: AngularFirestore, private snackbar: MatSnackBar, private be: BackendServiceService, private bomService: BomService) {
   }
   boms: any;
+  boms_with_details = [];
+  bomDetails: any;
+
   ngOnInit() {
     this.loadBoms();
   }
   loadBoms() {
     this.bomService.getBoms().then(b => {
       b.subscribe(boms => {
-        console.log(boms);
-        this.boms = boms[0];
+        this.boms = boms;
+        this.boms_with_details = [];
+        this.boms.forEach(bom => {
+          this.bomService.bomDetailByBomId(bom.bid).then(rsp => {
+            rsp.subscribe(r => {
+              console.log(r);
+              this.boms_with_details.push({
+                bom: bom,
+                bomDetail: r
+              });
+              console.log(this.boms_with_details);
+            });
+          });
+        });
       });
     });
   }
@@ -45,7 +60,6 @@ export class BomComponent implements OnInit {
         return;
       }
     });
-
   }
   openUpdateBOM(bom) {
     this.dialog.open(AddbomComponent, {

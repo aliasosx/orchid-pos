@@ -19,12 +19,24 @@
         required>
     </div>
     <div class="form-group col-md-3">
-      <button mat-raised-button color="primary" style="top: 32px;" (click)="addChildBom()">ບັນທຶກ</button>
-      <button mat-raised-button color="warn" style="top: 32px;" class="ml-2" (click)="closeDialog()">ປິດ</button>
+      <label for="unitId">ຫົວໜ່ວຍ</label>
+      <select id="unitId" class="form-control" formControlName="unitId">
+        <option value="-1" disabled>---------</option>
+        <option value="{{ unit.id }}" *ngFor="let unit of units">{{ unit.unit_name}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-12 mb-3">
+      <button mat-raised-button color="warn" class="ml-2 float-right" style="width: 100px;"
+        (click)="closeDialog()">ປິດ</button>
+      <button mat-raised-button color="primary" class="float-right" style="width: 100px;"
+        (click)="addChildBom()">ບັນທຶກ</button>
     </div>
   </div>
   <mat-divider></mat-divider>
-  <ng-container *ngIf="bomDetails.length > 0">
+  <ng-container *ngIf="showTableBom">
     <div class="row">
       <div class="col col-md-12">
         <div class="table-responsive-lg">
@@ -33,6 +45,7 @@
               <th class="text-center">#</th>
               <th class="text-left">ສ່ວນປະສົມ</th>
               <th class="text-right">ຈຳນວນ</th>
+              <th class="text-center">ຫົວໜ່ວຍ</th>
               <th class="text-center">ວັນທີ່ສ້າງ</th>
               <th class="text-center">ລຶບ</th>
             </thead>
@@ -41,6 +54,7 @@
                 <td class="text-center">{{ i+1 }}</td>
                 <td class="text-left">{{ bomDetail.product_name }}</td>
                 <td class="text-right">{{ bomDetail.quantity |number }}</td>
+                <td class="text-center">{{ bomDetail.unit_name }}</td>
                 <td class="text-center">{{ bomDetail.createdAt |date: 'dd-MMM-yyyy' }}</td>
                 <td class="text-center">
                   <img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer;"

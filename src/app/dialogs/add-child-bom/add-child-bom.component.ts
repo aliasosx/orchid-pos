@@ -18,17 +18,22 @@ export class AddChildBomComponent implements OnInit {
   foods: any;
   products: any;
   bomDetails: any;
+  units: any;
+  showTableBom = false;
 
   ngOnInit() {
     this.bomDetailForm = new FormGroup({
       bomId: new FormControl(this.data),
       productId: new FormControl(),
       quantity: new FormControl(),
+      unitId: new FormControl(),
       enabled: new FormControl(1),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
     });
     this.loadFoods();
     this.loadBomDetailExisting();
+    this.loadUnits();
+    console.log(this.bomDetails);
   }
   loadFoods() {
     this.be.getFoods().then(rsp => {
@@ -48,8 +53,7 @@ export class AddChildBomComponent implements OnInit {
   }
   async addChildBom() {
     if (this.bomDetailForm.valid) {
-
-      let info = {
+      const info = {
         bomId: this.data,
         productId: this.bomDetailForm.get('productId').value
       };
@@ -80,8 +84,20 @@ export class AddChildBomComponent implements OnInit {
   async loadBomDetailExisting() {
     this.bomService.bomDetailByBomId(this.data).then(rsp => {
       rsp.subscribe(bomDetails => {
-        console.log(bomDetails);
         this.bomDetails = bomDetails;
+        if (this.bomDetails.length > 0) {
+          this.showTableBom = true;
+        } else {
+          this.showTableBom = false;
+        }
+      });
+    });
+  }
+
+  async loadUnits() {
+    this.be.getUnit().then(rsp => {
+      rsp.subscribe(r => {
+        this.units = r;
       });
     });
   }

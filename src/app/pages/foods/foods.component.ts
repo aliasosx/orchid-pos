@@ -46,7 +46,12 @@ export class FoodsComponent implements OnInit {
     this.loadCommonFoods();
     this.loadParentsFoods();
   }
-
+  toggleEnaledFood(id, enabled) {
+    console.log(id + ' => ' + enabled);
+    const foodEnabled = {
+      enabled
+    };
+  }
   loadCommonFoods() {
     this.besrv.getCommonFoodsList().then(foods => {
       foods.subscribe(commonFoods => {
@@ -61,7 +66,6 @@ export class FoodsComponent implements OnInit {
       foods.subscribe(fd => {
         this.parentsFoods = fd;
         this.parentsFoods.forEach(pFood => {
-          // console.log(pFood);
           this.besrv.getSubfoodById(pFood.fid).then(sFood => {
             sFood.subscribe(subFood => {
               this.foodList.push({
@@ -95,7 +99,7 @@ export class FoodsComponent implements OnInit {
       }
     });
   }
-  deleteFood(food) {
+  async deleteFood(id) {
     swal({
       title: 'ທ່ານຕ້ອງການລຶບແທ້ບໍ?',
       text: 'ຫຼັງຈາກລືບລາຍການແລ້ວບໍ່ສາມາທີ່ຈະຈກູ້ຄືນໄດ້',
@@ -104,7 +108,7 @@ export class FoodsComponent implements OnInit {
       dangerMode: true,
     }).then((res) => {
       if (res) {
-        // this.foodsRef.doc(food.id).delete();
+        console.log(id);
       } else {
         return;
       }
@@ -133,15 +137,7 @@ export class FoodsComponent implements OnInit {
       this.loadStartUp();
     });
   }
-  searchBy(msg) {
 
-  }
-  toggleEnaledFood(id, enabled) {
-    console.log(enabled);
-    const foodEnabled = {
-      enabled
-    };
-    // this.besrv.updateFood(id)
-  }
+
 }
 

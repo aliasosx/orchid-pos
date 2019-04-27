@@ -57,6 +57,7 @@ export class AddFoodComponent implements OnInit {
       createdAt: new FormControl(),
       updatedAt: new FormControl(),
       subfoods: new FormControl(),
+      deleted: new FormControl(0),
     });
     this.loadStartUp();
     this.loadDiscs();

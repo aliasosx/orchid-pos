@@ -36,6 +36,10 @@ export class FoodsComponent implements OnInit {
   foodList: any[] = [];
   commonFoods: any;
   parentsFoods: any;
+  foodTypes: any;
+
+  selectedCate: any;
+
 
   ngOnInit() {
     this.loadStartUp();
@@ -44,6 +48,7 @@ export class FoodsComponent implements OnInit {
   loadStartUp() {
     this.loadCommonFoods();
     this.loadParentsFoods();
+    this.getFoodCat();
   }
   toggleEnaledFood(foods) {
     console.log(foods);
@@ -65,7 +70,7 @@ export class FoodsComponent implements OnInit {
     });
   }
   toggleEnaledPFood(foods) {
-    console.log(foods.pFood.fid);
+    // console.log(foods.pFood.fid);
     let enabled;
     if (foods.pFood.enabled === 1) {
       enabled = 0;
@@ -175,6 +180,13 @@ export class FoodsComponent implements OnInit {
     let c = await dialogRef.afterClosed().subscribe(() => {
       // console.log('Loadded');
       this.loadStartUp();
+    });
+  }
+  async getFoodCat() {
+    this.besrv.getFoodTypes().then(t => {
+      t.subscribe(foodTypes => {
+        this.foodTypes = foodTypes;
+      });
     });
   }
 }

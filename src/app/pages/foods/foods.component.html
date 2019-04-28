@@ -6,11 +6,17 @@
   </mat-card-header>
   <mat-card-content>
     <div class="form-group row">
-      <div class="col col-sm-12 col-md-10">
+      <div class="col col-sm-12 col-md-3">
         <input type="text" class="form-control" placeholder="ຄົ້ນຫາ..." [(ngModel)]="foodname">
       </div>
+      <div class="col col-sm-12 col-md-3">
+        <select id="foodCat" class="form-control" [(ngModel)]="selectedCate" [selectedIndex]=0>
+          <option value="">ທັງໝົດ</option>
+          <option value="{{ foodtype.id }}" *ngFor="let foodtype of foodTypes">{{ foodtype.foodTypeName}}</option>
+        </select>
+      </div>
       <div class="col col-sm-12 col-md-2">
-        <button mat-raised-button color="primary" style="width: 100%;" (click)="openAddFood()">Add new</button>
+        <button mat-raised-button color="primary" class="float-left" (click)="openAddFood()">ເພີ່ມອາຫານ</button>
       </div>
     </div>
     <mat-tab-group>
@@ -36,14 +42,15 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let commonfood of commonFoods |foodPipe: foodname; let i = index">
+                <tr
+                  *ngFor="let commonfood of commonFoods |foodPipe: foodname |foodCategoryPipe: selectedCate; let i = index">
                   <td class="text-center align-middle" style="max-width: 20px;">{{ i+1 }}</td>
                   <td class="text-center align-middle" style="max-width: 100px;max-height: 100px;min-height: 100px;">
                     <img src="{{ commonfood.food_photo }}" class="foodPhoto shadow" (click)="openViewFood(commonfood)"
                       style="cursor: pointer; width: 100px;max-height: 100px;">
                   </td>
-                  <td class="text-left align-middle" style="max-width: 100px;">{{ commonfood.food_name }}</td>
-                  <td class="text-left align-middle" style="max-width: 100px;">{{ commonfood.food_name_en }}</td>
+                  <td class="text-left align-middle h6" style="max-width: 100px;">{{ commonfood.food_name }}</td>
+                  <td class="text-left align-middle h6" style="max-width: 100px;">{{ commonfood.food_name_en }}</td>
                   <td class="text-right align-middle" style="max-width: 50px;">{{ commonfood.cost |number }}</td>
                   <td class="text-right align-middle" style="max-width: 50px;">{{ commonfood.price |number }}</td>
                   <td class="text-center align-middle" style="max-width: 10px;">{{ commonfood.currency_name }}</td>
@@ -100,14 +107,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let parentFood of foodList|foodPipe: foodname; let i = index">
+                <tr
+                  *ngFor="let parentFood of foodList|foodPipe: foodname |foodCategoryPipe: selectedCate; let i = index">
                   <td class="text-center align-middle" style="max-width: 10px;">{{ i + 1 }}</td>
                   <td class="text-center align-middle" style="max-width: 100px;max-height: 100px;min-height: 100px;">
                     <img src="{{ parentFood.pFood.food_photo }}" class="foodPhoto shadow"
                       (click)="openViewFood(parentFood)" style="cursor: pointer; width: 100px;max-height: 100px;">
                   </td>
-                  <td class="text-left align-middle" style="max-width: 100px;">{{ parentFood.pFood.food_name }}</td>
-                  <td class="text-left align-middle" style="max-width: 100px;">{{ parentFood.pFood.food_name_en }}</td>
+                  <td class="text-left align-middle h6" style="max-width: 100px;">{{ parentFood.pFood.food_name }}</td>
+                  <td class="text-left align-middle h6" style="max-width: 100px;">{{ parentFood.pFood.food_name_en }}
+                  </td>
                   <td class="text-center align-middle" style="max-width: 50px;">N/A</td>
                   <td class="text-center align-middle" style="max-width: 50px;">N/A</td>
                   <td class="text-center align-middle" style="max-width: 10px;">{{ parentFood.pFood.currency_name }}

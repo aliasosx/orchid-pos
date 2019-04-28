@@ -84,27 +84,38 @@ export class OrdersComponent implements OnInit {
     if (this.foodUpdateStatus === false) {
       //  Clear cache
       this.foodsList = [];
+      /*
       console.log(order);
       console.log(_food);
       console.log(_food.done);
+      */
       if (_food.done === true) {
         _food.done = false;
       } else if (_food.done === false) {
         _food.done = true;
       }
-      // console.log(_food.done);
       this.foodUpdateStatus = true;
       const cs = await this.orderRef.doc(order.id).get().toPromise().then(_order => {
         if (_order.exists) {
           const o = _order.data() as Order;
           //  populate food data
           o.food.forEach(element => {
-            if (element.foodId === _food.foodId) {
-              element.done = _food.done;
-              this.foodsList.push(element);
+            if (element.subfoodId) {
+              if (element.foodId === _food.foodId && element.subfoodId === _food.subfoodId) {
+                element.done = _food.done;
+                this.foodsList.push(element);
+              } else {
+                this.foodsList.push(element);
+              }
             } else {
-              this.foodsList.push(element);
+              if (element.foodId === _food.foodId) {
+                element.done = _food.done;
+                this.foodsList.push(element);
+              } else {
+                this.foodsList.push(element);
+              }
             }
+
           });
         }
       }).then(() => {
@@ -201,7 +212,7 @@ export class OrdersComponent implements OnInit {
                     // firebase db
                     let currentConsumingTime;
                     let a = await this.orderRef.doc(order.id).get().subscribe(o => {
-                      let currDate: any = new Date();
+                      const currDate: any = new Date();
                       let StartDate: any;
                       if (o.exists) {
                         StartDate = o.data().orderDateTime.toDate();

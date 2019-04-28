@@ -242,12 +242,22 @@ export class PosComponent implements OnInit {
           const cartBuffers = [];
           items = JSON.parse(localStorage.getItem('cart'));
           items.forEach(item => {
-            if (item.foodId === cart.foodId) {
-              item['quantity'] = q;
-              item['total'] = (q * item.price);
-              cartBuffers.push(item);
+            if (item.subfoodId) {
+              if (item.foodId === cart.foodId && item.subfoodId === cart.subfoodId) {
+                item['quantity'] = q;
+                item['total'] = (q * item.price);
+                cartBuffers.push(item);
+              } else {
+                cartBuffers.push(item);
+              }
             } else {
-              cartBuffers.push(item);
+              if (item.foodId === cart.foodId) {
+                item['quantity'] = q;
+                item['total'] = (q * item.price);
+                cartBuffers.push(item);
+              } else {
+                cartBuffers.push(item);
+              }
             }
           });
           if (cartBuffers.length > 0) {

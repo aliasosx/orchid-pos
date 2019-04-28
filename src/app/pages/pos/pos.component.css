@@ -18,13 +18,18 @@
   opacity: 0.8;
   width: 90%;
   text-align: center;
-  vertical-align: bottom;
+  vertical-align: center;
   height: 60px;
   background-color: rgb(8, 8, 8);
-  color: rgb(226, 223, 223);
+  color:white;
   opacity: 0.7;
   font-weight: bold;
 }
+
+.itemImg {
+  object-fit: cover;
+}
+
 .pricetag {
   position: absolute;
   top: 5px;

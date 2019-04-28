@@ -154,16 +154,16 @@
 
             <td class="text-center align-middle" *ngIf="parentFood.pFood.enabled; else unEnabled">
               <img src="../../../assets/icons/Check_green_icon.svg.png" (click)="toggleEnaledPFood(parentFood)"
-                style="max-width: 25px;cursor: pointer;">
+                style="max-width: 20px;cursor: pointer;">
             </td>
             <ng-template #unEnabled>
               <td class="text-center align-middle">
-                <img src="../../../assets/icons/cancel.svg" style="max-width: 25px;cursor: pointer;"
+                <img src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;"
                   (click)="toggleEnaledPFood(parentFood)">
               </td>
             </ng-template>
             <td class="text-center align-middle">
-              <img src="../../../assets/icons/baseline-delete-24px.svg" style="max-width: 25px;cursor: pointer;"
+              <img src="../../../assets/icons/baseline-delete-24px.svg" style="max-width: 20px;cursor: pointer;"
                 (click)="deleteFood(parentFood)">
             </td>
 

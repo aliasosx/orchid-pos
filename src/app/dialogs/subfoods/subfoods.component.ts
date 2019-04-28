@@ -94,6 +94,7 @@ export class SubfoodsComponent implements OnInit {
   async addFood() {
     if (this.subFoodsForm.valid && this.pre_subfood) {
       this.btnDisable = true;
+      console.log(this.pre_subfood);
       this.dialogRef.close(this.pre_subfood);
     } else {
       this.snackbar.open('Data incomplete please check!', 'Fails', { duration: 1000, verticalPosition: 'top' });

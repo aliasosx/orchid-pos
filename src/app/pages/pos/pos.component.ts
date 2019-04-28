@@ -188,7 +188,7 @@ export class PosComponent implements OnInit {
       if (this.virtualCart.length > 0) {
         let index = -1;
         for (let i = 0; i < this.virtualCart.length; i++) {
-          if (this.virtualCart[i].foodId === food.foodId) {
+          if (this.virtualCart[i].foodId === food.foodId && this.virtualCart[i].subfoodId === food.subfoodId) {
             this.virtualCart[i].quantity += 1;
             this.virtualCart[i].total = this.virtualCart[i].quantity * this.virtualCart[i].price;
             index = 1;

@@ -66,6 +66,7 @@ export class CloseBalanceComponent implements OnInit {
       openAuthorizedNameBy: new FormControl(),
       closeAuthorizedNameBy: new FormControl(),
       sellerName: new FormControl(),
+      terminalId: new FormControl(),
       closed: new FormControl(),
       createdAt: new FormControl(),
       updatedAt: new FormControl(),
@@ -91,11 +92,11 @@ export class CloseBalanceComponent implements OnInit {
             this.addCashload.get('eodBankBalance').setValue(element.total);
           } else if (element.PaidType === 'CASH') {
             this.addCashload.get('eodCashBalance').setValue(element.total);
-            this.addCashload.get('cashInHands').setValue(element.total);
           }
         });
         // tslint:disable-next-line: max-line-length
         this.addCashload.get('cashBalance').setValue(this.addCashload.get('eodCashBalance').value + this.addCashload.get('initBalance').value);
+        this.addCashload.get('cashInHands').setValue(this.addCashload.get('cashBalance').value);
       });
     });
   }
@@ -104,7 +105,6 @@ export class CloseBalanceComponent implements OnInit {
     // console.log(amount);
     this.addCashload.get('closeBalance').setValue(parseInt(amount) - parseInt(this.addCashload.get('cashBalance').value));
   }
-
   saveBalance() {
     swal({
       title: 'ແນ່ໃຈວ່າຈະ ບັນທຶກ',

@@ -22,14 +22,16 @@
                 </div>
                 <mat-divider></mat-divider>
                 <br />
-                <ng-container *ngFor="let summaryReport of summaryReports">
+                <ng-container *ngFor="let summaryReport of dashboardSummaryReports">
                   <div class="row">
-                    <div class="col col-md-6 h5">ຍອດການຂາຍ</div>
-                    <div class="col col-md-6 h5 text-right">{{ summaryReport.grandTotal |number }} ກິບ</div>
+                    <div class="col col-md-4 h5">{{ summaryReport.status }}</div>
+                    <div class="col col-md-6 h5 text-right  text-nowrap">{{ summaryReport.grandTotal | number }}</div>
+                    <div class="col col-md-2 h5 text-right  text-nowrap">ກິບ</div>
                   </div>
                   <div class="row">
-                    <div class="col col-md-6 h5">ຈຳນວນ</div>
-                    <div class="col col-md-6 h5 text-right">{{ summaryReport.count |number }} ໜ່ວຍ</div>
+                    <div class="col col-md-4 h5">ຈຳນວນ</div>
+                    <div class="col col-md-6 h5 text-right text-nowrap">{{ summaryReport.count | number }}</div>
+                    <div class="col col-md-2 h5 text-right text-nowrap"> ໜ່ວຍ</div>
                   </div>
                 </ng-container>
 
@@ -42,13 +44,18 @@
                 <div class="m-b-20 h4" style="margin-bottom: 20px;">ຍອດຂາຍ ຕາມຄົວ</div>
                 <mat-divider></mat-divider>
                 <br />
-                <ng-container *ngFor="let summaryReportsKitchen of summaryReportsKitchens ; let i = index">
+                <ng-container *ngFor="let summaryReportsKitchen of dashboardKitchenReports ; let i = index">
                   <div class="row">
-                    <div class="col col-md-4 h5 text-left">{{ summaryReportsKitchen.kitchenName }}</div>
-                    <div class="col col-md-4 h5 text-right"><span style="margin-right: 10px;">ຈຳນວນ
+                    <div class="col col-md-2 h6 text-left text-nowrap">{{ summaryReportsKitchen.kitchenName }}
+                    </div>
+                    <div class="col col-md-2 h6 text-right text-nowrap">
+                      <span>
                       </span>{{ summaryReportsKitchen.count |number }}
                     </div>
-                    <div class="col col-md-4 h5 text-right">{{ summaryReportsKitchen.total_price |number }} ກິບ</div>
+                    <div class="col col-md-4 h6 text-right  text-nowrap"><span>
+                      </span>{{ summaryReportsKitchen.total_cost |number }}
+                    </div>
+                    <div class="col col-md-4 h6 text-right">{{ summaryReportsKitchen.total_price |number }} ກິບ</div>
                   </div>
                 </ng-container>
               </div>
@@ -60,7 +67,7 @@
                 <div class="m-b-20 h4" style="margin-bottom: 20px;">ຍອດການຈ່າຍຕາມປະເພດ</div>
                 <mat-divider></mat-divider>
                 <br />
-                <ng-container *ngFor=" let summaryReportsPayment of summaryReportsPayments">
+                <ng-container *ngFor=" let summaryReportsPayment of dashboardPaymentReports">
                   <div class="row">
                     <div class="col col-md-6 h5 text-left">{{ summaryReportsPayment.paymentType }}</div>
                     <div class="col col-md-6 h5 text-right">{{ summaryReportsPayment.grandTotal |number }} ກິບ</div>
@@ -76,10 +83,12 @@
                 </div>
                 <mat-divider></mat-divider>
                 <br />
-                <ng-container *ngFor="let summaryReportsUser of summaryReportsUsers">
+                <ng-container *ngFor="let summaryReportsUser of dashboardUserReports">
                   <div class="row">
                     <div class="col col-md-6 h5 text-left">{{ summaryReportsUser.username }}</div>
-                    <div class="col col-md-6 h5 text-right">{{ summaryReportsUser.grandTotal |number }} ກິບ</div>
+                    <div class="col col-md-2 h5 text-right">{{ summaryReportsUser.count |number }}</div>
+                    <div class="col col-md-4 h5 text-right text-nowrap">{{ summaryReportsUser.grandTotal |number }} ກິບ
+                    </div>
                   </div>
                 </ng-container>
               </div>

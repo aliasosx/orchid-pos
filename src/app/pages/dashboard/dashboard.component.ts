@@ -89,12 +89,12 @@ export class DashboardComponent implements OnInit {
         return messages;
       });
     }));
-
-    this.loadDiaryTransactionsAmount();
     let c = await this.loadAllDiaryReports();
+    this.loadDiaryTransactionsAmount();
 
   }
   reloadReport() {
+    this.loadAllDiaryReports();
     this.loadDiaryPaymentTypeAmount();
   }
   loadDiaryTransactionsAmount() {
@@ -161,6 +161,7 @@ export class DashboardComponent implements OnInit {
         this.dashboardUserReports = r[0].diary_user_reports;
         this.dashboardFoodsReports = r[0].diary_foods_reports;
       });
+      console.log(this.dashboardSummaryReports);
     });
   }
 }

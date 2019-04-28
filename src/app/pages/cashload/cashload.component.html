@@ -36,8 +36,9 @@
                     <th scope="col" class="text-center">ພະນັກງານຂາຍ</th>
                     <th scope="col" class="text-center">ເວລາປີດ</th>
                     <th scope="col" class="text-center">ອະນຸມັດໂດຍ</th>
-                    <th scope="col" class="text-center">ອະນຸມັດປິດຍອດ</th>
+                    <th scope="col" class="text-center">ສະຖານະ</th>
                     <th scope="col" class="text-center">ອະນຸມັດປີດຍອດ</th>
+                    <th scope="col" class="text-center">ກະແສັດ</th>
                     <th scope="col" class="text-center">ໝາຍເຫດ</th>
                     <th scope="col" class="text-center">ປິດການຂາຍ</th>
                     <th scope="col" class="text-center">ຈັດການ</th>
@@ -50,7 +51,7 @@
                     <td class="text-left align-middle">{{ cash.loadDateTime| date: 'dd-MMM-yyyy H:mm:ss' }}
                     </td>
                     <td class="text-right align-middle">{{ cash.initBalance | number }}</td>
-                    <td class="text-center align-middle">{{ cash.openAuthorizedNameBy }}</td>
+                    <td class="text-left align-middle">{{ cash.openAuthorizedNameBy }}</td>
                     <td class="text-center align-middle" *ngIf="cash.loadApproved == 1;else loadApprovedTag">
                       <img mat-raised-button src=" ../../../assets/icons/Check_green_icon.svg.png"
                         style="max-width: 20px;cursor: pointer;">
@@ -75,7 +76,7 @@
                     <ng-template #nonclose>
                       <td></td>
                     </ng-template>
-                    <td class="text-center align-middle">{{ cash.closeAuthorizedNameBy }}</td>
+                    <td class="text-left align-middle">{{ cash.closeAuthorizedNameBy }}</td>
                     <td class="text-center align-middle" *ngIf="cash.closed == 1 ; else closeStat">Closed</td>
                     <ng-template #closeStat>
                       <td class="text-center align-middle">Open</td>
@@ -91,7 +92,7 @@
                           style="max-width: 20px;cursor: pointer;">
                       </td>
                     </ng-template>
-
+                    <td class="text-center align-middle">{{ cash.terminalId }}</td>
                     <td class="text-left align-middle">{{ cash.note }}</td>
                     <td class="text-center align-middle" *ngIf="cash.closed === 1; else nonClose"><button
                         mat-flat-button color="warn" style="width: 100%;" disabled

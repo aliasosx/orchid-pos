@@ -114,7 +114,6 @@ export class FoodsComponent implements OnInit {
       });
     });
   }
-
   openAddFood() {
     const dialogRef = this.dialog.open(AddFoodComponent, { width: '900px' });
     dialogRef.afterClosed().subscribe((rs) => {

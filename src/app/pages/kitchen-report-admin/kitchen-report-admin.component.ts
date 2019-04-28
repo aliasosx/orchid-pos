@@ -29,7 +29,8 @@ export class KitchenReportAdminComponent implements OnInit {
     this.loadReport();
   }
   async loadReport() {
-    this.be.reportsKitchenAdmin(this.startDate, '', 'Food').then(rsp => {
+    this.startDate = this.dateFrom.get('initDate').value;
+    this.be.reportsKitchenAdmin(this.dateFrom.get('initDate').value, '', 'Food').then(rsp => {
       this.foodList = [];
       let _total = 0;
       rsp.subscribe(r => {
@@ -37,7 +38,7 @@ export class KitchenReportAdminComponent implements OnInit {
         this.foodList.push(r);
         this.foodList.forEach(f => {
           f.forEach(element => {
-            _total += parseInt(element.total_cost);
+            _total += parseInt(element.total_cost, 10);
           });
         });
         console.log(_total);

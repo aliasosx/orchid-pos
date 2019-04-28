@@ -15,14 +15,10 @@
         <div class="card-body">
           <div class="row">
             <div class="col col-md-2">
-              <label for="fromDate" class="lead">ວັນທີ</label>
+              <label for="fromDate" class="lead">ວັນທີ </label>
               <form [formGroup]="dateFrom">
                 <div class="input-group mb-1">
-
-                  <input matInput id="fromDate" [matDatepicker]="Frmpicker" class="form-control"
-                    formControlName="initDate" placeholder="Choose a date" (dateInput)="dateEvent($event)">
-                  <mat-datepicker-toggle matSuffix [for]="Frmpicker"></mat-datepicker-toggle>
-                  <mat-datepicker #Frmpicker></mat-datepicker>
+                  <input type="date" class="form-control" formControlName="initDate">
                 </div>
               </form>
             </div>
@@ -40,7 +36,7 @@
         <div class="card">
           <div class="card-header">
             <div class="lead ">
-              ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ
+              ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ {{ startDate | date: 'dd-MMM-yyyy' }}
             </div>
           </div>
           <div class="card-body">

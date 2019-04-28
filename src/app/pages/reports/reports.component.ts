@@ -162,12 +162,11 @@ export class ReportsComponent implements OnInit {
       });
     });
   }
-
   async loadReport() {
     if (this.startDate != null && this.endDate != null) {
-
+      this.startDate = this.dateForm.get('startDate').value;
+      this.endDate = this.dateForm.get('endDate').value;
       console.log(this.startDate + ' - ' + this.endDate);
-
       this.reportProcess = 'Processing ...';
       this.viewReport = '';
       let c = await this.rptRevByDateRange();
@@ -183,11 +182,9 @@ export class ReportsComponent implements OnInit {
   fromDateEvent(e) {
     this.fromDate = new Date(e.target.value);
     this.startDate = this.fromDate;
-    this.startDate.setDate(this.fromDate.getDate() + 1);
   }
   toDateEvent(e) {
     this.toDateEnd = new Date(e.target.value);
     this.endDate = this.toDateEnd;
-    this.endDate.setDate(this.toDateEnd.getDate() + 1);
   }
 }

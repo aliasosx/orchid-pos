@@ -18,19 +18,13 @@
                 <div class="col col-md-2">
                   <label for="fromDate" class="lead">ເລີ່ມຈາກວັນທີ</label>
                   <div class="input-group mb-1">
-                    <input matInput id="fromDate" [matDatepicker]="Frmpicker" class="form-control"
-                      formControlName="startDate" placeholder="Choose a date" (dateInput)="fromDateEvent($event)">
-                    <mat-datepicker-toggle matSuffix [for]="Frmpicker"></mat-datepicker-toggle>
-                    <mat-datepicker #Frmpicker></mat-datepicker>
+                    <input type="date" class="form-control" formControlName="startDate">
                   </div>
                 </div>
                 <div class="col col-md-2" class="lead">
                   <label for="fromDate">ຮອດວັນທີ</label>
                   <div class="input-group mb-1">
-                    <input matInput id="ToDate" [matDatepicker]="toPicker" class="form-control"
-                      formControlName="endDate" placeholder="Choose a date" (dateInput)="toDateEvent($event)">
-                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #toPicker></mat-datepicker>
+                    <input type="date" class="form-control" formControlName="endDate">
                   </div>
                 </div>
                 <div class="col col-md-2">
@@ -119,7 +113,7 @@
                               {{ kitchenTransaction.kitchenName }}
                             </div>
                             <div class="col col-md-3 col-sm-12 text-right text-nowrap h5 ">
-                              {{ kitchenTransaction.count | number }} ລາຍການ
+                              {{ kitchenTransaction.count | number }}
                             </div>
                             <div class="col col-md-3 col-sm-12 text-right text-nowrap h5 ">
                               {{ kitchenTransaction.total_cost | number }} ກີບ
@@ -155,7 +149,7 @@
                               {{ foodCategoryTransaction.foodTypeName }}
                             </div>
                             <div class="col col-md-2 col-sm-12 text-right text-nowrap h5 ">
-                              {{ foodCategoryTransaction.count |number }} ລາຍການ
+                              {{ foodCategoryTransaction.count |number }}
                             </div>
                             <div class="col col-md-3 col-sm-12 text-right text-nowrap h5 ">
                               {{ foodCategoryTransaction.total_cost |number }} ກີບ

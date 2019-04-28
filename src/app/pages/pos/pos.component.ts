@@ -87,9 +87,7 @@ export class PosComponent implements OnInit {
   loadFoodTypes() {
     this.backendServices.getFoodTypes().then(foodtypes => {
       foodtypes.subscribe(ft => {
-
         this.foodTypes = ft;
-        this.foodTypes = this.foodTypes.sort();
       });
     });
   }

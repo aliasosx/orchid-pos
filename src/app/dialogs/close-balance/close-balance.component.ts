@@ -91,6 +91,7 @@ export class CloseBalanceComponent implements OnInit {
             this.addCashload.get('eodBankBalance').setValue(element.total);
           } else if (element.PaidType === 'CASH') {
             this.addCashload.get('eodCashBalance').setValue(element.total);
+            this.addCashload.get('cashInHands').setValue(element.total);
           }
         });
         // tslint:disable-next-line: max-line-length

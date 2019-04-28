@@ -26,8 +26,7 @@
     </div>
     <div class="form-group col-md-9">
       <label for="cashInHands">ຍອດລວມເງິນສົດ ຕົວຈິງ</label>
-      <input type="number" class="form-control" formControlName="cashInHands" id="cashInHands"
-        (keyup)="calculateOnHandsAmount($event.target.value)">
+      <input type="number" class="form-control" readonly formControlName="cashInHands" id="cashInHands">
     </div>
     <div class="form-group col-md-9">
       <label for="closeBalance">ປິດຍອດຂາຍ</label>

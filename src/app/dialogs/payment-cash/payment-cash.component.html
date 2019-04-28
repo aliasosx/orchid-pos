@@ -33,7 +33,7 @@
                   <label for="ticket">Ticket</label>
                   <select class="form-control" id="ticket" required formControlName="ticket" required
                     (change)="getTicketById($event.target.value)">
-                    <option value="" disabled>------------------------</option>
+                    <option value="">ເລືອກຄິວ</option>
                     <option *ngFor="let t of tickets | async" value="{{ t.ticket }}">{{ t.ticket }}
                     </option>
                   </select>

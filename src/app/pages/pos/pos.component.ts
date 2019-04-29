@@ -13,6 +13,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+import { CouponAddPosComponent } from 'src/app/dialogs/coupon-add-pos/coupon-add-pos.component';
 
 declare var swal: any;
 
@@ -356,5 +357,9 @@ export class PosComponent implements OnInit {
   }
   onSelect(selected) {
     console.log(this.selectedCate);
+  }
+
+  addCoupon() {
+    const dialogRef = this.dialog.open(CouponAddPosComponent, { width: '600px' });
   }
 }

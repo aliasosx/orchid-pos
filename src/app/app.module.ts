@@ -89,6 +89,7 @@ import { CouponListComponent } from './dialogs/coupon-list/coupon-list.component
 import { FoodCategoryPipePipe } from './pipes/food-category-pipe.pipe';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { AddChildBomComponent } from './dialogs/add-child-bom/add-child-bom.component';
+import { CouponAddPosComponent } from './dialogs/coupon-add-pos/coupon-add-pos.component';
 
 @NgModule({
   declarations: [
@@ -157,6 +158,7 @@ import { AddChildBomComponent } from './dialogs/add-child-bom/add-child-bom.comp
     FoodCategoryPipePipe,
     TestPagesComponent,
     AddChildBomComponent,
+    CouponAddPosComponent,
 
 
   ],
@@ -215,6 +217,7 @@ import { AddChildBomComponent } from './dialogs/add-child-bom/add-child-bom.comp
     CouponViewComponent,
     CouponListComponent,
     AddChildBomComponent,
+    CouponAddPosComponent,
   ]
   ,
   providers: [

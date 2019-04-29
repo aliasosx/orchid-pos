@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
   dashboardPaymentReports: any;
   dashboardUserReports: any;
   dashboardFoodsReports: any;
-
+  dashboardInQReports: any;
 
 
   roleId = JSON.parse(localStorage.getItem('usrObj')).roleId;
@@ -142,6 +142,7 @@ export class DashboardComponent implements OnInit {
         this.summaryReports_kitchen_letterp = r[0].summaryReportsKitchen;
         this.summaryReports_staff_letterp = r[0].summaryReportsStaff;
         this.summaryReports_Foods_letterp = r[0].summaryReportsFoods;
+        this.dashboardInQReports = r[0].inqReport;
       });
     });
   }

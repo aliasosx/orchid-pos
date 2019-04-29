@@ -19,7 +19,7 @@ import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
   // tslint:disable-next-line: max-line-length
-  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule, MatInputModule,
+  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule, MatInputModule, MatExpansionModule,
 } from '@angular/material';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -173,7 +173,7 @@ import { AddChildBomComponent } from './dialogs/add-child-bom/add-child-bom.comp
     FormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
-    MatMenuModule, MatTooltipModule, MatStepperModule, MatInputModule,
+    MatMenuModule, MatTooltipModule, MatStepperModule, MatInputModule, MatExpansionModule,
     HttpClientModule,
   ],
   entryComponents: [

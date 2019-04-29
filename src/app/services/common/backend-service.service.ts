@@ -375,6 +375,22 @@ export class BackendServiceService {
   async getShowStocks() {
     return this._http.get(this.backendService + 'showStocks', this.httpOptions);
   }
+  // Expenditure
+  async getExpenditureSrc() {
+    return this._http.get(this.backendService + 'expenditureSrcs', this.httpOptions);
+  }
+  async getExpenditureFunds() {
+    return this._http.get(this.backendService + 'expenditureFunds', this.httpOptions);
+  }
+  async getExpenditureTranx() {
+    return this._http.get(this.backendService + 'expenditureTranxs', this.httpOptions);
+  }
+  async createExpenditureTranx(data) {
+    return this._http.post(this.backendService + 'expenditureTranxs', data, this.httpOptions);
+  }
+  async getExpenditureTypes() {
+    return this._http.get(this.backendService + 'expenditureTypes', this.httpOptions);
+  }
 
 }
 

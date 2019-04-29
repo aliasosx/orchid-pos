@@ -6,14 +6,12 @@
   </mat-card-header>
   <mat-card-content>
     <div class="row">
-      <div class="col col-md-8">
-        <input type="text" class="form-control" style="width: 100%" placeholder="Search" [(ngModel)]="searchProduct">
+      <div class="col col-md-3 col-sm-12">
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchProduct">
       </div>
-      <div class="col col-md-2 text-right">
-        <button mat-raised-button color="primary" style="width: 100%;" (click)="openAddNewDialog()">Add new</button>
-      </div>
-      <div class="col col-md-2 text-right">
-        <button mat-raised-button color="primary" style="width: 100%;" (click)="reloadProduct()">Reload</button>
+      <div class="col col-md-2 col-sm-12">
+        <button mat-raised-button color="primary" class="mr-1" (click)="openAddNewDialog()">ເພີ່ມລາຍການ</button>
+        <button mat-raised-button color="primary" (click)="reloadProduct()">ຣິໂຫລດ</button>
       </div>
     </div>
     <div class="table-responsive">
@@ -54,9 +52,10 @@
             <td class="text-center align-middle">{{ product.unit_name }}</td>
             <td class="text-left align-middle">{{ product.supplier_name }}</td>
             <td class="text-center align-middle">{{ product.createdAt |date }}</td>
-            <td class="text-center align-middle"><button mat-raised-button color="warn"
-                (click)="deleteProduct(product)">Delete</button><span class="spaceDiv"></span><button mat-raised-button
-                color="primary" (click)="updateProduct(product)">Update</button></td>
+            <td class="text-center align-middle text-nowrap" style="width: 230px; ">
+              <button mat-raised-button color="primary" (click)="updateProduct(product)">ແກ້ໄຂລາຍການ</button>
+              <button mat-raised-button color="warn" class="ml-1" (click)="deleteProduct(product)">ລືບລາຍການ</button>
+            </td>
           </tr>
         </tbody>
         <tfoot class="thead-light">

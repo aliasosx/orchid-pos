@@ -17,6 +17,10 @@ export class CreateExpenditureComponent implements OnInit {
   expenditureTypes: any;
   expenditureSrcs: any;
   units: any;
+  terminals: any;
+
+  cashloadsId;
+  balance;
 
   async ngOnInit() {
     this.expenditureForm = new FormGroup({
@@ -30,8 +34,10 @@ export class CreateExpenditureComponent implements OnInit {
       paymentDate: new FormControl(new Date()),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       unitId: new FormControl(),
+      cashId: new FormControl(),
       isApproved: new FormControl(0),
       approvedBy: new FormControl(),
+      cashloadId: new FormControl(),
       remarks: new FormControl(),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
@@ -40,6 +46,7 @@ export class CreateExpenditureComponent implements OnInit {
     await this.loadExpenditureTypes();
     await this.loadUnit();
     await this.loadExpenditureSrcs();
+    await this.loadTerminals();
   }
 
   padding(num: number, size: number) {
@@ -74,6 +81,7 @@ export class CreateExpenditureComponent implements OnInit {
   }
   createExpenditure() {
     if (this.expenditureForm.valid) {
+      console.log(this.expenditureForm.value);
       this.backendService.createExpenditureTranx(this.expenditureForm.value).then(rsp => {
         rsp.subscribe(r => {
           if (r['status'] === 'success') {
@@ -86,5 +94,24 @@ export class CreateExpenditureComponent implements OnInit {
     } else {
       this.snackbar.open('Data incomplete', 'OK', { duration: 1000 });
     }
+  }
+  loadTerminals() {
+    this.backendService.getTerminals().then(t => {
+      t.subscribe(terminals => {
+        console.log(terminals);
+        this.terminals = terminals;
+      });
+    });
+  }
+  loadBalance(e) {
+    this.backendService.getTerminalById(e).then(rsp => {
+      rsp.subscribe(bal => {
+        console.log(bal);
+        this.cashloadsId = bal[0].cashloadId;
+        this.expenditureForm.get('cashloadId').setValue(bal[0].cashloadId);
+        this.balance = bal[0].balance;
+        console.log(this.cashloadsId);
+      });
+    });
   }
 }

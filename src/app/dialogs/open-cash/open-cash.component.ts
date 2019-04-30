@@ -31,6 +31,9 @@ export class OpenCashComponent implements OnInit {
   userSelected: any;
 
   btnDisable = false;
+  terminals: any;
+  balance = 0;
+  cashloadId = 0;
 
   ngOnInit() {
     this.addCashload = new FormGroup({
@@ -53,6 +56,7 @@ export class OpenCashComponent implements OnInit {
       openAuthorizedNameBy: new FormControl(),
       closeAuthorizedNameBy: new FormControl(),
       sellerName: new FormControl(),
+      terminalId: new FormControl(),
       note: new FormControl(),
       cashloadId: new FormControl(),
       refno: new FormControl(),
@@ -64,9 +68,11 @@ export class OpenCashComponent implements OnInit {
         return data;
       });
     }));
+    this.loadTerminals();
   }
 
   async addInitialBalance() {
+    console.log(this.addCashload.value);
     if (this.addCashload.get('initBalance').value) {
       const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
       this.addCashload.get('refno').setValue(refno);
@@ -77,9 +83,10 @@ export class OpenCashComponent implements OnInit {
           this.dialogRef.close('success');
         });
       });
+    } else {
+      console.log('error');
     }
   }
-
   async approveProcess() {
     this.btnDisable = true;
     if (this.addCashload.get('openAuthorizedBy').value) {
@@ -121,5 +128,23 @@ export class OpenCashComponent implements OnInit {
     let s = num + '';
     while (s.length < size) { s = '0' + s; }
     return s;
+  }
+  loadTerminals() {
+    this.backendService.getTerminals().then(t => {
+      t.subscribe(terminals => {
+        console.log(terminals);
+        this.terminals = terminals;
+      });
+    });
+  }
+  loadBalance(e) {
+    this.backendService.getTerminalById(e).then(rsp => {
+      rsp.subscribe(bal => {
+        console.log(bal);
+        this.balance = bal[0].balance;
+        this.cashloadId = bal[0].id;
+        console.log(this.balance['cashloadId']);
+      });
+    });
   }
 }

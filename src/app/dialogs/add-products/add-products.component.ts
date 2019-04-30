@@ -54,7 +54,7 @@ export class AddProductsComponent implements OnInit {
     this.addProductForm = new FormGroup({
       uuids: new FormControl(uid),
       barcode: new FormControl(refno),
-      product_code: new FormControl(),
+      product_code: new FormControl(0),
       product_name: new FormControl(),
       cost: new FormControl(0),
       minimum: new FormControl(0),
@@ -65,6 +65,8 @@ export class AddProductsComponent implements OnInit {
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       foodId: new FormControl(),
       expireDate: new FormControl(),
+      quantityPerPack: new FormControl(),
+      package: new FormControl(),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
       unitId: new FormControl(),

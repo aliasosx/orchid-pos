@@ -67,11 +67,15 @@ export class CloseBalanceComponent implements OnInit {
       closeAuthorizedNameBy: new FormControl(),
       sellerName: new FormControl(),
       terminalId: new FormControl(),
+      fwdBalance: new FormControl(0),
+      takeOffBalance: new FormControl(0),
       closed: new FormControl(),
       createdAt: new FormControl(),
       updatedAt: new FormControl(),
     });
     if (this.data) {
+      this.data['fwdBalance'] = 0;
+      this.data['takeOffBalance'] = 0;
       this.addCashload.setValue(this.data);
     }
     this.users = this.usersRef.snapshotChanges().pipe(map(change => {
@@ -97,10 +101,11 @@ export class CloseBalanceComponent implements OnInit {
         // tslint:disable-next-line: max-line-length
         this.addCashload.get('cashBalance').setValue(this.addCashload.get('eodCashBalance').value + this.addCashload.get('initBalance').value);
         this.addCashload.get('cashInHands').setValue(this.addCashload.get('cashBalance').value);
+        // tslint:disable-next-line: max-line-length
+        this.addCashload.get('totalSellAmount').setValue(this.addCashload.get('eodBankBalance').value + this.addCashload.get('eodCashBalance').value);
       });
     });
   }
-
   calculateOnHandsAmount(amount) {
     // console.log(amount);
     this.addCashload.get('closeBalance').setValue(parseInt(amount) - parseInt(this.addCashload.get('cashBalance').value));
@@ -127,6 +132,8 @@ export class CloseBalanceComponent implements OnInit {
                   cashInHands: this.addCashload.get('cashInHands').value,
                   cashBalance: this.addCashload.get('cashBalance').value,
                   totalSellAmount: this.addCashload.get('eodBankBalance').value + this.addCashload.get('eodCashBalance').value,
+                  fwdBalance: this.addCashload.get('fwdBalance').value,
+                  takeOffBalance: this.addCashload.get('takeOffBalance').value,
                   closed: 1,
                   closeDatetime: new Date(),
                   closedby: JSON.parse(localStorage.getItem('usrObj')).id,
@@ -153,6 +160,11 @@ export class CloseBalanceComponent implements OnInit {
         return;
       }
     });
+  }
+
+  async balanceFwdCalculate() {
+    // tslint:disable-next-line: max-line-length
+    this.addCashload.get('fwdBalance').setValue(this.addCashload.get('cashBalance').value - this.addCashload.get('takeOffBalance').value);
   }
 
   async approveProcess() {

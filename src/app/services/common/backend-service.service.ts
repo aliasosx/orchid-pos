@@ -400,5 +400,13 @@ export class BackendServiceService {
   async deleteExpenditureTranx(id) {
     return this._http.delete(this.backendService + 'expenditureTranxs/' + id, this.httpOptions);
   }
+
+  // Terminals
+  async getTerminals() {
+    return this._http.get(this.backendService + 'terminals', this.httpOptions);
+  }
+  async getTerminalById(id) {
+    return this._http.get(this.backendService + 'terminal/' + id, this.httpOptions);
+  }
 }
 

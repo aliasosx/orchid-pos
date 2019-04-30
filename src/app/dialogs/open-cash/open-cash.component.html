@@ -1,10 +1,22 @@
 <p class="h5">
   ເປິດຍອດ
 </p>
+<mat-divider></mat-divider>
 <form [formGroup]="addCashload">
   <div class="input-group mb-3">
-    <input type="number" class="form-control" min="100000" placeholder="Open Cash minimum 100,000 KIP" min
-      aria-label="Open Cash minimum 100,000 KIP" aria-describedby="basic-addon2" required formControlName="initBalance"
-      (keydown.enter)="addInitialBalance()">
+    <select class="form-control" formControlName="terminalId" id="terminalId"
+      (change)="loadBalance($event.target.value)">
+      <option value="-1" disabled>ເລືອກ</option>
+      <option value="{{ terminal.id }}" *ngFor="let terminal of terminals">{{ terminal.terminal_name }}</option>
+    </select>
+  </div>
+  <div class="input-group mb-3">
+    <input type="number" class="form-control" readonly aria-label="Open Cash minimum 100,000 KIP"
+      aria-describedby="basic-addon2" required formControlName="initBalance">
+  </div>
+  <div class="input-group">
+    <div class="col text-right">
+      <button mat-raised-button color="primary" (click)="addInitialBalance()">ບັນທຶກ</button>
+    </div>
   </div>
 </form>

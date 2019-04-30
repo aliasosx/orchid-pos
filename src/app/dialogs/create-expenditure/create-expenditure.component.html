@@ -1,4 +1,4 @@
-<div class="h5">ບັນທຶກລາຍຈ່າຍ</div>
+<div class="h5">ບັນທຶກລາຍຈ່າຍ {{ cashloadsId }} ຍອດເງິນ {{ balance |number }}</div>
 <mat-divider></mat-divider>
 <form [formGroup]="expenditureForm">
   <div class="form-row mt-2">
@@ -44,10 +44,11 @@
     </div>
     <div class="form-group col-md-6">
       <label for="expenditureSrcId">ນຳເງິນມາຈາກ</label>
-      <select class="form-control" id="expenditureSrcId" formControlName="expenditureSrcId" required>
+      <select class="form-control" id="expenditureSrcId" formControlName="expenditureSrcId" required
+        (change)="loadBalance($event.target.value)">
         <option value="-1" disabled>ເລືອກ</option>
-        <option value="{{ expenditureSrc.id }}" *ngFor="let expenditureSrc of expenditureSrcs">
-          {{ expenditureSrc.src_name }}</option>
+        <option value="{{ terminal.id }}" *ngFor="let terminal of terminals">
+          {{ terminal.terminal_name }}</option>
       </select>
     </div>
   </div>

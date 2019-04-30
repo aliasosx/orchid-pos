@@ -12,6 +12,10 @@
         style="width: 120px; margin-top: 31px;height: 40px;">ກວດຍອດຂາຍ</button>
     </div>
     <div class="form-group col-md-9">
+      <label for="totalSellAmount">ລວມຍອດຂາຍ</label>
+      <input type="number" class="form-control" readonly formControlName="totalSellAmount" id="totalSellAmount">
+    </div>
+    <div class="form-group col-md-9">
       <label for="eodCashBalance">ຍອດຂາຍ ເງິນສົດ</label>
       <input type="number" class="form-control" readonly formControlName="eodCashBalance" id="eodCashBalance">
     </div>
@@ -21,16 +25,17 @@
       <input type="number" class="form-control" readonly formControlName="eodBankBalance" id="eodBankBalance">
     </div>
     <div class="form-group col-md-9">
-      <label for="cashBalance">ຍອດລວມເງິນສົດ</label>
+      <label for="cashBalance">ຍອດເງິນລວມໃນລີ້ນຊັກ</label>
       <input type="number" class="form-control" readonly formControlName="cashBalance" id="cashBalance">
     </div>
     <div class="form-group col-md-9">
-      <label for="cashInHands">ຍອດສຸທິ</label>
-      <input type="number" class="form-control" readonly formControlName="cashInHands" id="cashInHands">
+      <label for="takeOffBalance">ຍອດສຸທິ</label>
+      <input type="number" class="form-control" formControlName="takeOffBalance" id="takeOffBalance"
+        (change)="balanceFwdCalculate()">
     </div>
     <div class="form-group col-md-9">
-      <label for="closeBalance">ປິດຍອດຂາຍ</label>
-      <input type="number" class="form-control" readonly formControlName="closeBalance" id="closeBalance">
+      <label for="fwdBalance">ຍອດຍົກໄປ</label>
+      <input type="number" class="form-control" readonly id="fwdBalance" formControlName="fwdBalance">
     </div>
     <div class="form-group col-md-9">
       <label for="terminalId">ກະແສັດເງິນ</label>

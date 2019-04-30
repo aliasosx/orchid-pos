@@ -19,6 +19,7 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">ວັນທີ</th>
             <th scope="col" class="text-center">ເລກອ້າງອິງ</th>
             <th scope="col" class="text-center">ເນື້ອໃນການຈ່າຍ</th>
             <th scope="col" class="text-center">ປະເພດລາຍຈ່າຍ</th>
@@ -36,6 +37,7 @@
         <tbody>
           <tr *ngFor="let exp of expenditures; let i = index">
             <td class="text-center align-middle">{{ i + 1 }}</td>
+            <td class="text-center align-middle">{{ exp.paymentDate | date:'dd-MMM-yyyy H:mm:ss' }}</td>
             <td class="text-center align-middle">{{ exp.refno }}</td>
             <td class="text-left align-middle">{{ exp.remarks }}</td>
             <td class="text-left align-middle">{{ exp.expenditure_name }}</td>
@@ -57,7 +59,7 @@
             <td class="text-center align-middle">{{  exp.approvedBy }}</td>
             <td class="text-center text-center align-middle text-nowrap" style="width: 230px;">
               <button mat-raised-button color="primary">ແກ້ໄຂລາຍການ</button>
-              <button mat-raised-button color="warn" class="ml-1">ລືບລາຍການ</button>
+              <button mat-raised-button color="warn" class="ml-1" (click)="deleteItem(exp.txId)">ລືບລາຍການ</button>
             </td>
           </tr>
         </tbody>

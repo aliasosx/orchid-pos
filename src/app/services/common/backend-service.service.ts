@@ -397,7 +397,8 @@ export class BackendServiceService {
   async updateExpenditureTranx(id, data) {
     return this._http.put(this.backendService + 'expenditureTranxs/' + id, data, this.httpOptions);
   }
-
-
+  async deleteExpenditureTranx(id) {
+    return this._http.delete(this.backendService + 'expenditureTranxs/' + id, this.httpOptions);
+  }
 }
 

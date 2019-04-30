@@ -73,5 +73,21 @@ export class ExpendituresComponent implements OnInit {
       }
     });
   }
-
+  deleteItem(id) {
+    swal({
+      title: 'ແນ່ໃຈວ່າຈະ ວ່າຈະລຶບລາຍການນີ້',
+      icon: 'warning',
+      dangerMode: true,
+    }).then((value) => {
+      if (value) {
+        this.backendServer.deleteExpenditureTranx(id).then(rsp => {
+          rsp.subscribe(r => {
+            if (r['status'] === 'success') {
+              this.loadExpenditureDisplay();
+            }
+          });
+        });
+      }
+    });
+  }
 }

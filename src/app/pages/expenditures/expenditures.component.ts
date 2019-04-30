@@ -84,6 +84,11 @@ export class ExpendituresComponent implements OnInit {
           rsp.subscribe(r => {
             if (r['status'] === 'success') {
               this.loadExpenditureDisplay();
+            } else if (r['status'] === 'error') {
+              swal({
+                title: 'ບໍ່ສາມາດລຶບລາຍການທີ່ອະນຸມັດແລ້ວ',
+                icon: 'error',
+              });
             }
           });
         });

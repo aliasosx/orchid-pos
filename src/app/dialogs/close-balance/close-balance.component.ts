@@ -144,6 +144,7 @@ export class CloseBalanceComponent implements OnInit {
                   resp_csh.subscribe(c => {
                     if (c) {
                       this.snackbar.open('EOD closed  ' + c, 'OK', { duration: 1000 });
+                      // update current POS BAL
                       this.dialogRef.close('success');
                     }
                   });

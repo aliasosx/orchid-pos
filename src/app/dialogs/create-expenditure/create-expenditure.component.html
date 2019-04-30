@@ -1,0 +1,59 @@
+<div class="h5">ບັນທຶກລາຍຈ່າຍ</div>
+<mat-divider></mat-divider>
+<form [formGroup]="expenditureForm">
+  <div class="form-row mt-2">
+    <div class="form-group col-md-6">
+      <label for="refno">ເລກອ້າງອິງ</label>
+      <input type="text" class="form-control" id="refno" readonly placeholder="refno auto populate"
+        formControlName="refno">
+    </div>
+
+    <div class="form-group col-md-6">
+      <label for="expenditureTypeId">ປະເພດລາຍຈ່າຍ</label>
+      <select class="form-control" id="expenditureTypeId" formControlName="expenditureTypeId" required>
+        <option value="-1" disabled>ເລືອກປະເພດລາຍຈ່າຍ</option>
+        <option value="{{ expenditureType.id }}" *ngFor="let expenditureType of expenditureTypes">
+          {{ expenditureType.expenditure_name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="vendorId">ເນີ້ອໃນລາຍຈ່າຍ</label>
+      <input type="text" class="form-control" id="remarks" formControlName="remarks" required>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="quantity">ຈຳນວນ</label>
+      <input type="number" class="form-control text-right" formControlName="quantity" id="quantity" required
+        (keyup)="totalCaculation()">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="unitId">ຫົວໜ່ວຍ</label>
+      <select class="form-control" id="unitId" formControlName="unitId" required>
+        <option value="-1" disabled>ເລືອກ</option>
+        <option value="{{ unit.id }}" *ngFor="let unit of units">
+          {{ unit.unit_name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="price">ລາຄາຕໍ່ຫນ່ວຍ</label>
+      <input type="number" class="form-control  text-right" formControlName="price" id="price"
+        (keyup)="totalCaculation()">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="amount">ຍອດລວມ</label>
+      <input type="number" readonly class="form-control  text-right" formControlName="amount" id="amount">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="expenditureSrcId">ນຳເງິນມາຈາກ</label>
+      <select class="form-control" id="expenditureSrcId" formControlName="expenditureSrcId" required>
+        <option value="-1" disabled>ເລືອກ</option>
+        <option value="{{ expenditureSrc.id }}" *ngFor="let expenditureSrc of expenditureSrcs">
+          {{ expenditureSrc.src_name }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row text-right">
+    <div class="col col-md-12">
+      <button mat-raised-button color="primary" (click)="createExpenditure()">ບັນທຶກລາຍຈ່າຍ</button>
+    </div>
+  </div>
+</form>

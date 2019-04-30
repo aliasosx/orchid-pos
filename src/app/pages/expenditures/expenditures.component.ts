@@ -1,7 +1,9 @@
+import { ApprovedUsersComponent } from './../../dialogs/approved-users/approved-users.component';
+import { MatDialog } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
-
+import { CreateExpenditureComponent } from 'src/app/dialogs/create-expenditure/create-expenditure.component';
+declare var swal: any;
 @Component({
   selector: 'app-expenditures',
   templateUrl: './expenditures.component.html',
@@ -9,26 +11,16 @@ import { BackendServiceService } from 'src/app/services/common/backend-service.s
 })
 export class ExpendituresComponent implements OnInit {
 
-  constructor(private backendServer: BackendServiceService) { }
+  constructor(private backendServer: BackendServiceService, private dialog: MatDialog) { }
 
   expenditureTypes: any;
-  expenditureForm: FormGroup;
+
   selectedCate: any;
+  expenditures: any;
 
   ngOnInit() {
-    this.expenditureForm = new FormGroup({
-      id: new FormControl(),
-      expenditureTypeId: new FormControl(),
-      expenditureSrcId: new FormControl(),
-      amount: new FormControl(),
-      paymentDate: new FormControl(new Date()),
-      userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
-      approvedBy: new FormControl(),
-      remarks: new FormControl(),
-      createdAt: new FormControl(),
-      updatedAt: new FormControl(new Date()),
-    });
     this.loadExpType();
+    this.loadExpenditureDisplay();
   }
   loadExpType() {
     this.backendServer.getExpenditureTypes().then(rsp => {
@@ -37,8 +29,49 @@ export class ExpendituresComponent implements OnInit {
       });
     });
   }
+  loadExpenditureDisplay() {
+    this.backendServer.getExpenditureDisplay().then(rsp => {
+      rsp.subscribe(expenditures => {
+        this.expenditures = expenditures;
+      });
+    });
+  }
   openAddExp() {
-
+    const dialogRef = this.dialog.open(CreateExpenditureComponent, { width: '600px' });
+    dialogRef.afterClosed().subscribe(r => {
+      if (r === 'success') {
+        this.loadExpenditureDisplay();
+      }
+    });
+  }
+  openApproveUser(exp) {
+    swal({
+      title: 'ແນ່ໃຈວ່າຈະ ອະນຸມັດປິດລາຍການນີ້',
+      icon: 'warning',
+      dangerMode: true,
+    }).then((value) => {
+      if (value) {
+        const dialogRef = this.dialog.open(ApprovedUsersComponent, {
+          width: '600px',
+        });
+        dialogRef.afterClosed().subscribe(resp => {
+          if (resp.user) {
+            // after approve
+            const updateTranx = {
+              isApproved: 1,
+              approvedBy: resp.user.username
+            };
+            this.backendServer.updateExpenditureTranx(exp.txId, updateTranx).then(rsp => {
+              rsp.subscribe(r => {
+                if (r['status'] === 'success') {
+                  this.loadExpenditureDisplay();
+                }
+              });
+            });
+          }
+        });
+      }
+    });
   }
 
 }

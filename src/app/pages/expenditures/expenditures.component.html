@@ -19,20 +19,48 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col" class="text-center">#</th>
-            <th scope="col" class="text-center">ຮູບ</th>
-            <th scope="col" class="text-center">ອາຫານ</th>
-            <th scope="col" class="text-center">ອາຫານ ພາສາອັງກິດ</th>
-            <th scope="col" class="text-center">ຕົ້ນທືນ</th>
-            <th scope="col" class="text-center">ລາຄາຂາຍ</th>
-            <th scope="col" class="text-center">ສະກຸນ</th>
-            <th scope="col" class="text-center">ຈານ</th>
-            <th scope="col" class="text-center">ໝວດ</th>
-            <th scope="col" class="text-center">ປະເພດ</th>
-            <th scope="col" class="text-center">ຫ້ອງຄົວ</th>
-            <th scope="col" class="text-center">ນຳໃຊ້</th>
-            <th scope="col" class="text-center">ລຶບ</th>
+            <th scope="col" class="text-center">ເລກອ້າງອິງ</th>
+            <th scope="col" class="text-center">ເນື້ອໃນການຈ່າຍ</th>
+            <th scope="col" class="text-center">ປະເພດລາຍຈ່າຍ</th>
+            <th scope="col" class="text-center">ຈຳນວນ</th>
+            <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
+            <th scope="col" class="text-center">ລາຄາຕໍ່ໜ່ວຍ</th>
+            <th scope="col" class="text-center">ລວມເປັນເງິນ</th>
+            <th scope="col" class="text-center">ເອົາເງິນມາຈາກ</th>
+            <th scope="col" class="text-center">ຜຸ້ຈ່າຍ</th>
+            <th scope="col" class="text-center">ອະນຸມັດ</th>
+            <th scope="col" class="text-center">ຜຸ້ອະນຸມັດ</th>
+            <th scope="col" class="text-center">ຈັດການ</th>
           </tr>
         </thead>
+        <tbody>
+          <tr *ngFor="let exp of expenditures; let i = index">
+            <td class="text-center align-middle">{{ i + 1 }}</td>
+            <td class="text-center align-middle">{{ exp.refno }}</td>
+            <td class="text-left align-middle">{{ exp.remarks }}</td>
+            <td class="text-left align-middle">{{ exp.expenditure_name }}</td>
+            <td class="text-right align-middle">{{ exp.quantity | number }}</td>
+            <td class="text-center align-middle">{{ exp.unit_name  }}</td>
+            <td class="text-right align-middle">{{ exp.price | number }}</td>
+            <td class="text-right align-middle">{{ exp.amount | number }}</td>
+            <td class="text-center align-middle">{{ exp.src_name }}</td>
+            <td class="text-center align-middle">{{  exp.username }}</td>
+            <td class="text-center align-middle" *ngIf="exp.isApproved===1;else unApproved">
+              <img src="../../../assets/icons/Check_green_icon.svg.png" style="width: 25px;cursor: pointer;">
+            </td>
+            <ng-template #unApproved>
+              <td class="text-center align-middle">
+                <img src="../../../assets/icons/cancel.svg" style="width: 25px;cursor: pointer;"
+                  (click)="openApproveUser(exp)">
+              </td>
+            </ng-template>
+            <td class="text-center align-middle">{{  exp.approvedBy }}</td>
+            <td class="text-center text-center align-middle text-nowrap" style="width: 230px;">
+              <button mat-raised-button color="primary">ແກ້ໄຂລາຍການ</button>
+              <button mat-raised-button color="warn" class="ml-1">ລືບລາຍການ</button>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </mat-card-content>

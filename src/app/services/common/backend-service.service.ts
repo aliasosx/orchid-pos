@@ -391,6 +391,13 @@ export class BackendServiceService {
   async getExpenditureTypes() {
     return this._http.get(this.backendService + 'expenditureTypes', this.httpOptions);
   }
+  async getExpenditureDisplay() {
+    return this._http.get(this.backendService + 'expenditureDisplay', this.httpOptions);
+  }
+  async updateExpenditureTranx(id, data) {
+    return this._http.put(this.backendService + 'expenditureTranxs/' + id, data, this.httpOptions);
+  }
+
 
 }
 

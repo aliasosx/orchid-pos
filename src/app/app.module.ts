@@ -91,6 +91,7 @@ import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { AddChildBomComponent } from './dialogs/add-child-bom/add-child-bom.component';
 import { CouponAddPosComponent } from './dialogs/coupon-add-pos/coupon-add-pos.component';
 import { ExpendituresComponent } from './pages/expenditures/expenditures.component';
+import { CreateExpenditureComponent } from './dialogs/create-expenditure/create-expenditure.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +162,7 @@ import { ExpendituresComponent } from './pages/expenditures/expenditures.compone
     AddChildBomComponent,
     CouponAddPosComponent,
     ExpendituresComponent,
+    CreateExpenditureComponent,
 
 
   ],
@@ -220,6 +222,7 @@ import { ExpendituresComponent } from './pages/expenditures/expenditures.compone
     CouponListComponent,
     AddChildBomComponent,
     CouponAddPosComponent,
+    CreateExpenditureComponent,
   ]
   ,
   providers: [

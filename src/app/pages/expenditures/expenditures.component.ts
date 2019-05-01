@@ -17,6 +17,7 @@ export class ExpendituresComponent implements OnInit {
 
   selectedCate: any;
   expenditures: any;
+  currentAmountTerminal = 0;
 
   ngOnInit() {
     this.loadExpType();

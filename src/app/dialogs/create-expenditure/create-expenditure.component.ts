@@ -2,6 +2,7 @@ import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+declare var swal: any;
 
 @Component({
   selector: 'app-create-expenditure',
@@ -21,6 +22,9 @@ export class CreateExpenditureComponent implements OnInit {
 
   cashloadsId;
   balance;
+  currentCashInDrawer = 0;
+
+  btnDisabled = false;
 
   async ngOnInit() {
     this.expenditureForm = new FormGroup({
@@ -98,19 +102,27 @@ export class CreateExpenditureComponent implements OnInit {
   loadTerminals() {
     this.backendService.getTerminals().then(t => {
       t.subscribe(terminals => {
-        console.log(terminals);
         this.terminals = terminals;
       });
     });
   }
-  loadBalance(e) {
-    this.backendService.getTerminalById(e).then(rsp => {
-      rsp.subscribe(bal => {
-        console.log(bal);
-        this.cashloadsId = bal[0].cashloadId;
-        this.expenditureForm.get('cashloadId').setValue(bal[0].cashloadId);
-        this.balance = bal[0].balance;
-        console.log(this.cashloadsId);
+  loadCurrentCashByTerminal(event) {
+    this.backendService.getCashAmountTotalByTerminal(event).then(rsp => {
+      rsp.subscribe(terminalAmount => {
+        console.log(terminalAmount[0]);
+        this.currentCashInDrawer = terminalAmount[0].CASH_STOCK;
+        this.cashloadsId = terminalAmount[0].cashloadId;
+        this.expenditureForm.get('cashloadId').setValue(terminalAmount[0].cashloadId);
+        if (parseInt(this.expenditureForm.get('amount').value, 10) > this.currentCashInDrawer) {
+          swal({
+            title: 'ເງິນໃນລີ້ນຊັກບໍ່ພໍ',
+            text: 'ເງິນໃນລິ້ນຊັກມີທັງໝົດ ' + this.currentCashInDrawer,
+            icon: 'error'
+          });
+          this.btnDisabled = true;
+        } else {
+          this.btnDisabled = false;
+        }
       });
     });
   }

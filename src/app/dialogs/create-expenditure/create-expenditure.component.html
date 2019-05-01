@@ -1,4 +1,4 @@
-<div class="h5">ບັນທຶກລາຍຈ່າຍ {{ cashloadsId }} ຍອດເງິນ {{ balance |number }}</div>
+<div class="h5">ບັນທຶກລາຍຈ່າຍ ຍອດເງິນ</div>
 <mat-divider></mat-divider>
 <form [formGroup]="expenditureForm">
   <div class="form-row mt-2">
@@ -45,7 +45,7 @@
     <div class="form-group col-md-6">
       <label for="expenditureSrcId">ນຳເງິນມາຈາກ</label>
       <select class="form-control" id="expenditureSrcId" formControlName="expenditureSrcId" required
-        (change)="loadBalance($event.target.value)">
+        (change)=" loadCurrentCashByTerminal($event.target.value)">
         <option value="-1" disabled>ເລືອກ</option>
         <option value="{{ terminal.id }}" *ngFor="let terminal of terminals">
           {{ terminal.terminal_name }}</option>
@@ -54,7 +54,8 @@
   </div>
   <div class="row text-right">
     <div class="col col-md-12">
-      <button mat-raised-button color="primary" (click)="createExpenditure()">ບັນທຶກລາຍຈ່າຍ</button>
+      <button mat-raised-button color="primary" [disabled]="btnDisabled"
+        (click)="createExpenditure()">ບັນທຶກລາຍຈ່າຍ</button>
     </div>
   </div>
 </form>

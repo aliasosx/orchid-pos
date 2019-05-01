@@ -27,18 +27,18 @@
                     <th scope="col" class="text-center">ຍອດເປີດ</th>
                     <th scope="col" class="text-center">ອະນຸມັດໂດຍ</th>
                     <th scope="col" class="text-center">ອະນຸມັດເປີດຍອດ</th>
-                    <th scope="col" class="text-center">ຍອດຂາຍເງິນສົດ</th>
-                    <th scope="col" class="text-center">ຍອດຂາຍຜ່ານທະນາຄານ</th>
-                    <th scope="col" class="text-center">ລວມຍອດເງິນສົດ</th>
-                    <th scope="col" class="text-center">ເງິນສົດຕົວຈິງ</th>
-                    <th scope="col" class="text-center">Balance</th>
+                    <th scope="col" class="text-center">ຍອດຂາຍ</th>
+                    <th scope="col" class="text-center">ທະນາຄານ</th>
+                    <th scope="col" class="text-center">ລວມເງິນສົດ</th>
                     <th scope="col" class="text-center">ຍອດຂາຍທັງໝົດ</th>
+                    <th scope="col" class="text-center">ຍອດສຸທິ</th>
+                    <th scope="col" class="text-center">ຍອດຍົກໄປ</th>
                     <th scope="col" class="text-center">ພະນັກງານຂາຍ</th>
                     <th scope="col" class="text-center">ເວລາປີດ</th>
                     <th scope="col" class="text-center">ອະນຸມັດໂດຍ</th>
                     <th scope="col" class="text-center">ສະຖານະ</th>
-                    <th scope="col" class="text-center">ອະນຸມັດປີດຍອດ</th>
-                    <th scope="col" class="text-center">ກະແສັດ</th>
+                    <th scope="col" class="text-center">ອະນຸມັດປີດ</th>
+                    <th scope="col" class="text-center">ລີ້ນຊັກ</th>
                     <th scope="col" class="text-center">ໝາຍເຫດ</th>
                     <th scope="col" class="text-center">ປິດການຂາຍ</th>
                     <th scope="col" class="text-center">ຈັດການ</th>
@@ -48,7 +48,7 @@
                   <tr *ngFor="let cash of cashloads ; let i = index;">
 
                     <td class="text-center align-middle"> {{ i+1 }}</td>
-                    <td class="text-left align-middle">{{ cash.loadDateTime| date: 'dd-MMM-yyyy H:mm:ss' }}
+                    <td class="text-left align-middle text-nowrap">{{ cash.loadDateTime| date: 'dd-MMM-yyyy' }}
                     </td>
                     <td class="text-right align-middle">{{ cash.initBalance | number }}</td>
                     <td class="text-left align-middle">{{ cash.openAuthorizedNameBy }}</td>
@@ -67,12 +67,13 @@
                     <td class="text-right align-middle">{{ cash.eodCashBalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.eodBankBalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.cashBalance | number }}</td>
-                    <td class="text-right align-middle">{{ cash.cashInHands | number }}</td>
-                    <td class="text-right align-middle">{{ cash.closeBalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.totalSellAmount | number }}</td>
+                    <td class="text-right align-middle">{{ cash.takeOffBalance | number }}</td>
+                    <td class="text-right align-middle">{{ cash.fwdBalance | number }}</td>
+
                     <td class="text-center align-middle">{{ cash.sellerName }}</td>
                     <td class="text-left align-middle" *ngIf="cash.closeDatetime; else nonclose">
-                      {{ cash.closeDatetime| date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+                      {{ cash.closeDatetime| date: 'H:mm:ss' }}</td>
                     <ng-template #nonclose>
                       <td></td>
                     </ng-template>

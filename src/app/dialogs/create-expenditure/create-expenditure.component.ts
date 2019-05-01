@@ -109,20 +109,29 @@ export class CreateExpenditureComponent implements OnInit {
   loadCurrentCashByTerminal(event) {
     this.backendService.getCashAmountTotalByTerminal(event).then(rsp => {
       rsp.subscribe(terminalAmount => {
-        console.log(terminalAmount[0]);
-        this.currentCashInDrawer = terminalAmount[0].CASH_STOCK;
-        this.cashloadsId = terminalAmount[0].cashloadId;
-        this.expenditureForm.get('cashloadId').setValue(terminalAmount[0].cashloadId);
-        if (parseInt(this.expenditureForm.get('amount').value, 10) > this.currentCashInDrawer) {
+        console.log(terminalAmount);
+        if (terminalAmount['status'] === 'error') {
           swal({
-            title: 'ເງິນໃນລີ້ນຊັກບໍ່ພໍ',
-            text: 'ເງິນໃນລິ້ນຊັກມີທັງໝົດ ' + this.currentCashInDrawer,
+            title: 'ລີ້ນຊັກຍັງບໍ່ໄດ້ເປີດຂາຍ',
+            text: 'Drawer inactive' + this.currentCashInDrawer,
             icon: 'error'
           });
-          this.btnDisabled = true;
         } else {
-          this.btnDisabled = false;
+          this.currentCashInDrawer = terminalAmount['CASH_STOCK'];
+          this.cashloadsId = terminalAmount['cashId'];
+          this.expenditureForm.get('cashloadId').setValue(this.cashloadsId);
+          if (parseInt(this.expenditureForm.get('amount').value, 10) > this.currentCashInDrawer) {
+            swal({
+              title: 'ເງິນໃນລີ້ນຊັກບໍ່ພໍ',
+              text: 'ເງິນໃນລິ້ນຊັກມີທັງໝົດ ' + this.currentCashInDrawer,
+              icon: 'error'
+            });
+            this.btnDisabled = true;
+          } else {
+            this.btnDisabled = false;
+          }
         }
+
       });
     });
   }

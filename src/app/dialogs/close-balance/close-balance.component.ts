@@ -61,6 +61,7 @@ export class CloseBalanceComponent implements OnInit {
       closedby: new FormControl(JSON.parse(localStorage.getItem('usrObj')).username),
       closeAuthorizedBy: new FormControl(),
       closeApproved: new FormControl(),
+      netbalance: new FormControl(0),
       refno: new FormControl(),
       staff: new FormControl(),
       openAuthorizedNameBy: new FormControl(),
@@ -105,6 +106,8 @@ export class CloseBalanceComponent implements OnInit {
         this.addCashload.get('cashInHands').setValue(this.addCashload.get('cashBalance').value);
         // tslint:disable-next-line: max-line-length
         this.addCashload.get('totalSellAmount').setValue(this.addCashload.get('eodBankBalance').value + this.addCashload.get('eodCashBalance').value);
+        // tslint:disable-next-line: max-line-length
+        this.addCashload.get('netbalance').setValue(parseInt(this.addCashload.get('cashInHands').value, 10) - parseInt(this.addCashload.get('expenditureAmount').value, 10));
       });
     });
   }
@@ -123,7 +126,6 @@ export class CloseBalanceComponent implements OnInit {
           this.addCashload.get('closed').setValue(1);
           this.addCashload.get('closeDatetime').setValue(new Date());
           // update all transactions order as settled
-
           this.backendService.settleOrder(this.data.id, { settled: 1 }).then(settleOrder => {
             settleOrder.subscribe(async (rst) => {
               if (rst['status'] === 'success') {
@@ -136,25 +138,32 @@ export class CloseBalanceComponent implements OnInit {
                   totalSellAmount: this.addCashload.get('eodBankBalance').value + this.addCashload.get('eodCashBalance').value,
                   fwdBalance: this.addCashload.get('fwdBalance').value,
                   takeOffBalance: this.addCashload.get('takeOffBalance').value,
+                  // tslint:disable-next-line: max-line-length
+                  netbalance: parseInt(this.addCashload.get('cashInHands').value, 10) - parseInt(this.addCashload.get('expenditureAmount').value, 10),
                   expenditureAmount: this.addCashload.get('takeOffBalance').value,
                   closed: 1,
                   closeDatetime: new Date(),
                   closedby: JSON.parse(localStorage.getItem('usrObj')).id,
                   note: this.addCashload.get('note').value,
                 };
-
                 let c = await this.backendService.cashLoadUpdate(this.data.id, csh).then((resp_csh) => {
                   resp_csh.subscribe(c => {
                     if (c) {
-                      this.snackbar.open('EOD closed  ' + c, 'OK', { duration: 1000 });
+                      this.snackbar.open('EOD closed  ' + c, 'OK', { duration: 2000 });
                       // update current POS BAL
-                      let cashBalanceEodTerminal = {
+                      const cashBalanceEodTerminal = {
                         cashloadId: this.data.id,
                         balance: this.addCashload.get('fwdBalance').value
                       };
                       // tslint:disable-next-line: max-line-length
                       this.backendService.updateTerminalBalanceEod(this.addCashload.get('terminalId').value, cashBalanceEodTerminal).then(rsp => {
-                        this.dialogRef.close('success');
+                        rsp.subscribe(r => {
+                          if (r['status'] === 'success') {
+                            // tslint:disable-next-line: max-line-length
+                            this.snackbar.open('Terminal balance has been updated : ' + this.addCashload.get('fwdBalance').value, 'OK', { duration: 2000 });
+                            this.dialogRef.close('success');
+                          }
+                        });
                       });
                     }
                   });
@@ -165,17 +174,15 @@ export class CloseBalanceComponent implements OnInit {
               }
             });
           });
-
         }
       } else {
         return;
       }
     });
   }
-
   async balanceFwdCalculate() {
     // tslint:disable-next-line: max-line-length
-    this.addCashload.get('fwdBalance').setValue(this.addCashload.get('cashBalance').value - this.addCashload.get('takeOffBalance').value);
+    this.addCashload.get('fwdBalance').setValue(this.addCashload.get('netbalance').value - this.addCashload.get('takeOffBalance').value);
   }
 
   async approveProcess() {
@@ -212,7 +219,8 @@ export class CloseBalanceComponent implements OnInit {
   loadExpenditure() {
     this.backendService.getExpenditureAmountByCashId(this.data.id).then(rsp => {
       rsp.subscribe(expenditureAmount => {
-        this.addCashload.get('expenditureAmount').setValue(expenditureAmount);
+        console.log(expenditureAmount);
+        this.addCashload.get('expenditureAmount').setValue(expenditureAmount[0].expAmount);
       });
     });
   }

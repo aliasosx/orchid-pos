@@ -3,60 +3,63 @@
 </p>
 <form [formGroup]="addCashload">
   <div class="row">
-    <div class="form-group col-md-9">
-      <label for="initBalance">ຍອດຍົກມາ</label>
-      <input type="number" class="form-control" readonly formControlName="initBalance" id="initBalance">
-    </div>
-    <div class="form-group col-md-3 text-right">
-      <button mat-flat-button color="warn" (click)="closeBalanceProcess()" [disabled]="disableCloseJob"
-        style="width: 120px; margin-top: 31px;height: 40px;">ກວດຍອດຂາຍ</button>
-    </div>
-    <div class="form-group col-md-9">
-      <label for="totalSellAmount">ລວມຍອດຂາຍ</label>
-      <input type="number" class="form-control" readonly formControlName="totalSellAmount" id="totalSellAmount">
-    </div>
-    <div class="form-group col-md-9">
-      <label for="eodCashBalance">ຍອດຂາຍ ເງິນສົດ</label>
-      <input type="number" class="form-control" readonly formControlName="eodCashBalance" id="eodCashBalance">
-    </div>
-    <div class="form-group col-md-9">
-      <label for="eodBankBalance">ຍອດຂາຍ ຜ່ານທະນາຄານ</label>
-      <input type="number" class="form-control" readonly formControlName="eodBankBalance" id="eodBankBalance">
-    </div>
-    <div class="form-group col-md-9">
-      <label for="cashBalance">ຍອດເງິນລວມໃນລີ້ນຊັກ</label>
-      <input type="number" class="form-control" readonly formControlName="cashBalance" id="cashBalance">
+    <div class="col col-md-12">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="initBalance">ຍອດຍົກມາ</label>
+          <input type="number" class="form-control" readonly formControlName="initBalance" id="initBalance">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="totalSellAmount">ລວມຍອດຂາຍ</label>
+          <input type="number" class="form-control" readonly formControlName="totalSellAmount" id="totalSellAmount">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="eodCashBalance">ຍອດຂາຍ ເງິນສົດ</label>
+          <input type="number" class="form-control" readonly formControlName="eodCashBalance" id="eodCashBalance">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="eodBankBalance">ຍອດຂາຍ ຜ່ານທະນາຄານ</label>
+          <input type="number" class="form-control" readonly formControlName="eodBankBalance" id="eodBankBalance">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="cashBalance">ຍອດເງິນລວມໃນລີ້ນຊັກ</label>
+          <input type="number" class="form-control" readonly formControlName="cashBalance" id="cashBalance">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="expenditureAmount">ລາຍຈ່າຍອື່ນໆ</label>
+          <input type="number" class="form-control" readonly formControlName="expenditureAmount" id="expenditureAmount">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="netbalance">ຍອດເງິນຫຼັງຫັກລາຍຈ່າຍ</label>
+          <input type="number" class="form-control" readonly formControlName="netbalance" id="netbalance">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="takeOffBalance">ຍອດສຸທິ (ຕ້ອງສົ່ງ)</label>
+          <input type="number" class="form-control" formControlName="takeOffBalance" id="takeOffBalance"
+            (change)="balanceFwdCalculate()">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="fwdBalance">ຍອດຍົກໄປ</label>
+          <input type="number" class="form-control" readonly id="fwdBalance" formControlName="fwdBalance">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="terminalId">ລິ້ນຊັກ</label>
+          <input type="number" class="form-control" readonly formControlName="terminalId" id="terminalId">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="note">ໝາຍເຫດ</label>
+          <input type="text" class="form-control" maxlength="255" formControlName="note" id="note">
+        </div>
+      </div>
     </div>
 
-    <div class="form-group col-md-9">
-      <label for="expenditureAmount">ລາຍຈ່າຍອອກຈາກລີ້ນຊັກ</label>
-      <input type="number" class="form-control" readonly formControlName="expenditureAmount" id="expenditureAmount">
-    </div>
-
-
-    <div class="form-group col-md-9">
-      <label for="takeOffBalance">ຍອດສຸທິ (ຕ້ອງສົ່ງ)</label>
-      <input type="number" class="form-control" formControlName="takeOffBalance" id="takeOffBalance"
-        (change)="balanceFwdCalculate()">
-    </div>
-    <div class="form-group col-md-9">
-      <label for="fwdBalance">ຍອດຍົກໄປ</label>
-      <input type="number" class="form-control" readonly id="fwdBalance" formControlName="fwdBalance">
-    </div>
-    <div class="form-group col-md-9">
-      <label for="terminalId">ລິ້ນຊັກ</label>
-      <input type="number" class="form-control" readonly formControlName="terminalId" id="terminalId">
-    </div>
-    <div class="form-group col-md-9">
-      <label for="note">ໝາຍເຫດ</label>
-      <input type="text" class="form-control" maxlength="255" formControlName="note" id="note">
-    </div>
   </div>
   <mat-divider></mat-divider>
   <div class="row">
     <div class="col col-md-12 text-right">
-      <button mat-flat-button class="mt-2" color="primary" (click)="saveBalance()"
-        style="width: 150px;height: 40px;">ບັນທຶກ</button>
+      <button mat-flat-button color="primary" (click)="closeBalanceProcess()" class="mr-1"
+        [disabled]="disableCloseJob">ກວດຍອດຂາຍ</button>
+      <button mat-flat-button class="mt-2" color="primary" style="width: 103px;" (click)="saveBalance()">ບັນທຶກ</button>
     </div>
   </div>
 </form>

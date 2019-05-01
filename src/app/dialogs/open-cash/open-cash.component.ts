@@ -72,7 +72,7 @@ export class OpenCashComponent implements OnInit {
   }
 
   async addInitialBalance() {
-    console.log(this.addCashload.value);
+    // console.log(this.addCashload.value);
     if (this.addCashload.get('initBalance').value) {
       const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
       this.addCashload.get('refno').setValue(refno);
@@ -101,7 +101,7 @@ export class OpenCashComponent implements OnInit {
               return ref.where('email', '==', this.addCashload.get('openAuthorizedBy').value);
             }).get().subscribe(users => {
               users.docs.forEach(async (user) => {
-                console.log(user.data().userName);
+                // console.log(user.data().userName);
                 let c = await this.addCashload.get('openAuthorizedBy').setValue(user.data().userName);
                 this.db.collection<CashLoad>('cashloads').add(this.addCashload.value).then((resps) => {
                   this.dialogRef.close('success');
@@ -132,7 +132,7 @@ export class OpenCashComponent implements OnInit {
   loadTerminals() {
     this.backendService.getTerminals().then(t => {
       t.subscribe(terminals => {
-        console.log(terminals);
+        // console.log(terminals);
         this.terminals = terminals;
       });
     });
@@ -140,7 +140,7 @@ export class OpenCashComponent implements OnInit {
   loadBalance(e) {
     this.backendService.getTerminalById(e).then(rsp => {
       rsp.subscribe(bal => {
-        console.log(bal);
+        // console.log(bal);
         this.balance = bal[0].balance;
         this.cashloadId = bal[0].id;
         this.addCashload.get('initBalance').setValue(bal[0].balance);

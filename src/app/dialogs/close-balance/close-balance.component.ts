@@ -69,6 +69,7 @@ export class CloseBalanceComponent implements OnInit {
       terminalId: new FormControl(),
       fwdBalance: new FormControl(0),
       takeOffBalance: new FormControl(0),
+      expenditureAmount: new FormControl(0),
       closed: new FormControl(),
       createdAt: new FormControl(),
       updatedAt: new FormControl(),
@@ -77,6 +78,7 @@ export class CloseBalanceComponent implements OnInit {
       this.data['fwdBalance'] = 0;
       this.data['takeOffBalance'] = 0;
       this.addCashload.setValue(this.data);
+      this.loadExpenditure();
     }
     this.users = this.usersRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
@@ -134,6 +136,7 @@ export class CloseBalanceComponent implements OnInit {
                   totalSellAmount: this.addCashload.get('eodBankBalance').value + this.addCashload.get('eodCashBalance').value,
                   fwdBalance: this.addCashload.get('fwdBalance').value,
                   takeOffBalance: this.addCashload.get('takeOffBalance').value,
+                  expenditureAmount: this.addCashload.get('takeOffBalance').value,
                   closed: 1,
                   closeDatetime: new Date(),
                   closedby: JSON.parse(localStorage.getItem('usrObj')).id,
@@ -205,5 +208,12 @@ export class CloseBalanceComponent implements OnInit {
     } else {
       this.btnDisable = false;
     }
+  }
+  loadExpenditure() {
+    this.backendService.getExpenditureAmountByCashId(this.data.id).then(rsp => {
+      rsp.subscribe(expenditureAmount => {
+        this.addCashload.get('expenditureAmount').setValue(expenditureAmount);
+      });
+    });
   }
 }

@@ -19,7 +19,6 @@
       <label for="eodCashBalance">ຍອດຂາຍ ເງິນສົດ</label>
       <input type="number" class="form-control" readonly formControlName="eodCashBalance" id="eodCashBalance">
     </div>
-
     <div class="form-group col-md-9">
       <label for="eodBankBalance">ຍອດຂາຍ ຜ່ານທະນາຄານ</label>
       <input type="number" class="form-control" readonly formControlName="eodBankBalance" id="eodBankBalance">
@@ -28,8 +27,15 @@
       <label for="cashBalance">ຍອດເງິນລວມໃນລີ້ນຊັກ</label>
       <input type="number" class="form-control" readonly formControlName="cashBalance" id="cashBalance">
     </div>
+
     <div class="form-group col-md-9">
-      <label for="takeOffBalance">ຍອດສຸທິ</label>
+      <label for="expenditureAmount">ລາຍຈ່າຍອອກຈາກລີ້ນຊັກ</label>
+      <input type="number" class="form-control" readonly formControlName="expenditureAmount" id="expenditureAmount">
+    </div>
+
+
+    <div class="form-group col-md-9">
+      <label for="takeOffBalance">ຍອດສຸທິ (ຕ້ອງສົ່ງ)</label>
       <input type="number" class="form-control" formControlName="takeOffBalance" id="takeOffBalance"
         (change)="balanceFwdCalculate()">
     </div>

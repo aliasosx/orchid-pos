@@ -417,5 +417,10 @@ export class BackendServiceService {
   async getPendingExpenditureByCashId(id) {
     return this._http.get(this.backendService + 'checkPendingExpenditure/' + id, this.httpOptions);
   }
+  async getExpenditureAmountByCashId(id) {
+    return this._http.get(this.backendService + 'expenditureAmountByCashId/' + id, this.httpOptions);
+  }
+
+
 }
 

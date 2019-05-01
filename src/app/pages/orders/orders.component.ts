@@ -251,7 +251,7 @@ export class OrdersComponent implements OnInit {
     let ticketId = '';
     if (ticket) {
       const c = await this.db.collection<Ticket>('tickets', ref => {
-        return ref.where('ticket', '==', parseInt(ticket));
+        return ref.where('ticket', '==', parseInt(ticket, 10));
       }).snapshotChanges().pipe(map(change => {
         return change.map(a => {
           const tickets = a.payload.doc.data() as Ticket;
@@ -261,6 +261,7 @@ export class OrdersComponent implements OnInit {
         });
       }));
       c.subscribe(a => {
+        console.log('TicketID to be release => ' + ticketId);
         this.db.collection<Ticket>('tickets').doc(ticketId).update({
           used: false
         }).then(() => {

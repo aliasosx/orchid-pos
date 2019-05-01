@@ -145,7 +145,14 @@ export class CloseBalanceComponent implements OnInit {
                     if (c) {
                       this.snackbar.open('EOD closed  ' + c, 'OK', { duration: 1000 });
                       // update current POS BAL
-                      this.dialogRef.close('success');
+                      let cashBalanceEodTerminal = {
+                        cashloadId: this.data.id,
+                        balance: this.addCashload.get('fwdBalance').value
+                      };
+                      // tslint:disable-next-line: max-line-length
+                      this.backendService.updateTerminalBalanceEod(this.addCashload.get('terminalId').value, cashBalanceEodTerminal).then(rsp => {
+                        this.dialogRef.close('success');
+                      });
                     }
                   });
                 });

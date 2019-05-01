@@ -408,5 +408,8 @@ export class BackendServiceService {
   async getTerminalById(id) {
     return this._http.get(this.backendService + 'terminal/' + id, this.httpOptions);
   }
+  async updateTerminalBalanceEod(id, data) {
+    return this._http.put(this.backendService + 'terminal/' + id, data, this.httpOptions);
+  }
 }
 

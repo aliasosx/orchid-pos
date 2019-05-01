@@ -143,7 +143,7 @@ export class OpenCashComponent implements OnInit {
         console.log(bal);
         this.balance = bal[0].balance;
         this.cashloadId = bal[0].id;
-        console.log(this.balance['cashloadId']);
+        this.addCashload.get('initBalance').setValue(bal[0].balance);
       });
     });
   }

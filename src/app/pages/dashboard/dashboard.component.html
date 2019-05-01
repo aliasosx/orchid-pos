@@ -24,14 +24,11 @@
                 <br />
                 <ng-container *ngFor="let summaryReport of dashboardSummaryReports">
                   <div class="row">
-                    <div class="col col-md-4 h5">{{ summaryReport.status }}</div>
-                    <div class="col col-md-6 h5 text-right  text-nowrap">{{ summaryReport.grandTotal | number }}</div>
-                    <div class="col col-md-2 h5 text-right  text-nowrap">ກິບ</div>
-                  </div>
-                  <div class="row">
-                    <div class="col col-md-4 h5">ຈຳນວນ</div>
-                    <div class="col col-md-6 h5 text-right text-nowrap">{{ summaryReport.count | number }}</div>
-                    <div class="col col-md-2 h5 text-right text-nowrap"> ໜ່ວຍ</div>
+                    <div class="col col-md-3 h6 text-nowrap" style="cursor: pointer;" [routerLink]="['/ordershistory']"
+                      routerLinkActive="router-link-active">{{ summaryReport.status }}</div>
+                    <div class="col col-md-3 h6 text-right text-nowrap">{{ summaryReport.count | number }}</div>
+                    <div class="col col-md-4 h6 text-right text-nowrap">{{ summaryReport.grandTotal | number }}</div>
+                    <div class="col col-md-2 h6 text-right text-nowrap" style="margin: 0;">ກິບ</div>
                   </div>
                 </ng-container>
 
@@ -98,7 +95,7 @@
 
           <!--
           Old System Report
-          -->
+
           <div class="col-md-4 col-xl-3">
             <div class="card bg-c-blue order-card">
               <div class="card-block">
@@ -201,7 +198,7 @@
               </div>
             </div>
           </div>
-
+        -->
         </div>
       </ng-container>
       <ng-container *ngIf="roleId > 1">

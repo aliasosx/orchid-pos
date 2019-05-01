@@ -223,6 +223,7 @@ export class PaymentCashComponent implements OnInit {
       } else if (this.bankDataResponse) {
         console.log('Bank data');
         this.orderForm.get('qrRefno').setValue(this.bankDataResponse.fccref);
+        this.orderForm.get('paymentType').setValue('QR-BCEL');
         console.log(this.orderForm.get('qrRefno').value);
         this.backendService.createOrder(this.orderForm.value).then(async (resp_order) => {
           resp_order.subscribe(async (x) => {

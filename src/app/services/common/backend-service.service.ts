@@ -414,5 +414,8 @@ export class BackendServiceService {
   async getCashAmountTotalByTerminal(id) {
     return this._http.get(this.backendService + 'cashAmountTotalByTerminal/' + id, this.httpOptions);
   }
+  async getPendingExpenditureByCashId(id) {
+    return this._http.get(this.backendService + 'checkPendingExpenditure/' + id, this.httpOptions);
+  }
 }
 

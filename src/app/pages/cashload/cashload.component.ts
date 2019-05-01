@@ -49,7 +49,7 @@ export class CashloadComponent implements OnInit {
   openCash() {
     this.backendSrv.checkCashstat(JSON.parse(localStorage.getItem('usrObj')).id).then((st) => {
       st.subscribe(c => {
-        if (parseInt(c['status']) > 0) {
+        if (parseInt(c['status'], 10) > 0) {
           swal({
             title: 'ທ່ານໄດ້ເອົາເງິນເຂົ້າ ລີ້ນຊັກແລ້ວ',
             text: 'ທ່ານສາມາດເອົາເງິນເຂົ້າລີ້ນຊັກ ໄດ້ພຽງ 1 ຄັ້ງ',
@@ -101,9 +101,10 @@ export class CashloadComponent implements OnInit {
   }
   openCloseBalance(cash) {
     if (cash.staff === JSON.parse(localStorage.getItem('usrObj')).id && cash.loadApproved === 1 && cash.closeApproved === 0) {
+      // Get Order no done
       this.backendSrv.getIncompleteOrder(JSON.parse(localStorage.getItem('usrObj')).id).then((resp_order_incomplete) => {
         resp_order_incomplete.subscribe(rsp => {
-          if (parseInt(rsp['status']) > 0 && rsp['status'] !== 'error') {
+          if (parseInt(rsp['status'], 10) > 0 && rsp['status'] !== 'error') {
             swal({
               title: 'ມີລາຍການ Order ຄ້າງ ກະລຸນາກວດສອບໃໝ່',
               text: 'Order still pending please clear all Orders',
@@ -113,15 +114,30 @@ export class CashloadComponent implements OnInit {
             });
             return;
           } else {
-            const dialogRef = this.dialog.open(CloseBalanceComponent, {
-              width: '600px',
-              data: cash
-            });
-            dialogRef.afterClosed().subscribe(c => {
-              if (c === 'success') {
-                this.loadCashStartUp();
-                this.snackbar.open('Batch has been closed', 'OK', { duration: 2000 });
-              }
+
+            this.backendSrv.getPendingExpenditureByCashId(cash.id).then(rsp => {
+              rsp.subscribe(cashExpPending => {
+                if (cashExpPending[0].pendingExpenditure > 0) {
+                  swal({
+                    title: 'ມີລາຍຈ່າຍຄົງຄ້າງໃຫ້ກວດສອບ',
+                    text: 'ມີລາຍຈ່າຍຄົງຄ້າງໃຫ້ກວດສອບ',
+                    icon: 'error'
+                  });
+                  this.router.navigateByUrl('diaryExpenditure');
+                  return;
+                } else {
+                  const dialogRef = this.dialog.open(CloseBalanceComponent, {
+                    width: '600px',
+                    data: cash
+                  });
+                  dialogRef.afterClosed().subscribe(c => {
+                    if (c === 'success') {
+                      this.loadCashStartUp();
+                      this.snackbar.open('Batch has been closed', 'OK', { duration: 2000 });
+                    }
+                  });
+                }
+              });
             });
           }
         });

@@ -138,5 +138,4 @@ export class AddProductsComponent implements OnInit {
     while (s.length < size) { s = '0' + s; }
     return s;
   }
-
 }

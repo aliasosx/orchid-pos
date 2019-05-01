@@ -87,9 +87,13 @@ export class PaymentCashComponent implements OnInit {
   qrPaymentsRef: AngularFirestoreCollection<QrBankResponseData>;
   items_Print: any = [];
 
+
+  _tickets: any;
+
   ngOnInit() {
     // console.log(this.data.cart);
     this.loadData();
+    this.loadAvailableTicket();
   }
   async loadData() {
     // this.snackbar.open('Loading data...', 'OK', { duration: 1000 });
@@ -444,5 +448,12 @@ export class PaymentCashComponent implements OnInit {
         console.log(res);
       });
     }
+  }
+  async loadAvailableTicket() {
+    this.backendService.getAllTickets().then(rsp => {
+      rsp.subscribe(tickets => {
+        this._tickets = tickets;
+      });
+    });
   }
 }

@@ -420,7 +420,9 @@ export class BackendServiceService {
   async getExpenditureAmountByCashId(id) {
     return this._http.get(this.backendService + 'expenditureAmountByCashId/' + id, this.httpOptions);
   }
-
+  async getAllTickets() {
+    return this._http.get(this.backendService + 'tickets', this.httpOptions);
+  }
 
 }
 

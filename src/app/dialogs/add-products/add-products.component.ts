@@ -47,13 +47,16 @@ export class AddProductsComponent implements OnInit {
   currencies: any;
   foodDisabled;
 
+  btnDisable = false;
+  btnText = 'ບັນທຶກ';
+
   ngOnInit() {
     let uid = uuid.v4();
     const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
     this.addProductForm = new FormGroup({
       uuids: new FormControl(uid),
       barcode: new FormControl(refno),
-      product_code: new FormControl(0),
+      product_code: new FormControl(uid),
       product_name: new FormControl(),
       cost: new FormControl(0),
       minimum: new FormControl(0),
@@ -64,6 +67,7 @@ export class AddProductsComponent implements OnInit {
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       foodId: new FormControl(),
       expireDate: new FormControl(),
+      quantity: new FormControl(),
       quantityPerPack: new FormControl(),
       package: new FormControl(),
       createdAt: new FormControl(new Date()),
@@ -84,7 +88,8 @@ export class AddProductsComponent implements OnInit {
   }
   addProduct() {
     if (this.addProductForm.valid) {
-
+      this.btnDisable = true;
+      this.btnText = 'Processing ...';
       this.be.createProduct(this.addProductForm.value).then(rsp => {
         rsp.subscribe(r => {
           if (r['status'] === 'success') {
@@ -94,7 +99,8 @@ export class AddProductsComponent implements OnInit {
           }
         });
       });
-
+    } else {
+      return;
     }
   }
 
@@ -137,5 +143,9 @@ export class AddProductsComponent implements OnInit {
     let s = num + '';
     while (s.length < size) { s = '0' + s; }
     return s;
+  }
+  quantityCaculation() {
+    // tslint:disable-next-line: max-line-length
+    this.addProductForm.get('currentQuantity').setValue(parseInt(this.addProductForm.get('quantity').value, 10) * parseInt(this.addProductForm.get('quantityPerPack').value, 10));
   }
 }

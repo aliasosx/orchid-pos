@@ -9,6 +9,7 @@ import { AddProductsComponent } from 'src/app/dialogs/add-products/add-products.
 import { ViewProductsComponent } from 'src/app/dialogs/view-products/view-products.component';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+
 declare var swal: any;
 
 @Component({
@@ -124,4 +125,5 @@ export class ProductsComponent implements OnInit {
       }
     });
   }
+
 }

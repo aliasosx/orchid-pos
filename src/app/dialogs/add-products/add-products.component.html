@@ -9,7 +9,7 @@
       <input type="text" class="form-control" id="barcodetxt" placeholder="Barcode" formControlName="barcode" required>
     </div>
     <div class="form-group col-md-6">
-      <label for="productName">Product Name</label>
+      <label for="productName ">Product Name</label>
       <input type="text" class="form-control" id="productName" placeholder="Product Name" formControlName="product_name"
         required>
     </div>
@@ -48,7 +48,7 @@
     </div>
 
     <div class="form-group col-md-6">
-      <label for="currentQuantity">Sets</label>
+      <label for="currentQuantity">Unit</label>
       <select class="form-control" formControlName="unitId" required>
         <option value="-1" disabled>------</option>
         <option *ngFor="let unit of units" value="{{ unit.id }}">{{ unit.unit_name }}</option>
@@ -83,7 +83,7 @@
     </div>
   </div>
   <div class="text-center">
-    <button mat-raised-button color="primary" [disabled]="btnDisable" style="width: 100%;"
+    <button mat-raised-button color="primary" style="width: 107px;" [disabled]="btnDisable" style="width: 100%;"
       (click)="addProduct()">{{ btnText }}</button>
   </div>
 

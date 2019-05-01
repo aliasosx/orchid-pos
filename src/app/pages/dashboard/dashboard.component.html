@@ -52,7 +52,8 @@
                     <div class="col col-md-4 h6 text-right  text-nowrap"><span>
                       </span>{{ summaryReportsKitchen.total_cost |number }}
                     </div>
-                    <div class="col col-md-4 h6 text-right">{{ summaryReportsKitchen.total_price |number }} ກິບ</div>
+                    <div class="col col-md-4 h6 text-right text-nowrap">{{ summaryReportsKitchen.total_price |number }}
+                      ກິບ</div>
                   </div>
                 </ng-container>
               </div>
@@ -66,8 +67,8 @@
                 <br />
                 <ng-container *ngFor=" let summaryReportsPayment of dashboardPaymentReports">
                   <div class="row">
-                    <div class="col col-md-6 h5 text-left">{{ summaryReportsPayment.paymentType }}</div>
-                    <div class="col col-md-6 h5 text-right">{{ summaryReportsPayment.grandTotal |number }} ກິບ</div>
+                    <div class="col col-md-6 h6 text-left">{{ summaryReportsPayment.paymentType }}</div>
+                    <div class="col col-md-6 h6 text-right">{{ summaryReportsPayment.grandTotal |number }} ກິບ</div>
                   </div>
                 </ng-container>
               </div>
@@ -82,9 +83,9 @@
                 <br />
                 <ng-container *ngFor="let summaryReportsUser of dashboardUserReports">
                   <div class="row">
-                    <div class="col col-md-6 h5 text-left">{{ summaryReportsUser.username }}</div>
-                    <div class="col col-md-2 h5 text-right">{{ summaryReportsUser.count |number }}</div>
-                    <div class="col col-md-4 h5 text-right text-nowrap">{{ summaryReportsUser.grandTotal |number }} ກິບ
+                    <div class="col col-md-6 h6 text-left">{{ summaryReportsUser.username }}</div>
+                    <div class="col col-md-2 h6 text-right">{{ summaryReportsUser.count |number }}</div>
+                    <div class="col col-md-4 h6 text-right text-nowrap">{{ summaryReportsUser.grandTotal |number }} ກິບ
                     </div>
                   </div>
                 </ng-container>

@@ -35,7 +35,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let product of productsShow | product: searchProduct"
+          <tr *ngFor="let product of productsShow | product: searchProduct ; let i = index"
             [ngClass]="{'bg-danger': product.currentQuantity == 0 || product.minimumQuantity > product.currentQuantity}">
             <td class="text-center align-middle" (click)="updateProduct(product)" style="cursor: pointer">
               {{ product.pid }}</td>

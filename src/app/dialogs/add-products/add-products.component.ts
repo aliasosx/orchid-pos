@@ -5,12 +5,10 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Vendor } from 'src/app/interfaces/vendor';
 import { ProductType } from 'src/app/interfaces/productType';
 import { Product } from 'src/app/interfaces/product';
-import { Unit } from 'src/app/interfaces/unit';
-import { Food } from 'src/app/interfaces/food';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import * as uuid from 'uuid';
-import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-add-products',
@@ -47,6 +45,7 @@ export class AddProductsComponent implements OnInit {
   suppliers: any;
   units: any;
   currencies: any;
+  foodDisabled;
 
   ngOnInit() {
     let uid = uuid.v4();
@@ -134,11 +133,10 @@ export class AddProductsComponent implements OnInit {
       });
     });
   }
-
-
   padding(num: number, size: number) {
     let s = num + '';
     while (s.length < size) { s = '0' + s; }
     return s;
   }
+
 }

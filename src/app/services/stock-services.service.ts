@@ -48,4 +48,7 @@ export class StockServicesService {
   async getCurrentStocks() {
     return this._http.get(this.backendService + 'currentStocks', this.httpOptions);
   }
+  async getCurrentStocksByDateRange(dateRange) {
+    return this._http.post(this.backendService + 'currentStocksByDate', dateRange, this.httpOptions);
+  }
 }

@@ -51,4 +51,12 @@ export class StockServicesService {
   async getCurrentStocksByDateRange(dateRange) {
     return this._http.post(this.backendService + 'currentStocksByDate', dateRange, this.httpOptions);
   }
+  async getStockTranxByProductId(id) {
+    return this._http.get(this.backendService + 'stockTranxByProductId/' + id, this.httpOptions);
+  }
+  async getStockFood() {
+    return this._http.get(this.backendService + 'stockFoodByKitchen', this.httpOptions);
+  }
+
+  // stockFoodByKitchen
 }

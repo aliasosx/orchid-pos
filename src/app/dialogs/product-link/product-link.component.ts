@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
+import { StockServicesService } from 'src/app/services/stock-services.service';
 
 @Component({
   selector: 'app-product-link',
@@ -9,9 +10,13 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class ProductLinkComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<ProductLinkComponent>, @Inject(MAT_DIALOG_DATA) public data) { }
+  // tslint:disable-next-line: max-line-length
+  constructor(private stockService: StockServicesService, private dialogRef: MatDialogRef<ProductLinkComponent>, @Inject(MAT_DIALOG_DATA) public data) { }
 
   stockTranxForm: FormGroup;
+  btnDisabled = false;
+  stockTranxs: any;
+  foodsStock: any;
 
   ngOnInit() {
     this.stockTranxForm = new FormGroup({
@@ -23,9 +28,30 @@ export class ProductLinkComponent implements OnInit {
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
     });
-    console.log(this.data);
+    if (this.data) {
+      this.loadExistingList();
+      this.loadFoods();
+    }
   }
   addStockTranx() {
+    if (this.stockTranxForm.valid) {
 
+    } else {
+      return;
+    }
+  }
+  async loadExistingList() {
+    this.stockService.getStockTranxByProductId(this.data.pid).then(rsp => {
+      rsp.subscribe(stockTransx => {
+        this.stockTranxs = stockTransx;
+      });
+    });
+  }
+  loadFoods() {
+    this.stockService.getStockFood().then(rsp => {
+      rsp.subscribe(foodsStock => {
+        this.foodsStock = foodsStock;
+      });
+    });
   }
 }

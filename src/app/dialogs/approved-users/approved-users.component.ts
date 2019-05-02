@@ -1,8 +1,8 @@
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 declare var swal: any;
 
@@ -14,17 +14,21 @@ declare var swal: any;
 export class ApprovedUsersComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private backendService: BackendServiceService, private authService: AuthenticationService, private dialogRef: MatDialogRef<ApprovedUsersComponent>) { }
+  constructor(private backendService: BackendServiceService, private authService: AuthenticationService, private dialogRef: MatDialogRef<ApprovedUsersComponent>, @Inject(MAT_DIALOG_DATA) public data) { }
   approvedUsers: FormGroup;
   users: any;
 
   passwordShow = 'hidden';
+  flagOwnApprove = true;
 
   ngOnInit() {
     this.approvedUsers = new FormGroup({
       username: new FormControl(),
       password: new FormControl(),
     });
+    if (this.data === 'none') {
+      this.flagOwnApprove = false;
+    }
     this.loadUsers();
   }
   loadUsers() {
@@ -36,8 +40,17 @@ export class ApprovedUsersComponent implements OnInit {
   }
   enablePassword(e) {
     if (e) {
-      this.passwordShow = '';
-      console.log(e);
+      if (e === JSON.parse(localStorage.getItem('usrObj')).username && this.flagOwnApprove === false) {
+        swal({
+          title: 'ທ່ານບໍ່ສາມາດອະນຸມັດໃຫ້ຕົນເອງໄດ້ ກະລຸນາເລືອກ ຜູ້ໃຊ້ອື່ນ',
+          text: 'Cannot approve yourself , please select other',
+          icon: 'error',
+        });
+        this.passwordShow = 'hidden';
+        return;
+      } else {
+        this.passwordShow = '';
+      }
     }
   }
   authenticate() {

@@ -1,16 +1,13 @@
 import { ApprovedUsersComponent } from './../../dialogs/approved-users/approved-users.component';
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { CloseBalanceComponent } from './../../dialogs/close-balance/close-balance.component';
-import { CashLoad } from './../../interfaces/cashLoad';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, } from '@angular/fire/firestore';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { OpenCashComponent } from 'src/app/dialogs/open-cash/open-cash.component';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
-import { Order } from 'src/app/interfaces/order';
 declare var swal: any;
 @Component({
   selector: 'app-cashload',
@@ -42,6 +39,7 @@ export class CashloadComponent implements OnInit {
   async loadCashStartUp() {
     this.backendSrv.getCashload().then((cashload_resp) => {
       cashload_resp.subscribe(cashloads => {
+        console.log(cashloads);
         this.cashloads = cashloads;
       });
     });
@@ -194,6 +192,7 @@ export class CashloadComponent implements OnInit {
         if (value) {
           const dialogRef = this.dialog.open(ApprovedUsersComponent, {
             width: '600px',
+            data: 'none',
           });
           dialogRef.afterClosed().subscribe(resp => {
             if (resp.user) {

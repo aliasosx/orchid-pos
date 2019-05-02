@@ -113,7 +113,7 @@ export class CloseBalanceComponent implements OnInit {
   }
   calculateOnHandsAmount(amount) {
     // console.log(amount);
-    this.addCashload.get('closeBalance').setValue(parseInt(amount) - parseInt(this.addCashload.get('cashBalance').value));
+    this.addCashload.get('closeBalance').setValue(parseInt(amount, 10) - parseInt(this.addCashload.get('cashBalance').value, 10));
   }
   saveBalance() {
     swal({
@@ -140,7 +140,7 @@ export class CloseBalanceComponent implements OnInit {
                   takeOffBalance: this.addCashload.get('takeOffBalance').value,
                   // tslint:disable-next-line: max-line-length
                   netbalance: parseInt(this.addCashload.get('cashInHands').value, 10) - parseInt(this.addCashload.get('expenditureAmount').value, 10),
-                  expenditureAmount: this.addCashload.get('takeOffBalance').value,
+                  expenditureAmount: this.addCashload.get('expenditureAmount').value,
                   closed: 1,
                   closeDatetime: new Date(),
                   closedby: JSON.parse(localStorage.getItem('usrObj')).id,

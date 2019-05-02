@@ -22,27 +22,28 @@
               <table class="table  table-bordered table-hover">
                 <thead class="thead-dark">
                   <tr>
-                    <th scope="col" class="text-center">#</th>
-                    <th scope="col" class="text-center">ເວລາ</th>
-                    <th scope="col" class="text-center">ຍອດເປີດ</th>
-                    <th scope="col" class="text-center">ອະນຸມັດໂດຍ</th>
-                    <th scope="col" class="text-center">ອະນຸມັດເປີດຍອດ</th>
-                    <th scope="col" class="text-center">ຍອດຂາຍ</th>
-                    <th scope="col" class="text-center">ທະນາຄານ</th>
-                    <th scope="col" class="text-center">ລວມເງິນສົດ</th>
-                    <th scope="col" class="text-center">ຍອດຂາຍທັງໝົດ</th>
-                    <th scope="col" class="text-center">ຈ່າຍອອກ</th>
-                    <th scope="col" class="text-center">ຍອດສຸທິ</th>
-                    <th scope="col" class="text-center">ຍອດຍົກໄປ</th>
-                    <th scope="col" class="text-center">ພະນັກງານຂາຍ</th>
-                    <th scope="col" class="text-center">ເວລາປີດ</th>
-                    <th scope="col" class="text-center">ອະນຸມັດໂດຍ</th>
-                    <th scope="col" class="text-center">ສະຖານະ</th>
-                    <th scope="col" class="text-center">ອະນຸມັດປີດ</th>
-                    <th scope="col" class="text-center">ລີ້ນຊັກ</th>
-                    <th scope="col" class="text-center">ໝາຍເຫດ</th>
-                    <th scope="col" class="text-center">ປິດ</th>
-                    <th scope="col" class="text-center">ຈັດການ</th>
+                    <th scope="col" class="text-center align-top">#</th>
+                    <th scope="col" class="text-center align-top">ເວລາ</th>
+                    <th scope="col" class="text-center align-top">ຍອດເປີດ</th>
+                    <th scope="col" class="text-center align-top">ອະນຸມັດໂດຍ</th>
+                    <th scope="col" class="text-center align-top">ອະນຸມັດເປີດ</th>
+                    <th scope="col" class="text-center align-top">ຍອດຂາຍ</th>
+                    <th scope="col" class="text-center align-top">ທະນາຄານ</th>
+                    <th scope="col" class="text-center align-top">ລວມເງິນສົດ</th>
+                    <th scope="col" class="text-center align-top">ຍອດຂາຍທັງໝົດ</th>
+                    <th scope="col" class="text-center align-top">ລາຍຈ່າຍ</th>
+                    <th scope="col" class="text-center align-top">ເງິນສົດຫັກລາຍຈ່າຍ</th>
+                    <th scope="col" class="text-center align-top">ຍອດສຸທິ</th>
+                    <th scope="col" class="text-center align-top">ຍອດຍົກໄປ</th>
+                    <th scope="col" class="text-center align-top">ພະນັກງານ</th>
+                    <th scope="col" class="text-center align-top">ເວລາປີດ</th>
+                    <th scope="col" class="text-center align-top">ອະນຸມັດໂດຍ</th>
+                    <th scope="col" class="text-center align-top">ສະຖານະ</th>
+                    <th scope="col" class="text-center align-top">ອະນຸມັດປີດ</th>
+                    <th scope="col" class="text-center align-top">ລີ້ນຊັກ</th>
+                    <th scope="col" class="text-center align-top">ໝາຍເຫດ</th>
+                    <th scope="col" class="text-center align-top">ປິດ</th>
+                    <th scope="col" class="text-center align-top">ຈັດການ</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -69,6 +70,7 @@
                     <td class="text-right align-middle">{{ cash.eodBankBalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.cashBalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.totalSellAmount | number }}</td>
+                    <td class="text-right align-middle">{{ cash.expenditureAmount | number }}</td>
                     <td class="text-right align-middle">{{ cash.netbalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.takeOffBalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.fwdBalance | number }}</td>

@@ -1,3 +1,4 @@
+import { KitchenReportsComponent } from './pages/kitchen-reports/kitchen-reports.component';
 import { PosComponent } from './pages/pos/pos.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { NgModule } from '@angular/core';
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'ordershistory', component: OrdersHistoryComponent },
   { path: 'testpage', component: TestPagesComponent },
   { path: 'diaryExpenditure', component: ExpendituresComponent },
+  { path: 'reportbykitchen', component: KitchenReportsComponent },
 ];
 
 @NgModule({

@@ -1,0 +1,55 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>
+      <span>ລາຍງານຍອດຂາຍ</span>
+    </mat-card-title>
+    <mat-card-subtitle>All current Cashloads</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="row mb-3">
+      <div class="col col-md-2 col-sm-12">
+        <label for="fromDate" class="h5">ເລີ່ມຈາກວັນທີ</label>
+        <div class="input-group mb-1">
+          <input type="date" class="form-control" formControlName="startDate">
+        </div>
+      </div>
+      <div class="col col-md-2  col-sm-12">
+        <label for="fromDate" class="h5">ຮອດວັນທີ</label>
+        <div class="input-group mb-1">
+          <input type="date" class="form-control" formControlName="endDate">
+        </div>
+      </div>
+      <div class="col col-md-2  col-sm-12">
+        <label for="fromDate" class="h5">ຄົວ</label>
+        <div class="input-group mb-1">
+          <select class="form-control" id="kitchenId">
+            <option value="-1">ເລືອກ</option>
+            <option value="{{ kitchen.id }}" *ngFor=" let kitchen of kitchens">{{ kitchen.kitchenName }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col col-md-2  col-sm-12">
+        <label for="fromDate"></label>
+        <div class="input-group mb-1">
+          <button mat-raised-button color="primary" (click)="loadReport()"
+            style="margin-top: 12px;width: 200px;">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-card>
+          <mat-card-header class="h5">ລາຍລະອຽດລາຍງານ</mat-card-header>
+        </mat-card>
+        <mat-card-content>
+          <div class="row">
+            <div class="col">
+              <mat-tab></mat-tab>
+            </div>
+          </div>
+        </mat-card-content>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

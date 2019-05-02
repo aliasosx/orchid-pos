@@ -93,6 +93,7 @@ import { CouponAddPosComponent } from './dialogs/coupon-add-pos/coupon-add-pos.c
 import { ExpendituresComponent } from './pages/expenditures/expenditures.component';
 import { CreateExpenditureComponent } from './dialogs/create-expenditure/create-expenditure.component';
 import { KitchenReportsComponent } from './pages/kitchen-reports/kitchen-reports.component';
+import { ProductLinkComponent } from './dialogs/product-link/product-link.component';
 
 @NgModule({
   declarations: [
@@ -165,6 +166,7 @@ import { KitchenReportsComponent } from './pages/kitchen-reports/kitchen-reports
     ExpendituresComponent,
     CreateExpenditureComponent,
     KitchenReportsComponent,
+    ProductLinkComponent,
 
 
   ],
@@ -225,6 +227,7 @@ import { KitchenReportsComponent } from './pages/kitchen-reports/kitchen-reports
     AddChildBomComponent,
     CouponAddPosComponent,
     CreateExpenditureComponent,
+    ProductLinkComponent,
   ]
   ,
   providers: [

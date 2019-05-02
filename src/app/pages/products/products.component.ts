@@ -9,6 +9,7 @@ import { AddProductsComponent } from 'src/app/dialogs/add-products/add-products.
 import { ViewProductsComponent } from 'src/app/dialogs/view-products/view-products.component';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { ProductLinkComponent } from 'src/app/dialogs/product-link/product-link.component';
 
 declare var swal: any;
 
@@ -123,6 +124,12 @@ export class ProductsComponent implements OnInit {
         this.loadProducts();
         swal('Product modified', 'Product has been updated', 'success', { timer: 1000 });
       }
+    });
+  }
+  openProductLink(product) {
+    const dialogRef = this.dialog.open(ProductLinkComponent, {
+      width: '600px',
+      data: product,
     });
   }
 

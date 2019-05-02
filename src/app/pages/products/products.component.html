@@ -55,6 +55,8 @@
             <td class="text-left align-middle">{{ product.supplier_name }}</td>
             <td class="text-center align-middle">{{ product.createdAt |date }}</td>
             <td class="text-center align-middle text-nowrap" style="width: 230px;">
+              <button mat-raised-button color="primary" class="mr-1" (click)="openProductLink(product)">Product
+                link</button>
               <button mat-raised-button color="primary" (click)="updateProduct(product)">ແກ້ໄຂລາຍການ</button>
               <button mat-raised-button color="warn" class="ml-1" (click)="deleteProduct(product)">ລືບລາຍການ</button>
             </td>

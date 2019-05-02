@@ -1,0 +1,27 @@
+<div class="h4">ຈັດການສິນຄ້າ {{ data.product_name }}</div>
+<div class="mat-card-container">
+
+  <form [formGroup]="stockTranxForm">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="productId">ProductId</label>
+        <input type="text" class="form-control" readonly id="productId" placeholder="Barcode"
+          formControlName="productId" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="foodId">ອາຫານ</label>
+        <input type="text" class="form-control" id="foodId" placeholder="foodId" formControlName="foodId" required>
+      </div>
+      <div class="form-group col-md-12">
+        <label for="remarks">ໝາຍເຫດ</label>
+        <input type="text" class="form-control" id="remarks" placeholder="remarks" formControlName="remarks" required>
+      </div>
+    </div>
+    <div class="row">
+      <mat-divider></mat-divider>
+      <div class="col col-md-12 text-right">
+        <button mat-raised-button color="primary" (click)="addStockTranx()">ບັນທຶກ</button>
+      </div>
+    </div>
+  </form>
+</div>

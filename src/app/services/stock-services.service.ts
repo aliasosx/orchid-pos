@@ -1,3 +1,5 @@
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Product } from '../interfaces/product';
@@ -8,11 +10,20 @@ import { map } from 'rxjs/operators';
 })
 export class StockServicesService {
 
-  constructor(private db: AngularFirestore) { }
+  constructor(private db: AngularFirestore, private _http: HttpClient) { }
   productsRef: AngularFirestoreCollection<Product>;
   productsDoc: AngularFirestoreDocument<Product>;
 
   CurrentQuantity: number;
+
+
+  backendService = environment.backendUrl.url;
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer ' + localStorage.getItem('token')
+    })
+  };
 
   getLatestQuantityByProductName(productName): Promise<Product> {
     return new Promise((resolve, reject) => {
@@ -33,5 +44,8 @@ export class StockServicesService {
         });
       }));
     });
+  }
+  async getCurrentStocks() {
+    return this._http.get(this.backendService + 'currentStocks', this.httpOptions);
   }
 }

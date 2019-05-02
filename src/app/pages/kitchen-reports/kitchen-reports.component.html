@@ -7,46 +7,153 @@
     <mat-card-subtitle>All current Cashloads</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <div class="row mb-3">
-      <div class="col col-md-2 col-sm-12">
-        <label for="fromDate" class="h5">ເລີ່ມຈາກວັນທີ</label>
-        <div class="input-group mb-1">
-          <input type="date" class="form-control" formControlName="startDate">
+    <form [formGroup]="stockForm">
+      <div class="row mb-3">
+        <div class="col col-md-2 col-sm-12">
+          <label for="fromDate" class="h5">ເລີ່ມຈາກວັນທີ</label>
+          <div class="input-group mb-1">
+            <input type="date" class="form-control" formControlName="startDate">
+          </div>
+        </div>
+        <div class="col col-md-2  col-sm-12">
+          <label for="fromDate" class="h5">ຮອດວັນທີ</label>
+          <div class="input-group mb-1">
+            <input type="date" class="form-control" formControlName="endDate">
+          </div>
+        </div>
+        <div class="col col-md-2  col-sm-12">
+          <label for="fromDate" class="h5">ຄົວ</label>
+          <div class="input-group mb-1">
+            <select class="form-control" id="kitchenId">
+              <option value="-1">ເລືອກ</option>
+              <option value="{{ kitchen.id }}" *ngFor=" let kitchen of kitchens">{{ kitchen.kitchenName }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col col-md-3  col-sm-12">
+          <label for="fromDate"></label>
+          <div class="input-group mb-1">
+            <button mat-raised-button color="primary" style="margin-top: 12px;width: 200px;">Submit</button>
+            <button mat-raised-button color="primary" class="ml-1" style="margin-top: 12px;width: 200px;"
+              (click)="loadAllReports()">Reload</button>
+          </div>
         </div>
       </div>
-      <div class="col col-md-2  col-sm-12">
-        <label for="fromDate" class="h5">ຮອດວັນທີ</label>
-        <div class="input-group mb-1">
-          <input type="date" class="form-control" formControlName="endDate">
-        </div>
-      </div>
-      <div class="col col-md-2  col-sm-12">
-        <label for="fromDate" class="h5">ຄົວ</label>
-        <div class="input-group mb-1">
-          <select class="form-control" id="kitchenId">
-            <option value="-1">ເລືອກ</option>
-            <option value="{{ kitchen.id }}" *ngFor=" let kitchen of kitchens">{{ kitchen.kitchenName }}</option>
-          </select>
-        </div>
-      </div>
-      <div class="col col-md-2  col-sm-12">
-        <label for="fromDate"></label>
-        <div class="input-group mb-1">
-          <button mat-raised-button color="primary" (click)="loadReport()"
-            style="margin-top: 12px;width: 200px;">Submit</button>
-        </div>
-      </div>
-    </div>
+    </form>
     <div class="row">
       <div class="col">
         <mat-card>
-          <mat-card-header class="h5">ລາຍລະອຽດລາຍງານ</mat-card-header>
+          <mat-card-header>ລາຍລະອຽດລາຍງານ</mat-card-header>
         </mat-card>
         <mat-card-content>
-          <div class="row">
-            <div class="col">
-              <mat-tab></mat-tab>
+          <div class="row mt-2">
+            <div class="col col-md-4">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title class="text-center" style="font-size: 1.5em;font-weight: bold;">ຍອດສິນຄ້າໃນສາງ
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col" class="text-left align-top">ວັດຖຸດິບ</th>
+                          <th scope="col" class="text-center align-top">ຈຳນວນໃນສາງ</th>
+                          <th scope="col" class="text-center align-top">ຂາຍອອກ</th>
+                          <th scope="col" class="text-center align-top">ຍອດປະຈຸບັນ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let currentStock of currentStocks">
+                          <td class="text-left text-nowrap">
+                            {{ currentStock.product_name }}
+                          </td>
+                          <td class="text-right text-nowrap">{{ currentStock.stock_quantity |number }}</td>
+                          <td class="text-right text-nowrap">{{ currentStock.used_quantity |number }}</td>
+                          <td class="text-right text-nowrap">{{ currentStock.CurrnentQuantity |number }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </mat-card-content>
+              </mat-card>
             </div>
+
+            <div class="col col-md-4">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title class="text-center" style="font-size: 1.5em;font-weight: bold;">ລາຍລະອຽດ
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col" class="text-center align-top">ວັດຖຸດິບ</th>
+                          <th scope="col" class="text-center align-top">ສິນຄ້າ</th>
+                          <th scope="col" class="text-center align-top">ຂາຍອອກ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let currentStocksDetail of currentStocksDetails">
+                          <td class="text-left text-nowrap">
+                            {{ currentStocksDetail.product_name }}</td>
+                          <td class="text-left text-nowrap">{{ currentStocksDetail.foodName }}</td>
+                          <td class="text-right text-nowrap">{{ currentStocksDetail.used_quantity | number }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+
+
+
+            <div class="col col-md-4">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title class="text-center" style="font-size: 1.5em;font-weight: bold;">ຍອດຂາຍຕາມວັນທີ
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col" class="text-center align-top">ວັດຖຸດິບ</th>
+                          <th scope="col" class="text-center align-top">ສິນຄ້າ</th>
+                          <th scope="col" class="text-center align-top">ຂາຍອອກ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let currentStocksDetail of currentStocksDetails">
+                          <td class="text-left text-nowrap">
+                            {{ currentStocksDetail.product_name }}</td>
+                          <td class="text-left text-nowrap">{{ currentStocksDetail.foodName }}</td>
+                          <td class="text-right text-nowrap">{{ currentStocksDetail.used_quantity | number }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
           </div>
         </mat-card-content>
       </div>

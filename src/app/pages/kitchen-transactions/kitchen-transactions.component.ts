@@ -42,8 +42,8 @@ export class KitchenTransactionsComponent implements OnInit {
         this.foodList.push(r);
         this.foodList.forEach(f => {
           f.forEach(element => {
-            _total += parseInt(element.total_cost);
-            _count += parseInt(element.quantity);
+            _total += parseInt(element.total_cost, 10);
+            _count += parseInt(element.quantity, 10);
           });
         });
         this.grandTotal = _total;

@@ -35,10 +35,14 @@ export class ProductLinkComponent implements OnInit {
   }
   addStockTranx() {
     if (this.stockTranxForm.valid) {
+      this.stockService.createStockTranx(this.stockTranxForm.value).then(rsp => {
+        rsp.subscribe(rspx => {
+          this.loadExistingList();
 
-    } else {
-      return;
+        });
+      });
     }
+
   }
   async loadExistingList() {
     this.stockService.getStockTranxByProductId(this.data.pid).then(rsp => {
@@ -54,4 +58,5 @@ export class ProductLinkComponent implements OnInit {
       });
     });
   }
+
 }

@@ -227,7 +227,7 @@ export class AddPurchaseComponent implements OnInit {
     });
   }
   loadSuppliers() {
-    this.be.getVendor().then(c => {
+    this.be.getSuppliers().then(c => {
       c.subscribe(cat => {
         this.suppliers = cat;
       });

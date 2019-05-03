@@ -4,7 +4,7 @@ import { Transaction } from 'src/app/interfaces/transaction';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-kitchen-transactions',
@@ -30,10 +30,13 @@ export class KitchenTransactionsComponent implements OnInit {
   ngOnInit() {
     this.viewReport = 'hidden';
     this.loadReport();
+    this.dateFrom = new FormGroup({
+      initDate: new FormControl(new Date())
+    });
   }
-
   async loadReport() {
-    this.be.reportsKitchenAdmin(this.currentDate, '', 'Food').then(rsp => {
+    this.startDate = this.dateFrom.get('initDate').value;
+    this.be.reportsKitchenAdmin(this.dateFrom.get('initDate').value, '', 'Food').then(rsp => {
       this.foodList = [];
       let _total = 0;
       let _count = 0;

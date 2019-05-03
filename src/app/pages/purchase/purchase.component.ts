@@ -1,13 +1,11 @@
 import { ApprovedUsersComponent } from './../../dialogs/approved-users/approved-users.component';
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { MatDialog } from '@angular/material';
-import { Purchase } from 'src/app/interfaces/purchase';
 import { Observable } from 'rxjs';
 import { AddPurchaseComponent } from 'src/app/dialogs/add-purchase/add-purchase.component';
 import { ViewPurchaseComponent } from 'src/app/dialogs/view-purchase/view-purchase.component';
-import { map } from 'rxjs/operators';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 declare var swal: any;
@@ -40,8 +38,8 @@ export class PurchaseComponent implements OnInit {
 
   async loadPurchase() {
     this.be.getPurchaseShow().then(rsp => {
-
       rsp.subscribe(r => {
+        console.log(r);
         this.purchases = r;
       });
     });

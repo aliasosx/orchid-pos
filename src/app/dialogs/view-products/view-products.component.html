@@ -86,6 +86,7 @@
     </div>
   </div>
   <div class="text-center">
-    <button mat-raised-button color="warn" style="width: 100%;" (click)="updateProduct()">ບັນທຶກ</button>
+    <button mat-raised-button color="warn" style="width: 100%;" [disabled]="btnDisable"
+      (click)="updateProduct()">{{ btnMsg }}</button>
   </div>
 </form>

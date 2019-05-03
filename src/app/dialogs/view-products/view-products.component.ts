@@ -21,7 +21,8 @@ export class ViewProductsComponent implements OnInit {
   units: any;
   suppliers: any;
   currencies: any;
-
+  btnDisable = false;
+  btnMsg = 'ບັນທຶກ';
 
   ngOnInit() {
     let uid = uuid.v4();
@@ -63,11 +64,14 @@ export class ViewProductsComponent implements OnInit {
   }
   updateProduct() {
     if (this.addProductForm.valid) {
+      this.btnDisable = true;
+      this.btnMsg = 'Saving ...';
       this.be.updateProduct(this.addProductForm.value).then(rsp => {
         rsp.subscribe(r => {
           if (r['status'] === 'success') {
             this.DialogRef.close('success');
           } else {
+            this.btnDisable = false;
             return;
           }
         });

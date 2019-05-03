@@ -100,20 +100,19 @@
                 formControlName="quantity" required>
             </div>
             <div class="col-md-4">
-              <label for="total">ລາຄາລວມທັງໝົດ</label>
+              <label for="total">ລວມທັງໝົດ</label>
               <input type="number" class="form-control  text-right" id="total" readonly placeholder="Total"
                 formControlName="total">
             </div>
           </div>
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-12">
           <label for="remarks">ໝາຍເຫດ</label>
           <input type="text" class="form-control" id="remarks" formControlName="remarks">
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-12 ">
           <button mat-raised-button color="primary" style="position: relative; top:32px; width:100px"
             (click)="addProductTolist()">ເພິ່ມລາຍການ</button>
-
           <button mat-raised-button color="warn" style="position: relative;  margin-left: 5px; top:32px; width:100px"
             (click)="closePurchase()">ປິດ</button>
         </div>
@@ -121,41 +120,43 @@
       <mat-divider></mat-divider>
       <ng-container *ngIf="showProductlist">
         <div class="card">
-          <table class="table table-bordered">
-            <thead class="thead-light">
-              <th class="text-center">#</th>
-              <th class="text-center">BillId</th>
-              <th class="text-center">Product</th>
-              <th class="text-center">Price</th>
-              <th class="text-center">Quantity</th>
-              <th class="text-center">Total</th>
-              <th class="text-center">Note</th>
-              <th class="text-center">Remove</th>
-            </thead>
-            <tbody>
-              <tr *ngFor="let product of productList; let i = index">
-                <td class="text-center">{{ product.pid }}</td>
-                <td class="text-center">{{ product.purchaseId }}</td>
-                <td class="text-left">{{ product.product_name }}</td>
-                <td class="text-right">{{ product.price |number }}</td>
-                <td class="text-right">{{ product.quantity | number}}</td>
-                <td class="text-right">{{ product.total | number}}</td>
-                <td class="text-left">{{ product.remarks }}</td>
-                <td class="text-center">
-                  <img src="../../../assets/icons/baseline-delete-24px.svg" style="max-width: 30px;cursor: pointer;"
-                    (click)="deletePurchaseDetail(product)">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead class="thead-light">
+                <th class="text-center">#</th>
+                <th class="text-center">BillId</th>
+                <th class="text-center">Product</th>
+                <th class="text-center">Price</th>
+                <th class="text-center">Quantity</th>
+                <th class="text-center">Total</th>
+                <th class="text-center">Note</th>
+                <th class="text-center">Remove</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of productList; let i = index">
+                  <td class="text-center">{{ product.pid }}</td>
+                  <td class="text-center">{{ product.purchaseId }}</td>
+                  <td class="text-left">{{ product.product_name }}</td>
+                  <td class="text-right">{{ product.price |number }}</td>
+                  <td class="text-right">{{ product.quantity | number}}</td>
+                  <td class="text-right">{{ product.total | number}}</td>
+                  <td class="text-left">{{ product.remarks }}</td>
+                  <td class="text-center">
+                    <img src="../../../assets/icons/baseline-delete-24px.svg" style="max-width: 30px;cursor: pointer;"
+                      (click)="deletePurchaseDetail(product)">
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <td colspan="5" class="text-right">
+                  Total
                 </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <td colspan="5" class="text-right">
-                Total
-              </td>
-              <td class="text-right" style="font-weight: bold">
-                {{ billTotalAmount| number}}
-              </td>
-            </tfoot>
-          </table>
+                <td class="text-right" style="font-weight: bold">
+                  {{ billTotalAmount| number}}
+                </td>
+              </tfoot>
+            </table>
+          </div>
         </div>
       </ng-container>
     </form>

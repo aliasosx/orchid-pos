@@ -24,22 +24,22 @@
                   <tr>
                     <th scope="col" class="text-center align-top">#</th>
                     <th scope="col" class="text-center align-top">ເວລາ</th>
-                    <th scope="col" class="text-center align-top">ຍອດເປີດ</th>
+                    <th scope="col" class="text-center align-top">ພະນັກງານ</th>
                     <th scope="col" class="text-center align-top">ອະນຸມັດໂດຍ</th>
                     <th scope="col" class="text-center align-top">ອະນຸມັດເປີດ</th>
+                    <th scope="col" class="text-center align-top">ຍອດເປີດ</th>
                     <th scope="col" class="text-center align-top">ຍອດຂາຍ</th>
                     <th scope="col" class="text-center align-top">ທະນາຄານ</th>
-                    <th scope="col" class="text-center align-top">ລວມເງິນສົດ</th>
-                    <th scope="col" class="text-center align-top">ຍອດຂາຍທັງໝົດ</th>
                     <th scope="col" class="text-center align-top">ລາຍຈ່າຍ</th>
-                    <th scope="col" class="text-center align-top">ເງິນສົດຫັກລາຍຈ່າຍ</th>
+                    <th scope="col" class="text-center align-top">ເງິນສົດຕົວຈິງ</th>
                     <th scope="col" class="text-center align-top">ຍອດສຸທິ</th>
                     <th scope="col" class="text-center align-top">ຍອດຍົກໄປ</th>
-                    <th scope="col" class="text-center align-top">ພະນັກງານ</th>
+
                     <th scope="col" class="text-center align-top">ເວລາປີດ</th>
-                    <th scope="col" class="text-center align-top">ອະນຸມັດໂດຍ</th>
+
                     <th scope="col" class="text-center align-top">ສະຖານະ</th>
                     <th scope="col" class="text-center align-top">ອະນຸມັດປີດ</th>
+                    <th scope="col" class="text-center align-top">ອະນຸມັດປີດໂດຍ</th>
                     <th scope="col" class="text-center align-top">ລີ້ນຊັກ</th>
                     <th scope="col" class="text-center align-top">ໝາຍເຫດ</th>
                     <th scope="col" class="text-center align-top">ປິດ</th>
@@ -50,9 +50,9 @@
                   <tr *ngFor="let cash of cashloads ; let i = index;">
 
                     <td class="text-center align-middle"> {{ i+1 }}</td>
-                    <td class="text-left align-middle text-nowrap">{{ cash.loadDateTime| date: 'dd-MMM-yyyy' }}
+                    <td class="text-left align-middle text-nowrap ">{{ cash.loadDateTime| date: 'dd-MMM-yyyy' }}
                     </td>
-                    <td class="text-right align-middle">{{ cash.initBalance | number }}</td>
+                    <td class="text-center align-middle">{{ cash.sellerName }}</td>
                     <td class="text-left align-middle">{{ cash.openAuthorizedNameBy }}</td>
                     <td class="text-center align-middle" *ngIf="cash.loadApproved == 1;else loadApprovedTag">
                       <img mat-raised-button src=" ../../../assets/icons/Check_green_icon.svg.png"
@@ -65,23 +65,22 @@
                       </td>
                     </ng-template>
 
-
-                    <td class="text-right align-middle">{{ cash.eodCashBalance | number }}</td>
-                    <td class="text-right align-middle">{{ cash.eodBankBalance | number }}</td>
-                    <td class="text-right align-middle">{{ cash.cashBalance | number }}</td>
+                    <td class="text-right align-middle">{{ cash.initBalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.totalSellAmount | number }}</td>
+                    <!-- <td class="text-right align-middle">{{ cash.eodCashBalance | number }}</td> -->
+                    <td class="text-right align-middle">{{ cash.eodBankBalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.expenditureAmount | number }}</td>
                     <td class="text-right align-middle">{{ cash.netbalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.takeOffBalance | number }}</td>
                     <td class="text-right align-middle">{{ cash.fwdBalance | number }}</td>
 
-                    <td class="text-center align-middle">{{ cash.sellerName }}</td>
+
                     <td class="text-left align-middle" *ngIf="cash.closeDatetime; else nonclose">
                       {{ cash.closeDatetime| date: 'H:mm:ss' }}</td>
                     <ng-template #nonclose>
                       <td></td>
                     </ng-template>
-                    <td class="text-left align-middle">{{ cash.closeAuthorizedNameBy }}</td>
+
                     <td class="text-center align-middle" *ngIf="cash.closed == 1 ; else closeStat">Closed</td>
                     <ng-template #closeStat>
                       <td class="text-center align-middle">Open</td>
@@ -97,6 +96,7 @@
                           style="max-width: 20px;cursor: pointer;">
                       </td>
                     </ng-template>
+                    <td class="text-left align-middle">{{ cash.closeAuthorizedNameBy }}</td>
                     <td class="text-center align-middle">{{ cash.terminalId }}</td>
                     <td class="text-left align-middle">{{ cash.note }}</td>
                     <td class="text-center align-middle" *ngIf="cash.closed === 1; else nonClose"><button

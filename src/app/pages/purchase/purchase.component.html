@@ -3,7 +3,9 @@
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>Purchase Management</mat-card-title>
     <mat-card-subtitle>Summary Purchase billing and Stock update</mat-card-subtitle>
-    <button mat-raised-button color="warn" class="floatButton" (click)="addPurchase()">ຊື້ເຄື່ອງເຂົ້າ</button>
+    <button mat-raised-button color="primary" class="floatButton" (click)="addPurchase()">ຊື້ເຄື່ອງເຂົ້າ</button>
+    <button mat-raised-button color="primary" class="floatButtonProduct" routerLink="/products"
+      routerLinkActive="router-link-active">ຈັດການສິນຄ້າ</button>
   </mat-card-header>
   <mat-card-content>
     <div class="table-responsive">
@@ -34,7 +36,7 @@
               {{ purchase.billRefno }}</td>
             <td class=" text-right align-middle">{{ purchase.billAmount | number}}</td>
             <td class="text-center align-middle">{{ purchase.billDate | date: 'dd-MMM-yyyy' }}</td>
-            <td class="text-left align-middle">{{ purchase.supplier_name }}</td>
+            <td class="text-left align-middle">{{ purchase.vendorName }}</td>
             <td class="text-left align-middle">{{ purchase.username }}</td>
             <td class="text-center align-middle" *ngIf="purchase.approved; else unapproved">
               <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"

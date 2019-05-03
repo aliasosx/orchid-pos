@@ -49,7 +49,7 @@ export class SettingsComponent implements OnInit {
     const dialogRef = this.dialog.open(TicketsComponent, { width: '600px' });
   }
   openPaymentType() {
-    const dialogRef = this.dialog.open(PaymentTypesComponent, { width: '600px' });
+    const dialogRef = this.dialog.open(PaymentTypesComponent, { width: '800px' });
   }
   openBanking() {
     const dialogRef = this.dialog.open(BankingComponent, { width: '600px' });
@@ -61,7 +61,7 @@ export class SettingsComponent implements OnInit {
     const dialogRef = this.dialog.open(VendorsComponent, { width: '600px' });
   }
   openAddUser() {
-    const dialogRef = this.dialog.open(UsersComponent, { width: '1024px' });
+    const dialogRef = this.dialog.open(UsersComponent, { width: '1200px' });
   }
   openStaffBenefit() {
     const dialogRef = this.dialog.open(StaffBenefitComponent, {

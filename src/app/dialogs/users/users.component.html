@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Users</h1>
-<div>
+<h1 mat-dialog-title>ຜູ້ໃຊທັງໝົດໃນລະບົບ</h1>
+<div class="table-responsive" style="max-height: 400px; overflow: auto; overflow-x: hidden;">
   <table class="table table-bordered table-hover">
     <thead class="thead-light">
       <tr>
@@ -34,7 +34,7 @@
               (click)="userActivateToggle(user)" style="max-width: 20px;cursor: pointer;">
           </td>
         </ng-template>
-        <td class="text-center text-nowrap">
+        <td class="text-center text-nowrap" style="width: 100px;">
           <div class="row">
             <div class="col col-md-12 text-center">
               <button mat-flat-button color="warn" style="width: 100%;" (click)="showUserAdd(user)">Update</button>

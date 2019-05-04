@@ -188,8 +188,8 @@ export class OrdersComponent implements OnInit {
         let StartDate_chk: any;
         StartDate_chk = order.orderDateTime.toDate();
         currentConsumingTime_chk = (currDate_chk - StartDate_chk) / 60000;
-        if (currentConsumingTime_chk > 10) {
-          swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
+        if (currentConsumingTime_chk === 10) {
+          swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ ' + currentConsumingTime_chk + ' ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
           return;
         } else {
           // open Remark form
@@ -217,8 +217,9 @@ export class OrdersComponent implements OnInit {
                       if (o.exists) {
                         StartDate = o.data().orderDateTime.toDate();
                         currentConsumingTime = (currDate - StartDate) / 60000;
-                        if (currentConsumingTime > 10) {
-                          swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ 10 ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
+                        if (currentConsumingTime === 10) {
+                          // tslint:disable-next-line: max-line-length
+                          swal('ບໍ່ສາມາດຍົກເລິກລາຍການໄດ້', 'ລາຍການທີ່ສັ່ງເກິນ ' + currentConsumingTime + ' ນາທີ ບໍ່ສາມາດຍົກເລິກໄດ້', 'error');
                           return;
                         } else {
                           this.orderRef.doc(order.id).update({

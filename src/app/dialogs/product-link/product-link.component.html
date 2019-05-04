@@ -41,9 +41,10 @@
             <tr *ngFor="let stockTranx of stockTranxs;let i = index">
               <td class="text-center">{{ i+1  }}</td>
               <td class="text-left">{{ stockTranx.food_name  }}</td>
-              <td class="text-center">{{ stockTranx.remark  }}</td>
+              <td class="text-center">{{ stockTranx.remarks  }}</td>
               <td class="text-center">
-                <img src="../../../assets/icons/baseline-delete-24px.svg">
+                <img src="../../../assets/icons/baseline-delete-24px.svg" (click)="removeItem(stockTranx.strId)"
+                  style="cursor: pointer;">
               </td>
             </tr>
           </tbody>

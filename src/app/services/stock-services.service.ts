@@ -58,7 +58,10 @@ export class StockServicesService {
     return this._http.get(this.backendService + 'stockFoodByKitchen', this.httpOptions);
   }
   async createStockTranx(data) {
-    return this._http.post(this.backendService + 'stockFoodByKitchen', data, this.httpOptions);
+    return this._http.post(this.backendService + 'createStockTranx', data, this.httpOptions);
+  }
+  async deleteStockTranx(id) {
+    return this._http.delete(this.backendService + 'stockTranx/' + id, this.httpOptions);
   }
   // stockFoodByKitchen
 }

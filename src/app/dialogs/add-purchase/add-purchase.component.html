@@ -110,10 +110,9 @@
           <label for="remarks">ໝາຍເຫດ</label>
           <input type="text" class="form-control" id="remarks" formControlName="remarks">
         </div>
-        <div class="form-group col-md-12 ">
-          <button mat-raised-button color="primary" style="position: relative; top:32px; width:100px"
-            (click)="addProductTolist()">ເພິ່ມລາຍການ</button>
-          <button mat-raised-button color="warn" style="position: relative;  margin-left: 5px; top:32px; width:100px"
+        <div class="form-group col-md-12 text-right">
+          <button mat-raised-button color="primary" (click)="addProductTolist()">ເພິ່ມລາຍການ</button>
+          <button mat-raised-button color="warn" class="ml-1" style="width: 103px;"
             (click)="closePurchase()">ປິດ</button>
         </div>
       </div>

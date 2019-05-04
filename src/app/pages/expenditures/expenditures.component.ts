@@ -54,6 +54,7 @@ export class ExpendituresComponent implements OnInit {
       if (value) {
         const dialogRef = this.dialog.open(ApprovedUsersComponent, {
           width: '600px',
+          data: 'none',
         });
         dialogRef.afterClosed().subscribe(resp => {
           if (resp.user) {

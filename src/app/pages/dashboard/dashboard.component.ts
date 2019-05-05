@@ -72,6 +72,7 @@ export class DashboardComponent implements OnInit {
     this.notices = this.noticeRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const notices = a.payload.doc.data() as Notice;
+        console.log(notices);
         notices['id'] = a.payload.doc.id;
         return notices;
       });

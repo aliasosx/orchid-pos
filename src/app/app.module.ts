@@ -95,6 +95,7 @@ import { CreateExpenditureComponent } from './dialogs/create-expenditure/create-
 import { KitchenReportsComponent } from './pages/kitchen-reports/kitchen-reports.component';
 import { ProductLinkComponent } from './dialogs/product-link/product-link.component';
 import { ProductTakeoffComponent } from './dialogs/product-takeoff/product-takeoff.component';
+import { ProductByIdPipe } from './pipes/product-by-id.pipe';
 
 @NgModule({
   declarations: [
@@ -169,6 +170,7 @@ import { ProductTakeoffComponent } from './dialogs/product-takeoff/product-takeo
     KitchenReportsComponent,
     ProductLinkComponent,
     ProductTakeoffComponent,
+    ProductByIdPipe,
 
 
   ],
@@ -236,7 +238,7 @@ import { ProductTakeoffComponent } from './dialogs/product-takeoff/product-takeo
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
     { provide: FirestoreSettingsToken, useValue: {} },
-    DatePipe,
+    DatePipe, ProductByIdPipe,
   ],
   bootstrap: [AppComponent]
 })

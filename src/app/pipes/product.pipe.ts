@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ProductPipe implements PipeTransform {
 
   transform(products: any[], searchProduct: any): any {
-    if (!searchProduct) return products;
-    return products.filter(p => p.productName.indexOf(searchProduct) != -1);
+    if (!searchProduct) { return products; }
+    return products.filter(p => p.product_name.indexOf(searchProduct) !== -1);
   }
 
 }

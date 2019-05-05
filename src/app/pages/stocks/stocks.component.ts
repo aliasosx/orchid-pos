@@ -14,7 +14,6 @@ import { ProductTakeoffComponent } from 'src/app/dialogs/product-takeoff/product
   styleUrls: ['./stocks.component.css']
 })
 export class StocksComponent implements OnInit {
-
   constructor(private db: AngularFirestore, private dialog: MatDialog, private be: BackendServiceService) {
     this.stocksRef = db.collection<StockHistory>('stockHistories', ref => {
       return ref.orderBy('updateDate', 'desc');
@@ -24,7 +23,7 @@ export class StocksComponent implements OnInit {
   stocksRef: AngularFirestoreCollection<StockHistory>;
   stocks: Observable<any[]>;
 
-  showStockList = false;
+  showStockList = true;
   stocksShow: any;
 
   ngOnInit() {
@@ -42,7 +41,7 @@ export class StocksComponent implements OnInit {
   }
 
   openProductTakeOff() {
-    const dialogRef = this.dialog.open(ProductTakeoffComponent, { width: '800px' });
+    const dialogRef = this.dialog.open(ProductTakeoffComponent, { width: '600px' });
   }
   loadStock() {
     this.be.getShowStocks().then(rsp => {

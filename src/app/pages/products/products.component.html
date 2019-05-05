@@ -6,17 +6,25 @@
   </mat-card-header>
   <mat-card-content>
     <div class="row">
-      <div class="col col-md-12" style="top: 10px;">
+      <div class="col col-md-4 col-sm-12">
+        <div class="col col-sm-12 col-md-12">
+          <input type="text" class="form-control" placeholder="ຄົ້ນຫາ..." [(ngModel)]="searchProduct">
+        </div>
+      </div>
+      <div class="col col-md-8 col-sm-12" style="top: 10px;">
         <div class="text-right">
           <button mat-raised-button color="primary" class="mr-1" (click)="openAddNewDialog()">ເພີ່ມລາຍການ</button>
           <button mat-raised-button color="primary" style="width: 103px;" class="mr-1"
             (click)="reloadProduct()">ຣິໂຫລດ</button>
-          <button mat-raised-button color="primary" style="width: 103px;"
+          <button mat-raised-button color="primary" style="width: 103px;" class="mr-1"
             routerLink="/purchases">ຊື່ສິນຄ້າເຂົ້າ</button>
+          <button mat-raised-button color="primary" routerLink="/stocks">ຈັດການ stock</button>
         </div>
       </div>
+
     </div>
     <mat-tab-group>
+      <!--
       <mat-tab label="Master product">
         <div class="table-responsive">
           <table class="table table-bordered product_detail">
@@ -40,6 +48,7 @@
           </table>
         </div>
       </mat-tab>
+      -->
       <mat-tab label="Products">
         <div class="table-responsive">
           <table class="table table-bordered product_detail">

@@ -5,19 +5,52 @@
 
 <div class="row mt-2">
   <div class="col">
-    <form>
+    <form [formGroup]="productTakeOffForm">
       <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
           <label for="initBalance">ສິນຄ້າໃນສາງ</label>
-          <select class="form-control" id="productId" formControlName="productId">
-            <option>Choose</option>
-            <option *ngFor="let product of products" value="id">{{ product.product_name }}</option>
+          <select class="form-control" id="productId" formControlName="productId"
+            (change)="productSelected($event.target.value)">
+            <option value="">Choose</option>
+            <option value="{{ product.product_name }}" *ngFor="let product of products" value="id">
+              {{ product.product_name }}
+            </option>
           </select> </div>
-        <div class="form-group col-md-6">
-          <label for="initBalance">ຈຳນວນ</label>
-          <input type="number" class="form-control text-right" formControlName="initBalance" id="quantity">
+        <div class="form-group col-md-4">
+          <label for="currentQuantity">ຈຳນວນທີ່ຍັງໃນສາງ</label>
+          <input type="text" class="form-control text-right" readonly formControlName="currentQuantity"
+            id="currentQuantity">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="unitName">ຫົວໜ່ວຍ</label>
+          <input type="text" class="form-control text-right" readonly formControlName="unitName" id="unitName">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="quantityNeeded">ຈຳນວນທີ່ຕ້ອງການອອກ</label>
+          <input type="number" class="form-control text-right" (keyup)="quantityCalculation()"
+            formControlName="quantityNeeded" id="quantityNeeded">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="unitName">ຫົວໜ່ວຍ</label>
+          <select class="form-control" (change)="unitPerPackSelected($event.target.value)">
+            <option value="">ເລືອກ</option>
+            <option value="{{ unit.quantityPerUnit }}" *ngFor="let unit of units">{{ unit.unit_name }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="totalQuantity">ຈຳນວນຕົວຈິງ</label>
+          <input type="text" class="form-control text-right" readonly formControlName="totalQuantity"
+            id="totalQuantity">
         </div>
       </div>
     </form>
+  </div>
+</div>
+<mat-divider></mat-divider>
+<div class="row mt-2">
+  <div class="col col-md-12">
+    <div class="col text-right">
+      <button mat-raised-button color="primary">ບັນທືກ ລາຍການ</button>
+    </div>
   </div>
 </div>

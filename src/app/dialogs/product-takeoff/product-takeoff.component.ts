@@ -22,7 +22,9 @@ export class ProductTakeoffComponent implements OnInit {
   unitsPerPack = 0;
 
   ngOnInit() {
+    const refno = this.padding(Math.floor(Math.random() * 600000) + 1, 12);
     this.productTakeOffForm = new FormGroup({
+      refno: new FormControl(refno),
       productId: new FormControl(),
       quantity: new FormControl(),
       unitId: new FormControl(),
@@ -82,5 +84,10 @@ export class ProductTakeoffComponent implements OnInit {
         this.productTakeOffForm.get('totalQuantity').setValue('');
       }
     }
+  }
+  padding(num: number, size: number) {
+    let s = num + '';
+    while (s.length < size) { s = '0' + s; }
+    return s;
   }
 }

@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { AddPurchaseComponent } from 'src/app/dialogs/add-purchase/add-purchase.component';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+import { ProductTakeoffComponent } from 'src/app/dialogs/product-takeoff/product-takeoff.component';
 
 @Component({
   selector: 'app-stocks',
@@ -38,6 +39,10 @@ export class StocksComponent implements OnInit {
   }
   openPurchaseProduct() {
     const dialogRef = this.dialog.open(AddPurchaseComponent, { width: '1000px' });
+  }
+
+  openProductTakeOff() {
+    const dialogRef = this.dialog.open(ProductTakeoffComponent, { width: '800px' });
   }
   loadStock() {
     this.be.getShowStocks().then(rsp => {

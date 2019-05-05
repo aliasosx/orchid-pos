@@ -94,6 +94,7 @@ import { ExpendituresComponent } from './pages/expenditures/expenditures.compone
 import { CreateExpenditureComponent } from './dialogs/create-expenditure/create-expenditure.component';
 import { KitchenReportsComponent } from './pages/kitchen-reports/kitchen-reports.component';
 import { ProductLinkComponent } from './dialogs/product-link/product-link.component';
+import { ProductTakeoffComponent } from './dialogs/product-takeoff/product-takeoff.component';
 
 @NgModule({
   declarations: [
@@ -167,6 +168,7 @@ import { ProductLinkComponent } from './dialogs/product-link/product-link.compon
     CreateExpenditureComponent,
     KitchenReportsComponent,
     ProductLinkComponent,
+    ProductTakeoffComponent,
 
 
   ],
@@ -228,6 +230,7 @@ import { ProductLinkComponent } from './dialogs/product-link/product-link.compon
     CouponAddPosComponent,
     CreateExpenditureComponent,
     ProductLinkComponent,
+    ProductTakeoffComponent,
   ]
   ,
   providers: [

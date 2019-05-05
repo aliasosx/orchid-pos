@@ -6,70 +6,96 @@
   </mat-card-header>
   <mat-card-content>
     <div class="row">
-      <div class="col col-md-3 col-sm-12">
-        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchProduct">
-      </div>
-      <div class="col col-md-4 col-sm-12">
-        <button mat-raised-button color="primary" class="mr-1" (click)="openAddNewDialog()">ເພີ່ມລາຍການ</button>
-        <button mat-raised-button color="primary" style="width: 103px;" class="mr-1"
-          (click)="reloadProduct()">ຣິໂຫລດ</button>
-        <button mat-raised-button color="primary" style="width: 103px;" routerLink="/purchases">ຊື່ສິນຄ້າເຂົ້າ</button>
+      <div class="col col-md-12" style="top: 40px;">
+        <div class="text-right">
+          <button mat-raised-button color="primary" class="mr-1" (click)="openAddNewDialog()">ເພີ່ມລາຍການ</button>
+          <button mat-raised-button color="primary" style="width: 103px;" class="mr-1"
+            (click)="reloadProduct()">ຣິໂຫລດ</button>
+          <button mat-raised-button color="primary" style="width: 103px;"
+            routerLink="/purchases">ຊື່ສິນຄ້າເຂົ້າ</button>
+        </div>
       </div>
     </div>
-    <div class="table-responsive">
-      <table class="table table-bordered product_detail">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col" class="text-center" style="width: 30px;">ລະຫັດ</th>
-            <th scope="col" class="text-left">ລະຫັດບາໂຄດ</th>
-            <th scope="col" class="text-center">ລະຫັດອາຫານ</th>
-            <th scope="col" class="text-center">ຊື່ສິນຄ້າ</th>
-            <th scope="col" class="text-center">ປະເພດ</th>
-            <th scope="col" class="text-center">ຕົ້ນທຶນ</th>
-            <th scope="col" class="text-center">ຍອດຕໍ່າສຸດ</th>
-            <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
-            <th scope="col" class="text-center">ຈຳນວນຕໍ່ແກັດ</th>
-            <th scope="col" class="text-center">ຍອດປະຈຸບັນ</th>
-            <th scope="col" class="text-center">ຜູ້ສະໜອງ</th>
-            <th scope="col" class="text-center">ເຂົ້າສາງວັນທີ</th>
-            <th scope="col" class="text-center">ຈັດການ</th>
-          </tr>
-        </thead>
-        <tbody>
+    <mat-tab-group>
+      <mat-tab label="Master product">
+        <div class="table-responsive">
+          <table class="table table-bordered product_detail">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col" class="text-center" style="width: 30px;">ລະຫັດ</th>
+                <th scope="col" class="text-left">ລະຫັດບາໂຄດ</th>
+                <th scope="col" class="text-center">ລະຫັດອາຫານ</th>
+                <th scope="col" class="text-center">ຊື່ສິນຄ້າ</th>
+                <th scope="col" class="text-center">ປະເພດ</th>
+                <th scope="col" class="text-center">ຕົ້ນທຶນ</th>
+                <th scope="col" class="text-center">ຍອດຕໍ່າສຸດ</th>
+                <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
+                <th scope="col" class="text-center">ຈຳນວນຕໍ່ແກັດ</th>
+                <th scope="col" class="text-center">ຍອດປະຈຸບັນ</th>
+                <th scope="col" class="text-center">ຜູ້ສະໜອງ</th>
+                <th scope="col" class="text-center">ເຂົ້າສາງວັນທີ</th>
+                <th scope="col" class="text-center">ຈັດການ</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </mat-tab>
+      <mat-tab label="Products">
+        <div class="table-responsive">
+          <table class="table table-bordered product_detail">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col" class="text-center" style="width: 30px;">ລະຫັດ</th>
+                <th scope="col" class="text-left">ລະຫັດບາໂຄດ</th>
+                <th scope="col" class="text-center">ລະຫັດອາຫານ</th>
+                <th scope="col" class="text-center">ຊື່ສິນຄ້າ</th>
+                <th scope="col" class="text-center">ປະເພດ</th>
+                <th scope="col" class="text-center">ຕົ້ນທຶນ</th>
+                <th scope="col" class="text-center">ຍອດຕໍ່າສຸດ</th>
+                <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
+                <th scope="col" class="text-center">ຈຳນວນຕໍ່ແກັດ</th>
+                <th scope="col" class="text-center">ຍອດປະຈຸບັນ</th>
+                <th scope="col" class="text-center">ຜູ້ສະໜອງ</th>
+                <th scope="col" class="text-center">ເຂົ້າສາງວັນທີ</th>
+                <th scope="col" class="text-center">ຈັດການ</th>
+              </tr>
+            </thead>
+            <tbody>
 
-          <ng-container *ngFor="let product of productsShow | product: searchProduct ; let i = index">
-            <tr [ngClass]="{'table-danger': product.currentQuantity == 0 || product.minimum >
+              <ng-container *ngFor="let product of productsShow | product: searchProduct ; let i = index">
+                <tr [ngClass]="{'table-danger': product.currentQuantity == 0 || product.minimum >
               product.currentQuantity }">
-              <td class="text-center align-middle" (click)="updateProduct(product)" style="cursor: pointer">
-                {{ product.pid }}</td>
-              <td class="text-left align-middle">{{ product.barcode }}</td>
-              <td class="text-center align-middle" *ngIf="product.foodId; else nonFoodId">{{ product.foodId }}</td>
-              <ng-template #nonFoodId>
-                <td class="text-center align-middle">N/A</td>
-              </ng-template>
-              <td class="text-left align-middle ">{{ product.product_name }}</td>
-              <td class="text-left align-middle">{{ product.category_name }}</td>
-              <td class="text-right align-middle">{{ product.cost |number }}</td>
-              <td class="text-right align-middle">{{ product.minimum |number }}</td>
-              <td class="text-center align-middle">{{ product.unit_name }}</td>
-              <td class="text-center align-middle">{{ product.quantityPerPack | number }}</td>
-              <td class="text-center align-middle">{{ product.currentQuantity | number }}</td>
-              <td class="text-left align-middle">{{ product.supplier_name }}</td>
-              <td class="text-center align-middle">{{ product.createdAt |date }}</td>
-              <td class="text-center align-middle text-nowrap" style="width: 230px;">
-                <button mat-raised-button color="primary" class="mr-1" (click)="openProductLink(product)">Link</button>
-                <button mat-raised-button color="accent" (click)="updateProduct(product)">ແກ້ໄຂ</button>
-                <button mat-raised-button color="warn" class="ml-1" (click)="deleteProduct(product)">ລືບ</button>
-              </td>
-            </tr>
-          </ng-container>
+                  <td class="text-center align-middle" (click)="updateProduct(product)" style="cursor: pointer">
+                    {{ product.pid }}</td>
+                  <td class="text-left align-middle">{{ product.barcode }}</td>
+                  <td class="text-center align-middle" *ngIf="product.foodId; else nonFoodId">{{ product.foodId }}</td>
+                  <ng-template #nonFoodId>
+                    <td class="text-center align-middle">N/A</td>
+                  </ng-template>
+                  <td class="text-left align-middle ">{{ product.product_name }}</td>
+                  <td class="text-left align-middle">{{ product.category_name }}</td>
+                  <td class="text-right align-middle">{{ product.cost |number }}</td>
+                  <td class="text-right align-middle">{{ product.minimum |number }}</td>
+                  <td class="text-center align-middle">{{ product.unit_name }}</td>
+                  <td class="text-center align-middle">{{ product.quantityPerPack | number }}</td>
+                  <td class="text-center align-middle">{{ product.currentQuantity | number }}</td>
+                  <td class="text-left align-middle">{{ product.supplier_name }}</td>
+                  <td class="text-center align-middle">{{ product.createdAt |date }}</td>
+                  <td class="text-center align-middle text-nowrap" style="width: 230px;">
+                    <button mat-raised-button color="primary" class="mr-1"
+                      (click)="openProductLink(product)">Link</button>
+                    <button mat-raised-button color="accent" (click)="updateProduct(product)">ແກ້ໄຂ</button>
+                    <button mat-raised-button color="warn" class="ml-1" (click)="deleteProduct(product)">ລືບ</button>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+            <tfoot class="thead-light">
 
-
-        </tbody>
-        <tfoot class="thead-light">
-
-        </tfoot>
-      </table>
-    </div>
+            </tfoot>
+          </table>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </mat-card-content>
 </mat-card>

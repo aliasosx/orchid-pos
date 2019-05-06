@@ -3,6 +3,7 @@ import { StockServicesService } from 'src/app/services/stock-services.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { ProductByIdPipe } from 'src/app/pipes/product-by-id.pipe';
+import { MatDialogRef } from '@angular/material';
 
 declare var swal: any;
 
@@ -14,24 +15,26 @@ declare var swal: any;
 export class ProductTakeoffComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private stockServices: StockServicesService, private backendServices: BackendServiceService, ) { }
+  constructor(private stockServices: StockServicesService, private backendServices: BackendServiceService, private dialogRef: MatDialogRef<ProductTakeoffComponent>) { }
 
   productTakeOffForm: FormGroup;
   products: any;
   units: any;
   unitsPerPack = 0;
-
+  prod: any;
+  btnDisabled = false;
+  btnText = 'ບັນທືກ ລາຍການ';
   ngOnInit() {
     const refno = this.padding(Math.floor(Math.random() * 600000) + 1, 12);
     this.productTakeOffForm = new FormGroup({
       refno: new FormControl(refno),
+      productName: new FormControl(),
       productId: new FormControl(),
-      quantity: new FormControl(),
+      usedQuantity: new FormControl(),
       unitId: new FormControl(),
       unitName: new FormControl(),
-      quantityNeeded: new FormControl(),
       currentQuantity: new FormControl(),
-      totalQuantity: new FormControl(),
+      totalUsedQuantity: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       createdAt: new FormControl(new Date())
     });
@@ -46,10 +49,11 @@ export class ProductTakeoffComponent implements OnInit {
     });
   }
   productSelected(product) {
-    const prod = new ProductByIdPipe().transform(this.products, product);
-    this.productTakeOffForm.get('currentQuantity').setValue(prod[0].currentQuantity);
-    this.productTakeOffForm.get('unitId').setValue(prod[0].unitId);
-    this.backendServices.getUnitById(prod[0].unitId).then(u => {
+    this.prod = new ProductByIdPipe().transform(this.products, product);
+    this.productTakeOffForm.get('productId').setValue(this.prod[0].id);
+    this.productTakeOffForm.get('currentQuantity').setValue(this.prod[0].currentQuantity);
+    this.productTakeOffForm.get('unitId').setValue(this.prod[0].unitId);
+    this.backendServices.getUnitById(this.prod[0].unitId).then(u => {
       u.subscribe(unit => {
         this.productTakeOffForm.get('unitName').setValue(unit['unit_name']);
       });
@@ -69,22 +73,56 @@ export class ProductTakeoffComponent implements OnInit {
     }
   }
   quantityCalculation() {
-    if (parseInt(this.productTakeOffForm.get('quantityNeeded').value, 10) > 0 && this.unitsPerPack > 0) {
+    if (parseInt(this.productTakeOffForm.get('usedQuantity').value, 10) > 0 && this.unitsPerPack > 0) {
       // tslint:disable-next-line: max-line-length
-      const totalQuantity = parseInt(this.productTakeOffForm.get('quantityNeeded').value, 10) * this.unitsPerPack;
+      const totalQuantity = parseInt(this.productTakeOffForm.get('usedQuantity').value, 10) * this.unitsPerPack;
       if (totalQuantity <= parseInt(this.productTakeOffForm.get('currentQuantity').value, 10)) {
-        this.productTakeOffForm.get('totalQuantity').setValue(totalQuantity);
+        this.btnDisabled = false;
+        this.productTakeOffForm.get('totalUsedQuantity').setValue(totalQuantity);
       } else {
+        this.btnDisabled = true;
         swal({
-          title: 'ເກິນຈຳນວນເຄື່ອງໃນສາງ , ກະລຸນາກວດສອບໃໝ່',
+          title: 'ເກິນຈຳນວນເຄື່ອງໃນສາງ',
           // tslint:disable-next-line: max-line-length
           text: 'ເຄື່ອງໃນສາງມີທັງໝົດ ' + parseInt(this.productTakeOffForm.get('currentQuantity').value, 10) + ' ' + this.productTakeOffForm.get('unitName').value,
           icon: 'error'
         });
-        this.productTakeOffForm.get('totalQuantity').setValue('');
+        this.productTakeOffForm.get('usedQuantity').setValue('');
       }
     }
   }
+
+  createStockTakeOff() {
+    this.btnDisabled = true;
+    this.btnText = 'Processing ...';
+    if (this.productTakeOffForm.valid) {
+      this.stockServices.stockTakeOff(this.productTakeOffForm.value).then(rsp => {
+        rsp.subscribe(product => {
+          if (product['status'] === 'success') {
+            this.dialogRef.close('success');
+          } else {
+            swal({
+              title: 'ບໍ່ສາມາດບັນທຶກໄດ້ ກະລຸນາກວດຄືນ',
+              // tslint:disable-next-line: max-line-length
+              // text: 'ເຄື່ອງໃນສາງມີທັງໝົດ ' + parseInt(this.productTakeOffForm.get('currentQuantity').value, 10) + ' ' + this.productTakeOffForm.get('unitName').value,
+              icon: 'error'
+            });
+            this.btnDisabled = false;
+            this.btnText = 'ບັນທືກ ລາຍການ';
+            return;
+          }
+        });
+      });
+    } else {
+      swal({
+        title: 'ຂໍ້ມູນບໍ່ຄົບຖ້ວນ ກະລຸນາກວດຄືນ',
+        // tslint:disable-next-line: max-line-length
+        // text: 'ເຄື່ອງໃນສາງມີທັງໝົດ ' + parseInt(this.productTakeOffForm.get('currentQuantity').value, 10) + ' ' + this.productTakeOffForm.get('unitName').value,
+        icon: 'error'
+      });
+    }
+  }
+
   padding(num: number, size: number) {
     let s = num + '';
     while (s.length < size) { s = '0' + s; }

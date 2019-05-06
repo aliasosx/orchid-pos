@@ -1,6 +1,6 @@
-<p class="h4">
+<h4 mat-dialog-title>
   ເອົາເຄື່ອງອອກສາງ
-</p>
+</h4>
 <mat-divider></mat-divider>
 
 <div class="row mt-2">
@@ -8,8 +8,8 @@
     <form [formGroup]="productTakeOffForm">
       <div class="form-row">
         <div class="form-group col-md-4">
-          <label for="initBalance">ສິນຄ້າໃນສາງ</label>
-          <select class="form-control" id="productId" formControlName="productId"
+          <label for="productName">ສິນຄ້າໃນສາງ</label>
+          <select class="form-control" id="productName" required formControlName="productName"
             (change)="productSelected($event.target.value)">
             <option value="">Choose</option>
             <option value="{{ product.product_name }}" *ngFor="let product of products" value="id">
@@ -26,9 +26,9 @@
           <input type="text" class="form-control text-right" readonly formControlName="unitName" id="unitName">
         </div>
         <div class="form-group col-md-4">
-          <label for="quantityNeeded">ຈຳນວນທີ່ຕ້ອງການອອກ</label>
-          <input type="number" class="form-control text-right" (keyup)="quantityCalculation()"
-            formControlName="quantityNeeded" id="quantityNeeded">
+          <label for="usedQuantity">ຈຳນວນທີ່ຕ້ອງການອອກ</label>
+          <input type="number" class="form-control text-right" (keyup)="quantityCalculation()" required
+            formControlName="usedQuantity" id="usedQuantity">
         </div>
         <div class="form-group col-md-4">
           <label for="unitName">ຫົວໜ່ວຍ</label>
@@ -38,19 +38,18 @@
           </select>
         </div>
         <div class="form-group col-md-4">
-          <label for="totalQuantity">ຈຳນວນຕົວຈິງ</label>
-          <input type="text" class="form-control text-right" readonly formControlName="totalQuantity"
-            id="totalQuantity">
+          <label for="totalUsedQuantity">ຈຳນວນຕົວຈິງ</label>
+          <input type="text" class="form-control text-right" readonly formControlName="totalUsedQuantity" required
+            id="totalUsedQuantity">
         </div>
       </div>
     </form>
   </div>
 </div>
 <mat-divider></mat-divider>
-<div class="row mt-2">
-  <div class="col col-md-12">
-    <div class="col text-right">
-      <button mat-raised-button color="primary">ບັນທືກ ລາຍການ</button>
-    </div>
+<div class="row mt-3">
+  <div class="col col-md-12 text-right">
+    <button mat-raised-button color="primary" [disabled]="btnDisabled"
+      (click)="createStockTakeOff()">{{ btnText }}</button>
   </div>
 </div>

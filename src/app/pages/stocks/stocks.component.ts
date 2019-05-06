@@ -41,7 +41,14 @@ export class StocksComponent implements OnInit {
   }
 
   openProductTakeOff() {
-    const dialogRef = this.dialog.open(ProductTakeoffComponent, { width: '600px' });
+    const dialogRef = this.dialog.open(ProductTakeoffComponent, { width: '700px' });
+    dialogRef.afterClosed().subscribe(rsp => {
+      if (rsp === 'success') {
+        this.loadStock();
+      } else {
+        return;
+      }
+    });
   }
   loadStock() {
     this.be.getShowStocks().then(rsp => {

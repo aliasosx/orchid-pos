@@ -63,5 +63,7 @@ export class StockServicesService {
   async deleteStockTranx(id) {
     return this._http.delete(this.backendService + 'stockTranx/' + id, this.httpOptions);
   }
-  // stockFoodByKitchen
+  async stockTakeOff(data) {
+    return this._http.post(this.backendService + 'stockTakeOff', data, this.httpOptions);
+  }
 }

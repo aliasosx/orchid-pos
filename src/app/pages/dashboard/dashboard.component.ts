@@ -8,6 +8,7 @@ import { BackendServiceService } from 'src/app/services/common/backend-service.s
 import { Notice } from 'src/app/interfaces/notices';
 import { Message } from 'src/app/interfaces/messages';
 import { FormGroup, FormControl } from '@angular/forms';
+import { Order } from 'src/app/interfaces/order';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit {
     this.messageRef = db.collection<Message>('messages', ref => {
       return ref.orderBy('dateTime', 'desc');
     });
+    this.orderRefs = db.collection<Order>('orders');
   }
 
   private user: Observable<firebase.User>;
@@ -58,6 +60,8 @@ export class DashboardComponent implements OnInit {
   messageRef: AngularFirestoreCollection<Message>;
   messages: Observable<any[]>;
 
+  orders: Observable<any[]>;
+  orderRefs: AngularFirestoreCollection<Order>;
 
   messageForm: FormGroup;
 
@@ -85,6 +89,16 @@ export class DashboardComponent implements OnInit {
         return messages;
       });
     }));
+
+    this.orders = this.orderRefs.snapshotChanges().pipe(map(change => {
+      return change.map(a => {
+        const orders = a.payload.doc.data() as Order;
+        orders['id'] = a.payload.doc.id;
+        this.reloadReport();
+        return orders;
+      });
+    }));
+
     let c = await this.loadAllDiaryReports();
     this.loadDiaryTransactionsAmount();
 

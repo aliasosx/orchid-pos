@@ -24,7 +24,9 @@ export class DashboardComponent implements OnInit {
     this.messageRef = db.collection<Message>('messages', ref => {
       return ref.orderBy('dateTime', 'desc');
     });
-    this.orderRefs = db.collection<Order>('orders');
+    this.orderRef = db.collection<Order>('orders', ref => {
+      return ref.where('completed', '==', 0).orderBy('orderDateTime', 'asc');
+    });
   }
 
   private user: Observable<firebase.User>;
@@ -61,7 +63,7 @@ export class DashboardComponent implements OnInit {
   messages: Observable<any[]>;
 
   orders: Observable<any[]>;
-  orderRefs: AngularFirestoreCollection<Order>;
+  orderRef: AngularFirestoreCollection<Order>;
 
   messageForm: FormGroup;
 
@@ -90,12 +92,13 @@ export class DashboardComponent implements OnInit {
       });
     }));
 
-    this.orders = this.orderRefs.snapshotChanges().pipe(map(change => {
+    this.orders = this.orderRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
-        const orders = a.payload.doc.data() as Order;
-        orders['id'] = a.payload.doc.id;
+        const data = a.payload.doc.data() as Order;
+        data['id'] = a.payload.doc.id;
+        console.log('Order submitted!');
         this.reloadReport();
-        return orders;
+        return data;
       });
     }));
 

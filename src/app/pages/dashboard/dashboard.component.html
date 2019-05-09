@@ -146,7 +146,7 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="orderDiv">
+    <div style="display: none;">
       <mat-list *ngFor="let order of orders | async">
         <mat-list-item>{{ order.orderId }}</mat-list-item>
       </mat-list>

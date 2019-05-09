@@ -170,7 +170,8 @@ export class PaymentCashComponent implements OnInit {
                   price: food.price,
                   quantity: food.quantity,
                   total_price: food.total,
-                  total_cost: food.cost * food.quantity
+                  total_cost: food.cost * food.quantity,
+                  note: food.note,
                 };
                 let c = await this.backendService.createOrderDetail(orderDetail).then(async (resp_orderDetail) => {
                   resp_orderDetail.subscribe((y) => {

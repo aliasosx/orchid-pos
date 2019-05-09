@@ -49,6 +49,7 @@ export class ViewProductsComponent implements OnInit {
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
       unitId: new FormControl(),
+      initQuantity: new FormControl(),
     });
 
     // this.addProductForm.setValue(this.data);

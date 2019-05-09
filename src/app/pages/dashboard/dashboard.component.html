@@ -144,5 +144,10 @@
         </div>
       </div>
     </div>
+    <div [ngClass]="orderDiv">
+      <mat-list *ngFor="let order of orders | async">
+        <mat-list-item>{{ order.orderId }}</mat-list-item>
+      </mat-list>
+    </div>
   </mat-card-content>
 </mat-card>

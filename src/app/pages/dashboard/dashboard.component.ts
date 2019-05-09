@@ -66,6 +66,7 @@ export class DashboardComponent implements OnInit {
   orderRef: AngularFirestoreCollection<Order>;
 
   messageForm: FormGroup;
+  orderDiv = 'hidden';
 
   async ngOnInit() {
 

@@ -48,6 +48,7 @@
                         <thead class="thead-light">
                           <th class="text-center h6">#</th>
                           <th class="text-center h6">ອາຫານ</th>
+                          <th class="text-center h6">ຄຳສັ່ງພິເສດ</th>
                           <th class="text-center h6">ຈຳນວນ</th>
                           <th class="text-center h6"></th>
                         </thead>
@@ -55,11 +56,12 @@
                           <tr *ngFor="let trx of foodsTransactions ; let i  = index">
                             <td class="text-center">{{ i+1 }}</td>
                             <td class="text-left text-nowrap" style="width: 300px;">{{ trx.oFoodName }}</td>
-                            <td class="text-right">{{ trx.quantity |number }}</td>
+                            <td class="text-left text-nowrap" style="width: 300px;">{{ trx.note }}</td>
+                            <td class="text-right" style="width: 100px;">{{ trx.quantity |number }}</td>
                             <td class="text-right">ຈານ</td>
                           </tr>
                           <tr>
-                            <td class="text-center h6" colspan="2">ລວມ</td>
+                            <td class="text-center h6" colspan="3">ລວມ</td>
                             <td class="text-right h6">{{ totalDiscs | number }}</td>
                             <td class="text-center h6"></td>
                           </tr>

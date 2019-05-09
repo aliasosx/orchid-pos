@@ -22,7 +22,7 @@ export class StocksComponent implements OnInit {
   searchProduct: any;
   stocksRef: AngularFirestoreCollection<StockHistory>;
   stocks: Observable<any[]>;
-
+  stockTaskOffList: any;
   showStockList = true;
   stocksShow: any;
 
@@ -53,7 +53,9 @@ export class StocksComponent implements OnInit {
   loadStock() {
     this.be.getShowStocks().then(rsp => {
       rsp.subscribe(r => {
-        this.stocksShow = r;
+        console.log(r);
+        this.stocksShow = r['stocks'];
+        this.stockTaskOffList = r['stockTakeOff'];
       });
     });
   }

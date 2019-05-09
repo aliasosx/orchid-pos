@@ -44,57 +44,104 @@
             <div class="text-center mb-4">
               <h4>ລາຍການເຄື່ອງໃນສາງປະຈຸບັນ</h4>
             </div>
+
+            <mat-tab-group>
+              <mat-tab label="Stock">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead class="thead-dark">
+                      <th class="text-center h6">#</th>
+                      <th class="text-left h6">ລະຫັດ</th>
+                      <th class="text-left h6">ຊື່ສິນຄ້າ</th>
+                      <th class="text-right h6">ທຶນ</th>
+                      <th class="text-right h6">ຍອດຍົກມາ</th>
+                      <th class="text-right h6">ນຳໃຊ້</th>
+                      <th class="text-right h6">ຍອດຍັງເຫຼືອ</th>
+                      <th class="text-right h6">ຈຳນວນຕໍ່າສຸດ</th>
+                      <th class="text-left h6">ເຂົ້າສາງວັນທີ</th>
+                      <th class="text-left h6">ອັບເດດວັນທີ</th>
+                      <th class="text-left h6">ອັບເດດໂດຍ</th>
+                      <th class="text-left h6">ເນື້ອໃນ</th>
+                      <th class="text-center h6">ການຈັດການ</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let st of stocksShow; let i = index">
+                        <td class="text-center">{{ i+1 }}</td>
+                        <td>{{ st.stock_refno }}</td>
+                        <td>{{ st.product_name }}</td>
+                        <td class="text-right">{{ st.cost | number }}</td>
+                        <td class="text-right">{{ st.previous_quantity | number }}</td>
+                        <td class="text-right">{{ st.used_quantity  | number}}</td>
+                        <td class="text-right">{{ st.currentQuantity | number }}</td>
+                        <td class="text-right">{{ st.minimum | number }}</td>
+                        <td class="text-left">{{ st.createdAt | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+                        <td class="text-left">{{ st.updatedAt | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+                        <td class="text-left">{{ st.username  }}</td>
+                        <td class="text-left" style="width: 300px;">{{ st.remarks  }}</td>
+                        <td class="text-center">
+                          <div class="row">
+                            <div class="col col-md-12">
+                              <img src="../../../assets/icons/visibility-button.svg"
+                                style="width: 25px; cursor: pointer; margin-right: 5px">
+                              <img src="../../../assets/icons/pencil.svg"
+                                style="width: 25px; cursor: pointer; margin-right: 5px">
+                              <img src="../../../assets/icons/icon.svg" style="width: 25px; cursor: pointer; ">
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="13">* ຈຳນວນທີ່ເປັນບວກແມ່ນການເພີ່ມຂື້ນ ອາດຈະມາຈາກການຊຶ້ເຂົ້າຕື່ມ
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </mat-tab>
+              <mat-tab label="Stock Take Off">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead class="thead-dark">
+                      <th class="text-center h6">#</th>
+                      <th class="text-center h6">ລະຫັດ</th>
+                      <th class="text-left h6">ຊື່ສິນຄ້າ</th>
+                      <th class="text-right h6">ຫົວໜ່ວຍ</th>
+                      <th class="text-right h6">ຈຳນວນ</th>
+                      <th class="text-right h6">ໜ່ວຍ/ແກັດ</th>
+                      <th class="text-right h6">ຍອດລວມ</th>
+                      <th class="text-right h6">ຜູ້ເບິກ</th>
+                      <th class="text-left h6">ເນື້ອໃນ</th>
+                      <th class="text-left h6">ວັນທີເບິກ</th>
+                      <th class="text-center h6">ການຈັດການ</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let st of stockTaskOffList; let i = index">
+                        <td class="text-center">{{ i+1 }}</td>
+                        <td class="text-center">{{ st.refno }}</td>
+                        <td class="text-left">{{ st.product_name }}</td>
+                        <td class="text-center">{{ st.unit_name }}</td>
+                        <td class="text-right">{{ st.stUsedQuantity |number }}</td>
+                        <td class="text-center">{{ st.dozenQuantityUnitId }}</td>
+                        <td class="text-right">{{ st.totalUsedQuantity |number }}</td>
+                        <td class="text-left">{{ st.username }}</td>
+                        <td class="text-left">{{ st.remarks }}</td>
+                        <td>{{ st.takeOffDate | date:'dd-MMM-yyyy H:mm:ss' }}</td>
+                        <td>N/A</td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="13">* ຈຳນວນທີ່ເປັນບວກແມ່ນການເພີ່ມຂື້ນ ອາດຈະມາຈາກການຊຶ້ເຂົ້າຕື່ມ
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
           </div>
-          <table class="table table-hover">
-            <thead class="thead-dark">
-              <th class="text-center h6">#</th>
-              <th class="text-left h6">ລະຫັດ</th>
-              <th class="text-left h6">ຊື່ສິນຄ້າ</th>
-              <th class="text-right h6">ຕົ້ນທຶນ</th>
-              <th class="text-right h6">ຍອດຍົກມາ</th>
-              <th class="text-right h6">ນຳໃຊ້</th>
-              <th class="text-right h6">ຍອດຍັງເຫຼືອ</th>
-              <th class="text-right h6">ຈຳນວນຕໍ່າສຸດ</th>
-              <th class="text-left h6">ເຂົ້າສາງວັນທີ</th>
-              <th class="text-left h6">ອັບເດດວັນທີ</th>
-              <th class="text-left h6">ອັບເດດໂດຍ</th>
-              <th class="text-left h6">ເນື້ອໃນ</th>
-              <th class="text-center h6">ການຈັດການ</th>
-            </thead>
-            <tbody>
-              <tr *ngFor="let st of stocksShow; let i = index">
-                <td class="text-center">{{ i+1 }}</td>
-                <td>{{ st.stock_refno }}</td>
-                <td>{{ st.product_name }}</td>
-                <td class="text-right">{{ st.cost | number }}</td>
-                <td class="text-right">{{ st.previous_quantity | number }}</td>
-                <td class="text-right">{{ st.used_quantity  | number}}</td>
-                <td class="text-right">{{ st.currentQuantity | number }}</td>
-                <td class="text-right">{{ st.minimum | number }}</td>
-                <td class="text-left">{{ st.createdAt | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
-                <td class="text-left">{{ st.updatedAt | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
-                <td class="text-left">{{ st.username  }}</td>
-                <td class="text-left">{{ st.remarks  }}</td>
-                <td class="text-center">
-                  <div class="row">
-                    <div class="col col-md-12">
-                      <img src="../../../assets/icons/visibility-button.svg"
-                        style="width: 25px; cursor: pointer; margin-right: 5px">
-                      <img src="../../../assets/icons/pencil.svg"
-                        style="width: 25px; cursor: pointer; margin-right: 5px">
-                      <img src="../../../assets/icons/icon.svg" style="width: 25px; cursor: pointer; ">
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="13">* ຈຳນວນທີ່ເປັນບວກແມ່ນການເພີ່ມຂື້ນ ອາດຈະມາຈາກການຊຶ້ເຂົ້າຕື່ມ
-                </td>
-              </tr>
-            </tfoot>
-          </table>
         </div>
       </ng-container>
     </div>

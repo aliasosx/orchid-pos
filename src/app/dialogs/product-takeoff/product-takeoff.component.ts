@@ -34,7 +34,9 @@ export class ProductTakeoffComponent implements OnInit {
       unitId: new FormControl(),
       unitName: new FormControl(),
       currentQuantity: new FormControl(),
+      dozenQuantityUnitId: new FormControl(),
       totalUsedQuantity: new FormControl(),
+      remarks: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       createdAt: new FormControl(new Date())
     });
@@ -68,7 +70,9 @@ export class ProductTakeoffComponent implements OnInit {
   }
   unitPerPackSelected(e) {
     if (e) {
-      this.unitsPerPack = e;
+      const units = e.split('|');
+      this.unitsPerPack = units[0];
+      this.productTakeOffForm.get('dozenQuantityUnitId').setValue(units[2]);
       this.quantityCalculation();
     }
   }

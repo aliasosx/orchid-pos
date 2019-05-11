@@ -86,9 +86,18 @@ export class CashloadComponent implements OnInit {
               rsp.subscribe(async (rs) => {
                 if (rs['status'] === 'success') {
                   let c = await this.loadCashStartUp();
-                  this.snackbar.open('Record has been removed', 'OK', { duration: 1000 });
+                  swal({
+                    title: 'ສຳເລັດ',
+                    icon: 'success',
+                    timer: 3000
+                  });
                 } else {
-                  this.snackbar.open('Record cannot be remove', 'Fail', { duration: 1000 });
+                  swal({
+                    title: 'ທ່ານບໍ່ສາມາດລືບລາຍການທີ່ ອະນຸມັດແລ້ວໄດ້',
+                    text: 'Cannot be delete record has been approved',
+                    icon: 'error',
+                    timer: 3000
+                  });
                 }
               });
             });

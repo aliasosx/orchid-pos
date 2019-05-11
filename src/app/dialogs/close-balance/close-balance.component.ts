@@ -129,7 +129,7 @@ export class CloseBalanceComponent implements OnInit {
           this.backendService.settleOrder(this.data.id, { settled: 1 }).then(settleOrder => {
             settleOrder.subscribe(async (rst) => {
               if (rst['status'] === 'success') {
-                this.snackbar.open('Transactions settled by cashId  ' + this.data.id, 'OK', { duration: 1000 });
+                this.snackbar.open('Transactions settled by cashId  ' + this.data.id, 'OK', { duration: 2000 });
                 const csh = {
                   eodBankBalance: this.addCashload.get('eodBankBalance').value,
                   eodCashBalance: this.addCashload.get('eodCashBalance').value,
@@ -153,14 +153,15 @@ export class CloseBalanceComponent implements OnInit {
                       // update current POS BAL
                       const cashBalanceEodTerminal = {
                         cashloadId: this.data.id,
-                        balance: this.addCashload.get('fwdBalance').value
+                        balance: this.addCashload.get('fwdBalance').value,
+                        locked: 0,
                       };
                       // tslint:disable-next-line: max-line-length
                       this.backendService.updateTerminalBalanceEod(this.addCashload.get('terminalId').value, cashBalanceEodTerminal).then(rsp => {
                         rsp.subscribe(r => {
                           if (r['status'] === 'success') {
                             // tslint:disable-next-line: max-line-length
-                            this.snackbar.open('Terminal balance has been updated : ' + this.addCashload.get('fwdBalance').value, 'OK', { duration: 2000 });
+                            this.snackbar.open('Terminal balance has been updated : ' + this.addCashload.get('fwdBalance').value, 'OK', { duration: 3000 });
                             this.dialogRef.close('success');
                           }
                         });

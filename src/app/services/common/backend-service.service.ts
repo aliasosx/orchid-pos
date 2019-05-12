@@ -405,6 +405,9 @@ export class BackendServiceService {
   async getTerminals() {
     return this._http.get(this.backendService + 'terminals', this.httpOptions);
   }
+  async getTerminalsForExps() {
+    return this._http.get(this.backendService + 'terminalsForExps', this.httpOptions);
+  }
   async getTerminalById(id) {
     return this._http.get(this.backendService + 'terminal/' + id, this.httpOptions);
   }

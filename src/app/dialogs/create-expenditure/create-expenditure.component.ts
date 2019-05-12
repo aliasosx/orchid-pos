@@ -100,7 +100,7 @@ export class CreateExpenditureComponent implements OnInit {
     }
   }
   loadTerminals() {
-    this.backendService.getTerminals().then(t => {
+    this.backendService.getTerminalsForExps().then(t => {
       t.subscribe(terminals => {
         this.terminals = terminals;
       });

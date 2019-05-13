@@ -108,6 +108,7 @@ export class CloseBalanceComponent implements OnInit {
         this.addCashload.get('totalSellAmount').setValue(this.addCashload.get('eodBankBalance').value + this.addCashload.get('eodCashBalance').value);
         // tslint:disable-next-line: max-line-length
         this.addCashload.get('netbalance').setValue(parseInt(this.addCashload.get('cashInHands').value, 10) - parseInt(this.addCashload.get('expenditureAmount').value, 10));
+        this.balanceFwdCalculate();
       });
     });
   }

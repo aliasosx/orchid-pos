@@ -38,7 +38,7 @@ export class PaymentCashComponent implements OnInit {
     this.qrPaymentsRef = db.collection<QrBankResponseData>('qrPayments');
 
     const uuid1 = uuid.v4();
-    const refno = this.padding(Math.floor(Math.random() * 6000000000) + 1, 12);
+    const refno = this.padding(Math.floor(Math.random() * 60000000000) + 1, 12);
     this.orderForm = new FormGroup({
       orderId: new FormControl(uuid1),
       refno: new FormControl(refno),

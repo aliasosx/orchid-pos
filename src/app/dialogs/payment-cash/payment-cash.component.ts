@@ -397,7 +397,7 @@ export class PaymentCashComponent implements OnInit {
     const _uuid1 = uuid.v1();
     const _terminalId = '000001';
     const _amount = this.data.total;
-    const _invoiceNumber = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
+    const _invoiceNumber = this.padding(Math.floor(Math.random() * 60000000000) + 1, 12);
     const _description = 'letterp-POS-transctions';
     this.orderForm.get('invoiceno').setValue(_invoiceNumber);
     // tslint:disable-next-line: max-line-length

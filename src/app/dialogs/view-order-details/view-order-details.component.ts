@@ -15,7 +15,7 @@ export class ViewOrderDetailsComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
   constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<ViewBilldetailsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.ordersRef = db.collection<Order>('orders', ref => ref.where('invoiceno', '==', data.invoiceno));
+    this.ordersRef = db.collection<Order>('orders', ref => ref.where('orderId', '==', data.orderId));
   }
   ordersRef: AngularFirestoreCollection<Order>;
   orders: Observable<any[]>;
@@ -32,10 +32,11 @@ export class ViewOrderDetailsComponent implements OnInit {
     this.orders.subscribe(orders => {
       orders.forEach(order => {
         order.food.forEach(fd => {
+          // console.log(fd);
           this.foods.push(fd);
         });
       });
     });
+    // console.log(this.data);
   }
-
 }

@@ -7,8 +7,8 @@
   <mat-card-content>
     <div style="overflow-y: auto;overflow-x: hidden;max-height: 600px;">
       <div class="table-responsive">
-        <table class="table table-bordered ">
-          <thead class="thead-light">
+        <table class="table table-bordered table-hover">
+          <thead class="thead-dark">
             <tr>
               <th scope="col" class="text-center">#</th>
               <th scope="col" class="text-center">Q</th>
@@ -21,47 +21,48 @@
               <th scope="col" class="text-center">ສະຖານະ</th>
               <th scope="col" class="text-center">ສະຖານະ</th>
               <th scope="col" class="text-center">ເຫດຜົນຍົກເລິກ</th>
-              <th scope="col" class="text-center">ລາຍການອາຫານ</th>
               <th scope="col" class="text-center">ຜູ້ຂາຍ</th>
+              <th scope="col" class="text-center">ລາຍການອາຫານ</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let order of orders | async; let i = index">
-              <td class="text-center">{{ i+1 }}</td>
-              <td class="text-center">{{ order.ticket }}</td>
-              <td class="text-center">{{ order.orderDateTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
-              <td class="text-center" *ngIf="order.orderFinishTime ;else notFinish">
+              <td class="text-center align-middle">{{ i+1 }}</td>
+              <td class="text-center align-middle">{{ order.ticket }}</td>
+              <td class="text-center align-middle">{{ order.orderDateTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+              <td class="text-center align-middle" *ngIf="order.orderFinishTime ;else notFinish">
                 {{ order.orderFinishTime.toDate() | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
               <ng-template #notFinish>
-                <td class="text-center">Processing</td>
+                <td class="text-center align-middle">Processing</td>
               </ng-template>
-              <td class="text-center">{{ order.invoiceno }}</td>
-              <td class="text-center">{{ order.refno }}</td>
-              <td class="text-right">{{ order.grandtotal |number }}</td>
-              <td class="text-center">{{ order.paymentType }}</td>
+              <td class="text-center align-middle">{{ order.invoiceno }}</td>
+              <td class="text-center align-middle">{{ order.refno }}</td>
+              <td class="text-right align-middle">{{ order.grandtotal |number }}</td>
+              <td class="text-center align-middle">{{ order.paymentType }}</td>
 
               <ng-container [ngSwitch]="order.status">
-                <td class="text-center" *ngSwitchCase="'completed'">
+                <td class="text-center align-middle" *ngSwitchCase="'completed'">
                   <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;">
                 </td>
-                <td class="text-center" *ngSwitchCase="'cancel'">
+                <td class="text-center align-middle" *ngSwitchCase="'cancel'">
                   <img src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;">
                 </td>
-                <td class="text-center" *ngSwitchDefault>
+                <td class="text-center align-middle" *ngSwitchDefault>
                   <img src="../../../assets/icons/lg.dual-gear-loading-icon.gif"
                     style="max-width: 30px;cursor: pointer;">
                 </td>
               </ng-container>
 
-              <td class="text-center">{{ order.status }}</td>
-              <td class="text-center" *ngIf="order.remarks; else noreason">{{ order.remarks }}</td>
+              <td class="text-center align-middle">{{ order.status }}</td>
+              <td class="text-center align-middle" *ngIf="order.remarks; else noreason">{{ order.remarks }}</td>
               <ng-template #noreason>
-                <td class="text-center">N/A</td>
+                <td class="text-center align-middle"></td>
               </ng-template>
-              <td class="text-center">
+              <td class="text-center align-middle">{{ order.username }}</td>
+              <td class="text-center align-middle">
                 <button mat-raised-button color="primary" (click)="openOrderDetail(order)">ກວດສອບລາຍການ</button>
               </td>
-              <td class="text-center">{{ order.username }}</td>
+
             </tr>
           </tbody>
         </table>

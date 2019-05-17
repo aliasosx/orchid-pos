@@ -427,6 +427,10 @@ export class BackendServiceService {
     return this._http.get(this.backendService + 'tickets', this.httpOptions);
   }
 
+  async getDashboardData() {
+    return this._http.get(this.backendService + 'dashboardData', this.httpOptions);
+  }
+
 
 }
 

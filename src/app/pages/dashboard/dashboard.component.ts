@@ -9,6 +9,7 @@ import { Notice } from 'src/app/interfaces/notices';
 import { Message } from 'src/app/interfaces/messages';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Order } from 'src/app/interfaces/order';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
@@ -53,6 +54,8 @@ export class DashboardComponent implements OnInit {
   dashboardFoodsReports: any;
   dashboardInQReports: any;
 
+  dashboardTotalSaleChartData: any;
+  dashboardTotalSaleByDate: any[] = [];
 
   roleId = JSON.parse(localStorage.getItem('usrObj')).roleId;
 
@@ -105,7 +108,7 @@ export class DashboardComponent implements OnInit {
 
     let c = await this.loadAllDiaryReports();
     this.loadDiaryTransactionsAmount();
-
+    let d = await this.loadDashboardData();
   }
   reloadReport() {
     this.loadAllDiaryReports();
@@ -177,6 +180,22 @@ export class DashboardComponent implements OnInit {
         this.dashboardFoodsReports = r[0].diary_foods_reports;
       });
       // console.log(this.dashboardSummaryReports);
+    });
+  }
+  async loadDashboardData() {
+    this.be.getDashboardData().then(rsp => {
+      rsp.subscribe(r => {
+        this.dashboardTotalSaleByDate = [];
+        this.dashboardTotalSaleChartData = r['total_sale'];
+        this.dashboardTotalSaleByDate.forEach(_grandTotal => {
+          this.dashboardTotalSaleByDate.push({
+            orderDateTime: _grandTotal.orderDateTime,
+            total: _grandTotal.grandtotal,
+          });
+          console.log(_grandTotal.orderDateTime);
+        });
+        // console.log(this.dashboardTotalSaleByDate);
+      });
     });
   }
 }

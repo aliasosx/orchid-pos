@@ -265,8 +265,8 @@ export class AddPurchaseComponent implements OnInit {
       productId: id,
       productName: product.productName,
       beforeQuantity: product.currentQuantity,
-      stockChange: parseInt(this.addFormPurchase.get('quantity').value),
-      currentQuantity: (parseInt(this.addFormPurchase.get('quantity').value) + parseInt(product.currentQuantity)),
+      stockChange: parseInt(this.addFormPurchase.get('quantity').value, 10),
+      currentQuantity: (parseInt(this.addFormPurchase.get('quantity').value, 10) + parseInt(product.currentQuantity, 10)),
       updateDate: new Date(),
       updateSource: 'Purchase',
       purchaseDetailId: purchase,
@@ -302,18 +302,27 @@ export class AddPurchaseComponent implements OnInit {
   async checkOverBill(id) {
     this.be.checkOverBill(id).then(rsp => {
       rsp.subscribe(r => {
-        this.billTotalAmount = r[0].BillTotal;
+        this.billTotalAmount = parseInt(r[0].BillTotal, 10);
         if (r[0].BillTotal) {
-          if (this.addFormPurchaseDetail.get('total').value + r[0].BillTotal < this.addFormPurchase.get('billAmount').value) {
+          // tslint:disable-next-line: max-line-length
+          if (parseInt(this.addFormPurchaseDetail.get('total').value, 10) + parseInt(r[0].BillTotal, 10) < parseInt(this.addFormPurchase.get('billAmount').value, 10)) {
             this.be.createPurchaseDetail(this.addFormPurchaseDetail.value).then(rspx => {
               rspx.subscribe(rs => {
                 this.loadPurchaseDetails(rs['purchaseId']);
-                // this.snackbar.open('Billing detail added', 'OK', { duration: 1000 });
-                swal('ທ່ານບໍ່ສາມາດເພີ່ມ ລາຍການ ເກິນຈຳນວນໃນໃບບິນໄດ້', 'You cannot add over Bill amount', 'error', { timer: 2000 });
+                this.loadTotalBilling(id);
+                this.snackbar.open('Billing detail added', 'OK', { duration: 1000 });
+                // swal('ທ່ານບໍ່ສາມາດເພີ່ມ ລາຍການ ເກິນຈຳນວນໃນໃບບິນໄດ້', 'You cannot add over Bill amount', 'error', { timer: 2000 });
               });
             });
-          } else if (this.addFormPurchaseDetail.get('total').value + r[0].BillTotal > this.addFormPurchase.get('billAmount').value) {
-            swal('ທ່ານບໍ່ສາມາດເພີ່ມ ລາຍການ ເກິນຈຳນວນໃນໃບບິນໄດ້', 'You cannot add over Bill amount', 'error', { timer: 2000 });
+            // tslint:disable-next-line: max-line-length
+          } else if (parseInt(this.addFormPurchaseDetail.get('total').value + r[0].BillTotal, 10) > parseInt(this.addFormPurchase.get('billAmount').value, 10)) {
+
+
+            console.log(parseInt(this.addFormPurchaseDetail.get('total').value, 10) + parseInt(r[0].BillTotal, 10));
+            console.log(this.addFormPurchase.get('billAmount').value);
+
+
+            swal('ທ່ານບໍ່ສາມາດເພີ່ມ ລາຍການ ເກິນຈຳນວນໃນໃບບິນໄດ້', 'You cannot add over Bill amount', 'error', { timer: 4000 });
             return;
           }
         } else {

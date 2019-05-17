@@ -52,7 +52,7 @@ export class AddProductsComponent implements OnInit {
 
   ngOnInit() {
     let uid = uuid.v4();
-    const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
+    const refno = this.padding(Math.floor(Math.random() * 10000000000) + 1, 12);
     this.addProductForm = new FormGroup({
       uuids: new FormControl(uid),
       barcode: new FormControl(refno),

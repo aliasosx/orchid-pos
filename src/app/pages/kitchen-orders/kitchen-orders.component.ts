@@ -6,6 +6,7 @@ import { map, filter, groupBy, mergeMap, toArray } from 'rxjs/operators';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+import { Howl, Howler } from 'howler';
 
 @Component({
   selector: 'app-kitchen-orders',
@@ -51,6 +52,10 @@ export class KitchenOrdersComponent implements OnInit {
             const orders = a.payload.doc.data() as Order;
             orders['id'] = a.payload.doc.id;
             orders['food'] = a.payload.doc.data().food.filter(b => b.kitchen.toUpperCase() === this.kitchen.toUpperCase());
+            const sound = new Howl({
+              src: ['../../../assets/sounds/Handbell-sound.mp3']
+            });
+            sound.play();
             return orders;
           });
         }));

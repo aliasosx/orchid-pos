@@ -21,6 +21,7 @@ import { KitchenReportAdminComponent } from './pages/kitchen-report-admin/kitche
 import { OrdersHistoryComponent } from './pages/orders-history/orders-history.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { ExpendituresComponent } from './pages/expenditures/expenditures.component';
+import { CustomerScreenComponent } from './pages/customer-screen/customer-screen.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: 'testpage', component: TestPagesComponent },
   { path: 'diaryExpenditure', component: ExpendituresComponent },
   { path: 'reportbykitchen', component: KitchenReportsComponent },
+  { path: 'customerScreen', component: CustomerScreenComponent },
 ];
 
 @NgModule({

@@ -96,6 +96,7 @@ import { KitchenReportsComponent } from './pages/kitchen-reports/kitchen-reports
 import { ProductLinkComponent } from './dialogs/product-link/product-link.component';
 import { ProductTakeoffComponent } from './dialogs/product-takeoff/product-takeoff.component';
 import { ProductByIdPipe } from './pipes/product-by-id.pipe';
+import { CustomerScreenComponent } from './pages/customer-screen/customer-screen.component';
 
 @NgModule({
   declarations: [
@@ -171,6 +172,7 @@ import { ProductByIdPipe } from './pipes/product-by-id.pipe';
     ProductLinkComponent,
     ProductTakeoffComponent,
     ProductByIdPipe,
+    CustomerScreenComponent,
 
 
   ],

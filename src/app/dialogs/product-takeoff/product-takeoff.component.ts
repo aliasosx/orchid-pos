@@ -25,7 +25,7 @@ export class ProductTakeoffComponent implements OnInit {
   btnDisabled = false;
   btnText = 'ບັນທືກ ລາຍການ';
   ngOnInit() {
-    const refno = this.padding(Math.floor(Math.random() * 600000) + 1, 12);
+    const refno = this.padding(Math.floor(Math.random() * 10000000000) + 1, 12);
     this.productTakeOffForm = new FormGroup({
       refno: new FormControl(refno),
       productName: new FormControl(),

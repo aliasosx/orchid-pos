@@ -74,7 +74,7 @@ export class OpenCashComponent implements OnInit {
   async addInitialBalance() {
     // console.log(this.addCashload.value);
     if (this.addCashload.get('initBalance').value) {
-      const refno = this.padding(Math.floor(Math.random() * 6000) + 1, 12);
+      const refno = this.padding(Math.floor(Math.random() * 10000000000) + 1, 12);
       this.addCashload.get('refno').setValue(refno);
       this.addCashload.get('sellerName').setValue(JSON.parse(localStorage.getItem('usrObj')).username);
 

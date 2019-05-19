@@ -13,7 +13,7 @@ export class CreateExpenditureComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
   constructor(private backendService: BackendServiceService, private dialogRef: MatDialogRef<CreateExpenditureComponent>, private snackbar: MatSnackBar) { }
-  refno = this.padding(Math.floor(Math.random() * 80000) + 1, 12);
+  refno = this.padding(Math.floor(Math.random() * 10000000000) + 1, 12);
   expenditureForm: FormGroup;
   expenditureTypes: any;
   expenditureSrcs: any;

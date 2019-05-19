@@ -174,31 +174,60 @@
               <div class="col col-md-12">
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover">
-                    <thead class="thead-dark">
+                    <thead class="thead-dark h6">
                       <tr>
-                        <th scope="col" class="text-left align-top">#</th>
+                        <th scope="col" class="text-center align-top">#</th>
+                        <th scope="col" class="text-center align-top">Product code</th>
+                        <th scope="col" class="text-center align-top">StockCode</th>
                         <th scope="col" class="text-left align-top">ສິນຄ້າ</th>
                         <th scope="col" class="text-center align-top">ເຂົ້າສາງ</th>
-                        <!--<th scope="col" class="text-center align-top">ໃຊ້ໄປ</th>-->
-                        <th scope="col" class="text-center align-top">ປະຈຸບັນ</th>
-                        <th scope="col" class="text-center align-top">ແກັດ</th>
+                        <th scope="col" class="text-center align-top">ຍອດນຳໃຊ້</th>
+                        <th scope="col" class="text-center align-top">ຍອດປະຈຸບັນ</th>
+                        <th scope="col" class="text-center align-top">ຫົວໜ່ວຍ</th>
+                        <th scope="col" class="text-center align-top">ຈຳນວນຕໍ່ແກັດ</th>
+                        <th scope="col" class="text-center align-top">ແກັດ/ລັງ</th>
                         <th scope="col" class="text-center align-top">ໜ່ວຍ</th>
                         <th scope="col" class="text-center align-top">ຕ່ຳສຸດ</th>
-                        <th scope="col" class="text-center align-top">ຫົວໜ່ວຍ</th>
+                        <th scope="col" class="text-center align-top">command</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let stock of stockNotlinkSummary; let i = index">
-                        <td class="text-center text-nowrap">{{ i+1 }}</td>
-                        <td class="text-left text-nowrap">{{ stock.product_name }}</td>
-                        <td class="text-right text-nowrap">{{ stock.initQuantity |number }}</td>
-                        <!--<td class="text-right text-nowrap">{{ stock.used_quantity |number }}</td>-->
-                        <td class="text-right text-nowrap">{{ stock.currentQuantity |number }}</td>
-                        <td class="text-right text-nowrap">{{ stock.Dozen |number }}</td>
-                        <td class="text-right text-nowrap">{{ stock.Unit |number }}</td>
-                        <td class="text-right text-nowrap">{{ stock.minimum |number }}</td>
-                        <td class="text-center text-nowrap">{{ stock.unit_name }}</td>
-                      </tr>
+                      <ng-container *ngFor="let stock of stockNotlinkSummary; let i = index">
+                        <tr *ngIf="stock.currentQuantity > stock.minimum; else lowStock">
+                          <td class="text-center text-nowrap">{{ i+1 }}</td>
+                          <td class="text-center text-nowrap">{{ stock.pId }}</td>
+                          <td class="text-center text-nowrap">{{ stock.sId }}</td>
+                          <td class="text-left text-nowrap">{{ stock.product_name }}</td>
+                          <td class="text-right text-nowrap">{{ stock.initQuantity |number }}</td>
+                          <td class="text-right text-nowrap">{{ stock.used_quantity |number }}</td>
+                          <td class="text-right text-nowrap">{{ stock.currentQuantity |number }}</td>
+                          <td class="text-center text-nowrap">{{ stock.unit_name }}</td>
+                          <td class="text-right text-nowrap">{{ stock.quantityPerPack |number }}</td>
+                          <td class="text-right text-nowrap">{{ stock.Dozen |number }}</td>
+                          <td class="text-right text-nowrap">{{ stock.Unit |number }}</td>
+                          <td class="text-right text-nowrap">{{ stock.minimum |number }}</td>
+
+                          <td class="text-center text-nowrap"></td>
+                        </tr>
+                        <ng-template #lowStock>
+                          <tr class="table-danger" style="font-weight: bold;">
+                            <td class="text-center text-nowrap">{{ i+1 }}</td>
+                            <td class="text-center text-nowrap">{{ stock.pId }}</td>
+                            <td class="text-center text-nowrap">{{ stock.sId }}</td>
+                            <td class="text-left text-nowrap">{{ stock.product_name }}</td>
+                            <td class="text-right text-nowrap">{{ stock.initQuantity |number }}</td>
+                            <td class="text-right text-nowrap">{{ stock.used_quantity |number }}</td>
+                            <td class="text-right text-nowrap">{{ stock.currentQuantity |number }}</td>
+                            <td class="text-center text-nowrap">{{ stock.unit_name }}</td>
+                            <td class="text-right text-nowrap">{{ stock.quantityPerPack |number }}</td>
+                            <td class="text-right text-nowrap">{{ stock.Dozen |number }}</td>
+                            <td class="text-right text-nowrap">{{ stock.Unit |number }}</td>
+                            <td class="text-right text-nowrap">{{ stock.minimum |number }}</td>
+
+                            <td class="text-center text-nowrap"></td>
+                          </tr>
+                        </ng-template>
+                      </ng-container>
                     </tbody>
                   </table>
                 </div>

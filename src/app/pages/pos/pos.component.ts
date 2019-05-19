@@ -143,16 +143,28 @@ export class PosComponent implements OnInit {
     if (food) {
       const items = JSON.parse(localStorage.getItem('cart'));
       const cartBuffers = [];
-      // console.log(items);
       items.forEach((item, index) => {
         if (item.id === food.id) {
           items.splice(index, 1);
         } else {
-          cartBuffers.push(item);
+          // cartBuffers.push(item);
         }
       });
+
+      /*
       if (cartBuffers.length > 0) {
         localStorage.setItem('cart', JSON.stringify(cartBuffers));
+        this.loadCurrentCartStat();
+        this.totalCalculation();
+      } else {
+        localStorage.removeItem('cart');
+        this.virtualCart = [];
+        this.totalCalculation();
+      }
+      */
+
+      if (items.length > 0) {
+        localStorage.setItem('cart', JSON.stringify(items));
         this.loadCurrentCartStat();
         this.totalCalculation();
       } else {

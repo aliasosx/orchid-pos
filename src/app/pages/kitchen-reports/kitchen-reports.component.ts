@@ -20,6 +20,9 @@ export class KitchenReportsComponent implements OnInit {
   currentStocksDetails: any;
   currentStocksDetailsByDate: any;
 
+
+  stockNotlinkSummary: any;
+
   startDate = new Date();
   endDate = new Date();
   reportByStockFood = [];
@@ -51,6 +54,7 @@ export class KitchenReportsComponent implements OnInit {
         // console.log(currentStocks);
         this.currentStocks = currentStocks['stocksSummary'];
         this.currentStocksDetails = currentStocks['stocksSummaryDetail'];
+        this.stockNotlinkSummary = currentStocks['stockNotLinkSummary'];
       });
     });
   }

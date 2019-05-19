@@ -33,7 +33,7 @@
       </div>
     </form>
     <div class="row">
-      <div class="col">
+      <div class="col col-md-12">
         <mat-tab-group>
           <mat-tab label="ລາຍງານຍອດຂາຍ">
             <mat-card-content>
@@ -46,7 +46,7 @@
                       </mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                      <div class="table-responsive">
+                      <div class="table-responsive" style="max-height: 300px;overflow: auto;">
                         <table class="table table-bordered table-hover">
                           <thead class="thead-dark">
                             <tr>
@@ -105,7 +105,7 @@
                       </mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                      <div class="table-responsive">
+                      <div class="table-responsive" style="max-height: 300px;overflow: auto;">
                         <table class="table  table-bordered table-hover">
                           <thead class="thead-dark">
                             <tr>
@@ -116,7 +116,6 @@
                             </tr>
                           </thead>
                           <tbody>
-
                             <ng-container *ngFor="let currentStocksDetail of currentStocksDetails;let i = index">
                               <tr>
                                 <td class="text-center text-nowrap">{{ i+1 }}</td>
@@ -140,7 +139,7 @@
                     </mat-card-header>
                     <mat-card-content>
                       <ng-container *ngIf="currentStocksDetailsByDate">
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="max-height: 300px;overflow: auto;">
                           <table class="table table-bordered table-hover">
                             <thead class="thead-dark">
                               <tr>
@@ -170,10 +169,39 @@
               </div>
             </mat-card-content>
           </mat-tab>
-          <mat-tab label="ສະຖິຕິຍອດຂາຍ">
+          <mat-tab label="ເຄື່ອງໃນສາງປະຈຸບັນ ທັງໝົດ">
             <div class="row">
-              <div class="col">
-
+              <div class="col col-md-12">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" class="text-left align-top">#</th>
+                        <th scope="col" class="text-left align-top">ສິນຄ້າ</th>
+                        <th scope="col" class="text-center align-top">ເຂົ້າສາງ</th>
+                        <!--<th scope="col" class="text-center align-top">ໃຊ້ໄປ</th>-->
+                        <th scope="col" class="text-center align-top">ປະຈຸບັນ</th>
+                        <th scope="col" class="text-center align-top">ແກັດ</th>
+                        <th scope="col" class="text-center align-top">ໜ່ວຍ</th>
+                        <th scope="col" class="text-center align-top">ຕ່ຳສຸດ</th>
+                        <th scope="col" class="text-center align-top">ຫົວໜ່ວຍ</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let stock of stockNotlinkSummary; let i = index">
+                        <td class="text-center text-nowrap">{{ i+1 }}</td>
+                        <td class="text-left text-nowrap">{{ stock.product_name }}</td>
+                        <td class="text-right text-nowrap">{{ stock.initQuantity |number }}</td>
+                        <!--<td class="text-right text-nowrap">{{ stock.used_quantity |number }}</td>-->
+                        <td class="text-right text-nowrap">{{ stock.currentQuantity |number }}</td>
+                        <td class="text-right text-nowrap">{{ stock.Dozen |number }}</td>
+                        <td class="text-right text-nowrap">{{ stock.Unit |number }}</td>
+                        <td class="text-right text-nowrap">{{ stock.minimum |number }}</td>
+                        <td class="text-center text-nowrap">{{ stock.unit_name }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </mat-tab>

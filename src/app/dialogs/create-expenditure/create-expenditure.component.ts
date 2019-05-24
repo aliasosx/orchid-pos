@@ -20,6 +20,8 @@ export class CreateExpenditureComponent implements OnInit {
   units: any;
   terminals: any;
 
+  kitchens: any;
+
   cashloadsId;
   balance;
   currentCashInDrawer = 0;
@@ -43,6 +45,7 @@ export class CreateExpenditureComponent implements OnInit {
       approvedBy: new FormControl(),
       cashloadId: new FormControl(),
       remarks: new FormControl(),
+      kitchenId: new FormControl(),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
     });
@@ -51,6 +54,7 @@ export class CreateExpenditureComponent implements OnInit {
     await this.loadUnit();
     await this.loadExpenditureSrcs();
     await this.loadTerminals();
+    await this.loadKitchens();
   }
 
   padding(num: number, size: number) {
@@ -132,6 +136,13 @@ export class CreateExpenditureComponent implements OnInit {
           }
         }
 
+      });
+    });
+  }
+  async loadKitchens() {
+    this.backendService.getKitchens().then(rsp => {
+      rsp.subscribe(kitchens => {
+        this.kitchens = kitchens;
       });
     });
   }

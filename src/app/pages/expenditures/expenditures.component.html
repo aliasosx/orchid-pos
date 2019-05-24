@@ -28,6 +28,7 @@
             <th scope="col" class="text-center">ລາຄາຕໍ່ໜ່ວຍ</th>
             <th scope="col" class="text-center">ລວມເປັນເງິນ</th>
             <th scope="col" class="text-center">ເອົາເງິນມາຈາກ</th>
+            <th scope="col" class="text-center">ຄົວ</th>
             <th scope="col" class="text-center">ຜຸ້ຈ່າຍ</th>
             <th scope="col" class="text-center">ອະນຸມັດ</th>
             <th scope="col" class="text-center">ຜຸ້ອະນຸມັດ</th>
@@ -46,6 +47,7 @@
             <td class="text-right align-middle">{{ exp.price | number }}</td>
             <td class="text-right align-middle">{{ exp.amount | number }}</td>
             <td class="text-center align-middle">{{ exp.terminal_name }}</td>
+            <td class="text-center align-middle">{{ exp.kitchenName }}</td>
             <td class="text-center align-middle">{{  exp.username }}</td>
             <td class="text-center align-middle" *ngIf="exp.isApproved===1;else unApproved">
               <img src="../../../assets/icons/Check_green_icon.svg.png" style="width: 25px;cursor: pointer;">

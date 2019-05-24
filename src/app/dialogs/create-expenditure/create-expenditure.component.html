@@ -51,7 +51,16 @@
           {{ terminal.terminal_name }}</option>
       </select>
     </div>
+    <div class="form-group col-md-6">
+      <label for="kitchenId">ຫ້ອງຄົວ</label>
+      <select class="form-control" id="kitchenId" formControlName="kitchenId" required>
+        <option value="-1" disabled>ເລືອກ</option>
+        <option value="{{ kitchen.id }}" *ngFor="let kitchen of kitchens">
+          {{ kitchen.kitchenName }}</option>
+      </select>
+    </div>
   </div>
+  <mat-divider class="mb-2"></mat-divider>
   <div class="row text-right">
     <div class="col col-md-12">
       <button mat-raised-button color="primary" [disabled]="btnDisabled"

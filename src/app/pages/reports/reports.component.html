@@ -57,26 +57,43 @@
                     </div>
                     <div class="card-body">
                       <div class="row">
-                        <div class="col col-md-4 h5"></div>
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5"></div>
+                        <div class="col col-md-3 h5"></div>
                         <div class="col col-md-2 h5 text-nowrap">ຈຳນວນ</div>
                         <div class="col col-md-6 h5 text-nowrap text-right">ຍອດເງິນ</div>
                       </div>
-                      <div class="row">
+                      <div class="row text-nowrap">
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5">1</div>
                         <div class="col col-md-4 col-sm-12 text-left text-nowrap h5">ຍອດຂາຍ</div>
                         <div class="col col-md-2 col-sm-12 text-right text-nowrap h5">{{ grandtotalCount | number }}
                         </div>
-                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h5">
+                        <div class="col col-md-5 col-sm-12 text-right text-nowrap h5">
                           {{ grandtotalAmount | number }} ກີບ</div>
                       </div>
                       <div class="row">
-                        <div class="col col-md-6 col-sm-12 text-left text-nowrap h5">ຕົ້ນທຶນ</div>
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5">2</div>
+                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h5">ຕົ້ນທຶນ</div>
                         <div class="col col-md-6 col-sm-12 text-right text-nowrap h5">
                           {{ totalCost | number }} ກີບ</div>
                       </div>
+
                       <div class="row">
-                        <div class="col col-md-6 col-sm-12 text-left text-nowrap h5">ກຳໄລສຸທິ</div>
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5">3</div>
+                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h5">ກຳໄລສຸທິ (1-2)</div>
                         <div class="col col-md-6 col-sm-12 text-right text-nowrap h5">
                           {{ netProfit | number }} ກີບ</div>
+                      </div>
+                      <div class="row">
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5">4</div>
+                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h5">ລາຍຈ່າຍ</div>
+                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h5">
+                          {{ totalPaymentDrinkKitchen | number }} ກີບ</div>
+                      </div>
+                      <div class="row">
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5">5</div>
+                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h5">ກຳໄລ ຫັກລາຍຈ່າຍ (3-4)</div>
+                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h5">
+                          {{ netProfit - totalPaymentDrinkKitchen | number }} ກີບ</div>
                       </div>
                     </div>
                   </div>
@@ -102,6 +119,32 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="col col-md-4">
+                  <div class="card">
+                    <div class="card-header lead">
+                      ລາຍຈ່າຍ ຕາມຄົວ
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col col-md-12" *ngFor="let ksp of kitchenPayments">
+                          <div class="row">
+                            <div class="col col-md-4 col-sm-12 text-left text-nowrap h5 ">
+                              {{ ksp.kitchenName }}
+                            </div>
+                            <div class="col col-md-2 col-sm-12 text-center text-nowrap h5 ">
+                              {{ ksp.quantity | number }}
+                            </div>
+                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h5 ">
+                              {{ ksp.amount | number }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col col-md-4">
                   <div class="card">
                     <div class="card-header lead">
@@ -135,6 +178,33 @@
                     </div>
                   </div>
                 </div>
+
+
+                <div class="col col-md-4">
+                  <div class="card">
+                    <div class="card-header lead">
+                      ຈ່າຍໃຫ້ຄົວ ອາຫານ
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col col-md-12">
+                          <div class="row">
+                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h5 ">
+                              <span class="mr-2">ຕົ້ນທຶນ ຫັກ ລາຍຈ່າຍ</span> ({{ foodKitchenTotalCost | number}} -
+                              {{ foodKitchenPaymentSummary | number}}) =
+                            </div>
+                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h5 ">
+                              <strong>{{ foodKitchenTotalCost - foodKitchenPaymentSummary | number }}</strong>
+                              ກິບ
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
               </div>
             </div>
           </div>

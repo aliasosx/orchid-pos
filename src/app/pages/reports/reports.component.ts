@@ -69,6 +69,11 @@ export class ReportsComponent implements OnInit {
   kitchenCountTranx = 0;
   kitchenAmountTranx = 0;
   kitchens: Observable<any[]>;
+  kitchenPayments: any;
+  foodKitchenPaymentSummary = 0;
+  foodKitchenTotalCost = 0;
+
+  totalPaymentDrinkKitchen = 0;
 
   foodCategoriesRef: AngularFirestoreCollection<FoodCategory>;
   foodCategories: Observable<any[]>;
@@ -135,9 +140,27 @@ export class ReportsComponent implements OnInit {
   }
 
   async rptRevByKitchenByDateRange() {
+    this.foodKitchenPaymentSummary = 0;
+    this.foodKitchenTotalCost = 0;
+    this.totalPaymentDrinkKitchen = 0;
+
     this.be.reportRevByKitchenByDateRange(this.startDate, this.endDate).then(rpt => {
       rpt.subscribe(r => {
-        this.revByKitchenDateRange = r;
+        this.revByKitchenDateRange = r['reports'];
+        this.kitchenPayments = r['payment_reports'];
+        r['payment_reports'].forEach(element => {
+          if (element.kitchenName === 'Food') {
+            this.foodKitchenPaymentSummary += element.amount;
+            // console.log(this.foodKitchenPaymentSummary);
+          } else if (element.kitchenName === 'Drink') {
+            this.totalPaymentDrinkKitchen += element.amount;
+          }
+        });
+        r['reports'].forEach(element => {
+          if (element.kitchenName === 'Food') {
+            this.foodKitchenTotalCost += element.total_cost;
+          }
+        });
       });
     });
   }

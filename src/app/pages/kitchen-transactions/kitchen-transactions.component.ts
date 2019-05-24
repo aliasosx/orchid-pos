@@ -41,8 +41,8 @@ export class KitchenTransactionsComponent implements OnInit {
       let _total = 0;
       let _count = 0;
       rsp.subscribe(r => {
-        this.foodsTransactions = r;
-        this.foodList.push(r);
+        this.foodsTransactions = r['reports'];
+        this.foodList.push(r['reports']);
         this.foodList.forEach(f => {
           f.forEach(element => {
             _total += parseInt(element.total_cost, 10);

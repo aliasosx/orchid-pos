@@ -79,6 +79,8 @@ export class KitchenReportAdminComponent implements OnInit {
 
         if (this.paymentSummary) {
           this.netPayment = this.grandTotal - this.paymentSummary;
+        } else {
+          this.netPayment = this.grandTotal;
         }
 
         if (_total > 0) {

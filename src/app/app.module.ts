@@ -97,6 +97,9 @@ import { ProductLinkComponent } from './dialogs/product-link/product-link.compon
 import { ProductTakeoffComponent } from './dialogs/product-takeoff/product-takeoff.component';
 import { ProductByIdPipe } from './pipes/product-by-id.pipe';
 import { CustomerScreenComponent } from './pages/customer-screen/customer-screen.component';
+import { FoodFxComponent } from './pages/food-fx/food-fx.component';
+import { AddFoodFxComponent } from './dialogs/add-food-fx/add-food-fx.component';
+import { AddFoodFxTranxComponent } from './dialogs/add-food-fx-tranx/add-food-fx-tranx.component';
 
 @NgModule({
   declarations: [
@@ -173,6 +176,9 @@ import { CustomerScreenComponent } from './pages/customer-screen/customer-screen
     ProductTakeoffComponent,
     ProductByIdPipe,
     CustomerScreenComponent,
+    FoodFxComponent,
+    AddFoodFxComponent,
+    AddFoodFxTranxComponent,
 
 
   ],
@@ -235,6 +241,8 @@ import { CustomerScreenComponent } from './pages/customer-screen/customer-screen
     CreateExpenditureComponent,
     ProductLinkComponent,
     ProductTakeoffComponent,
+    AddFoodFxComponent,
+    AddFoodFxTranxComponent,
   ]
   ,
   providers: [

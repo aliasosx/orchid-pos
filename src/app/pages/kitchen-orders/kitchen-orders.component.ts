@@ -51,11 +51,14 @@ export class KitchenOrdersComponent implements OnInit {
           return change.map(a => {
             const orders = a.payload.doc.data() as Order;
             orders['id'] = a.payload.doc.id;
-            orders['food'] = a.payload.doc.data().food.filter(b => b.kitchen.toUpperCase() === this.kitchen.toUpperCase());
-            const sound = new Howl({
-              src: ['../../../assets/sounds/Handbell-sound.mp3']
-            });
-            sound.play();
+            orders['food'] = a.payload.doc.data().food.filter(b => b.kitchen.toUpperCase() === 'FOOD');
+            console.log();
+            if (a.payload.type === 'added') {
+              const sound = new Howl({
+                src: ['../../../assets/sounds/Handbell-sound.mp3']
+              });
+              sound.play();
+            }
             return orders;
           });
         }));

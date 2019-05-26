@@ -22,6 +22,7 @@ import { OrdersHistoryComponent } from './pages/orders-history/orders-history.co
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { ExpendituresComponent } from './pages/expenditures/expenditures.component';
 import { CustomerScreenComponent } from './pages/customer-screen/customer-screen.component';
+import { FoodFxComponent } from './pages/food-fx/food-fx.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -47,6 +48,7 @@ const routes: Routes = [
   { path: 'diaryExpenditure', component: ExpendituresComponent },
   { path: 'reportbykitchen', component: KitchenReportsComponent },
   { path: 'customerScreen', component: CustomerScreenComponent },
+  { path: 'foodFx', component: FoodFxComponent },
 ];
 
 @NgModule({

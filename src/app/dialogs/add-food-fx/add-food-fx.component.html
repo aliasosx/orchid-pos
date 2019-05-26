@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>ເພີ່ມສູດອາຫານ</h1>
+<form [formGroup]="addFoodFxForm">
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <label for="foodFxName">ຊື່ສູດອາຫານ</label>
+      <input type="text" class="form-control" id="foodFxName" placeholder="foodFxName" formControlName="foodFxName"
+        required>
+    </div>
+    <div class="form-group col-md-12">
+      <label for="cost">ຕົ້ນທຶນ</label>
+      <input type="number" class="form-control text-right" id="cost" placeholder="cost" formControlName="cost" required>
+    </div>
+    <div class="form-group col-md-12">
+      <label for="remarks">ໝາຍເຫດ</label>
+      <input type="text" class="form-control" id="remarks" placeholder="remarks" formControlName="remarks" required>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="text-right mt-2">
+    <button mat-raised-button color="primary" (click)="addNewFoodFx()">ສ້າງ</button>
+  </div>
+</form>

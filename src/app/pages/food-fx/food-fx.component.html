@@ -1,0 +1,52 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>ສ່ວນປະກອບອາຫານ</mat-card-title>
+    <mat-card-subtitle></mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="form-group row mt-2">
+      <div class="col col-sm-12 col-md-3">
+        <input type="text" class="form-control" placeholder="ຄົ້ນຫາ...">
+      </div>
+      <div class="col col-sm-12 col-md-2">
+        <button mat-raised-button color="primary" class="float-left" (click)="openAddNewDialog()">ເພີ່ມອາຫານ</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">ລະຫັດສູດອາຫານ</th>
+            <th scope="col" class="text-center">ຊື່ສຸດອາຫານ</th>
+            <th scope="col" class="text-center">ຄາດປະມານຕົ້ນທືນ</th>
+            <th scope="col" class="text-center">ໝາຍເຫດ</th>
+            <th scope="col" class="text-center">ນຳໃຊ້</th>
+            <th scope="col" class="text-center">ລາຍລະອຽດ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let food of foodFxs; let i = index">
+            <td class="text-center" style="width: 20px;">{{ i+1 }}</td>
+            <td class="text-center" style="width: 350px;">{{ food.foodFxCode }}</td>
+            <td class="text-left">{{ food.foodFxName }}</td>
+            <td class="text-center" style="width: 200px;">{{ food.cost | number}}</td>
+            <td class="text-left">{{ food.remarks }}</td>
+            <td class="text-center" style="width: 100px;" *ngIf="food.enabled; else disabledFood">
+              <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;">
+            </td>
+            <ng-template #disabledFood>
+              <td class="text-center" style="width: 100px;" *ngIf="food.enabled; else disabledFood">
+                <img src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;">
+              </td>
+            </ng-template>
+            <td class="text-center">
+              <button mat-raised-button color="primary" (click)="addNewFoodFxTranx(food)">ເພີ່ມອາຫານ</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>

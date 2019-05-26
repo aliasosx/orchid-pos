@@ -18,12 +18,13 @@ export class AddFoodFxTranxComponent implements OnInit {
   foods: any;
   units: any;
   products: any;
+  foodFxTranxs: any;
 
   ngOnInit() {
+    // console.log(this.data.fxId);
     this.addFoodFxTranxForm = new FormGroup({
       id: new FormControl(),
-      foodFxId: new FormControl(this.data.id),
-      foodId: new FormControl(),
+      foodFxId: new FormControl(this.data.fxId),
       productId: new FormControl(),
       unitId: new FormControl(),
       quantity: new FormControl(0),
@@ -31,8 +32,8 @@ export class AddFoodFxTranxComponent implements OnInit {
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
     });
     this.loadFoods();
+    this.loadFoodFxTranx();
   }
-
   async loadFoods() {
     await this.backendService.getFoods().then(rsp => {
       rsp.subscribe(foods => {
@@ -50,13 +51,22 @@ export class AddFoodFxTranxComponent implements OnInit {
       });
     });
   }
+  async loadFoodFxTranx() {
+    this._FoodFxService.getFoodFxTranxById(this.data.fxId).then(rsp => {
+      rsp.subscribe(foodFxTranxs => {
+        this.foodFxTranxs = foodFxTranxs;
+      });
+    });
+  }
   createFoodFxTranx() {
     if (this.addFoodFxTranxForm.valid) {
       this.btnDisable = true;
       this._FoodFxService.createFoodFxTranx(this.addFoodFxTranxForm.value).then(rsp => {
         rsp.subscribe(r => {
           if (r['status'] === 'success') {
-            this.dialogRef.close('success');
+            // this.dialogRef.close('success');
+            this.loadFoodFxTranx();
+            this.btnDisable = false;
           } else {
             this.btnDisable = false;
             return;
@@ -65,5 +75,20 @@ export class AddFoodFxTranxComponent implements OnInit {
       });
     }
   }
-
+  removeItem(id) {
+    if (id) {
+      this._FoodFxService.deleteFoodFxTranxById(id).then(rsp => {
+        rsp.subscribe(r => {
+          if (r['status'] === 'success') {
+            this.loadFoodFxTranx();
+          } else {
+            return;
+          }
+        });
+      });
+    }
+  }
+  closeDialog() {
+    this.dialogRef.close('success');
+  }
 }

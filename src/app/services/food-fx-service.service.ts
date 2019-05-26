@@ -25,5 +25,20 @@ export class FoodFxServiceService {
   async createFoodFxTranx(data) {
     return this._http.post(this.backendService + 'foodFxTranx', data, this.httpOptions);
   }
+  async getFoodFxTranxById(id) {
+    return this._http.get(this.backendService + 'foodFxTranxById/' + id, this.httpOptions);
+  }
+  async deleteFoodFxTranxById(id) {
+    return this._http.delete(this.backendService + 'foodFxTranx/' + id, this.httpOptions);
+  }
+  async getFoodFxById(id) {
+    return this._http.get(this.backendService + 'foodFxById/' + id, this.httpOptions);
+  }
+  async updateFoodFxById(id, data) {
+    return this._http.put(this.backendService + 'foodFx/' + id, data, this.httpOptions);
+  }
+  async deleteFoodFxById(id) {
+    return this._http.delete(this.backendService + 'foodFx/' + id, this.httpOptions);
+  }
 
 }

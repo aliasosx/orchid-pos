@@ -2,9 +2,21 @@
 <form [formGroup]="addFoodFxForm">
   <div class="form-row">
     <div class="form-group col-md-12">
+      <label for="foodFxCode">ລະຫັດ</label>
+      <input type="text" class="form-control" id="foodFxCode" readonly placeholder="Auto populate"
+        formControlName="foodFxCode">
+    </div>
+    <div class="form-group col-md-12">
       <label for="foodFxName">ຊື່ສູດອາຫານ</label>
       <input type="text" class="form-control" id="foodFxName" placeholder="foodFxName" formControlName="foodFxName"
         required>
+    </div>
+    <div class="form-group col-md-12">
+      <label for="foodId">ອາຫານ</label>
+      <select class="form-control" formControlName="foodId" required>
+        <option value="" disabled>ເລືອກ</option>
+        <option value="{{food.id}}" *ngFor="let food of foods">{{ food.food_name }}</option>
+      </select>
     </div>
     <div class="form-group col-md-12">
       <label for="cost">ຕົ້ນທຶນ</label>
@@ -17,6 +29,6 @@
   </div>
   <mat-divider></mat-divider>
   <div class="text-right mt-2">
-    <button mat-raised-button color="primary" (click)="addNewFoodFx()">ສ້າງ</button>
+    <button mat-raised-button color="primary" (click)="addNewFoodFx()">{{ btnText }}</button>
   </div>
 </form>

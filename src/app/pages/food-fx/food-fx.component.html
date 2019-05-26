@@ -9,8 +9,8 @@
       <div class="col col-sm-12 col-md-3">
         <input type="text" class="form-control" placeholder="ຄົ້ນຫາ...">
       </div>
-      <div class="col col-sm-12 col-md-2">
-        <button mat-raised-button color="primary" class="float-left" (click)="openAddNewDialog()">ເພີ່ມອາຫານ</button>
+      <div class="col col-sm-12 col-md-9">
+        <button mat-stroked-button color="primary" class="float-right" (click)="openAddNewDialog()">ເພີ່ມອາຫານ</button>
       </div>
     </div>
     <div class="table-responsive">
@@ -20,6 +20,7 @@
             <th scope="col" class="text-center">#</th>
             <th scope="col" class="text-center">ລະຫັດສູດອາຫານ</th>
             <th scope="col" class="text-center">ຊື່ສຸດອາຫານ</th>
+            <th scope="col" class="text-center">ອາຫານ</th>
             <th scope="col" class="text-center">ຄາດປະມານຕົ້ນທືນ</th>
             <th scope="col" class="text-center">ໝາຍເຫດ</th>
             <th scope="col" class="text-center">ນຳໃຊ້</th>
@@ -28,21 +29,26 @@
         </thead>
         <tbody>
           <tr *ngFor="let food of foodFxs; let i = index">
-            <td class="text-center" style="width: 20px;">{{ i+1 }}</td>
-            <td class="text-center" style="width: 350px;">{{ food.foodFxCode }}</td>
-            <td class="text-left">{{ food.foodFxName }}</td>
-            <td class="text-center" style="width: 200px;">{{ food.cost | number}}</td>
-            <td class="text-left">{{ food.remarks }}</td>
-            <td class="text-center" style="width: 100px;" *ngIf="food.enabled; else disabledFood">
-              <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;">
+            <td class="text-center align-middle" style="width: 20px;">{{ i+1 }}</td>
+            <td class="text-center align-middle" style="width: 350px;">{{ food.foodFxCode }}</td>
+            <td class="text-left align-middle">{{ food.foodFxName }}</td>
+            <td class="text-left align-middle">{{ food.food_name }}</td>
+            <td class="text-center align-middle" style="width: 200px;">{{ food.cost | number}}</td>
+            <td class="text-left align-middle">{{ food.remarks }}</td>
+            <td class="text-center align-middle" style="width: 80px;" *ngIf="food.enabled; else disabledFood">
+              <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;"
+                (click)="toggleEabled(food.fxId,food.enabled)">
             </td>
             <ng-template #disabledFood>
-              <td class="text-center" style="width: 100px;" *ngIf="food.enabled; else disabledFood">
-                <img src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;">
+              <td class="text-center align-middle" style="width: 80px;">
+                <img src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;"
+                  (click)="toggleEabled(food.fxId,food.enabled)">
               </td>
             </ng-template>
-            <td class="text-center">
-              <button mat-raised-button color="primary" (click)="addNewFoodFxTranx(food)">ເພີ່ມອາຫານ</button>
+            <td class="text-center align-middle" style="width: 250px;">
+              <button mat-stroked-button color="primary" class="mr-1" (click)="addNewFoodFxTranx(food)">ເພີ່ມ</button>
+              <button mat-stroked-button color="accent" class="mr-1" (click)="openEditFoodFx(food)">ແກ້ໄຂ</button>
+              <button mat-stroked-button color="warn" (click)="removeItem(food.fxId)">ລຶບ</button>
             </td>
           </tr>
         </tbody>

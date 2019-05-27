@@ -55,7 +55,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { UsersComponent } from './dialogs/users/users.component';
 import { AddusersComponent } from './dialogs/addusers/addusers.component';
 import { LoginComponent } from './authentication/login/login.component';
-import { DatePipe } from '@angular/common';
+import { DatePipe, CurrencyPipe } from '@angular/common';
 import { UserRegisterComponent } from './dialogs/user-register/user-register.component';
 import { BomComponent } from './pages/bom/bom.component';
 import { AddbomComponent } from './dialogs/addbom/addbom.component';
@@ -248,7 +248,7 @@ import { AddFoodFxTranxComponent } from './dialogs/add-food-fx-tranx/add-food-fx
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
     { provide: FirestoreSettingsToken, useValue: {} },
-    DatePipe, ProductByIdPipe,
+    DatePipe, ProductByIdPipe, CurrencyPipe,
   ],
   bootstrap: [AppComponent]
 })

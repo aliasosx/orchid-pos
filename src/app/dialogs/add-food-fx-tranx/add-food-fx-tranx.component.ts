@@ -19,6 +19,7 @@ export class AddFoodFxTranxComponent implements OnInit {
   units: any;
   products: any;
   foodFxTranxs: any;
+  product: any;
 
   ngOnInit() {
     // console.log(this.data.fxId);
@@ -27,7 +28,9 @@ export class AddFoodFxTranxComponent implements OnInit {
       foodFxId: new FormControl(this.data.fxId),
       productId: new FormControl(),
       unitId: new FormControl(),
+      cost: new FormControl(0),
       quantity: new FormControl(0),
+      total_cost: new FormControl(0),
       note: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
     });
@@ -61,6 +64,9 @@ export class AddFoodFxTranxComponent implements OnInit {
   createFoodFxTranx() {
     if (this.addFoodFxTranxForm.valid) {
       this.btnDisable = true;
+      this.addFoodFxTranxForm.get('cost').setValue(this.product.cost);
+      // tslint:disable-next-line: max-line-length
+      this.addFoodFxTranxForm.get('total_cost').setValue(parseInt(this.product.cost, 10) * parseInt(this.addFoodFxTranxForm.get('quantity').value, 10));
       this._FoodFxService.createFoodFxTranx(this.addFoodFxTranxForm.value).then(rsp => {
         rsp.subscribe(r => {
           if (r['status'] === 'success') {
@@ -90,5 +96,10 @@ export class AddFoodFxTranxComponent implements OnInit {
   }
   closeDialog() {
     this.dialogRef.close('success');
+  }
+  getProductById(id) {
+    this.backendService.getProductById(id).then(async (rsp) => {
+      await rsp.subscribe(product => { this.product = product; console.log(product); });
+    });
   }
 }

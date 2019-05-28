@@ -97,6 +97,29 @@
           </div>
 
         </div>
+
+
+        <!-- Charts
+    <div class="row mb-2">
+      <mat-card>
+        <mat-card-title class="text-center">ຍອດການຂາຍຕາມປະເພດອາຫານ</mat-card-title>
+        <mat-card-content>
+          <canvas id="canvasFoodType">{{ chartFoodCat }}</canvas>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    -->
+        <div class="row mb-2">
+          <div class="col col-md-12">
+            <mat-card>
+              <mat-card-title class="text-center">ຍອດການຂາຍຕາມວັນ</mat-card-title>
+              <mat-card-content>
+                <canvas id="canvas">{{ chartRev }}</canvas>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
       </ng-container>
       <ng-container *ngIf="roleId > 1">
         <div class="card">
@@ -108,26 +131,7 @@
         </div>
       </ng-container>
     </div>
-    <!-- Charts
-    <div class="row mb-2">
-      <mat-card>
-        <mat-card-title class="text-center">ຍອດການຂາຍຕາມປະເພດອາຫານ</mat-card-title>
-        <mat-card-content>
-          <canvas id="canvasFoodType">{{ chartFoodCat }}</canvas>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    -->
-    <div class="row mb-2">
-      <div class="col col-md-12">
-        <mat-card>
-          <mat-card-title class="text-center">ຍອດການຂາຍຕາມວັນ</mat-card-title>
-          <mat-card-content>
-            <canvas id="canvas">{{ chartRev }}</canvas>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
+
     <!-- Notification -->
     <div class="row">
       <div class="col col-md-12 col-sm-12">

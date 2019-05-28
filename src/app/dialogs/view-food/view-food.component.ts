@@ -86,7 +86,7 @@ export class ViewFoodComponent implements OnInit {
     } else if (this.masterFood === true) {
       let c = await this.be.getFoodsById(this.data.pFood.fid).then(fd => {
         fd.subscribe(async (food) => {
-          console.log(food);
+          // console.log(food);
           food['cost'] = 0;
           food['price'] = 0;
           let m = await this.addFoodForm.setValue(food);
@@ -156,7 +156,7 @@ export class ViewFoodComponent implements OnInit {
   updateFood() {
     this.saveDisabled = true;
     if (this.addFoodForm.valid) {
-      console.log(this.addFoodForm.value);
+      // console.log(this.addFoodForm.value);
       this.addFoodForm.get('food_photo').setValue(this.photoSrc);
       this.be.updateFood(this.addFoodForm.get('id').value, this.addFoodForm.value).then((resp) => {
         resp.subscribe(rs => {

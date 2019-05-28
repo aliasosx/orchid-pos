@@ -52,7 +52,7 @@ export class KitchenOrdersComponent implements OnInit {
             const orders = a.payload.doc.data() as Order;
             orders['id'] = a.payload.doc.id;
             orders['food'] = a.payload.doc.data().food.filter(b => b.kitchen.toUpperCase() === 'FOOD');
-            console.log();
+            // console.log();
             if (a.payload.type === 'added') {
               const sound = new Howl({
                 src: ['../../../assets/sounds/Handbell-sound.mp3']

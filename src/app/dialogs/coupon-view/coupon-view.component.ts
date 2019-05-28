@@ -144,7 +144,7 @@ export class CouponViewComponent implements OnInit {
     // this.dialogRef.close('done');
     this.be.getBanks().then(rsp => {
       rsp.subscribe(r => {
-        console.log(r);
+        // console.log(r);
       });
     });
   }

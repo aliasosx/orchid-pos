@@ -39,7 +39,7 @@ export class PurchaseComponent implements OnInit {
   async loadPurchase() {
     this.be.getPurchaseShow().then(rsp => {
       rsp.subscribe(r => {
-        console.log(r);
+        // console.log(r);
         this.purchases = r;
       });
     });
@@ -120,7 +120,7 @@ export class PurchaseComponent implements OnInit {
               };
               this.be.approvePurchase(id, approvePurchase).then((rsp) => {
                 rsp.subscribe(r => {
-                  console.log(r);
+                  // console.log(r);
                   if (r['status'] === 'success') {
                     swal('Approved', 'Purchase approved by ' + resp.user.username, 'success', { timer: 1000 });
                     this.loadPurchase();

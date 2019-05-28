@@ -86,7 +86,7 @@ export class AddExtendedFoodComponent implements OnInit {
   }
   removeitem(doc) {
     this.extendedFoodLists.forEach((item, index) => {
-      console.log(item + ' - ' + index);
+      // console.log(item + ' - ' + index);
     });
   }
 

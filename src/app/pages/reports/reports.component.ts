@@ -189,7 +189,7 @@ export class ReportsComponent implements OnInit {
     if (this.startDate != null && this.endDate != null) {
       this.startDate = this.dateForm.get('startDate').value;
       this.endDate = this.dateForm.get('endDate').value;
-      console.log(this.startDate + ' - ' + this.endDate);
+      // console.log(this.startDate + ' - ' + this.endDate);
       this.reportProcess = 'Processing ...';
       this.viewReport = '';
       let c = await this.rptRevByDateRange();

@@ -53,7 +53,7 @@ export class StocksComponent implements OnInit {
   loadStock() {
     this.be.getShowStocks().then(rsp => {
       rsp.subscribe(r => {
-        console.log(r);
+        // console.log(r);
         this.stocksShow = r['stocks'];
         this.stockTaskOffList = r['stockTakeOff'];
       });

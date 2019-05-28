@@ -84,7 +84,7 @@ export class OpenCashComponent implements OnInit {
         });
       });
     } else {
-      console.log('error');
+      // console.log('error');
     }
   }
   async approveProcess() {
@@ -106,14 +106,14 @@ export class OpenCashComponent implements OnInit {
                 this.db.collection<CashLoad>('cashloads').add(this.addCashload.value).then((resps) => {
                   this.dialogRef.close('success');
                 }).catch((err) => {
-                  console.log(err.message);
+                  // console.log(err.message);
                   this.btnDisable = false;
                 });
               });
             });
           }
         }).catch((err) => {
-          console.log(err.message);
+          // console.log(err.message);
           swal('Error!', err.message + ' Please try ...', 'error');
           this.btnDisable = false;
         });

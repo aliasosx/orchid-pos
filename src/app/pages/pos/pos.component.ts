@@ -78,7 +78,7 @@ export class PosComponent implements OnInit {
       this.totalCalculation();
       if (localStorage.getItem('cart')) {
         this.virtualCart = JSON.parse(localStorage.getItem('cart'));
-        console.log(this.virtualCart);
+        // console.log(this.virtualCart);
       }
     } else {
       this.snackbar.open('Internet connection issue !!', 'OK', { duration: 2000 });
@@ -192,7 +192,7 @@ export class PosComponent implements OnInit {
     } else {
       this.virtualCart = [];
     }
-    console.log(this.virtualCart);
+    // console.log(this.virtualCart);
   }
   addCartsToDb(food) {
     if (food) {
@@ -320,8 +320,8 @@ export class PosComponent implements OnInit {
   openPaymentCash() {
     if (this.total > 0 && this.username) {
       // console.log(this.username);
-      console.log('before send to payment');
-      console.log(this.virtualCart);
+      // console.log('before send to payment');
+      // console.log(this.virtualCart);
       const dialogCashRef = this.dialog.open(PaymentCashComponent, {
         width: '800px',
         data: {
@@ -368,7 +368,7 @@ export class PosComponent implements OnInit {
 
   }
   onSelect(selected) {
-    console.log(this.selectedCate);
+    // console.log(this.selectedCate);
   }
 
   addCoupon() {

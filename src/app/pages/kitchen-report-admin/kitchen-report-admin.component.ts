@@ -38,7 +38,7 @@ export class KitchenReportAdminComponent implements OnInit {
   }
   async loadReport() {
     this.startDate = this.dateFrom.get('initDate').value;
-    console.log('OK');
+    // console.log('OK');
     this.paymentCount = 0;
     this.paymentSummary = 0;
     this.be.reportsKitchenAdmin(this.dateFrom.get('initDate').value, '', 'Food').then(rsp => {

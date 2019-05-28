@@ -33,7 +33,7 @@ export class AddChildBomComponent implements OnInit {
     this.loadFoods();
     this.loadBomDetailExisting();
     this.loadUnits();
-    console.log(this.bomDetails);
+    // console.log(this.bomDetails);
   }
   loadFoods() {
     this.be.getFoods().then(rsp => {
@@ -76,7 +76,7 @@ export class AddChildBomComponent implements OnInit {
         });
       });
     } else {
-      console.log(this.bomDetailForm);
+      // console.log(this.bomDetailForm);
       this.snackbar.open('Form incomplete', 'OK', { duration: 1000 });
       return;
     }

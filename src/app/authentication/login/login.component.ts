@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
 
   loginGoogle() {
     return this._firebaseAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((res) => {
-      console.log(res);
+      // console.log(res);
       this.userProfile = res.additionalUserInfo.profile;
       this.webUsersRef.get().subscribe(users => {
         if (!users.empty) {

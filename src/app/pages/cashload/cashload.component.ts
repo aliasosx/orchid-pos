@@ -39,7 +39,7 @@ export class CashloadComponent implements OnInit {
   async loadCashStartUp() {
     this.backendSrv.getCashload().then((cashload_resp) => {
       cashload_resp.subscribe(cashloads => {
-        console.log(cashloads);
+        // console.log(cashloads);
         this.cashloads = cashloads;
       });
     });

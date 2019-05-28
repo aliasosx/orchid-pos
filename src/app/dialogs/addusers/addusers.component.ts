@@ -70,7 +70,7 @@ export class AddusersComponent implements OnInit {
         return data;
       });
     }));
-    console.log(this.data);
+    // console.log(this.data);
     if (this.data) {
       this.addUserForm.setValue(this.data);
     }

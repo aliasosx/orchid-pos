@@ -36,12 +36,12 @@ export class BomComponent implements OnInit {
         this.boms.forEach(bom => {
           this.bomService.bomDetailByBomId(bom.bid).then(rsp => {
             rsp.subscribe(r => {
-              console.log(r);
+              // console.log(r);
               this.boms_with_details.push({
                 bom: bom,
                 bomDetail: r
               });
-              console.log(this.boms_with_details);
+              // console.log(this.boms_with_details);
             });
           });
         });
@@ -89,7 +89,7 @@ export class BomComponent implements OnInit {
     } else if (value === 0) {
       cond = 1;
     }
-    console.log(cond);
+    // console.log(cond);
     const bom = {
       enabled: cond,
     };

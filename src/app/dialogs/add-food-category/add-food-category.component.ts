@@ -65,7 +65,7 @@ export class AddFoodCategoryComponent implements OnInit {
     }
   }
   addNewCate() {
-    console.log(this.foodCateForm.value);
+    // console.log(this.foodCateForm.value);
     if (this.foodCateForm.valid) {
       this.backendService.createFoodTypes(this.foodCateForm.value).then((resp_ft => {
         resp_ft.subscribe(ft => {

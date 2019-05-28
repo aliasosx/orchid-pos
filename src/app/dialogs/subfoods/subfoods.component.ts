@@ -64,7 +64,7 @@ export class SubfoodsComponent implements OnInit {
     const c = await this.be.getSubfoodsById(this.data.food.id).subscribe(sf => {
       sf.forEach(element => {
         if (element.subFoodName === this.selectedSubfood) {
-          console.log(element.sfId);
+          // console.log(element.sfId);
           this.pre_subfood = {
             food: this.data.food.food_name + ' - ' + this.selectedSubfood,
             food_name_en: this.data.food.food_name_en,
@@ -94,7 +94,7 @@ export class SubfoodsComponent implements OnInit {
   async addFood() {
     if (this.subFoodsForm.valid && this.pre_subfood) {
       this.btnDisable = true;
-      console.log(this.pre_subfood);
+      // console.log(this.pre_subfood);
       this.dialogRef.close(this.pre_subfood);
     } else {
       this.snackbar.open('Data incomplete please check!', 'Fails', { duration: 1000, verticalPosition: 'top' });

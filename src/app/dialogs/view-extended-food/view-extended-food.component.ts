@@ -74,7 +74,7 @@ export class ViewExtendedFoodComponent implements OnInit {
         updateById: JSON.parse(localStorage.getItem('usrObj')).id
       }).subscribe(async (resp) => {
         if (resp['status'] === 'success') {
-          console.log('Add module');
+          // console.log('Add module');
           this.formAddSubFood.reset();
           this.updateFlg = false;
           this.addnewFlg = true;

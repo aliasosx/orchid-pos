@@ -20,7 +20,7 @@ export class CouponListComponent implements OnInit {
   async loadCouponList() {
     this.be.getCoupons().then(rsp => {
       rsp.subscribe(coupons => {
-        console.log(coupons);
+        // console.log(coupons);
         this.couponList = coupons;
       });
     });

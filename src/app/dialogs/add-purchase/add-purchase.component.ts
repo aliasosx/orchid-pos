@@ -318,8 +318,8 @@ export class AddPurchaseComponent implements OnInit {
           } else if (parseInt(this.addFormPurchaseDetail.get('total').value + r[0].BillTotal, 10) > parseInt(this.addFormPurchase.get('billAmount').value, 10)) {
 
 
-            console.log(parseInt(this.addFormPurchaseDetail.get('total').value, 10) + parseInt(r[0].BillTotal, 10));
-            console.log(this.addFormPurchase.get('billAmount').value);
+            // console.log(parseInt(this.addFormPurchaseDetail.get('total').value, 10) + parseInt(r[0].BillTotal, 10));
+            // console.log(this.addFormPurchase.get('billAmount').value);
 
 
             swal('ທ່ານບໍ່ສາມາດເພີ່ມ ລາຍການ ເກິນຈຳນວນໃນໃບບິນໄດ້', 'You cannot add over Bill amount', 'error', { timer: 4000 });

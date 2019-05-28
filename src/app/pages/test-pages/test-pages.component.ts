@@ -15,7 +15,7 @@ export class TestPagesComponent implements OnInit {
   testCommand() {
     this.be.getBanks().then(rsp => {
       rsp.subscribe(r => {
-        console.log(r);
+        // console.log(r);
       });
     });
   }

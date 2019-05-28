@@ -334,7 +334,7 @@ export class DashboardComponent implements OnInit {
   async loadAllDiaryReports() {
     this.be.getAllDashboardReports().then(rsp => {
       rsp.subscribe(async (r) => {
-        console.log(r);
+        // console.log(r);
         this.allReports = r;
         this.dashboardSummaryReports = r[0].summary_reports;
         this.dashboardKitchenReports = r[0].diary_kitchen_reports;
@@ -362,7 +362,7 @@ export class DashboardComponent implements OnInit {
             orderDateTime: _grandTotal.orderDateTime,
             total: _grandTotal.grandtotal,
           });
-          console.log(_grandTotal.orderDateTime);
+          // console.log(_grandTotal.orderDateTime);
         });
         // console.log(this.dashboardTotalSaleByDate);
       });

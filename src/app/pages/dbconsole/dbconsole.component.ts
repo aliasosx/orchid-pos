@@ -46,7 +46,7 @@ export class DbconsoleComponent implements OnInit {
               this.db.collection<User>('users').doc(user.id).update({
                 menus: role.data().menus
               }).then((resp) => {
-                console.log(resp);
+                // console.log(resp);
               });
             }
           });

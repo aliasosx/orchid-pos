@@ -8,6 +8,7 @@ import { OpenCashComponent } from 'src/app/dialogs/open-cash/open-cash.component
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { StockEODAddComponent } from 'src/app/dialogs/stock-eodadd/stock-eodadd.component';
 declare var swal: any;
 @Component({
   selector: 'app-cashload',
@@ -59,8 +60,13 @@ export class CashloadComponent implements OnInit {
             width: '600px'
           });
           dialogRef.afterClosed().subscribe(async (resp) => {
-            if (resp === 'success') {
-              let c = await this.loadCashStartUp();
+            if (resp) {
+              if (resp['status'] === 'success') {
+                let c = await this.loadCashStartUp();
+                this.createStockEOD(resp['cashId']);
+              }
+            } else {
+              return;
             }
           });
         }
@@ -229,5 +235,26 @@ export class CashloadComponent implements OnInit {
         dangerMode: true,
       });
     }
+  }
+  createStockEOD(id) {
+    const cashId = id;
+    const dialogRef = this.dialog.open(StockEODAddComponent, {
+      width: '800px',
+      disableClose: true,
+      data: {
+        start: true,
+        cashId: cashId
+      }
+    });
+  }
+  viewStocEOD(id) {
+    const dialogRef = this.dialog.open(StockEODAddComponent, {
+      width: '800px',
+      disableClose: true,
+      data: {
+        start: false,
+        cashId: id
+      }
+    });
   }
 }

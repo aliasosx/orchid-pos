@@ -1,0 +1,70 @@
+<p class="h5 mb-2">
+  Stock EOD Processing.
+</p>
+<mat-divider class="mb-2"></mat-divider>
+<form [formGroup]="stockEodForm">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="productId">Product</label>
+      <select class="form-control" formControlName="productId" id="prodcutId"
+        (change)="selectedProduct($event.target.value)">
+        <option value="">ເລືອກ</option>
+        <option value="{{ p.id }}" *ngFor="let p of products">{{ p.product_name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="initQuantity">ຍອດກ່ອນເປີດຂາຍ</label>
+      <input type="number" class="form-control text-right" id="initQuantity" formControlName="initQuantity"
+        placeholder="Initial Quantity">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="eodQuantity">ຍອດຫຼັງປິດຍອດຂາຍ</label>
+      <input type="number" class="form-control text-right" [readOnly]="initTxtReadOnly" id="eodQuantity"
+        formControlName="eodQuantity" placeholder="Initial Quantity">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="stockQuantity">ຍອດທີ່ຍັງເຫຼືອໃນລະບົບ</label>
+      <input type="text" class="form-control " readonly id="stockQuantity" placeholder="Initial Quantity"
+        value="{{ stockText }}">
+    </div>
+
+    <div class="form-group col-md-9">
+      <label for="note">ໝາຍເຫດ</label>
+      <input type="text" class="form-control" id="note" formControlName="note" placeholder="Note">
+    </div>
+    <div class="form-group col-md-3">
+      <button mat-stroked-button color="primary" style="margin-top: 33px;" class="mr-1"
+        (click)="createStocEOD()">ບັນທຶກ</button>
+      <button mat-stroked-button color="warn" style="margin-top: 33px;" (click)="closeDialog() ">ປິດ</button>
+    </div>
+  </div>
+  <mat-divider class="mb-2"></mat-divider>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col" class="text-center align-middle">#</th>
+          <th scope="col" class="text-center align-middle">Product</th>
+          <th scope="col" class="text-center align-middle">ຍອດກ່ອນເປີດຂາຍ</th>
+          <th scope="col" class="text-center align-middle">ຍອດຫຼັງປິດຍອດຂາຍ</th>
+          <th scope="col" class="text-center align-middle">ຍອດທີ່ຍັງເຫຼືອໃນລະບົບ</th>
+          <th scope="col" class="text-center align-middle">ລຶບ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of stockEODDetail; let i = index">
+          <td class="text-center align-middle">{{ i+1 }}</td>
+          <td class="text-left align-middle">{{ p.product_name }}</td>
+          <td class="text-right align-middle">{{ p.initQuantity | number }}</td>
+          <td class="text-right align-middle">{{ p.eodQuantity | number }}</td>
+          <td class="text-right align-middle">{{ p.stockQuantity |unitConversions: p.quantityPerPack }}
+          </td>
+          <td class="text-center ">
+            <img mat-raised-button src="../../../assets/icons/baseline-delete-24px.svg" (click)="removeCashLoad(p.stId)"
+              style="width: 20px;cursor: pointer;">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</form>

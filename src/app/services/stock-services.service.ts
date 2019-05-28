@@ -66,4 +66,21 @@ export class StockServicesService {
   async stockTakeOff(data) {
     return this._http.post(this.backendService + 'stockTakeOff', data, this.httpOptions);
   }
+
+  async getStockEOD() {
+    return this._http.get(this.backendService + 'stockFoodByKitchen', this.httpOptions);
+  }
+
+  async createStockEod(data) {
+    return this._http.post(this.backendService + 'stockeod', data, this.httpOptions);
+  }
+  async getStockEODByCashId(id) {
+    return this._http.get(this.backendService + 'stockeodDisplay/' + id, this.httpOptions);
+  }
+  async deleteStockEod(id) {
+    return this._http.delete(this.backendService + 'stockeod/' + id, this.httpOptions);
+  }
+  async updateStockEod(id, data) {
+    return this._http.put(this.backendService + 'stockeod/' + id, data, this.httpOptions);
+  }
 }

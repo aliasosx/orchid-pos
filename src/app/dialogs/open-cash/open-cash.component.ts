@@ -80,7 +80,11 @@ export class OpenCashComponent implements OnInit {
 
       let c = await this.backendService.openCashload(this.addCashload.value).then((x) => {
         x.subscribe(async (cs) => {
-          this.dialogRef.close('success');
+          console.log(cs['id']);
+          this.dialogRef.close({
+            cashId: cs['id'],
+            status: 'success'
+          });
         });
       });
     } else {
@@ -140,7 +144,6 @@ export class OpenCashComponent implements OnInit {
   loadBalance(e) {
     this.backendService.getTerminalById(e).then(rsp => {
       rsp.subscribe(bal => {
-        // console.log(bal);
         this.balance = bal[0].balance;
         this.cashloadId = bal[0].id;
         this.addCashload.get('initBalance').setValue(bal[0].balance);

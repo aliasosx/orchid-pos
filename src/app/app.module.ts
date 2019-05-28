@@ -100,6 +100,8 @@ import { CustomerScreenComponent } from './pages/customer-screen/customer-screen
 import { FoodFxComponent } from './pages/food-fx/food-fx.component';
 import { AddFoodFxComponent } from './dialogs/add-food-fx/add-food-fx.component';
 import { AddFoodFxTranxComponent } from './dialogs/add-food-fx-tranx/add-food-fx-tranx.component';
+import { StockEODAddComponent } from './dialogs/stock-eodadd/stock-eodadd.component';
+import { UnitConversionsPipe } from './pipes/unit-conversions.pipe';
 
 @NgModule({
   declarations: [
@@ -179,6 +181,8 @@ import { AddFoodFxTranxComponent } from './dialogs/add-food-fx-tranx/add-food-fx
     FoodFxComponent,
     AddFoodFxComponent,
     AddFoodFxTranxComponent,
+    StockEODAddComponent,
+    UnitConversionsPipe,
 
 
   ],
@@ -243,6 +247,7 @@ import { AddFoodFxTranxComponent } from './dialogs/add-food-fx-tranx/add-food-fx
     ProductTakeoffComponent,
     AddFoodFxComponent,
     AddFoodFxTranxComponent,
+    StockEODAddComponent,
   ]
   ,
   providers: [

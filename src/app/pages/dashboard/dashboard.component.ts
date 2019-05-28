@@ -197,12 +197,13 @@ export class DashboardComponent implements OnInit {
         datasets: [{
           label: 'ຍອດຂາຍ',
           data: foodTypesData,
-          borderColor: '#186A3B',
+          // borderColor: '#186A3B',
           backgroundColor: this.color,
-          borderWidth: 1,
+          borderWidth: 3,
         }]
       },
       options: {
+
         legend: {
           display: true,
           position: 'right',
@@ -216,8 +217,16 @@ export class DashboardComponent implements OnInit {
             }
           }],
           yAxes: [{
-            display: true
+            display: false
           }]
+        },
+        layout: {
+          padding: {
+            left: 20,
+            right: 20,
+            top: 20,
+            bottom: 20
+          }
         }
       }
     });

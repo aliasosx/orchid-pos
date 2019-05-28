@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit {
   chartRev: any;
   chartFoodCat: any;
   chartPopularTime: any;
-
+  color = [];
   statistic_rev: any;
   statistic_foodType: any;
   statistic_popularTime: any;
@@ -185,29 +185,27 @@ export class DashboardComponent implements OnInit {
     const foodTypes = this.statistic_foodType.map(res => res.foodTypeName);
     const foodTypesData = this.statistic_foodType.map(res => res.total);
 
+    foodTypes.forEach(element => {
+      this.color.push(this.dynamicColors());
+    });
+
+    this.dynamicColors();
     this.chartFoodCat = new Chart('canvasFoodType', {
-      type: 'pie',
+      type: 'doughnut',
       data: {
         labels: foodTypes,
         datasets: [{
           label: 'ຍອດຂາຍ',
           data: foodTypesData,
-          borderColor: '#943126',
-          backgroundColor: '#FF5733',
+          borderColor: '#186A3B',
+          backgroundColor: this.color,
           borderWidth: 1,
         }]
       },
       options: {
-        tooltips: {
-          callbacks: {
-            label: function (tooltipItem) {
-              // return this.cp.transform(Number(tooltipItem.yLabel), 'USD', true, '1.0-0');
-              return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ກິບ';
-            }
-          }
-        },
         legend: {
-          display: false,
+          display: true,
+          position: 'right',
         },
         responsive: true,
         scales: {
@@ -371,5 +369,11 @@ export class DashboardComponent implements OnInit {
       x1 = x1.replace(rgx, '$1' + ',' + '$2');
     }
     return x1 + x2;
+  }
+  dynamicColors() {
+    const r = Math.floor(Math.random() * 255);
+    const g = Math.floor(Math.random() * 255);
+    const b = Math.floor(Math.random() * 255);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
   }
 }

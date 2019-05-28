@@ -75,9 +75,11 @@ export class DashboardComponent implements OnInit {
 
   chartRev: any;
   chartFoodCat: any;
+  chartPopularTime: any;
 
   statistic_rev: any;
   statistic_foodType: any;
+  statistic_popularTime: any;
 
   async ngOnInit() {
     this.messageForm = new FormGroup({
@@ -222,7 +224,48 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+  async loadPopularReports() {
+    const popularTime = this.statistic_popularTime.map(res => res.timeRange);
+    const popularTimeData = this.statistic_popularTime.map(res => res.orders);
 
+    this.chartPopularTime = new Chart('canvasPopularTime', {
+      type: 'bar',
+      data: {
+        labels: popularTime,
+        datasets: [{
+          data: popularTimeData,
+          borderColor: '#943126',
+          backgroundColor: '#FF5733',
+          borderWidth: 1,
+        }]
+      },
+      options: {
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' order(s)';
+            }
+          }
+        },
+        legend: {
+          display: false,
+        },
+        responsive: true,
+        scales: {
+          xAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Hours'
+            }
+          }],
+          yAxes: [{
+            display: true
+          }]
+        }
+      }
+    });
+  }
   reloadReport() {
     this.loadAllDiaryReports();
     this.loadDiaryPaymentTypeAmount();
@@ -293,8 +336,11 @@ export class DashboardComponent implements OnInit {
         this.dashboardFoodsReports = r[0].diary_foods_reports;
         this.statistic_rev = r[0].statistic_revenue;
         this.statistic_foodType = r[0].statistic_foodType;
+        this.statistic_popularTime = r[0].statistic_popularTime;
+
         await this.loadChart();
         await this.loadChartFoodCat();
+        await this.loadPopularReports();
       });
       // console.log(this.dashboardSummaryReports);
     });

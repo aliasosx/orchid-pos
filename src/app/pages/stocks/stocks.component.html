@@ -140,6 +140,35 @@
                   </table>
                 </div>
               </mat-tab>
+              <mat-tab label="Reports">
+                <mat-card>
+                  <mat-card-content>
+                    <form [formGroup]="reportForm">
+                      <div class="row">
+                        <div class="col col-md-2 col-sm-12">
+                          <label for="fromDate" class="h6">ເລີ່ມຈາກວັນທີ</label>
+                          <div class="input-group mb-1">
+                            <input type="date" class="form-control" formControlName="startDate" required>
+                          </div>
+                        </div>
+                        <div class="col col-md-2  col-sm-12">
+                          <label for="fromDate" class="h6">ຮອດວັນທີ</label>
+                          <div class="input-group mb-1">
+                            <input type="date" class="form-control" formControlName="endDate" required>
+                          </div>
+                        </div>
+                        <div class="col col-md-2  col-sm-12">
+                          <label for="fromDate"></label>
+                          <div class="input-group mb-1">
+                            <button mat-raised-button color="primary" (click)="loadReport()"
+                              style="margin-top: 12px;width: 200px;">Submit</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </mat-card-content>
+                </mat-card>
+              </mat-tab>
             </mat-tab-group>
           </div>
         </div>

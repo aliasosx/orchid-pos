@@ -133,6 +133,12 @@ export class BackendServiceService {
   async getFoods() {
     return this._http.get(this.backendService + 'foods', this.httpOptions);
   }
+  async getFoodsByKitchenId(kitchenId) {
+    return this._http.get(this.backendService + 'foodByKitchenId/' + kitchenId, this.httpOptions);
+  }
+  async getDrinkCategories() {
+    return this._http.get(this.backendService + 'getdrink_categories', this.httpOptions);
+  }
   async getFoodsById(id) {
     if (id) {
       return this._http.get(this.backendService + 'foods/' + id, this.httpOptions);
@@ -431,6 +437,8 @@ export class BackendServiceService {
     return this._http.get(this.backendService + 'dashboardData', this.httpOptions);
   }
 
-
+  async getReportStockByFoodCat(data) {
+    return this._http.post(this.backendService + 'stockTakeoffReports', data, this.httpOptions);
+  }
 }
 

@@ -24,6 +24,9 @@ export class ProductTakeoffComponent implements OnInit {
   prod: any;
   btnDisabled = false;
   btnText = 'ບັນທືກ ລາຍການ';
+  foods: any;
+
+
   ngOnInit() {
     const refno = this.padding(Math.floor(Math.random() * 10000000000) + 1, 12);
     this.productTakeOffForm = new FormGroup({
@@ -33,6 +36,7 @@ export class ProductTakeoffComponent implements OnInit {
       usedQuantity: new FormControl(),
       unitId: new FormControl(),
       unitName: new FormControl(),
+      drinkCategoryId: new FormControl(),
       currentQuantity: new FormControl(),
       dozenQuantityUnitId: new FormControl(),
       totalUsedQuantity: new FormControl(),
@@ -42,6 +46,7 @@ export class ProductTakeoffComponent implements OnInit {
     });
     this.loadProducts();
     this.loadUnits();
+    this.loadFoods();
   }
   async loadProducts() {
     this.backendServices.getProducts().then(rsp => {
@@ -126,7 +131,13 @@ export class ProductTakeoffComponent implements OnInit {
       });
     }
   }
-
+  async loadFoods() {
+    this.backendServices.getDrinkCategories().then(rsp => {
+      rsp.subscribe(foods => {
+        this.foods = foods;
+      });
+    });
+  }
   padding(num: number, size: number) {
     let s = num + '';
     while (s.length < size) { s = '0' + s; }

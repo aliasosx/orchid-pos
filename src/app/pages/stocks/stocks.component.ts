@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material';
 import { AddPurchaseComponent } from 'src/app/dialogs/add-purchase/add-purchase.component';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { ProductTakeoffComponent } from 'src/app/dialogs/product-takeoff/product-takeoff.component';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-stocks',
@@ -25,8 +26,16 @@ export class StocksComponent implements OnInit {
   stockTaskOffList: any;
   showStockList = true;
   stocksShow: any;
+  reports: any;
+  reportForm: FormGroup;
 
   ngOnInit() {
+
+    this.reportForm = new FormGroup({
+      startDate: new FormControl(),
+      endDate: new FormControl(),
+    });
+
     this.loadStock();
     this.stocks = this.stocksRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
@@ -59,5 +68,14 @@ export class StocksComponent implements OnInit {
       });
     });
   }
-
+  async loadReport() {
+    if (this.reportForm.valid) {
+      this.be.getReportStockByFoodCat(this.reportForm.value).then(rsp => {
+        rsp.subscribe(reports => {
+          this.reports = reports;
+          console.log(reports);
+        });
+      });
+    }
+  }
 }

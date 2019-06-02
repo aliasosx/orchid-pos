@@ -67,8 +67,10 @@
                     <tbody>
                       <tr *ngFor="let st of stocksShow; let i = index">
                         <td class="text-center">{{ i+1 }}</td>
-                        <td>{{ st.stock_refno }}</td>
-                        <td>{{ st.product_name }}</td>
+                        <td class="text-left" (click)="openStockHistory(st.stId)" style="cursor: pointer;">
+                          {{ st.stock_refno }}</td>
+                        <td class="text-left" (click)="openStockHistory(st.stId)" style="cursor: pointer;">
+                          {{ st.product_name }}</td>
                         <td class="text-right">{{ st.cost | number }}</td>
                         <td class="text-right">{{ st.previous_quantity | number }}</td>
                         <td class="text-right">{{ st.used_quantity  | number}}</td>

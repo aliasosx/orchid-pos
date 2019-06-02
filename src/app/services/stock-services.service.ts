@@ -83,4 +83,7 @@ export class StockServicesService {
   async updateStockEod(id, data) {
     return this._http.put(this.backendService + 'stockeod/' + id, data, this.httpOptions);
   }
+  async getStockHistoriesByDate(data) {
+    return this._http.post(this.backendService + 'getStockHistory', data, this.httpOptions);
+  }
 }

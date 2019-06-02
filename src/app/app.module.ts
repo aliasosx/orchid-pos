@@ -103,6 +103,7 @@ import { AddFoodFxTranxComponent } from './dialogs/add-food-fx-tranx/add-food-fx
 import { StockEODAddComponent } from './dialogs/stock-eodadd/stock-eodadd.component';
 import { UnitConversionsPipe } from './pipes/unit-conversions.pipe';
 import { GroupByPipe } from './pipes/group-by.pipe';
+import { StockhistoryComponent } from './dialogs/stockhistory/stockhistory.component';
 
 @NgModule({
   declarations: [
@@ -185,6 +186,7 @@ import { GroupByPipe } from './pipes/group-by.pipe';
     StockEODAddComponent,
     UnitConversionsPipe,
     GroupByPipe,
+    StockhistoryComponent,
 
 
   ],
@@ -250,6 +252,7 @@ import { GroupByPipe } from './pipes/group-by.pipe';
     AddFoodFxComponent,
     AddFoodFxTranxComponent,
     StockEODAddComponent,
+    StockhistoryComponent,
   ]
   ,
   providers: [

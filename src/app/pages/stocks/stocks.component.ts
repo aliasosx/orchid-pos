@@ -9,6 +9,7 @@ import { BackendServiceService } from 'src/app/services/common/backend-service.s
 import { ProductTakeoffComponent } from 'src/app/dialogs/product-takeoff/product-takeoff.component';
 import { FormGroup, FormControl } from '@angular/forms';
 import { GroupBy } from 'src/app/interfaces/groupBy';
+import { StockhistoryComponent } from 'src/app/dialogs/stockhistory/stockhistory.component';
 
 @Component({
   selector: 'app-stocks',
@@ -98,6 +99,12 @@ export class StocksComponent implements OnInit {
   async loadDrinkCate() {
     this.be.getDrinkCategories().then(rsp => {
       rsp.subscribe(drinkCat => this.drinkCat = drinkCat);
+    });
+  }
+  openStockHistory(stockId) {
+    const dialogref = this.dialog.open(StockhistoryComponent, {
+      width: '800px',
+      data: stockId
     });
   }
 }

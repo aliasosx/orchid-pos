@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Stock history</h1>
+<div class="mat-elevation-z8">
+  <mat-table #table [dataSource]="tableDataSource">
+    <ng-container matColumnDef="no">
+      <mat-header-cell *matHeaderCellDef fxFlex="5%">
+        <h6>#</h6>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let i =  index" fxFlex="5%"> {{ i + 1 }} </mat-cell>>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="source">
+      <mat-header-cell *matHeaderCellDef fxFlex="5%">
+        <h6>Source</h6>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" fxFlex="10%"> {{ element.module_name }} </mat-cell>>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100, 1000]"></mat-paginator>
+</div>

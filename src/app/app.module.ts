@@ -19,7 +19,7 @@ import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
   // tslint:disable-next-line: max-line-length
-  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule, MatInputModule, MatExpansionModule,
+  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule, MatInputModule, MatExpansionModule, MatTableModule, MatPaginatorModule,
 } from '@angular/material';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -102,6 +102,7 @@ import { AddFoodFxComponent } from './dialogs/add-food-fx/add-food-fx.component'
 import { AddFoodFxTranxComponent } from './dialogs/add-food-fx-tranx/add-food-fx-tranx.component';
 import { StockEODAddComponent } from './dialogs/stock-eodadd/stock-eodadd.component';
 import { UnitConversionsPipe } from './pipes/unit-conversions.pipe';
+import { GroupByPipe } from './pipes/group-by.pipe';
 
 @NgModule({
   declarations: [
@@ -183,6 +184,7 @@ import { UnitConversionsPipe } from './pipes/unit-conversions.pipe';
     AddFoodFxTranxComponent,
     StockEODAddComponent,
     UnitConversionsPipe,
+    GroupByPipe,
 
 
   ],
@@ -199,7 +201,7 @@ import { UnitConversionsPipe } from './pipes/unit-conversions.pipe';
     FormsModule,
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
-    MatMenuModule, MatTooltipModule, MatStepperModule, MatInputModule, MatExpansionModule,
+    MatMenuModule, MatTooltipModule, MatStepperModule, MatInputModule, MatExpansionModule, MatTableModule, MatPaginatorModule,
     HttpClientModule,
   ],
   entryComponents: [

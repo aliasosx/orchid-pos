@@ -8,6 +8,7 @@ import { Product } from 'src/app/interfaces/product';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import * as uuid from 'uuid';
+import { StockServicesService } from 'src/app/services/stock-services.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ import * as uuid from 'uuid';
 export class AddProductsComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private dialog: MatDialog, private db: AngularFirestore, private be: BackendServiceService, private DialogRef: MatDialogRef<AddProductsComponent>) {
+  constructor(private dialog: MatDialog, private db: AngularFirestore, private be: BackendServiceService, private stockService: StockServicesService, private DialogRef: MatDialogRef<AddProductsComponent>) {
     this.vendorsRef = this.db.collection<Vendor>('vendors');
     this.productTypesRef = this.db.collection<ProductType>('productTypes');
     this.productsRef = this.db.collection<Product>('products');
@@ -42,9 +43,11 @@ export class AddProductsComponent implements OnInit {
 
   foods: any;
   productCategories: any;
+  productCategoriesP: any;
   suppliers: any;
   units: any;
   currencies: any;
+
   foodDisabled;
 
   btnDisable = false;
@@ -66,6 +69,7 @@ export class AddProductsComponent implements OnInit {
       supplierId: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       foodId: new FormControl(),
+      productCategoryId: new FormControl(),
       expireDate: new FormControl(),
       quantity: new FormControl(),
       quantityPerPack: new FormControl(),
@@ -85,6 +89,7 @@ export class AddProductsComponent implements OnInit {
     this.loadUnits();
     this.loadSuppliers();
     this.loadCurrencies();
+    this.loadProductCategoriesP();
   }
   addProduct() {
     if (this.addProductForm.valid) {
@@ -103,7 +108,13 @@ export class AddProductsComponent implements OnInit {
       return;
     }
   }
-
+  loadProductCategoriesP() {
+    this.stockService.getProductCategories().then(rsp => {
+      rsp.subscribe(productCategoriesP => {
+        this.productCategoriesP = productCategoriesP;
+      });
+    });
+  }
   loadFoods() {
     this.be.getFoods().then(f => {
       f.subscribe(foods => {

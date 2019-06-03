@@ -26,6 +26,14 @@
       </select>
     </div>
     <div class="form-group col-md-6">
+      <label for="productCategoryId">Product Category</label>
+      <select class="form-control" formControlName="productCategoryId" required>
+        <option value="-1" disabled>------</option>
+        <option *ngFor="let productCat of productCategoriesP" value="{{ productCat.id }}">
+          {{ productCat.product_category_name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
       <label for="foodId">Food Name</label>
       <select class="form-control" id="foodId" formControlName="foodId">
         <option disabled value="-1">------</option>

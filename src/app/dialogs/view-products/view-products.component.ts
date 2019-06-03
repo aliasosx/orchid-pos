@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AngularFirestore, } from 'angularfire2/firestore';
 import { FormGroup, FormControl } from '@angular/forms';
 import * as uuid from 'uuid';
+import { StockServicesService } from 'src/app/services/stock-services.service';
 @Component({
   selector: 'app-view-products',
   templateUrl: './view-products.component.html',
@@ -12,12 +13,13 @@ import * as uuid from 'uuid';
 export class ViewProductsComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private dialog: MatDialog, private db: AngularFirestore, private be: BackendServiceService, private DialogRef: MatDialogRef<ViewProductsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private dialog: MatDialog, private db: AngularFirestore, private stockService: StockServicesService, private be: BackendServiceService, private DialogRef: MatDialogRef<ViewProductsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   addProductForm: FormGroup;
   foods: any;
   productCategories: any;
+  productCategoriesP: any;
   units: any;
   suppliers: any;
   currencies: any;
@@ -45,6 +47,7 @@ export class ViewProductsComponent implements OnInit {
       package: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       foodId: new FormControl(),
+      productCategoryId: new FormControl(),
       expireDate: new FormControl(),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date()),
@@ -59,6 +62,7 @@ export class ViewProductsComponent implements OnInit {
     this.loadSuppliers();
     this.loadCurrencies();
     this.loadFoods();
+    this.loadProductCategoriesP();
     if (this.data) {
       this.loadproductById(this.data.pid);
     }
@@ -78,6 +82,13 @@ export class ViewProductsComponent implements OnInit {
         });
       });
     }
+  }
+  loadProductCategoriesP() {
+    this.stockService.getProductCategories().then(rsp => {
+      rsp.subscribe(productCategoriesP => {
+        this.productCategoriesP = productCategoriesP;
+      });
+    });
   }
   loadproductById(id) {
     this.be.getProductById(id).then(p => {

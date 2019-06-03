@@ -86,4 +86,7 @@ export class StockServicesService {
   async getStockHistoriesByDate(data) {
     return this._http.post(this.backendService + 'getStockHistory', data, this.httpOptions);
   }
+  async getProductCategories() {
+    return this._http.get(this.backendService + 'getProductCategories', this.httpOptions);
+  }
 }

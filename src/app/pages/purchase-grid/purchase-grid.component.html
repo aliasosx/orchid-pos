@@ -1,0 +1,47 @@
+<div>
+  <div class="row mt-2">
+    <div class="col col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group col-md-3">
+            <label for="productCategories">ປະເພດສິນຄ້າ</label>
+            <select class="form-control" id="productCategories" [(ngModel)]="selectedCate">
+              <option value="0">ທັງໝົດ</option>
+              <option value="{{cat.id}}" *ngFor="let cat of productCategories">{{ cat.product_category_name }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-1">
+        <div class="card-body">
+          <div class="row" style="max-height: 72vh;overflow: auto;">
+            <ng-container *ngFor="let product of products | productCatPipe: selectedCate">
+              <div class="col mb-1">
+                <div class="card" style="width: 10rem;cursor: pointer;">
+                  <div class="card-body">
+                    <img src="../../../assets/images/NoImage.png" class="img-thumbnail">
+                    <div class="row ">
+                      <div class="col col-md-12 text-center mt-3 mb-0">
+                        <h6 class="card-title">{{ product.product_name }}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            ລາຍການທີ່ເລືອກໄວ້
+          </h5>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

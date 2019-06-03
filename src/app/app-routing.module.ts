@@ -23,6 +23,7 @@ import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { ExpendituresComponent } from './pages/expenditures/expenditures.component';
 import { CustomerScreenComponent } from './pages/customer-screen/customer-screen.component';
 import { FoodFxComponent } from './pages/food-fx/food-fx.component';
+import { PurchaseGridComponent } from './pages/purchase-grid/purchase-grid.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: 'reportbykitchen', component: KitchenReportsComponent },
   { path: 'customerScreen', component: CustomerScreenComponent },
   { path: 'foodFx', component: FoodFxComponent },
+  { path: 'purchaseGrid', component: PurchaseGridComponent },
 ];
 
 @NgModule({

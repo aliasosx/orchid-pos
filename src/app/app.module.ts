@@ -104,6 +104,8 @@ import { StockEODAddComponent } from './dialogs/stock-eodadd/stock-eodadd.compon
 import { UnitConversionsPipe } from './pipes/unit-conversions.pipe';
 import { GroupByPipe } from './pipes/group-by.pipe';
 import { StockhistoryComponent } from './dialogs/stockhistory/stockhistory.component';
+import { PurchaseGridComponent } from './pages/purchase-grid/purchase-grid.component';
+import { ProductCatPipePipe } from './pipes/product-cat-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -187,6 +189,8 @@ import { StockhistoryComponent } from './dialogs/stockhistory/stockhistory.compo
     UnitConversionsPipe,
     GroupByPipe,
     StockhistoryComponent,
+    PurchaseGridComponent,
+    ProductCatPipePipe,
 
 
   ],
@@ -258,7 +262,7 @@ import { StockhistoryComponent } from './dialogs/stockhistory/stockhistory.compo
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
     { provide: FirestoreSettingsToken, useValue: {} },
-    DatePipe, ProductByIdPipe, CurrencyPipe,
+    DatePipe, ProductByIdPipe, CurrencyPipe, ProductCatPipePipe,
   ],
   bootstrap: [AppComponent]
 })

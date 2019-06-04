@@ -64,20 +64,29 @@ export class PurchaseGridComponent implements OnInit {
     });
   }
   takePurchase(product) {
-    this.db.collection('purchaseBuffers').ref.get().then(doc => {
-    });
-    const purchase_data = {
-      billingNo: 10000,
-      productId: product.id,
-      product_name: product.product_name,
-      cost: product.cost,
-      quantity: 1,
-      total: product.cost,
-      purchaseDate: new Date(),
-      userId: JSON.parse(localStorage.getItem('usrObj')).id,
-    };
-    this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
-      // console.log(rsp);
+    console.log(product);
+    this.db.collection('purchaseBuffers').ref.get().then(docs => {
+      if (docs.size > 0) {
+        docs.forEach(element => {
+          console.log(element.data().product_name + ' - ' + product.product_name);
+          if (element.data().product_name === product.product_name) {
+            this.updateItemQuantity(element.id, element.data().quantity, element.data().cost);
+          } else {
+            const purchase_data = {
+              billingNo: 10000,
+              productId: product.id,
+              product_name: product.product_name,
+              cost: product.cost,
+              quantity: 1,
+              total: product.cost,
+              purchaseDate: new Date(),
+              userId: JSON.parse(localStorage.getItem('usrObj')).id,
+            };
+            this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
+            });
+          }
+        });
+      }
     });
   }
   removeItem(id) {

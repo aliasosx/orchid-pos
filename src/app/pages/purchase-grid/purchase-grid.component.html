@@ -1,6 +1,6 @@
 <div>
   <div class="row mt-2">
-    <div class="col col-md-7">
+    <div class="col col-md-7 col-sm-12">
       <div class="card">
         <div class="card-body">
           <div class="form-group row">
@@ -13,7 +13,7 @@
               </select>
             </div>
             <div class="col-md-4">
-              <button mat-stroked-button color="primary" (click)="openAddNewProd()">ເພິ່ມລາຍການໃໝ່</button>
+              <button mat-flat-button color="primary" (click)="openAddNewProd()">ເພິ່ມລາຍການໃໝ່</button>
             </div>
           </div>
 
@@ -24,9 +24,9 @@
           <div class="row" style="max-height: 72vh;overflow: auto;">
             <ng-container *ngFor="let product of products | productCatPipe: selectedCate">
               <div class="col mb-1">
-                <div class="card" style="width: 10rem;cursor: pointer;">
+                <div class="card" style="width: 10rem;cursor: pointer;" (click)="takePurchase(product)">
                   <div class="card-body">
-                    <img src="../../../assets/images/NoImage.png" class="img-thumbnail">
+                    <img src="{{ product.photo }}" class="img-thumbnail">
                     <div class="row ">
                       <div class="col col-md-12 text-left mt-3 mb-0">
                         <h6 class="card-title">{{ product.product_name }}</h6>
@@ -43,13 +43,56 @@
         </div>
       </div>
     </div>
-    <div class="col col-md-5">
+    <div class="col col-md-5  col-sm-12">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">
             ລາຍການທີ່ເລືອກໄວ້
           </h5>
           <mat-divider></mat-divider>
+          <div class="table-responsive mt-1">
+            <ng-container *ngIf="purchaseBuffers">
+              <table class="table table-bordered">
+                <thead>
+                  <th class="text-center">#</th>
+                  <th class="text-center">Product</th>
+                  <th class="text-center">Cost</th>
+                  <th class="text-center">Quantity</th>
+                  <th class="text-center">Total</th>
+                  <th class="text-center">remove</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of purchaseBuffers |async; let i = index">
+                    <td class="text-center align-middle">{{ i+1 }}</td>
+                    <td class="text-left align-middle">{{ item.product_name }}</td>
+                    <td class="text-right align-middle">
+                      <input type="number" class="form-control text-right" id="txtCost"
+                        style="max-width:100px;padding:0" value="{{ item.cost }}"
+                        (change)="updateItemCost(item.id, item.quantity, $event.target.value)">
+                    </td>
+                    <td class="text-right align-middle">
+                      <input type="number" class="form-control text-right" id="txtQuantity"
+                        style="max-width: 80px;padding:0"
+                        (change)="updateItemQuantity(item.id, $event.target.value, item.cost)"
+                        value="{{ item.quantity  }}">
+                    </td>
+                    <td class="text-right align-middle">{{ item.total |number }}</td>
+                    <td class="text-center align-middle">
+                      <img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer;"
+                        (click)="removeItem(item.id)">
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td colspan="4" class="text-right">Billing Amount</td>
+                    <td class="text-right font-weight-bold">{{ grandTotal | number }}</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-container>
+          </div>
         </div>
       </div>
     </div>

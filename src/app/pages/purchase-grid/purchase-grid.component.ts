@@ -31,6 +31,7 @@ export class PurchaseGridComponent implements OnInit {
   purchaseBuffers: Observable<any>;
   grandTotal = 0;
   items = [];
+
   ngOnInit() {
     this.loadProductCategories();
     this.loadProducts();
@@ -63,28 +64,29 @@ export class PurchaseGridComponent implements OnInit {
       this.loadProducts();
     });
   }
-  takePurchase(product) {
-    console.log(product);
-    this.db.collection('purchaseBuffers').ref.get().then(docs => {
+  async takePurchase(product) {
+    // console.log(product);
+    this.db.collection('purchaseBuffers').ref.get().then(async (docs) => {
       if (docs.size > 0) {
-        docs.forEach(element => {
-          console.log(element.data().product_name + ' - ' + product.product_name);
-          if (element.data().product_name === product.product_name) {
-            this.updateItemQuantity(element.id, element.data().quantity, element.data().cost);
-          } else {
-            const purchase_data = {
-              billingNo: 10000,
-              productId: product.id,
-              product_name: product.product_name,
-              cost: product.cost,
-              quantity: 1,
-              total: product.cost,
-              purchaseDate: new Date(),
-              userId: JSON.parse(localStorage.getItem('usrObj')).id,
-            };
-            this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
-            });
-          }
+        this.items = [];
+        await docs.forEach(element => {
+          this.items.push(element.data());
+        });
+        this.items.filter(p => p.product_name === product.product_name);
+
+      } else {
+        console.log('non exist first condition');
+        const purchase_data = {
+          billingNo: 10000,
+          productId: product.id,
+          product_name: product.product_name,
+          cost: product.cost,
+          quantity: 1,
+          total: product.cost,
+          purchaseDate: new Date(),
+          userId: JSON.parse(localStorage.getItem('usrObj')).id,
+        };
+        this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
         });
       }
     });

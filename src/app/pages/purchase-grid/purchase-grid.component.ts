@@ -73,7 +73,6 @@ export class PurchaseGridComponent implements OnInit {
           this.items.push(element.data());
         });
         this.items.filter(p => p.product_name === product.product_name);
-
       } else {
         console.log('non exist first condition');
         const purchase_data = {

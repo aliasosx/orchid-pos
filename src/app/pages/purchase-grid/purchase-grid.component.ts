@@ -7,9 +7,12 @@ import { StockServicesService } from 'src/app/services/stock-services.service';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { MatDialog } from '@angular/material';
 import { AddProductsComponent } from 'src/app/dialogs/add-products/add-products.component';
-import { FirebaseFirestore } from 'angularfire2';
 import { PurchaseBuffer } from 'src/app/interfaces/purchaseBuffer';
 import { Observable } from 'rxjs';
+
+declare var swal: any;
+
+
 
 @Component({
   selector: 'app-purchase-grid',
@@ -66,15 +69,19 @@ export class PurchaseGridComponent implements OnInit {
   }
   async takePurchase(product) {
     // console.log(product);
-    this.db.collection('purchaseBuffers').ref.get().then(async (docs) => {
-      if (docs.size > 0) {
-        this.items = [];
-        await docs.forEach(element => {
-          this.items.push(element.data());
+    const cart = this.db.collection<PurchaseBuffer>('purchaseBuffers');
+    cart.ref.where('productId', '==', product.id).get().then(r => {
+      // console.log(r.docs.length);
+      if (r.docs.length > 0) {
+        r.forEach(e => {
+          // console.log(e.data());
+          swal({
+            text: 'ສິນຄ້ານີ້ ມີໃນ ລາຍການແລ້ວ ກະລຸນາເລື່ອກ ອັນໃໝ່',
+            icon: 'error',
+            timer: 2000
+          });
         });
-        this.items.filter(p => p.product_name === product.product_name);
       } else {
-        console.log('non exist first condition');
         const purchase_data = {
           billingNo: 10000,
           productId: product.id,
@@ -89,7 +96,51 @@ export class PurchaseGridComponent implements OnInit {
         });
       }
     });
+
+    /*
+    cart.ref.get().then(r => {
+      if (r.size > 0) {
+        r.forEach(e => {
+          console.log(e.data());
+          swal({
+            text: 'ສິນຄ້ານີ້ ມີໃນ ລາຍການແລ້ວ ກະລຸນາເລື່ອກ ອັນໃໝ່',
+            icon: 'error',
+            timer: 2000
+          });
+        });
+      } else {
+        const purchase_data = {
+          billingNo: 10000,
+          productId: product.id,
+          product_name: product.product_name,
+          cost: product.cost,
+          quantity: 1,
+          total: product.cost,
+          purchaseDate: new Date(),
+          userId: JSON.parse(localStorage.getItem('usrObj')).id,
+        };
+        this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
+        });
+      }
+    });
+    */
   }
+  /*
+  const purchase_data = {
+          billingNo: 10000,
+          productId: product.id,
+          product_name: product.product_name,
+          cost: product.cost,
+          quantity: 1,
+          total: product.cost,
+          purchaseDate: new Date(),
+          userId: JSON.parse(localStorage.getItem('usrObj')).id,
+        };
+        this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
+        });
+  */
+
+
   removeItem(id) {
     this.db.collection('purchaseBuffers').doc(id).delete();
   }

@@ -96,34 +96,6 @@ export class PurchaseGridComponent implements OnInit {
         });
       }
     });
-
-    /*
-    cart.ref.get().then(r => {
-      if (r.size > 0) {
-        r.forEach(e => {
-          console.log(e.data());
-          swal({
-            text: 'ສິນຄ້ານີ້ ມີໃນ ລາຍການແລ້ວ ກະລຸນາເລື່ອກ ອັນໃໝ່',
-            icon: 'error',
-            timer: 2000
-          });
-        });
-      } else {
-        const purchase_data = {
-          billingNo: 10000,
-          productId: product.id,
-          product_name: product.product_name,
-          cost: product.cost,
-          quantity: 1,
-          total: product.cost,
-          purchaseDate: new Date(),
-          userId: JSON.parse(localStorage.getItem('usrObj')).id,
-        };
-        this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
-        });
-      }
-    });
-    */
   }
   /*
   const purchase_data = {

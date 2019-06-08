@@ -51,7 +51,7 @@
           </h5>
           <mat-divider></mat-divider>
           <div class="table-responsive mt-1">
-            <ng-container *ngIf="purchaseBuffers">
+            <ng-container *ngIf="itemList > 0; else nonData">
               <table class="table table-bordered">
                 <thead>
                   <th class="text-center">#</th>
@@ -92,6 +92,11 @@
                 </tbody>
               </table>
             </ng-container>
+            <ng-template #nonData>
+              <div class="display-4 text-center" style="color: darkgrey;">
+                No Item
+              </div>
+            </ng-template>
           </div>
         </div>
       </div>

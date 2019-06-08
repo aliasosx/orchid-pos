@@ -34,6 +34,7 @@ export class PurchaseGridComponent implements OnInit {
   purchaseBuffers: Observable<any>;
   grandTotal = 0;
   items = [];
+  itemList = 0;
 
   ngOnInit() {
     this.loadProductCategories();
@@ -73,6 +74,7 @@ export class PurchaseGridComponent implements OnInit {
     cart.ref.where('productId', '==', product.id).get().then(r => {
       // console.log(r.docs.length);
       if (r.docs.length > 0) {
+        this.itemList = r.docs.length;
         r.forEach(e => {
           // console.log(e.data());
           swal({

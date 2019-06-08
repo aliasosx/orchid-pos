@@ -43,7 +43,6 @@
                     <th scope="col" class="text-center align-top">ລີ້ນຊັກ</th>
                     <th scope="col" class="text-center align-top">ໝາຍເຫດ</th>
                     <th scope="col" class="text-center align-top">ປິດ</th>
-                    <th scope="col" class="text-center align-top">ສາງ</th>
                     <th scope="col" class="text-center align-top">ຈັດການ</th>
                   </tr>
                 </thead>
@@ -110,11 +109,6 @@
                           (click)="openCloseBalance(cash)">ປິດ</button>
                       </td>
                     </ng-template>
-
-                    <td class="text-center align-middle">
-                      <button mat-stroked-button color="primary" (click)="viewStocEOD(cash.id)">ກວດສອບ</button>
-                    </td>
-
                     <td class="text-center align-middle" *ngIf="cash.closed === 1; else nonRemove">
                       <img mat-raised-button src="../../../assets/icons/baseline-delete-24px.svg"
                         style="width: 20px;cursor: pointer;">

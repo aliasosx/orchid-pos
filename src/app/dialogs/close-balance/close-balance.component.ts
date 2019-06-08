@@ -1,3 +1,4 @@
+import { StockServicesService } from './../../services/stock-services.service';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog } from '@angular/material';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Component, OnInit, Inject } from '@angular/core';
@@ -21,7 +22,7 @@ declare var swal: any;
 })
 export class CloseBalanceComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
-  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private dialogRef: MatDialogRef<CloseBalanceComponent>, @Inject(MAT_DIALOG_DATA) public data: CashLoad, private datePipe: DatePipe, private snackbar: MatSnackBar, private dialog: MatDialog, private backendService: BackendServiceService) {
+  constructor(private _firebaseAuth: AngularFireAuth, private db: AngularFirestore, private dialogRef: MatDialogRef<CloseBalanceComponent>, @Inject(MAT_DIALOG_DATA) public data: CashLoad, private datePipe: DatePipe, private snackbar: MatSnackBar, private dialog: MatDialog, private backendService: BackendServiceService, private stockService: StockServicesService) {
     this.usersRef = db.collection<User>('users');
     this.transactionsRef = db.collection<Transaction>('transactions', ref => {
       return ref.where('username', '==', localStorage.getItem('username'));
@@ -161,6 +162,11 @@ export class CloseBalanceComponent implements OnInit {
                       this.backendService.updateTerminalBalanceEod(this.addCashload.get('terminalId').value, cashBalanceEodTerminal).then(rsp => {
                         rsp.subscribe(r => {
                           if (r['status'] === 'success') {
+                            this.stockService.stockEODProcess(30).then(stock_rsp => {
+                              stock_rsp.subscribe(stock_eod => {
+                                this.snackbar.open(stock_eod[0].status, 'OK', { duration: 5000 });
+                              });
+                            });
                             // tslint:disable-next-line: max-line-length
                             this.snackbar.open('Terminal balance has been updated : ' + this.addCashload.get('fwdBalance').value, 'OK', { duration: 3000 });
                             this.dialogRef.close('success');

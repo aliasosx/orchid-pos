@@ -89,4 +89,7 @@ export class StockServicesService {
   async getProductCategories() {
     return this._http.get(this.backendService + 'getProductCategories', this.httpOptions);
   }
+  async stockEODProcess(id) {
+    return this._http.get(this.backendService + 'stockedoprocess/' + id, this.httpOptions);
+  }
 }

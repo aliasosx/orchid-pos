@@ -5,42 +5,50 @@
       <mat-header-cell *matHeaderCellDef fxFlex="5%">
         <h6>#</h6>
       </mat-header-cell>
-      <mat-cell *matCellDef="let i =  index" fxFlex="5%"> {{ i + 1 }} </mat-cell>>
+      <mat-cell *matCellDef="let i =  index" class="text-right" fxFlex="5%"> {{ i + 1 }} </mat-cell>>
       <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
-    <ng-container matColumnDef="Updated At">
+    <ng-container matColumnDef="Updated At" fxFlex="25%">
       <mat-header-cell *matHeaderCellDef>
         <h6>Updated At</h6>
       </mat-header-cell>
-      <mat-cell *matCellDef="let element "> {{ element.updatedAt }} </mat-cell>>
+      <mat-cell *matCellDef="let element " fxFlex="25%"> {{ element.updatedAt | date: 'dd-MMM-yyyy H:mm:ss'}}
+      </mat-cell>>
       <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
-    <ng-container matColumnDef="previous quantity">
-      <mat-header-cell *matHeaderCellDef>
+    <ng-container matColumnDef="previous quantity" fxFlex="15%">
+      <mat-header-cell *matHeaderCellDef class="text-right">
         <h6>previous</h6>
       </mat-header-cell>
-      <mat-cell *matCellDef="let element "> {{ element.previous_quantity |number}} </mat-cell>>
+      <mat-cell *matCellDef="let element " fxFlex="15%">
+        <div class="text-right">{{ element.previous_quantity |number}}</div>
+      </mat-cell>
       <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
     <ng-container matColumnDef="used">
-      <mat-header-cell *matHeaderCellDef>
+      <mat-header-cell *matHeaderCellDef fxFlex="15%">
         <h6>used</h6>
       </mat-header-cell>
-      <mat-cell *matCellDef="let element "> {{ element.used_quantity |number }} </mat-cell>>
+      <mat-cell *matCellDef="let element " fxFlex="15%"> <span
+          class="text-right">{{ element.used_quantity |number }}</span>
+      </mat-cell>>
       <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
     <ng-container matColumnDef="current quantity">
-      <mat-header-cell *matHeaderCellDef>
+      <mat-header-cell *matHeaderCellDef fxFlex="10%">
         <h6>current</h6>
       </mat-header-cell>
-      <mat-cell *matCellDef="let element "> {{ element.current_quantity |number}} </mat-cell>>
+      <mat-cell *matCellDef="let element " fxFlex="10%"> <span
+          class="text-right">{{ element.current_quantity |number}}</span>
+      </mat-cell>>
       <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
     <ng-container matColumnDef="orderId">
-      <mat-header-cell *matHeaderCellDef>
+      <mat-header-cell *matHeaderCellDef fxFlex="35%">
         <h6>orderId</h6>
       </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{ element.orderId }} </mat-cell>>
+      <mat-cell *matCellDef="let element" fxFlex="35%"> <span class="text-nowrap">{{ element.orderId }} </span>
+      </mat-cell>>
       <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

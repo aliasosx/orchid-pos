@@ -20,7 +20,7 @@ export class StockhistoryComponent implements OnInit {
   async loadStockHist() {
     const json = {
       stockId: this.data,
-      stockHistDate: new Date,
+      stockHistDate: new Date(),
     };
     await this.stockService.getStockHistoriesByDate(json).then(rsp => {
       rsp.subscribe(async (stockHistories) => {

@@ -102,7 +102,7 @@ export class StocksComponent implements OnInit {
   }
   openStockHistory(stockId) {
     const dialogref = this.dialog.open(StockhistoryComponent, {
-      width: '800px',
+      width: '1024px',
       data: stockId
     });
   }

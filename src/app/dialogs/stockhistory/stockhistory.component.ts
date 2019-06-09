@@ -13,7 +13,7 @@ export class StockhistoryComponent implements OnInit {
   constructor(private stockService: StockServicesService, private dialogRef: MatDialogRef<StockhistoryComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
   stockHistories: any;
   tableDataSource: any;
-  displayedColumns = ['no'];
+  displayedColumns = ['no', 'previous quantity', 'used', 'current quantity', 'orderId', 'Updated At'];
   ngOnInit() {
     this.loadStockHist();
   }

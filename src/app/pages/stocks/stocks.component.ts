@@ -8,7 +8,6 @@ import { AddPurchaseComponent } from 'src/app/dialogs/add-purchase/add-purchase.
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { ProductTakeoffComponent } from 'src/app/dialogs/product-takeoff/product-takeoff.component';
 import { FormGroup, FormControl } from '@angular/forms';
-import { GroupBy } from 'src/app/interfaces/groupBy';
 import { StockhistoryComponent } from 'src/app/dialogs/stockhistory/stockhistory.component';
 
 @Component({

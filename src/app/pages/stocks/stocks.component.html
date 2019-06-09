@@ -6,38 +6,8 @@
   </mat-card-header>
   <mat-card-content>
     <div class="container-fluid">
-      <ng-container>
-        <div class="row">
-          <div class="col col-md-4">
-            <div class="row mainrow" style="margin-left: 260px;">
-              <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid" (click)="openPurchaseProduct()">
-                <img src="../../../assets/icons/shopping-bag.svg" class="gridImg">
-                <div class="textTitle h4">ຊື້ເຂົ້າສາງ</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col col-md-4">
-            <div class="row mainrow" style="margin-left: 160px;">
-              <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid"
-                (click)="showStockList = !showStockList">
-                <img src="../../../assets/icons/warehouse.svg" class="gridImg">
-                <div class="textTitle h4">ຈັດການສາງ</div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="col col-md-4">
-            <div class="row mainrow">
-              <div class="col col-md-3 shadow p-3 mb-5 bg-white rounded item-grid" (click)="openProductTakeOff()">
-                <img src="../../../assets/icons/notepad.svg" class="gridImg">
-                <div class="textTitle h4">ລາຍອອກສາງ</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-container>
+      <button mat-raised-button color="warn" style="position: absolute; top: 15px;right: 20px;height: 60px;"
+        (click)="openProductTakeOff()">ເອົາເຄື່ອງອອກສາງ</button>
       <ng-container *ngIf="showStockList">
         <div class="row">
           <div class="col">
@@ -46,7 +16,7 @@
             </div>
 
             <mat-tab-group>
-              <mat-tab label="Stock">
+              <mat-tab label="Current Stock">
                 <div class="table-responsive">
                   <table class="table table-hover">
                     <thead class="thead-dark">

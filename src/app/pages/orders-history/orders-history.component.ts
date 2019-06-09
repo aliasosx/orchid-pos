@@ -15,7 +15,7 @@ export class OrdersHistoryComponent implements OnInit {
 
   constructor(private db: AngularFirestore, private dialog: MatDialog) {
     this.ordersRef = db.collection<Order>('orders', ref => {
-      return ref.orderBy('orderDateTime', 'desc');
+      return ref.orderBy('orderDateTime', 'desc').limit(100);
     });
   }
   ordersRef: AngularFirestoreCollection<Order>;
@@ -37,5 +37,4 @@ export class OrdersHistoryComponent implements OnInit {
       });
     }
   }
-
 }

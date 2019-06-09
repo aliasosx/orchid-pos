@@ -29,7 +29,7 @@ export class PurchaseGridComponent implements OnInit {
   productCategories: any;
   products: any;
   selectedCate: any;
-
+  productName: any;
   purchaseBufferRef: AngularFirestoreCollection<PurchaseBuffer>;
   purchaseBuffers: Observable<any>;
   grandTotal = 0;
@@ -135,5 +135,77 @@ export class PurchaseGridComponent implements OnInit {
   }
   caculateGrandTotal(total) {
     console.log(total);
+  }
+  savePurchase() {
+    swal({
+      title: 'ທ່ານແນ່ໃຈບໍ່ວ່າ ຈະບັນທຶກ',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((res) => {
+      if (res) {
+        const items = [];
+        this.db.collection<PurchaseBuffer>('purchaseBuffers').ref.get().then(async (rsp) => {
+          if (rsp.size > 0) {
+            rsp.forEach(e => {
+              const product = {
+                id: e.data().productId,
+                cost: e.data().cost,
+                quantity: e.data().quantity,
+                userId: JSON.parse(localStorage.getItem('usrObj')).id,
+              };
+              // console.log();
+              this.backendService.updateProductOnly(product).then(p_rsp => {
+                p_rsp.subscribe(r => {
+                  // this.db.collection('purchaseBuffers').doc(e.id).delete();
+                  // swal('Purchase done', 'Purchase done...', 'success');
+                  // this.loadProducts();
+                });
+              });
+            });
+            let cx = await this.createPurchase(rsp);
+          } else {
+            swal('No Data', 'Data is not engough', 'error');
+            return;
+          }
+          // console.log(items);
+        });
+      } else {
+        return;
+      }
+    });
+  }
+  async createPurchase(buffer) {
+    if (buffer) {
+      const purchase = {
+        amount: this.grandTotal,
+        userId: JSON.parse(localStorage.getItem('usrObj')).id,
+      };
+      this.backendService.createPurchase(purchase).then(purchase_rsp => {
+        purchase_rsp.subscribe(pch_rsp => {
+          // console.log(pch_rsp);
+          buffer.forEach(e => {
+            const purchaseDetail = {
+              purchaseId: pch_rsp['id'],
+              productId: e.data().productId,
+              price: e.data().cost,
+              billQuantity: e.data().quantity,
+              quantity: e.data().quantity,
+              total: parseInt(e.data().cost, 10) * parseInt(e.data().quantity, 10),
+            };
+            this.backendService.createPurchaseDetail(purchaseDetail).then(purDetail => {
+              purDetail.subscribe(r => {
+                if (r['status'] === 'success') {
+                  this.db.collection('purchaseBuffers').doc(e.id).delete();
+                }
+              });
+            });
+          });
+          swal('Purchase done', 'Purchase done...', 'success');
+          this.loadProducts();
+        });
+      });
+    }
+
   }
 }

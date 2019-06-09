@@ -4,7 +4,9 @@
       <div class="card">
         <div class="card-body">
           <div class="form-group row">
-            <label for="productCategories" class="col-sm-2 col-form-label">ປະເພດສິນຄ້າ</label>
+            <div class="col-md-4">
+              <input type="text" class="form-control" placeholder="ຄົ້ນຫາຕາມຊື່" [(ngModel)]="productName">
+            </div>
             <div class="col-md-4">
               <select class="form-control" id="productCategories" [(ngModel)]="selectedCate">
                 <option value="0">ທັງໝົດ</option>
@@ -16,13 +18,12 @@
               <button mat-flat-button color="primary" (click)="openAddNewProd()">ເພິ່ມລາຍການໃໝ່</button>
             </div>
           </div>
-
         </div>
       </div>
       <div class="card mt-1">
         <div class="card-body">
           <div class="row" style="max-height: 72vh;overflow: auto;">
-            <ng-container *ngFor="let product of products | productCatPipe: selectedCate">
+            <ng-container *ngFor="let product of products | productCatPipe: selectedCate | purchaseSearch: productName">
               <div class="col mb-1">
                 <div class="card" style="width: 10rem;cursor: pointer;" (click)="takePurchase(product)">
                   <div class="card-body">
@@ -45,14 +46,14 @@
     </div>
     <div class="col col-md-5  col-sm-12">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="max-height: 75vh; ;overflow: auto;">
           <h5 class="card-title">
             ລາຍການທີ່ເລືອກໄວ້
           </h5>
           <mat-divider></mat-divider>
           <div class="table-responsive mt-1">
-            <ng-container *ngIf="itemList > 0; else nonData">
-              <table class="table table-bordered">
+            <ng-container *ngIf="purchaseBuffers; else nonData">
+              <table class="table table-hover">
                 <thead>
                   <th class="text-center">#</th>
                   <th class="text-center">Product</th>
@@ -85,18 +86,38 @@
                 </tbody>
                 <tbody>
                   <tr>
-                    <td colspan="4" class="text-right">Billing Amount</td>
+                    <!--
+                      <td colspan="4" class="text-right">Billing Amount</td>
                     <td class="text-right font-weight-bold">{{ grandTotal | number }}</td>
                     <td></td>
+                    -->
                   </tr>
                 </tbody>
               </table>
             </ng-container>
             <ng-template #nonData>
-              <div class="display-4 text-center" style="color: darkgrey;">
+              <div class="display-4 text-center"
+                style="color: darkgrey;font-family: Verdana, Geneva, Tahoma, sans-serif;">
                 No Item
               </div>
             </ng-template>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="card mt-1">
+        <div class="card-body">
+          <div class="row">
+            <div class="col col-md-8 ">
+              <span class="h4 mr-5 align-top">ຍອດລວມທັງໝົດ</span><span
+                class="display-4 mr-2 text-right">{{ grandTotal | number  }}</span><span
+                class="h4 align-buttom">ກິບ</span>
+            </div>
+            <div class="col col-md-4 text-right">
+              <span class="align-middle"><button mat-raised-button color="primary" style="min-height: 66px;"
+                  (click)="savePurchase()">Purchase</button></span>
+            </div>
           </div>
         </div>
       </div>

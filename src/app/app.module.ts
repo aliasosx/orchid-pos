@@ -106,6 +106,7 @@ import { GroupByPipe } from './pipes/group-by.pipe';
 import { StockhistoryComponent } from './dialogs/stockhistory/stockhistory.component';
 import { PurchaseGridComponent } from './pages/purchase-grid/purchase-grid.component';
 import { ProductCatPipePipe } from './pipes/product-cat-pipe.pipe';
+import { PurchaseSearchPipe } from './pipes/purchase-search.pipe';
 
 @NgModule({
   declarations: [
@@ -191,6 +192,7 @@ import { ProductCatPipePipe } from './pipes/product-cat-pipe.pipe';
     StockhistoryComponent,
     PurchaseGridComponent,
     ProductCatPipePipe,
+    PurchaseSearchPipe,
 
 
   ],
@@ -262,7 +264,7 @@ import { ProductCatPipePipe } from './pipes/product-cat-pipe.pipe';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
     { provide: FirestoreSettingsToken, useValue: {} },
-    DatePipe, ProductByIdPipe, CurrencyPipe, ProductCatPipePipe,
+    DatePipe, ProductByIdPipe, CurrencyPipe, ProductCatPipePipe, PurchaseSearchPipe,
   ],
   bootstrap: [AppComponent]
 })

@@ -199,6 +199,12 @@ export class BackendServiceService {
   async updateProduct(product) {
     return this._http.put(this.backendService + 'product/' + product.id, product, this.httpOptions);
   }
+  async updateProductOnly(product) {
+    return this._http.put(this.backendService + 'productUpdateOnly/' + product.id, product, this.httpOptions);
+  }
+  async createPurchase(purchase) {
+    return this._http.post(this.backendService + 'createPurchase', purchase, this.httpOptions);
+  }
 
   async getKitchenById(id) {
     return this._http.get(this.backendService + 'kitchens/' + id, this.httpOptions);
@@ -342,7 +348,7 @@ export class BackendServiceService {
     return this._http.post(this.backendService + 'purchases', purchase, this.httpOptions);
   }
   async createPurchaseDetail(purchaseDetail) {
-    return this._http.post(this.backendService + 'purchasedetails', purchaseDetail, this.httpOptions);
+    return this._http.post(this.backendService + 'createPurchaseDetail', purchaseDetail, this.httpOptions);
   }
   async deletePurchaseDetail(id) {
     return this._http.delete(this.backendService + 'purchasedetails/' + id, this.httpOptions);

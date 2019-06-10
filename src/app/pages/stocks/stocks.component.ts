@@ -35,6 +35,7 @@ export class StocksComponent implements OnInit {
   drinkCat: any;
   stockReports: any;
   totalCost = [];
+  takeOfByDate: any;
 
   ngOnInit() {
     this.reportForm = new FormGroup({

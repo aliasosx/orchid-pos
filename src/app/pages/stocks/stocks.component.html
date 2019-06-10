@@ -73,34 +73,42 @@
                 </div>
               </mat-tab>
               <mat-tab label="Stock Take Off">
+                <div class="row mt-2 mb-2">
+                  <div class="col col-md-2">
+                    <label for="stockDt" class="h6">ວັນທີ່ເອົາອອກສາງ</label>
+                    <div class="input-group mb-1">
+                      <input type="date" class="form-control" id="stockDt" [(ngModel)]="takeOfByDate">
+                    </div>
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table class="table table-hover">
                     <thead class="thead-dark">
                       <th class="text-center h6">#</th>
                       <th class="text-center h6">ລະຫັດ</th>
                       <th class="text-left h6">ຊື່ສິນຄ້າ</th>
-                      <th class="text-right h6">ຫົວໜ່ວຍ</th>
                       <th class="text-right h6">ຈຳນວນ</th>
                       <th class="text-right h6">ໜ່ວຍ/ແກັດ</th>
                       <th class="text-right h6">ຍອດລວມ</th>
-                      <th class="text-right h6">ຜູ້ເບິກ</th>
+                      <th class="text-right h6">ຍອດທີ່ຍັງເຫຼືອ</th>
+                      <th class="text-left h6">ຜູ້ເບິກ</th>
                       <th class="text-left h6">ເນື້ອໃນ</th>
                       <th class="text-left h6">ວັນທີເບິກ</th>
-                      <th class="text-center h6">ການຈັດການ</th>
+
                     </thead>
                     <tbody>
-                      <tr *ngFor="let st of stockTaskOffList; let i = index">
+                      <tr *ngFor="let st of stockTaskOffList|takeOffByDatePipe: takeOfByDate; let i = index">
                         <td class="text-center">{{ i+1 }}</td>
                         <td class="text-center">{{ st.refno }}</td>
                         <td class="text-left">{{ st.product_name }}</td>
-                        <td class="text-center">{{ st.unit_name }}</td>
                         <td class="text-right">{{ st.stUsedQuantity |number }}</td>
                         <td class="text-center">{{ st.dozenQuantityUnitId }}</td>
                         <td class="text-right">{{ st.totalUsedQuantity |number }}</td>
+                        <td class="text-right">{{ st.current_quantity |number }}</td>
                         <td class="text-left">{{ st.username }}</td>
                         <td class="text-left">{{ st.remarks }}</td>
                         <td>{{ st.takeOffDate | date:'dd-MMM-yyyy H:mm:ss' }}</td>
-                        <td>N/A</td>
+
                       </tr>
                     </tbody>
                     <tfoot>
@@ -111,6 +119,9 @@
                     </tfoot>
                   </table>
                 </div>
+
+
+
               </mat-tab>
               <mat-tab label="Reports">
                 <mat-card>

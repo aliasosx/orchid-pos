@@ -14,58 +14,191 @@
           (click)="openAddExp()">ບັນທຶກລາຍຈ່າຍປະຈຳວັນ</button>
       </div>
     </div>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col" class="text-center">#</th>
-            <th scope="col" class="text-center">ວັນທີ</th>
-            <th scope="col" class="text-center">ເລກອ້າງອິງ</th>
-            <th scope="col" class="text-center">ເນື້ອໃນການຈ່າຍ</th>
-            <th scope="col" class="text-center">ປະເພດລາຍຈ່າຍ</th>
-            <th scope="col" class="text-center">ຈຳນວນ</th>
-            <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
-            <th scope="col" class="text-center">ລາຄາຕໍ່ໜ່ວຍ</th>
-            <th scope="col" class="text-center">ລວມເປັນເງິນ</th>
-            <th scope="col" class="text-center">ເອົາເງິນມາຈາກ</th>
-            <th scope="col" class="text-center">ຄົວ</th>
-            <th scope="col" class="text-center">ຜຸ້ຈ່າຍ</th>
-            <th scope="col" class="text-center">ອະນຸມັດ</th>
-            <th scope="col" class="text-center">ຜຸ້ອະນຸມັດ</th>
-            <th scope="col" class="text-center">ຈັດການ</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let exp of expenditures; let i = index">
-            <td class="text-center align-middle">{{ i + 1 }}</td>
-            <td class="text-center align-middle">{{ exp.paymentDate | date:'dd-MMM-yyyy H:mm:ss' }}</td>
-            <td class="text-center align-middle">{{ exp.refno }}</td>
-            <td class="text-left align-middle">{{ exp.remarks }}</td>
-            <td class="text-left align-middle">{{ exp.expenditure_name }}</td>
-            <td class="text-right align-middle">{{ exp.quantity | number }}</td>
-            <td class="text-center align-middle">{{ exp.unit_name  }}</td>
-            <td class="text-right align-middle">{{ exp.price | number }}</td>
-            <td class="text-right align-middle">{{ exp.amount | number }}</td>
-            <td class="text-center align-middle">{{ exp.terminal_name }}</td>
-            <td class="text-center align-middle">{{ exp.kitchenName }}</td>
-            <td class="text-center align-middle">{{  exp.username }}</td>
-            <td class="text-center align-middle" *ngIf="exp.isApproved===1;else unApproved">
-              <img src="../../../assets/icons/Check_green_icon.svg.png" style="width: 25px;cursor: pointer;">
-            </td>
-            <ng-template #unApproved>
-              <td class="text-center align-middle">
-                <img src="../../../assets/icons/cancel.svg" style="width: 25px;cursor: pointer;"
-                  (click)="openApproveUser(exp)">
-              </td>
-            </ng-template>
-            <td class="text-center align-middle">{{  exp.approvedBy }}</td>
-            <td class="text-center text-center align-middle text-nowrap" style="width: 230px;">
-              <button mat-raised-button color="primary">ແກ້ໄຂລາຍການ</button>
-              <button mat-raised-button color="warn" class="ml-1" (click)="deleteItem(exp.txId)">ລືບລາຍການ</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <mat-tab-group>
+      <mat-tab label="Records">
+        <div class="table-responsive" style="max-height: 70vh;">
+          <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col" class="text-center">#</th>
+                <th scope="col" class="text-center">ວັນທີ</th>
+                <th scope="col" class="text-center">ເລກອ້າງອິງ</th>
+                <th scope="col" class="text-center">ເນື້ອໃນການຈ່າຍ</th>
+                <th scope="col" class="text-center">ປະເພດລາຍຈ່າຍ</th>
+                <th scope="col" class="text-center">ຈຳນວນ</th>
+                <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
+                <th scope="col" class="text-center">ລາຄາຕໍ່ໜ່ວຍ</th>
+                <th scope="col" class="text-center">ລວມເປັນເງິນ</th>
+                <th scope="col" class="text-center">ເອົາເງິນມາຈາກ</th>
+                <th scope="col" class="text-center">ຄົວ</th>
+                <th scope="col" class="text-center">ຜຸ້ຈ່າຍ</th>
+                <th scope="col" class="text-center">ອະນຸມັດ</th>
+                <th scope="col" class="text-center">ຜຸ້ອະນຸມັດ</th>
+                <th scope="col" class="text-center">ຈັດການ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let exp of expenditures; let i = index">
+                <td class="text-center align-middle">{{ i + 1 }}</td>
+                <td class="text-center align-middle">{{ exp.paymentDate | date:'dd-MMM-yyyy H:mm:ss' }}</td>
+                <td class="text-center align-middle">{{ exp.refno }}</td>
+                <td class="text-left align-middle">{{ exp.remarks }}</td>
+                <td class="text-left align-middle">{{ exp.expenditure_name }}</td>
+                <td class="text-right align-middle">{{ exp.quantity | number }}</td>
+                <td class="text-center align-middle">{{ exp.unit_name  }}</td>
+                <td class="text-right align-middle">{{ exp.price | number }}</td>
+                <td class="text-right align-middle">{{ exp.amount | number }}</td>
+                <td class="text-center align-middle">{{ exp.terminal_name }}</td>
+                <td class="text-center align-middle">{{ exp.kitchenName }}</td>
+                <td class="text-center align-middle">{{  exp.username }}</td>
+                <td class="text-center align-middle" *ngIf="exp.isApproved===1;else unApproved">
+                  <img src="../../../assets/icons/Check_green_icon.svg.png" style="width: 25px;cursor: pointer;">
+                </td>
+                <ng-template #unApproved>
+                  <td class="text-center align-middle">
+                    <img src="../../../assets/icons/cancel.svg" style="width: 25px;cursor: pointer;"
+                      (click)="openApproveUser(exp)">
+                  </td>
+                </ng-template>
+                <td class="text-center align-middle">{{  exp.approvedBy }}</td>
+                <td class="text-center text-center align-middle text-nowrap" style="width: 230px;">
+                  <button mat-raised-button color="primary">ແກ້ໄຂລາຍການ</button>
+                  <button mat-raised-button color="warn" class="ml-1" (click)="deleteItem(exp.txId)">ລືບລາຍການ</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-tab>
+      <mat-tab label="Reports">
+        <div class="row">
+          <div class="col col-md-12 mt-2 mb-2">
+            <form [formGroup]="dateForm">
+              <div class="row">
+                <div class="col col-md-2 col-sm-12">
+                  <label for="fromDate" class="h5">ເລີ່ມຈາກວັນທີ</label>
+                  <div class="input-group mb-1">
+                    <input type="date" class="form-control" formControlName="startDate">
+                  </div>
+                </div>
+                <div class="col col-md-2  col-sm-12">
+                  <label for="fromDate" class="h5">ຮອດວັນທີ</label>
+                  <div class="input-group mb-1">
+                    <input type="date" class="form-control" formControlName="endDate">
+                  </div>
+                </div>
+                <div class="col col-md-2  col-sm-12">
+                  <label for="fromDate"></label>
+                  <div class="input-group mb-1">
+                    <button mat-raised-button color="primary" (click)="loadReport()"
+                      style="margin-top: 12px;width: 200px;">Submit</button>
+                  </div>
+                </div>
+                <div class="col col-md-4">
+
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <ng-container *ngIf="expenditureReportByRemarks">
+          <div class="row">
+            <div class="col col-md-4">
+              <div class="card">
+                <div class="card-header h4">
+                  ລາຍຈ່າຍຕາມປະເພດ
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive" style="max-height: 50vh; overflow: auto;">
+                    <table class="table table-bordered table-hover">
+                      <thead class="thead-dark">
+                        <th class="text-center">#</th>
+                        <th class="text-center">ປະເພດລາຍຈ່າຍ</th>
+                        <th class="text-center">ຈຳນວນ</th>
+                        <th class="text-center">ຫົວໜ່ວຍ</th>
+                        <th class="text-center">ລວມເປັນເງິນ</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let exp of expenditureReportByRemarks; let i = index">
+                          <td class="text-center">{{ i+1 }}</td>
+                          <td class="text-left">{{ exp.remarks }}</td>
+                          <td class="text-right">{{ exp.quantity | number }}</td>
+                          <td class="text-center">{{ exp.unit_name }}</td>
+                          <td class="text-right">{{ exp.total_amount |number }}</td>
+                        </tr>
+                        <tr>
+                          <td colspan="4" class="text-right">
+                            ລວມ
+                          </td>
+                          <td class="text-right">{{ totalExpRemark |number }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col col-md-4">
+              <div class="card">
+                <div class="card-header h4">
+                  ລາຍຈ່າຍຕາມ Terminal
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                      <thead class="thead-dark">
+                        <th class="text-center">#</th>
+                        <th class="text-center">Terminal</th>
+                        <th class="text-center">ຈຳນວນ</th>
+                        <th class="text-center">ລວມເປັນເງິນ</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let exp of expenditureReportsSrc; let i = index">
+                          <td class="text-center">{{ i+1 }}</td>
+                          <td class="text-left">{{ exp.src_name }}</td>
+                          <td class="text-right">{{ exp.quantity | number }}</td>
+                          <td class="text-right">{{ exp.total_amount |number }}</td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col col-md-4">
+              <div class="card">
+                <div class="card-header h4">
+                  ລາຍຈ່າຍຕາມ Users
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                      <thead class="thead-dark">
+                        <th class="text-center">#</th>
+                        <th class="text-center">Username</th>
+                        <th class="text-center">ຈຳນວນ</th>
+                        <th class="text-center">ລວມເປັນເງິນ</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let exp of expenditureReportsUser; let i = index">
+                          <td class="text-center">{{ i+1 }}</td>
+                          <td class="text-left">{{ exp.username }}</td>
+                          <td class="text-right">{{ exp.quantity | number }}</td>
+                          <td class="text-right">{{ exp.total_amount |number }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+
+      </mat-tab>
+    </mat-tab-group>
+
   </mat-card-content>
 </mat-card>

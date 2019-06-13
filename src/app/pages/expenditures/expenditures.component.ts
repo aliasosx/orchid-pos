@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { CreateExpenditureComponent } from 'src/app/dialogs/create-expenditure/create-expenditure.component';
+import { FormGroup, FormControl } from '@angular/forms';
 declare var swal: any;
 @Component({
   selector: 'app-expenditures',
@@ -18,8 +19,19 @@ export class ExpendituresComponent implements OnInit {
   selectedCate: any;
   expenditures: any;
   currentAmountTerminal = 0;
+  dateForm: FormGroup;
+  expenditureReportByRemarks: any;
+  expenditureReportsSrc: any;
+  expenditureReportsUser: any;
+  totalExpRemark = 0;
 
   ngOnInit() {
+
+    this.dateForm = new FormGroup({
+      startDate: new FormControl(new Date()),
+      endDate: new FormControl(new Date()),
+    });
+
     this.loadExpType();
     this.loadExpenditureDisplay();
   }
@@ -95,6 +107,23 @@ export class ExpendituresComponent implements OnInit {
           });
         });
       }
+    });
+  }
+  loadReport() {
+    const report_params = {
+      startDate: new Date(this.dateForm.get('startDate').value),
+      endDate: new Date(this.dateForm.get('endDate').value),
+    }
+    this.backendServer.getExpenditureReport(report_params).then(r => {
+      r.subscribe(reports => {
+        // console.log(reports);
+        this.expenditureReportByRemarks = reports['ExpenditureReportsByRemark'];
+        this.expenditureReportsSrc = reports['ExpenditureReportsSrc'];
+        this.expenditureReportsUser = reports['ExpenditureReportsUser'];
+        this.expenditureReportByRemarks.forEach(element => {
+          this.totalExpRemark += element.total_amount;
+        });
+      });
     });
   }
 }

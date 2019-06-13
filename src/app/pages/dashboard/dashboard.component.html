@@ -70,7 +70,9 @@
                 <br />
                 <ng-container *ngFor=" let summaryReportsPayment of dashboardPaymentReports">
                   <div class="row">
-                    <div class="col col-md-6 h6 text-left">{{ summaryReportsPayment.paymentType }}</div>
+                    <div class="col col-md-6 h6 text-left" style="cursor: pointer;"
+                      (click)="openTransactionsDetails(summaryReportsPayment.paymentType, summaryReportsPayment.grandTotal)">
+                      {{ summaryReportsPayment.paymentType }}</div>
                     <div class="col col-md-6 h6 text-right">{{ summaryReportsPayment.grandTotal |number }} ກິບ</div>
                   </div>
                 </ng-container>

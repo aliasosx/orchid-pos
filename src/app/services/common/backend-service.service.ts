@@ -446,5 +446,8 @@ export class BackendServiceService {
   async getReportStockByFoodCat(data) {
     return this._http.post(this.backendService + 'stockTakeoffReports', data, this.httpOptions);
   }
+  async getOrderDetailReport(data) {
+    return this._http.post(this.backendService + 'orderdetailReports', data, this.httpOptions);
+  }
 }
 

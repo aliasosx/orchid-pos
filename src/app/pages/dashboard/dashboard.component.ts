@@ -11,6 +11,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Order } from 'src/app/interfaces/order';
 import { CurrencyPipe } from '@angular/common';
 import { Chart } from 'chart.js';
+import { MatDialog } from '@angular/material';
+import { ListTransactionsComponent } from 'src/app/dialogs/list-transactions/list-transactions.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +22,7 @@ import { Chart } from 'chart.js';
 export class DashboardComponent implements OnInit {
   // @ViewChild('lineChart') private chartRef;
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router, private be: BackendServiceService, private cp: CurrencyPipe) {
+  constructor(private db: AngularFirestore, private _firebaseAuth: AngularFireAuth, private router: Router, private be: BackendServiceService, private cp: CurrencyPipe, private dialog: MatDialog) {
     this.noticeRef = db.collection<Notice>('notices', ref => {
       return ref.orderBy('noticeDate', 'desc');
     });
@@ -384,5 +386,16 @@ export class DashboardComponent implements OnInit {
     const g = Math.floor(Math.random() * 255);
     const b = Math.floor(Math.random() * 255);
     return 'rgb(' + r + ',' + g + ',' + b + ')';
+  }
+  async openTransactionsDetails(paymentId, total) {
+    const dialog = this.dialog.open(ListTransactionsComponent, {
+      width: '800px',
+      height: '300px',
+      data: {
+        paymentId: paymentId,
+        grandTotal: total,
+      },
+
+    });
   }
 }

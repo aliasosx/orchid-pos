@@ -1,0 +1,32 @@
+<p>
+  list-transactions works!
+</p>
+<div class="table-responsive">
+  <div>
+    <table class="table">
+      <thead>
+        <th class="text-center">#</th>
+        <th class="text-left">Food name</th>
+        <th class="text-right">Quantity</th>
+        <th class="text-right">Price</th>
+        <th class="text-right">Total</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let food of foods; let i = index ">
+          <td class="text-center">{{ i+1 }}</td>
+          <td class="text-left">{{ food.foodName }}</td>
+          <td class="text-right">{{ food.quantity |number }}</td>
+          <td class="text-right">{{ food.price |number }}</td>
+          <td class="text-right">{{ food.total_price |number }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" class="text-right mr-1">Grand Total</td>
+          <td class="text-right">{{ grandTotal |number }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>

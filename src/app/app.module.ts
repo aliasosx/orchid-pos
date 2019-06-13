@@ -108,6 +108,7 @@ import { PurchaseGridComponent } from './pages/purchase-grid/purchase-grid.compo
 import { ProductCatPipePipe } from './pipes/product-cat-pipe.pipe';
 import { PurchaseSearchPipe } from './pipes/purchase-search.pipe';
 import { TakeOffByDatePipePipe } from './pipes/take-off-by-date-pipe.pipe';
+import { ListTransactionsComponent } from './dialogs/list-transactions/list-transactions.component';
 
 @NgModule({
   declarations: [
@@ -195,6 +196,7 @@ import { TakeOffByDatePipePipe } from './pipes/take-off-by-date-pipe.pipe';
     ProductCatPipePipe,
     PurchaseSearchPipe,
     TakeOffByDatePipePipe,
+    ListTransactionsComponent,
 
 
   ],
@@ -261,6 +263,7 @@ import { TakeOffByDatePipePipe } from './pipes/take-off-by-date-pipe.pipe';
     AddFoodFxTranxComponent,
     StockEODAddComponent,
     StockhistoryComponent,
+    ListTransactionsComponent,
   ]
   ,
   providers: [

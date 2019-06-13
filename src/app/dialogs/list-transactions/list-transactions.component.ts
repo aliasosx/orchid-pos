@@ -22,6 +22,7 @@ export class ListTransactionsComponent implements OnInit {
   orders: Observable<any[]>;
   foods: any;
   grandTotal = this.data.grandTotal;
+  currentDate = new Date();
 
   ngOnInit() {
     const dataParams = {

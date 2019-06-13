@@ -2,7 +2,7 @@ import { map } from 'rxjs/operators';
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { StockServicesService } from 'src/app/services/stock-services.service';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { MatDialog } from '@angular/material';
@@ -35,8 +35,14 @@ export class PurchaseGridComponent implements OnInit {
   grandTotal = 0;
   items = [];
   itemList = 0;
+  purchaseForm: FormGroup;
 
   ngOnInit() {
+
+    this.purchaseForm = new FormGroup({
+      purchaseDate: new FormControl(),
+    });
+
     this.loadProductCategories();
     this.loadProducts();
     this.purchaseBuffers = this.purchaseBufferRef.snapshotChanges().pipe(map(change => {
@@ -83,7 +89,7 @@ export class PurchaseGridComponent implements OnInit {
             timer: 2000
           });
         });
-      } else {
+      } else if (this.purchaseForm.valid) {
         const purchase_data = {
           billingNo: 10000,
           productId: product.id,
@@ -91,28 +97,21 @@ export class PurchaseGridComponent implements OnInit {
           cost: product.cost,
           quantity: 1,
           total: product.cost,
-          purchaseDate: new Date(),
+          purchaseDate: new Date(this.purchaseForm.get('purchaseDate').value),
+          billDate: new Date(this.purchaseForm.get('purchaseDate').value),
           userId: JSON.parse(localStorage.getItem('usrObj')).id,
         };
         this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
+        });
+      } else {
+        swal({
+          title: 'ເລືອກວັນທີ່ຊື້ກ່ອນ',
+          icon: 'error',
+          timer: 2000
         });
       }
     });
   }
-  /*
-  const purchase_data = {
-          billingNo: 10000,
-          productId: product.id,
-          product_name: product.product_name,
-          cost: product.cost,
-          quantity: 1,
-          total: product.cost,
-          purchaseDate: new Date(),
-          userId: JSON.parse(localStorage.getItem('usrObj')).id,
-        };
-        this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
-        });
-  */
 
 
   removeItem(id) {
@@ -146,24 +145,22 @@ export class PurchaseGridComponent implements OnInit {
       if (res) {
         const items = [];
         this.db.collection<PurchaseBuffer>('purchaseBuffers').ref.get().then(async (rsp) => {
+
           if (rsp.size > 0) {
             rsp.forEach(e => {
               const product = {
                 id: e.data().productId,
                 cost: e.data().cost,
                 quantity: e.data().quantity,
+                billDate: e.data().billDate,
                 userId: JSON.parse(localStorage.getItem('usrObj')).id,
               };
-              // console.log();
               this.backendService.updateProductOnly(product).then(p_rsp => {
                 p_rsp.subscribe(r => {
-                  // this.db.collection('purchaseBuffers').doc(e.id).delete();
-                  // swal('Purchase done', 'Purchase done...', 'success');
-                  // this.loadProducts();
                 });
               });
             });
-            let cx = await this.createPurchase(rsp);
+            this.createPurchase(rsp);
           } else {
             swal('No Data', 'Data is not engough', 'error');
             return;
@@ -179,6 +176,7 @@ export class PurchaseGridComponent implements OnInit {
     if (buffer) {
       const purchase = {
         amount: this.grandTotal,
+        billDate: new Date(this.purchaseForm.get('purchaseDate').value),
         userId: JSON.parse(localStorage.getItem('usrObj')).id,
       };
       this.backendService.createPurchase(purchase).then(purchase_rsp => {

@@ -47,20 +47,39 @@
     <div class="col col-md-5  col-sm-12">
       <div class="card">
         <div class="card-body" style="max-height: 75vh; ;overflow: auto;">
-          <h5 class="card-title">
-            ລາຍການທີ່ເລືອກໄວ້
-          </h5>
+          <div class="row">
+            <div class="col col-md-6">
+              <h5 class="card-title mt-1">
+                ລາຍການທີ່ເລືອກໄວ້
+              </h5>
+            </div>
+
+            <div class="col col-md-6">
+              <form [formGroup]="purchaseForm">
+                <div class="form-group row">
+                  <label for="staticEmail" class="col-sm-3 col-form-label">ວັນທີ່ຊື້</label>
+                  <div class="col-sm-9">
+                    <input type="date" class="form-control" formControlName="purchaseDate" required>
+                  </div>
+
+                </div>
+              </form>
+
+
+            </div>
+          </div>
+
           <mat-divider></mat-divider>
           <div class="table-responsive mt-1">
             <ng-container *ngIf="purchaseBuffers; else nonData">
               <table class="table table-hover">
                 <thead>
                   <th class="text-center">#</th>
-                  <th class="text-center">Product</th>
-                  <th class="text-center">Cost</th>
-                  <th class="text-center">Quantity</th>
-                  <th class="text-center">Total</th>
-                  <th class="text-center">remove</th>
+                  <th class="text-left">ສິນຄ້າ</th>
+                  <th class="text-center">ລາຄາ</th>
+                  <th class="text-center">ຈຳນວນ</th>
+                  <th class="text-center">ລວມ</th>
+                  <th class="text-center">ລຶບ</th>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of purchaseBuffers |async; let i = index">

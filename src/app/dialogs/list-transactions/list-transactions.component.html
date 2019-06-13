@@ -1,15 +1,16 @@
-<p>
-  list-transactions works!
+<p class="font-weight-bold">
+  ລາຍການຍອດຂາຍຈາກການຈ່າຍປະເພດ <span class="mr-1 ml-1">{{ data.paymentId }} </span>ຂອງວັນທີ <span
+    class="ml-1">{{ currentDate | date: 'dd-MM-yyyy' }}</span>
 </p>
 <div class="table-responsive">
-  <div>
+  <div style="max-height: 70vh; overflow: auto;">
     <table class="table">
       <thead>
         <th class="text-center">#</th>
-        <th class="text-left">Food name</th>
-        <th class="text-right">Quantity</th>
-        <th class="text-right">Price</th>
-        <th class="text-right">Total</th>
+        <th class="text-left">ອາຫານ</th>
+        <th class="text-right">ຈຳນວນ</th>
+        <th class="text-right">ລາຄາ</th>
+        <th class="text-right">ລວມ</th>
       </thead>
       <tbody>
         <tr *ngFor="let food of foods; let i = index ">
@@ -22,7 +23,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="4" class="text-right mr-1">Grand Total</td>
+          <td colspan="4" class="text-right mr-1">ຍອດລວມ</td>
           <td class="text-right">{{ grandTotal |number }}</td>
         </tr>
       </tfoot>

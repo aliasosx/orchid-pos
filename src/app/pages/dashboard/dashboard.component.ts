@@ -389,8 +389,8 @@ export class DashboardComponent implements OnInit {
   }
   async openTransactionsDetails(paymentId, total) {
     const dialog = this.dialog.open(ListTransactionsComponent, {
-      width: '800px',
-      height: '300px',
+      width: '600px',
+      maxHeight: '80vh',
       data: {
         paymentId: paymentId,
         grandTotal: total,

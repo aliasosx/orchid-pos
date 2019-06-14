@@ -189,6 +189,7 @@ export class PurchaseGridComponent implements OnInit {
               price: e.data().cost,
               billQuantity: e.data().quantity,
               quantity: e.data().quantity,
+              vendorId: 1,
               total: parseInt(e.data().cost, 10) * parseInt(e.data().quantity, 10),
             };
             this.backendService.createPurchaseDetail(purchaseDetail).then(purDetail => {

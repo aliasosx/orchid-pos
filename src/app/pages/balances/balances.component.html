@@ -1,0 +1,63 @@
+<mat-card class="mt-1">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>ບັນຊີລາຍຈ່າຍລາຍຮັບ ຂອງເດຶອນ</mat-card-title>
+    <mat-card-subtitle>Summary all Account balance</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="row">
+      <div class="col col-md-12 mt-2 mb-2">
+        <form [formGroup]="dateForm">
+          <div class="row">
+            <div class="col col-md-2 col-sm-12">
+              <label for="fromDate" class="h5">ເລີ່ມຈາກວັນທີ</label>
+              <div class="input-group mb-1">
+                <input type="date" class="form-control" formControlName="startDate">
+              </div>
+            </div>
+            <div class="col col-md-2  col-sm-12">
+              <label for="fromDate" class="h5">ຮອດວັນທີ</label>
+              <div class="input-group mb-1">
+                <input type="date" class="form-control" formControlName="endDate">
+              </div>
+            </div>
+            <div class="col col-md-2  col-sm-12">
+              <label for="fromDate"></label>
+              <div class="input-group mb-1">
+                <button mat-raised-button color="primary" (click)="loadReport()"
+                  style="margin-top: 12px;width: 200px;">Submit</button>
+              </div>
+            </div>
+            <div class="col col-md-2  col-sm-12">
+              <label for="fromDate"></label>
+              <div class="input-group mb-1">
+                <button mat-raised-button color="primary" (click)="openAddPayment()"
+                  style="margin-top: 12px;width: 200px;">ເພິ່ມລາຍຈ່າຍ</button>
+              </div>
+            </div>
+            <div class="col col-md-4">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <ng-container>
+      <div class="row">
+        <div class="col col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h5>ລາຍຈ່າຍ</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h5>ລາຍຮັບ</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

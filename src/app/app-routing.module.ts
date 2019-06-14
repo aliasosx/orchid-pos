@@ -1,3 +1,4 @@
+import { BalancesComponent } from './pages/balances/balances.component';
 import { KitchenReportsComponent } from './pages/kitchen-reports/kitchen-reports.component';
 import { PosComponent } from './pages/pos/pos.component';
 import { ProductsComponent } from './pages/products/products.component';
@@ -51,6 +52,7 @@ const routes: Routes = [
   { path: 'customerScreen', component: CustomerScreenComponent },
   { path: 'foodFx', component: FoodFxComponent },
   { path: 'purchaseGrid', component: PurchaseGridComponent },
+  { path: 'balances', component: BalancesComponent },
 ];
 
 @NgModule({

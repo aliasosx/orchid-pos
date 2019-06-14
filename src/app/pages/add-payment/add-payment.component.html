@@ -1,11 +1,48 @@
 <h1 mat-dialog-title>ເພີ່ມລາຍຈ່າຍ</h1>
+<mat-divider class="mb-2"></mat-divider>
 <form [formGroup]="expenditureForm">
-  <div class="row">
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <label for="foodId">ລະຫັດອາຫານ</label>
-        <input type="text" class="form-control" id="foodId" readonly formControlName="foodId" required>
-      </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="paymentTypeId">ປະເພດລາຍຈ່າຍ</label>
+      <select class="form-control" formControlName="paymentTypeId" id="paymentTypeId">
+        <option value="" disabled>Choose</option>
+        <option value="{{ paymentType.id }}" *ngFor="let paymentType of paymentTypes">
+          {{ paymentType.paymentTypeName }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="src_amount">ມູນຄ່າ</label>
+      <input type="number" class="form-control text-right" id="src_amount" (keyup)="exchangeRateCalulate()"
+        formControlName="src_amount" required>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="currencyId">ສະກຸນເງິນ</label>
+      <select class="form-control" formControlName="currencyId" id="currencyId">
+        <option value="" disabled>Choose</option>
+        <option value="{{ currency.id }}" *ngFor="let currency of currencies">
+          {{ currency.currency_name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="exchangeRate">ອັດຕາແລກປ່ຽນ</label>
+      <input type="number" class="form-control text-right" id="exchangeRate" (keyup)="exchangeRateCalulate()"
+        formControlName="exchangeRate" required>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label for="dest_amount">ມູນຄ່າລວມ(ກິບ)</label>
+      <input type="number" class="form-control text-right" id="dest_amount" formControlName="dest_amount" required>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="description">ເນື້ອໃນ</label>
+      <input type="text-area" class="form-control text-left" id="description" formControlName="description" required>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="paymentDate">ວັນທີ່ຈ່າຍ</label>
+      <input type="date" class="form-control text-left" id="paymentDate" formControlName="paymentDate" required>
+    </div>
+    <div class="form-group col-md-12 text-right">
+      <button mat-raised-button color="primary" (click)="createPayment()">ບັນທຶກ</button>
     </div>
   </div>
 </form>

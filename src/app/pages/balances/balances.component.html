@@ -43,14 +43,58 @@
     </div>
     <ng-container>
       <div class="row">
-        <div class="col col-md-6">
+        <div class="col col-md-7">
           <div class="card">
             <div class="card-header">
               <h5>ລາຍຈ່າຍ</h5>
             </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <th class="text-center">#</th>
+                    <th class="text-left">ປະເພດລາຍຈ່າຍ</th>
+                    <th class="text-center">ຈຳນວນ</th>
+                    <th class="text-center">ສະກຸນ</th>
+                    <th class="text-center">ອັດຕາແລກປ່ຽນ</th>
+                    <th class="text-center">ຈຳນວນສຸທິ</th>
+                    <th class="text-center">ເນື້ອໃນ</th>
+                    <th class="text-center">ວັນທີ່ອອກລາຍຈ່າຍ</th>
+                    <th class="text-center">ຜູ້ອອກ</th>
+                    <th class="text-center">ວັນທີບັນທຶກ</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of paymentMonthly; let i = index">
+                      <td class="text-center">{{ i+1 }}</td>
+                      <td class="text-left">{{ item.paymentTypeName }}</td>
+                      <td class="text-right">{{ item.src_amount |number }}</td>
+                      <td class="text-center">{{ item.currency_name }}</td>
+                      <td class="text-right">{{ item.exchangeRate |number }}</td>
+                      <td class="text-right">{{ item.dest_amount |number }}</td>
+                      <td class="text-left">{{ item.description }}</td>
+                      <td class="text-center">{{ item.paymentDate| date: 'dd-MM-yyyy' }}</td>
+                      <td class="text-left">{{ item.username }}</td>
+                      <td class="text-center">{{ item.createdAt | date: 'dd-MM-yyyy H:mm:ss'  }}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="2" class="text-left h5">ຍອດລວມ</td>
+                      <td class="text-right h5">{{ totalSrcAmount | number }}</td>
+                      <td colspan="2"></td>
+                      <td class="text-right h5">{{ totalDesAmount | number }}</td>
+                      <td colspan="4"></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+            <div class="card-footer">
+
+            </div>
           </div>
         </div>
-        <div class="col col-md-6">
+        <div class="col col-md-5">
           <div class="card">
             <div class="card-header">
               <h5>ລາຍຮັບ</h5>

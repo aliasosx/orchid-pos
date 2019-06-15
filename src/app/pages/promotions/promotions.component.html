@@ -1,0 +1,74 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Promotions</mat-card-title>
+    <mat-card-subtitle>All promotions</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="row">
+      <div class="col col-md-4 col-sm-12">
+        <div class="col col-sm-12 col-md-12">
+          <input type="text" class="form-control" placeholder="ຄົ້ນຫາ..." [(ngModel)]="searchPromotion">
+        </div>
+      </div>
+      <div class="col col-md-8 col-sm-12" style="top: 10px;">
+        <div class="text-right">
+          <button mat-raised-button color="primary" class="mr-1" (click)="openAddNewDialog()">ເພີ່ມລາຍການ</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-md-12 mt-2">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col" class="text-center" style="width: 30px;">#</th>
+                <th scope="col" class="text-left">Promotions</th>
+                <th scope="col" class="text-center">ເນື້ອໃນ</th>
+                <th scope="col" class="text-center">ຈຳນວນຕໍ່າສຸດ</th>
+                <th scope="col" class="text-center">ຈຳນວນໂປຣ</th>
+                <th scope="col" class="text-center">ອາຫານທີ່ເຮັດໂປໂມຊັນ</th>
+                <th scope="col" class="text-center">ຮອດວັນທີ</th>
+                <th scope="col" class="text-center">ຍັງໃຊ້ໄດ້</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let promotion of promotionsList;let i = index">
+                <td class="text-center align-middle">{{ i+1 }}</td>
+                <td class="text-left align-middle">{{ promotion.promotion.promotion_name }}</td>
+                <td class="text-left align-middle">{{ promotion.promotion.description }}</td>
+                <td class="text-right align-middle">{{ promotion.promotion.promotion_min_quantity |number }}</td>
+                <td class="text-right align-middle">{{ promotion.promotion.promotion_quantity |number }}</td>
+                <td class="text-center align-middle">
+                  <div class="table-responsive">
+                    <ul class="list-group">
+                      <li class="list-group-item text-left" *ngFor="let food of promotion.foods">{{ food.food_name }}
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+                <td class="text-center align-middle">
+                  {{ promotion.promotion.expiry_date |date: 'dd-MM-yyyy' }}
+                </td>
+                <td class="text-center align-middle" *ngIf="promotion.promotion.enabled ; else unEnabled">
+                  <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;"
+                    (click)="toggleEnaledPFood(promotion)">
+                </td>
+                <ng-template #unEnabled>
+                  <td class="text-center align-middle">
+                    <img src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;"
+                      (click)="toggleEnaledPFood(promotion)">
+                  </td>
+                </ng-template>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+  </mat-card-content>
+</mat-card>

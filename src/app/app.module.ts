@@ -111,6 +111,8 @@ import { TakeOffByDatePipePipe } from './pipes/take-off-by-date-pipe.pipe';
 import { ListTransactionsComponent } from './dialogs/list-transactions/list-transactions.component';
 import { BalancesComponent } from './pages/balances/balances.component';
 import { AddPaymentComponent } from './pages/add-payment/add-payment.component';
+import { PromotionsComponent } from './pages/promotions/promotions.component';
+import { PromotionsPipe } from './pipes/promotions.pipe';
 
 @NgModule({
   declarations: [
@@ -201,6 +203,8 @@ import { AddPaymentComponent } from './pages/add-payment/add-payment.component';
     ListTransactionsComponent,
     BalancesComponent,
     AddPaymentComponent,
+    PromotionsComponent,
+    PromotionsPipe,
 
 
   ],
@@ -274,7 +278,7 @@ import { AddPaymentComponent } from './pages/add-payment/add-payment.component';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
     { provide: FirestoreSettingsToken, useValue: {} },
-    DatePipe, ProductByIdPipe, CurrencyPipe, ProductCatPipePipe, PurchaseSearchPipe, TakeOffByDatePipePipe,
+    DatePipe, ProductByIdPipe, CurrencyPipe, ProductCatPipePipe, PurchaseSearchPipe, TakeOffByDatePipePipe, PromotionsPipe,
   ],
   bootstrap: [AppComponent]
 })

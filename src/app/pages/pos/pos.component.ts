@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { CouponAddPosComponent } from 'src/app/dialogs/coupon-add-pos/coupon-add-pos.component';
+import { PromotionsService } from 'src/app/services/promotions.service';
 
 declare var swal: any;
 
@@ -25,7 +26,7 @@ declare var swal: any;
 export class PosComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router, private backendServices: BackendServiceService) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router, private backendServices: BackendServiceService, private promotionService: PromotionsService) {
     this.user = _firebaseAuth.authState;
     this.foodsRef = db.collection<Food>('foods');
     this.foodCategoriesRef = db.collection<FoodCategory>('food_categories', ref => {
@@ -69,6 +70,8 @@ export class PosComponent implements OnInit {
 
   searchFoodName: any;
   selectedCate: any;
+
+  promotions: any;
 
   ngOnInit() {
 
@@ -150,19 +153,6 @@ export class PosComponent implements OnInit {
           // cartBuffers.push(item);
         }
       });
-
-      /*
-      if (cartBuffers.length > 0) {
-        localStorage.setItem('cart', JSON.stringify(cartBuffers));
-        this.loadCurrentCartStat();
-        this.totalCalculation();
-      } else {
-        localStorage.removeItem('cart');
-        this.virtualCart = [];
-        this.totalCalculation();
-      }
-      */
-
       if (items.length > 0) {
         localStorage.setItem('cart', JSON.stringify(items));
         this.loadCurrentCartStat();
@@ -203,15 +193,18 @@ export class PosComponent implements OnInit {
             this.virtualCart[i].quantity += 1;
             this.virtualCart[i].total = this.virtualCart[i].quantity * this.virtualCart[i].price;
             index = 1;
+            this.checkPromotion(food.id, this.virtualCart[i].quantity, this.virtualCart[i]);
             break;
           }
         }
         if (index === -1) {
           this.virtualCart.push(food);
+          this.checkPromotion(food.id, 1, food);
         }
         this.totalCalculation();
       } else if (this.virtualCart.length === 0) {
         this.virtualCart.push(food);
+        this.checkPromotion(food.id, 1, food);
         this.totalCalculation();
       }
       localStorage.setItem('cart', JSON.stringify(this.virtualCart));
@@ -257,6 +250,7 @@ export class PosComponent implements OnInit {
               if (item.foodId === cart.foodId && item.subfoodId === cart.subfoodId) {
                 item['quantity'] = q;
                 item['total'] = (q * item.price);
+                this.checkPromotion(item.foodId, q, item);
                 cartBuffers.push(item);
               } else {
                 cartBuffers.push(item);
@@ -265,6 +259,7 @@ export class PosComponent implements OnInit {
               if (item.foodId === cart.foodId) {
                 item['quantity'] = q;
                 item['total'] = (q * item.price);
+                this.checkPromotion(item.foodId, q, item);
                 cartBuffers.push(item);
               } else {
                 cartBuffers.push(item);
@@ -373,5 +368,47 @@ export class PosComponent implements OnInit {
 
   addCoupon() {
     const dialogRef = this.dialog.open(CouponAddPosComponent, { width: '600px' });
+  }
+  checkPromotion(foodId, quantity, food) {
+    // console.log(food);
+    this.promotionService.getpromotionsByFoodId(foodId).then(r => {
+      r.subscribe(promotions => {
+        this.promotions = promotions;
+
+        if (this.promotions.length > 0) {
+          // tslint:disable-next-line: max-line-length
+          // this.snackbar.open('Promotion found for food ' + this.promotions[0].promotion_name + 'Quantity ' + quantity, 'OK', { duration: 10000 });
+          if (quantity > this.promotions[0].promotion_min_quantity) {
+            // tslint:disable-next-line: max-line-length
+            this.snackbar.open('Promotion Condition Matched ' + this.promotions[0].promotion_name + 'Quantity ' + quantity, 'OK', { duration: 10000 });
+
+            this.promotionService.getDiscountByFoodId(this.promotions[0].discountId).then(rx => {
+              rx.subscribe(discountFood => {
+                console.log(discountFood);
+                const item = {
+                  'id': discountFood[0].fId,
+                  'foodId': discountFood[0].fId,
+                  'food': discountFood[0].food_name,
+                  'food_name_en': discountFood[0].food_name_en,
+                  'food_category': discountFood[0].food_category,
+                  'price': discountFood[0].price,
+                  'cost': discountFood[0].cost,
+                  'quantity': 1,
+                  'total': discountFood[0].price * 1,
+                  'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                  'kitchen': discountFood['kitchenName'],
+                  'note': this.promotions[0].promotion_name,
+                };
+                console.log('=========== list item =================');
+                console.log(item);
+                if (item) {
+                  this.addCartsToDb(item);
+                }
+              });
+            });
+          }
+        }
+      });
+    });
   }
 }

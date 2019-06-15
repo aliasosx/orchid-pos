@@ -26,6 +26,9 @@ export class PromotionsService {
     return this._http.put(this.backendService + 'promotions/' + id, food, this.httpOptions);
   }
   async getpromotionsByFoodId(id) {
-    return this._http.get(this.backendService + 'promotions/' + id, this.httpOptions);
+    return this._http.get(this.backendService + 'promotionsByFoodId/' + id, this.httpOptions);
+  }
+  async getDiscountByFoodId(id) {
+    return this._http.get(this.backendService + 'promotionDiscountByFoodId/' + id, this.httpOptions);
   }
 }

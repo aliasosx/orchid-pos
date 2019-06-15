@@ -378,7 +378,7 @@ export class PosComponent implements OnInit {
         if (this.promotions.length > 0) {
           // tslint:disable-next-line: max-line-length
           // this.snackbar.open('Promotion found for food ' + this.promotions[0].promotion_name + 'Quantity ' + quantity, 'OK', { duration: 10000 });
-          if (quantity > this.promotions[0].promotion_min_quantity) {
+          if (quantity % this.promotions[0].promotion_min_quantity === 1 && quantity > this.promotions[0].promotion_min_quantity) {
             // tslint:disable-next-line: max-line-length
             this.snackbar.open('Promotion Condition Matched ' + this.promotions[0].promotion_name + 'Quantity ' + quantity, 'OK', { duration: 10000 });
 

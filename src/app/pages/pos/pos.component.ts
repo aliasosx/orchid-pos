@@ -72,6 +72,7 @@ export class PosComponent implements OnInit {
   selectedCate: any;
 
   promotions: any;
+  groupCounting = 0;
 
   ngOnInit() {
 
@@ -144,6 +145,7 @@ export class PosComponent implements OnInit {
   }
   removeFromlist(food) {
     if (food) {
+      this.groupCounting = 0;
       const items = JSON.parse(localStorage.getItem('cart'));
       const cartBuffers = [];
       items.forEach((item, index) => {
@@ -417,12 +419,12 @@ export class PosComponent implements OnInit {
       r.subscribe(foodx => {
         this.promotionService.getPromotionGroupByGroupId(foodx['foodTypeId']).then(r => {
           r.subscribe(promotionGroup => {
+            this.groupCounting += 1;
             this.promotions = promotionGroup;
 
             if (this.promotions.length > 0) {
               // tslint:disable-next-line: max-line-length
-              // this.snackbar.open('Promotion found for food ' + this.promotions[0].promotion_name + 'Quantity ' + quantity, 'OK', { duration: 10000 });
-              if (quantity % this.promotions[0].promotion_min_quantity === 1 && quantity > this.promotions[0].promotion_min_quantity) {
+              if (this.groupCounting % this.promotions[0].promotion_min_quantity === 1 && this.groupCounting > this.promotions[0].promotion_min_quantity) {
                 // tslint:disable-next-line: max-line-length
                 this.snackbar.open('Promotion Condition Matched ' + this.promotions[0].promotion_name + 'Quantity ' + quantity, 'OK', { duration: 10000 });
 

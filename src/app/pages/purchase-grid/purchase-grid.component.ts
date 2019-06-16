@@ -36,15 +36,18 @@ export class PurchaseGridComponent implements OnInit {
   items = [];
   itemList = 0;
   purchaseForm: FormGroup;
+  currencies: any;
 
   ngOnInit() {
 
     this.purchaseForm = new FormGroup({
       purchaseDate: new FormControl(),
+      src_currency: new FormControl(),
     });
 
     this.loadProductCategories();
     this.loadProducts();
+    this.loadCurrencies();
     this.purchaseBuffers = this.purchaseBufferRef.snapshotChanges().pipe(map(change => {
       this.grandTotal = 0;
       return change.map(a => {
@@ -206,5 +209,10 @@ export class PurchaseGridComponent implements OnInit {
       });
     }
 
+  }
+  async loadCurrencies() {
+    this.backendService.getCurrencies().then(r => {
+      r.subscribe(currencies => this.currencies = currencies);
+    });
   }
 }

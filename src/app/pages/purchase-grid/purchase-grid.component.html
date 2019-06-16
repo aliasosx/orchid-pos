@@ -61,7 +61,6 @@
                   <div class="col-sm-9">
                     <input type="date" class="form-control" formControlName="purchaseDate" required>
                   </div>
-
                 </div>
               </form>
 
@@ -77,6 +76,7 @@
                   <th class="text-center">#</th>
                   <th class="text-left">ສິນຄ້າ</th>
                   <th class="text-center">ລາຄາ</th>
+                  <th class="text-center">ສະກຸນ</th>
                   <th class="text-center">ຈຳນວນ</th>
                   <th class="text-center">ລວມ</th>
                   <th class="text-center">ລຶບ</th>
@@ -89,6 +89,13 @@
                       <input type="number" class="form-control text-right" id="txtCost"
                         style="max-width:100px;padding:0" value="{{ item.cost }}"
                         (change)="updateItemCost(item.id, item.quantity, $event.target.value)">
+                    </td>
+                    <td class="text-right align-middle">
+                      <select class="form-control" id="src_currency">
+                        <option value="">Choose</option>
+                        <option *ngFor="let currency of currencies" value="{{ currency.id }}">
+                          {{ currency.currency_name }}</option>
+                      </select>
                     </td>
                     <td class="text-right align-middle">
                       <input type="number" class="form-control text-right" id="txtQuantity"

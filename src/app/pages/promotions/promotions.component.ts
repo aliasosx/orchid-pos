@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PromotionsService } from 'src/app/services/promotions.service';
+import { MatDialog } from '@angular/material';
+import { AddPromotionComponent } from 'src/app/dialogs/add-promotion/add-promotion.component';
+import { AddPromotionFoodComponent } from 'src/app/dialogs/add-promotion-food/add-promotion-food.component';
 
 @Component({
   selector: 'app-promotions',
@@ -8,7 +11,7 @@ import { PromotionsService } from 'src/app/services/promotions.service';
 })
 export class PromotionsComponent implements OnInit {
 
-  constructor(private promotionServices: PromotionsService) { }
+  constructor(private promotionServices: PromotionsService, private dialog: MatDialog) { }
   searchPromotion: any;
   promotions: any;
   promotionDetails: any;
@@ -25,7 +28,7 @@ export class PromotionsComponent implements OnInit {
       r.subscribe(promotions => {
         this.promotions = promotions;
         this.promotions.forEach(promotion => {
-          console.log(promotion);
+          // console.log(promotion);
           this.promotionServices.getPromotionsById(promotion.id).then(rx => {
             rx.subscribe(promotionDetail => {
               this.promotionsList.push({
@@ -40,7 +43,14 @@ export class PromotionsComponent implements OnInit {
     });
   }
   openAddNewDialog() {
-
+    const dialogRef = this.dialog.open(AddPromotionComponent, {
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(r => {
+      if (r === 'success') {
+        this.loadPromotions();
+      }
+    });
   }
   toggleEnaledPFood(promotion) {
     // console.log(foods.pFood.fid);
@@ -59,6 +69,33 @@ export class PromotionsComponent implements OnInit {
           this.loadPromotions();
         }
       });
+    });
+  }
+  updatePromotion(promotion) {
+    if (promotion) {
+      const dialogRef = this.dialog.open(AddPromotionComponent, {
+        width: '600px',
+        data: promotion,
+      });
+      dialogRef.afterClosed().subscribe(r => {
+        if (r === 'success') {
+          this.loadPromotions();
+        }
+      });
+    }
+  }
+  addFood(promotion) {
+    if (promotion.foodTypeName) {
+      return;
+    }
+    const dialogRef = this.dialog.open(AddPromotionFoodComponent, {
+      width: '600px',
+      data: promotion,
+    });
+    dialogRef.afterClosed().subscribe(r => {
+      if (r === 'success') {
+        this.loadPromotions();
+      }
     });
   }
 }

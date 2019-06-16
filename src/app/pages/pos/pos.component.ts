@@ -410,5 +410,52 @@ export class PosComponent implements OnInit {
         }
       });
     });
+
+    // Check promotion by Group
+
+    this.backendServices.getFoodById(foodId).then(r => {
+      r.subscribe(foodx => {
+        this.promotionService.getPromotionGroupByGroupId(foodx['foodTypeId']).then(r => {
+          r.subscribe(promotionGroup => {
+            this.promotions = promotionGroup;
+
+            if (this.promotions.length > 0) {
+              // tslint:disable-next-line: max-line-length
+              // this.snackbar.open('Promotion found for food ' + this.promotions[0].promotion_name + 'Quantity ' + quantity, 'OK', { duration: 10000 });
+              if (quantity % this.promotions[0].promotion_min_quantity === 1 && quantity > this.promotions[0].promotion_min_quantity) {
+                // tslint:disable-next-line: max-line-length
+                this.snackbar.open('Promotion Condition Matched ' + this.promotions[0].promotion_name + 'Quantity ' + quantity, 'OK', { duration: 10000 });
+
+                this.promotionService.getDiscountByFoodId(this.promotions[0].discountId).then(rx => {
+                  rx.subscribe(discountFood => {
+                    console.log(discountFood);
+                    const item = {
+                      'id': discountFood[0].fId,
+                      'foodId': discountFood[0].fId,
+                      'food': discountFood[0].food_name,
+                      'food_name_en': discountFood[0].food_name_en,
+                      'food_category': discountFood[0].food_category,
+                      'price': discountFood[0].price,
+                      'cost': discountFood[0].cost,
+                      'quantity': 1,
+                      'total': discountFood[0].price * 1,
+                      'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                      'kitchen': discountFood['kitchenName'],
+                      'note': '',
+                    };
+                    console.log('=========== list item =================');
+                    // console.log(item);
+                    if (item) {
+                      this.addCartsToDb(item);
+                    }
+                  });
+                });
+              }
+            }
+          });
+        });
+      });
+    });
+
   }
 }

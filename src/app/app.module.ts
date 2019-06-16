@@ -113,6 +113,8 @@ import { BalancesComponent } from './pages/balances/balances.component';
 import { AddPaymentComponent } from './pages/add-payment/add-payment.component';
 import { PromotionsComponent } from './pages/promotions/promotions.component';
 import { PromotionsPipe } from './pipes/promotions.pipe';
+import { AddPromotionComponent } from './dialogs/add-promotion/add-promotion.component';
+import { AddPromotionFoodComponent } from './dialogs/add-promotion-food/add-promotion-food.component';
 
 @NgModule({
   declarations: [
@@ -205,6 +207,8 @@ import { PromotionsPipe } from './pipes/promotions.pipe';
     AddPaymentComponent,
     PromotionsComponent,
     PromotionsPipe,
+    AddPromotionComponent,
+    AddPromotionFoodComponent,
 
 
   ],
@@ -273,6 +277,8 @@ import { PromotionsPipe } from './pipes/promotions.pipe';
     StockhistoryComponent,
     ListTransactionsComponent,
     AddPaymentComponent,
+    AddPromotionComponent,
+    AddPromotionFoodComponent,
   ]
   ,
   providers: [

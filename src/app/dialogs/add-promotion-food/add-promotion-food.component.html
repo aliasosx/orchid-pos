@@ -1,0 +1,37 @@
+<div class="h4" mat-dialog-title>ເພີມອາຫານ ໂປຣໂມຊັນ</div>
+<form [formGroup]="foodForms">
+  <ng-container *ngIf="data.promotion_type_name.toUpperCase()==='FOOD'; else group">
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="foodId">ອາຫານ</label>
+        <select class="form-control" id="foodId" formControlName="foodId" required formControlName="foodId">
+          <option value="" disabled>Choose</option>
+          <option *ngFor="let food of foods" value="{{ food.id }}">{{ food.food_name }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-6">
+        <button mat-flat-button color="primary" class="form-control" style="top:31px;" (click)="savePromotion()"
+          id="expiry_date">ບັນທຶກ</button>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #group>
+    <ng-container>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="foodTypeId">ກຸ່ມ</label>
+          <select class="form-control" id="foodTypeId" formControlName="foodTypeId" required
+            formControlName="foodTypeId">
+            <option value="" disabled>Choose</option>
+            <option *ngFor="let foodtype of foodTypes" value="{{ foodtype.id }}">{{ foodtype.foodTypeName }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <button mat-flat-button color="primary" class="form-control" style="top:31px;" (click)="savePromotion()"
+            id="expiry_date">ບັນທຶກ</button>
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
+</form>

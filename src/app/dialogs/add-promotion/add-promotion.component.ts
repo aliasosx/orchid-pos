@@ -22,7 +22,6 @@ export class AddPromotionComponent implements OnInit {
 
   async ngOnInit() {
     this.promotionForm = new FormGroup({
-      id: new FormControl(),
       promotion_name: new FormControl(),
       description: new FormControl(),
       promotion_min_quantity: new FormControl(0),
@@ -32,11 +31,23 @@ export class AddPromotionComponent implements OnInit {
       expiry_date: new FormControl(),
       foodTypeId: new FormControl(),
       enabled: new FormControl(0),
-      createdAt: new FormControl(0),
-      updatedAt: new FormControl(0),
     });
     console.log(this.data);
     if (this.data) {
+      this.promotionForm = new FormGroup({
+        id: new FormControl(),
+        promotion_name: new FormControl(),
+        description: new FormControl(),
+        promotion_min_quantity: new FormControl(0),
+        promotion_quantity: new FormControl(0),
+        discountId: new FormControl(0),
+        promotionTypeId: new FormControl(0),
+        expiry_date: new FormControl(),
+        foodTypeId: new FormControl(),
+        enabled: new FormControl(0),
+        createdAt: new FormControl(),
+        updatedAt: new FormControl(),
+      });
       if (this.data.foodTypeName) {
         this.showGroup = '';
       } else {
@@ -76,15 +87,19 @@ export class AddPromotionComponent implements OnInit {
       if (this.data) {
         this.updatePromotion();
         return;
-      }
-      this.promotionService.createPromotion(this.promotionForm.value).then(r => {
-        r.subscribe(promotion => {
-          if (promotion['status'] === 'success') {
-            this.dialogRef.close('success');
-          }
+      } else {
+        this.promotionService.createPromotion(this.promotionForm.value).then(r => {
+          r.subscribe(promotion => {
+            if (promotion['status'] === 'success') {
+              this.dialogRef.close('success');
+            }
+          });
         });
-      });
+      }
+    } else {
+      console.log(this.promotionForm.value);
     }
+
   }
   updatePromotion() {
     if (this.promotionForm.valid) {

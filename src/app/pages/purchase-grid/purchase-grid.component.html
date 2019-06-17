@@ -1,6 +1,6 @@
 <div>
   <div class="row mt-2">
-    <div class="col col-md-7 col-sm-12">
+    <div class="col col-md-6 col-sm-12">
       <div class="card">
         <div class="card-body">
           <div class="form-group row">
@@ -44,94 +44,106 @@
         </div>
       </div>
     </div>
-    <div class="col col-md-5  col-sm-12">
-      <div class="card">
-        <div class="card-body" style="max-height: 75vh; ;overflow: auto;">
-          <div class="row">
-            <div class="col col-md-6">
-              <h5 class="card-title mt-1">
-                ລາຍການທີ່ເລືອກໄວ້
-              </h5>
-            </div>
+    <div class="col col-md-6  col-sm-12">
+      <form [formGroup]="purchaseForm">
+        <div class="card">
+          <div class="card-body" style="max-height: 75vh; ;overflow: auto;">
+            <div class="row">
+              <div class="col col-md-6">
+                <h5 class="card-title mt-1">
+                  ລາຍການທີ່ເລືອກໄວ້
+                </h5>
+              </div>
 
-            <div class="col col-md-6">
-              <form [formGroup]="purchaseForm">
+              <div class="col col-md-6">
+
                 <div class="form-group row">
                   <label for="staticEmail" class="col-sm-3 col-form-label">ວັນທີ່ຊື້</label>
                   <div class="col-sm-9">
                     <input type="date" class="form-control" formControlName="purchaseDate" required>
                   </div>
                 </div>
-              </form>
-
-
+              </div>
             </div>
-          </div>
 
-          <mat-divider></mat-divider>
-          <div class="table-responsive mt-1">
-            <ng-container *ngIf="purchaseBuffers; else nonData">
-              <table class="table table-hover">
-                <thead>
-                  <th class="text-center">#</th>
-                  <th class="text-left">ສິນຄ້າ</th>
-                  <th class="text-center">ລາຄາ</th>
-                  <th class="text-center">ສະກຸນ</th>
-                  <th class="text-center">ຈຳນວນ</th>
-                  <th class="text-center">ລວມ</th>
-                  <th class="text-center">ລຶບ</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of purchaseBuffers |async; let i = index">
-                    <td class="text-center align-middle">{{ i+1 }}</td>
-                    <td class="text-left align-middle">{{ item.product_name }}</td>
-                    <td class="text-right align-middle">
-                      <input type="number" class="form-control text-right" id="txtCost"
-                        style="max-width:100px;padding:0" value="{{ item.cost }}"
-                        (change)="updateItemCost(item.id, item.quantity, $event.target.value)">
-                    </td>
-                    <td class="text-right align-middle">
-                      <select class="form-control" id="src_currency">
-                        <option value="">Choose</option>
-                        <option *ngFor="let currency of currencies" value="{{ currency.id }}">
-                          {{ currency.currency_name }}</option>
-                      </select>
-                    </td>
-                    <td class="text-right align-middle">
-                      <input type="number" class="form-control text-right" id="txtQuantity"
-                        style="max-width: 80px;padding:0"
-                        (change)="updateItemQuantity(item.id, $event.target.value, item.cost)"
-                        value="{{ item.quantity  }}">
-                    </td>
-                    <td class="text-right align-middle">{{ item.total |number }}</td>
-                    <td class="text-center align-middle">
-                      <img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer;"
-                        (click)="removeItem(item.id)">
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody>
-                  <tr>
-                    <!--
+            <mat-divider></mat-divider>
+            <div class="table-responsive mt-1">
+              <ng-container *ngIf="purchaseBuffers; else nonData">
+                <table class="table table-hover">
+                  <thead>
+                    <th class="text-center">#</th>
+                    <th class="text-left">ສິນຄ້າ</th>
+                    <th class="text-center">ລາຄາ</th>
+                    <th class="text-center">ສະກຸນ</th>
+                    <th class="text-center">ອັດຕາແລກປ່ຽນ</th>
+                    <th class="text-center">ລາຄາ ກີບ</th>
+                    <th class="text-center">ຈຳນວນ</th>
+                    <th class="text-center">ລວມ</th>
+                    <th class="text-center">ລຶບ</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of purchaseBuffers |async; let i = index">
+                      <td class="text-center align-middle">{{ i+1 }}</td>
+                      <td class="text-left align-middle">{{ item.product_name }}</td>
+
+                      <td class="text-right align-middle">
+                        <input type="number" class="form-control text-right" id="src_amount"
+                          formControlName="src_amount" style="max-width:100px;padding:0" value="{{ item.src_amount }}"
+                          (change)="updateItemCost(item.id, item.quantity, $event.target.value)">
+                      </td>
+                      <td class="text-right align-middle">
+                        <select class="form-control" id="src_currency"
+                          (change)="CurrnecySelected($event.target.value, item.src_amount, item.id, item.quantity)">
+                          <option value="">Choose</option>
+                          <option *ngFor="let currency of currencies" value="{{ currency.id }}">
+                            {{ currency.currency_name }}</option>
+                        </select>
+                      </td>
+                      <td class="text-right align-middle">
+                        <input type="number" class="form-control text-right" id="rate_conversion"
+                          style="max-width:100px;padding:0" value="{{ item.rate_conversion}}"
+                          (change)="updateItemCost(item.id, item.quantity, $event.target.value)">
+                      </td>
+                      <td class="text-right align-middle">
+                        <input type="number" class="form-control text-right" id="txtCost"
+                          style="max-width:100px;padding:0" value="{{ item.cost}}">
+                      </td>
+                      <td class="text-right align-middle">
+                        <input type="number" class="form-control text-right" id="txtQuantity"
+                          style="max-width: 80px;padding:0"
+                          (change)="updateItemQuantity(item.id, $event.target.value, item.cost)"
+                          value="{{ item.quantity  }}">
+                      </td>
+                      <td class="text-right align-middle">{{ item.total |number }}</td>
+                      <td class="text-center align-middle">
+                        <img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer;"
+                          (click)="removeItem(item.id)">
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody>
+                    <tr>
+                      <!--
                       <td colspan="4" class="text-right">Billing Amount</td>
                     <td class="text-right font-weight-bold">{{ grandTotal | number }}</td>
                     <td></td>
                     -->
-                  </tr>
-                </tbody>
-              </table>
-            </ng-container>
-            <ng-template #nonData>
-              <div class="display-4 text-center"
-                style="color: darkgrey;font-family: Verdana, Geneva, Tahoma, sans-serif;">
-                No Item
-              </div>
-            </ng-template>
+                    </tr>
+                  </tbody>
+                </table>
+              </ng-container>
+              <ng-template #nonData>
+                <div class="display-4 text-center"
+                  style="color: darkgrey;font-family: Verdana, Geneva, Tahoma, sans-serif;">
+                  No Item
+                </div>
+              </ng-template>
+
+            </div>
 
           </div>
-
         </div>
-      </div>
+      </form>
       <div class="card mt-1">
         <div class="card-body">
           <div class="row">

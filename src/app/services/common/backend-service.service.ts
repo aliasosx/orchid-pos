@@ -452,5 +452,8 @@ export class BackendServiceService {
   async getExpenditureReport(data) {
     return this._http.post(this.backendService + 'getExpenditureReports', data, this.httpOptions);
   }
+  async getCurrency(id) {
+    return this._http.get(this.backendService + 'currency/' + id, this.httpOptions);
+  }
 }
 

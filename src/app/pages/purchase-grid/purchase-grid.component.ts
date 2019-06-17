@@ -41,8 +41,11 @@ export class PurchaseGridComponent implements OnInit {
   ngOnInit() {
 
     this.purchaseForm = new FormGroup({
-      purchaseDate: new FormControl(),
+      purchaseDate: new FormControl(new Date()),
+      src_amount: new FormControl(),
       src_currency: new FormControl(),
+      dest_amount: new FormControl(),
+      rate_conversion: new FormControl(),
     });
 
     this.loadProductCategories();
@@ -94,9 +97,13 @@ export class PurchaseGridComponent implements OnInit {
         });
       } else if (this.purchaseForm.valid) {
         const purchase_data = {
-          billingNo: 10000,
+          billingNo: this.padding(Math.floor(Math.random() * 60000000000) + 1, 12),
           productId: product.id,
           product_name: product.product_name,
+          src_amount: product.cost,
+          src_currency: 2,
+          dest_amount: 0,
+          rate_conversion: 1,
           cost: product.cost,
           quantity: 1,
           total: product.cost,
@@ -115,23 +122,23 @@ export class PurchaseGridComponent implements OnInit {
       }
     });
   }
-
-
   removeItem(id) {
     this.db.collection('purchaseBuffers').doc(id).delete();
   }
   updateItemQuantity(id, quantity, cost) {
     const data = {
       quantity: quantity,
-      total: quantity * cost
+      total: quantity * parseInt(this.purchaseForm.get('dest_amount').value, 10),
     };
     this.db.collection('purchaseBuffers').doc(id).update(data);
   }
-  updateItemCost(id, quantity, cost) {
+  updateItemCost(id, quantity, cost, src_amount?, src_currency?) {
     const data = {
+      src_amount: src_amount,
+      src_currency: src_currency,
       cost: cost,
       quantity: quantity,
-      total: quantity * cost
+      total: quantity * parseInt(this.purchaseForm.get('dest_amount').value, 10),
     };
     this.db.collection('purchaseBuffers').doc(id).update(data);
   }
@@ -208,11 +215,33 @@ export class PurchaseGridComponent implements OnInit {
         });
       });
     }
-
   }
   async loadCurrencies() {
     this.backendService.getCurrencies().then(r => {
       r.subscribe(currencies => this.currencies = currencies);
     });
+  }
+  async CurrnecySelected(e, src_amount, id, quantity) {
+    if (e) {
+      this.backendService.getCurrency(e).then(r => {
+        r.subscribe(async (conversion_rate) => {
+          console.log(conversion_rate);
+          const data = {
+            rate_conversion: conversion_rate[0].rate,
+            dest_amount: src_amount * conversion_rate[0].rate,
+            cost: (src_amount * conversion_rate[0].rate),
+            total: (src_amount * conversion_rate[0].rate) * quantity,
+          };
+          this.db.collection('purchaseBuffers').doc(id).update(data);
+        });
+      });
+    } else {
+      this.purchaseForm.get('rate_conversion').setValue(1);
+    }
+  }
+  padding(num: number, size: number) {
+    let s = num + '';
+    while (s.length < size) { s = '0' + s; }
+    return s;
   }
 }

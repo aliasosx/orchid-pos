@@ -60,7 +60,7 @@
                 <div class="form-group row">
                   <label for="staticEmail" class="col-sm-3 col-form-label">ວັນທີ່ຊື້</label>
                   <div class="col-sm-9">
-                    <input type="date" class="form-control" formControlName="purchaseDate" required>
+                    <input type="date" class="form-control" value="new Date()" formControlName="purchaseDate" required>
                   </div>
                 </div>
               </div>
@@ -94,7 +94,7 @@
                       <td class="text-right align-middle">
                         <select class="form-control" id="src_currency"
                           (change)="CurrnecySelected($event.target.value, item.src_amount, item.id, item.quantity)">
-                          <option value="">Choose</option>
+                          <option value="" disabled>Choose</option>
                           <option *ngFor="let currency of currencies" value="{{ currency.id }}">
                             {{ currency.currency_name }}</option>
                         </select>

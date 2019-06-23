@@ -49,5 +49,10 @@ export class PromotionsService {
   async getPromotionGroupByGroupId(id) {
     return this._http.get(this.backendService + 'promotionGroupByFoodId/' + id, this.httpOptions);
   }
-
+  async getFoodMeatType() {
+    return this._http.get(this.backendService + 'foodMeatTypes', this.httpOptions);
+  }
+  async getFoodMeatTypeById(id) {
+    return this._http.get(this.backendService + 'foodMeatTypes/' + id, this.httpOptions);
+  }
 }

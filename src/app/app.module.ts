@@ -115,6 +115,8 @@ import { PromotionsComponent } from './pages/promotions/promotions.component';
 import { PromotionsPipe } from './pipes/promotions.pipe';
 import { AddPromotionComponent } from './dialogs/add-promotion/add-promotion.component';
 import { AddPromotionFoodComponent } from './dialogs/add-promotion-food/add-promotion-food.component';
+import { DynamicsPromotionsComponent } from './pages/dynamics-promotions/dynamics-promotions.component';
+import { PromotionRoleComponent } from './dialogs/promotion-role/promotion-role.component';
 
 @NgModule({
   declarations: [
@@ -209,6 +211,8 @@ import { AddPromotionFoodComponent } from './dialogs/add-promotion-food/add-prom
     PromotionsPipe,
     AddPromotionComponent,
     AddPromotionFoodComponent,
+    DynamicsPromotionsComponent,
+    PromotionRoleComponent,
 
 
   ],
@@ -279,6 +283,7 @@ import { AddPromotionFoodComponent } from './dialogs/add-promotion-food/add-prom
     AddPaymentComponent,
     AddPromotionComponent,
     AddPromotionFoodComponent,
+    PromotionRoleComponent,
   ]
   ,
   providers: [

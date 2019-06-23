@@ -3,6 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { PromotionsService } from 'src/app/services/promotions.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { Promotion } from 'src/app/interfaces/promotions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-promotion',
@@ -12,7 +15,9 @@ import { BackendServiceService } from 'src/app/services/common/backend-service.s
 export class AddPromotionComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private backendService: BackendServiceService, private promotionService: PromotionsService, private dialogRef: MatDialogRef<AddPromotionComponent>, @Inject(MAT_DIALOG_DATA) public data) { }
+  constructor(private db: AngularFirestore, private backendService: BackendServiceService, private promotionService: PromotionsService, private dialogRef: MatDialogRef<AddPromotionComponent>, @Inject(MAT_DIALOG_DATA) public data) {
+    this.promotionsRef = db.collection<Promotion>('promotions');
+  }
   promotionForm: FormGroup;
   coupons: any;
   promotionTypes: any;
@@ -20,17 +25,29 @@ export class AddPromotionComponent implements OnInit {
   foodTypes: any;
   showGroup = 'hidden';
 
+  promotionsRef: AngularFirestoreCollection<Promotion>;
+  promotions: Observable<any[]>;
+
+  selectedPromotionType: any;
+  foodMeatTypes: any;
+  ingrediens: any;
+
+  masterQuantity: any;
+  slaveQuantity: any;
+  promotionQuantity: any;
+
   async ngOnInit() {
     this.promotionForm = new FormGroup({
       promotion_name: new FormControl(),
       description: new FormControl(),
-      promotion_min_quantity: new FormControl(0),
-      promotion_quantity: new FormControl(0),
-      discountId: new FormControl(0),
-      promotionTypeId: new FormControl(0),
+      masterGroups: new FormControl(),
+      slaveGroups: new FormControl(),
+      promotionGroup: new FormControl(),
+      promotionTypeId: new FormControl(),
       expiry_date: new FormControl(),
-      foodTypeId: new FormControl(),
-      enabled: new FormControl(0),
+      enabled: new FormControl(false),
+      createdAt: new FormControl(new Date()),
+      updatedAt: new FormControl(new Date()),
     });
     console.log(this.data);
     if (this.data) {
@@ -40,11 +57,10 @@ export class AddPromotionComponent implements OnInit {
         description: new FormControl(),
         promotion_min_quantity: new FormControl(0),
         promotion_quantity: new FormControl(0),
-        discountId: new FormControl(0),
         promotionTypeId: new FormControl(0),
         expiry_date: new FormControl(),
         foodTypeId: new FormControl(),
-        enabled: new FormControl(0),
+        enabled: new FormControl(false),
         createdAt: new FormControl(),
         updatedAt: new FormControl(),
       });
@@ -59,6 +75,7 @@ export class AddPromotionComponent implements OnInit {
     this.loadDiscount();
     this.loadPromotionTypes();
     this.loadFoodTypes();
+    this.loadMeatType();
   }
   loadDiscount() {
     this.promotionService.getCouponDiscount().then(r => {
@@ -73,6 +90,7 @@ export class AddPromotionComponent implements OnInit {
     });
   }
   loadPromotionMaster() {
+    /*
     this.promotionService.getPromotionsRawById(this.data.id).then(r => {
       r.subscribe(async (promotion) => {
         if (promotion) {
@@ -81,6 +99,8 @@ export class AddPromotionComponent implements OnInit {
         }
       });
     });
+    */
+    this.promotionForm.setValue(this.data);
   }
   savePromotion() {
     if (this.promotionForm.valid) {
@@ -88,6 +108,10 @@ export class AddPromotionComponent implements OnInit {
         this.updatePromotion();
         return;
       } else {
+        this.promotionsRef.add(this.promotionForm.value).then(rsp => {
+          this.dialogRef.close('success');
+        });
+        /*
         this.promotionService.createPromotion(this.promotionForm.value).then(r => {
           r.subscribe(promotion => {
             if (promotion['status'] === 'success') {
@@ -95,24 +119,31 @@ export class AddPromotionComponent implements OnInit {
             }
           });
         });
+        */
       }
     } else {
-      console.log(this.promotionForm.value);
+      console.log(this.promotionForm);
     }
 
   }
   updatePromotion() {
-    if (this.promotionForm.valid) {
-      this.promotionService.updatePromotionsById(this.promotionForm.get('id').value, this.promotionForm.value).then(r => {
-        r.subscribe(promotion => {
-          if (promotion['status'] === 'success') {
-            this.dialogRef.close('success');
-          }
-        });
+
+    /*
+    this.promotionService.updatePromotionsById(this.promotionForm.get('id').value, this.promotionForm.value).then(r => {
+      r.subscribe(promotion => {
+        if (promotion['status'] === 'success') {
+          this.dialogRef.close('success');
+        }
       });
-    }
+    });
+    */
+    this.promotionsRef.doc(this.promotionForm.get('id').value).update(this.promotionForm.value).then(r => {
+      this.dialogRef.close('success');
+    });
   }
   foodTypeSelected(e) {
+    this.selectedPromotionType = this.promotionTypes.filter(a => a.id === e);
+    console.log(this.selectedPromotionType);
     if (e) {
       if (e === '2') {
         this.showGroup = '';
@@ -125,6 +156,39 @@ export class AddPromotionComponent implements OnInit {
     this.backendService.getFoodTypes().then(r => {
       r.subscribe(foodTypes => {
         this.foodTypes = foodTypes;
+      });
+    });
+  }
+  loadMeatType() {
+    this.promotionService.getFoodMeatType().then(r => {
+      r.subscribe(meatTypes => {
+        this.foodMeatTypes = meatTypes;
+      });
+    });
+  }
+  ingredienChange(e) {
+    this.promotionService.getFoodMeatTypeById(e).then(r => {
+      r.subscribe(ingrediens => {
+        ingrediens['quantity'] = this.promotionQuantity;
+        this.promotionForm.get('masterGroups').setValue(ingrediens[0]);
+      });
+    });
+  }
+  slaveChange(e) {
+    console.log(e);
+    this.backendService.getFoodTypesById(e).then(r => {
+      r.subscribe(foodTypes => {
+        console.log(foodTypes);
+        this.promotionForm.get('slaveGroups').setValue(foodTypes[0]);
+      });
+    });
+  }
+  PromotionGroupChange(e) {
+    this.promotionService.getFoodMeatTypeById(e).then(r => {
+      r.subscribe(ingrediens => {
+        this.ingrediens = ingrediens;
+        this.promotionForm.get('promotionGroup').setValue(ingrediens[0]);
+        console.log(this.ingrediens);
       });
     });
   }

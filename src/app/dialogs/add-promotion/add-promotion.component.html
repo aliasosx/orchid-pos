@@ -1,4 +1,4 @@
-<div class="h4" mat-dialog-title>ເພີມໂປຣໂມຊັນ ໃໝ່</div>
+<div class="h4" mat-dialog-title>Exclusive promotion</div>
 <mat-divider class="mb-1"></mat-divider>
 <form [formGroup]="promotionForm">
   <div class="form-row">
@@ -8,28 +8,6 @@
         formControlName="promotion_name" required>
     </div>
     <div class="form-group col-md-6">
-      <label for="description">Description</label>
-      <input type="text" class="form-control" id="description" placeholder="description" formControlName="description"
-        required>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="promotion_min_quantity">Minimum Quantity</label>
-      <input type="number" class="form-control text-right" id="promotion_min_quantity"
-        placeholder="promotion_min_quantity" formControlName="promotion_min_quantity" required>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="promotion_quantity">Promotion Quantity</label>
-      <input type="number" class="form-control text-right" id="promotion_quantity" placeholder="promotion_quantity"
-        formControlName="promotion_quantity" required>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="discountId">Coupons</label>
-      <select class="form-control" id="discountId" formControlName="discountId" required>
-        <option value="" disabled>Choose</option>
-        <option *ngFor="let item of coupons" value="{{ item.id }}">{{ item.food_name }}</option>
-      </select>
-    </div>
-    <div class="form-group col-md-6">
       <label for="promotionTypeId">Promotion Types</label>
       <select class="form-control" id="promotionTypeId" formControlName="promotionTypeId" required
         (change)="foodTypeSelected($event.target.value)">
@@ -37,18 +15,51 @@
         <option *ngFor="let item of promotionTypes" value="{{ item.id }}">{{ item.promotion_type_name }}</option>
       </select>
     </div>
+    <div class="form-group col-md-12">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" id="description" placeholder="description" formControlName="description"
+        required>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="ingredientsType">Master Group</label>
+      <select class="form-control" id="ingredientsType" (change)="ingredienChange($event.target.value)">
+        <option value="" disabled>Choose</option>
+        <option *ngFor="let item of foodMeatTypes" value="{{ item.id }}">{{ item.meat }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="masterQuantity">Quantity</label>
+      <input type="text" class="form-control" id="masterQuantity" placeholder="masterQuantity"
+        [(ngModel)]="masterQuantity">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="foodTypeId">Slave</label>
+      <select class="form-control" id="foodTypeId" (change)="slaveChange($event.target.value)">
+        <option value="" disabled>Choose</option>
+        <option *ngFor="let foodtype of foodTypes" value="{{ foodtype.id }}">{{ foodtype.foodTypeName }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="slaveQuantity">Quantity</label>
+      <input type="text" class="form-control" id="slaveQuantity" placeholder="slaveQuantity"
+        [(ngModel)]="slaveQuantity">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="ingredientsType">Promotion Group</label>
+      <select class="form-control" id="ingredientsType" (change)="PromotionGroupChange($event.target.value)">
+        <option value="" disabled>Choose</option>
+        <option *ngFor="let item of foodMeatTypes" value="{{ item.id }}">{{ item.meat }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="proQuantity">Quantity</label>
+      <input type="text" class="form-control" id="proQuantity" placeholder="proQuantity"
+        [(ngModel)]="promotionQuantity">
+    </div>
     <div class="form-group col-md-6">
       <label for="expiry_date">Expiry Date</label>
       <input type="date" class="form-control" id="expiry_date" placeholder="expiry_date" formControlName="expiry_date"
         required>
-    </div>
-
-    <div class="form-group col-md-6" [ngClass]="showGroup">
-      <label for="foodTypeId">ກຸ່ມ</label>
-      <select class="form-control" id="foodTypeId" formControlName="foodTypeId" required formControlName="foodTypeId">
-        <option value="" disabled>Choose</option>
-        <option *ngFor="let foodtype of foodTypes" value="{{ foodtype.id }}">{{ foodtype.foodTypeName }}</option>
-      </select>
     </div>
     <div class="form-group col-md-6">
       <button mat-flat-button color="primary" class="form-control" style="top:31px;" (click)="savePromotion()"

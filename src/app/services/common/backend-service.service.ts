@@ -73,6 +73,9 @@ export class BackendServiceService {
   async getFoodTypes() {
     return this._http.get(this.backendService + 'foodtypes', this.httpOptions);
   }
+  async getFoodTypesById(id) {
+    return this._http.get(this.backendService + 'foodtypes/' + id, this.httpOptions);
+  }
   async createFoodTypes(foodtype) {
     return this._http.post(this.backendService + 'foodtypes', foodtype, this.httpOptions);
   }

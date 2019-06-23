@@ -26,6 +26,7 @@ import { CustomerScreenComponent } from './pages/customer-screen/customer-screen
 import { FoodFxComponent } from './pages/food-fx/food-fx.component';
 import { PurchaseGridComponent } from './pages/purchase-grid/purchase-grid.component';
 import { PromotionsComponent } from './pages/promotions/promotions.component';
+import { DynamicsPromotionsComponent } from './pages/dynamics-promotions/dynamics-promotions.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -55,6 +56,7 @@ const routes: Routes = [
   { path: 'purchaseGrid', component: PurchaseGridComponent },
   { path: 'balances', component: BalancesComponent },
   { path: 'promotions', component: PromotionsComponent },
+  { path: 'dpromotions', component: DynamicsPromotionsComponent },
 ];
 
 @NgModule({

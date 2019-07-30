@@ -1,0 +1,38 @@
+<h1 mat-card-title>Members</h1>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" [(ngModel)]="cards" placeholder="card no ...">
+          <div class="input-group-append ml-1">
+            <img src="../../../assets/icons/barcode.png" style="width: 40px;cursor: pointer;">
+          </div>
+        </div>
+      </div>
+      <div class="col"><input type="text" class="form-control" [(ngModel)]="phone" placeholder="phone no ...."></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>cardNo</th>
+                <th>Member Name</th>
+                <th>Mobile no</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let member of members">
+                <td class="text-left">{{ member.cardNo }}</td>
+                <td class="text-left">{{ member.fullname }}</td>
+                <td class="text-left">{{ member.mobile }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

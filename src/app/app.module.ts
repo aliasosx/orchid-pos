@@ -117,6 +117,9 @@ import { AddPromotionComponent } from './dialogs/add-promotion/add-promotion.com
 import { AddPromotionFoodComponent } from './dialogs/add-promotion-food/add-promotion-food.component';
 import { DynamicsPromotionsComponent } from './pages/dynamics-promotions/dynamics-promotions.component';
 import { PromotionRoleComponent } from './dialogs/promotion-role/promotion-role.component';
+import { MembersComponent } from './dialogs/members/members.component';
+import { MemberPipePipe } from './pipes/member-pipe.pipe';
+import { MemberByPhonePipe } from './pipes/member-by-phone.pipe';
 
 @NgModule({
   declarations: [
@@ -213,6 +216,9 @@ import { PromotionRoleComponent } from './dialogs/promotion-role/promotion-role.
     AddPromotionFoodComponent,
     DynamicsPromotionsComponent,
     PromotionRoleComponent,
+    MembersComponent,
+    MemberPipePipe,
+    MemberByPhonePipe,
 
 
   ],
@@ -284,12 +290,15 @@ import { PromotionRoleComponent } from './dialogs/promotion-role/promotion-role.
     AddPromotionComponent,
     AddPromotionFoodComponent,
     PromotionRoleComponent,
+    MembersComponent,
   ]
   ,
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
     { provide: FirestoreSettingsToken, useValue: {} },
     DatePipe, ProductByIdPipe, CurrencyPipe, ProductCatPipePipe, PurchaseSearchPipe, TakeOffByDatePipePipe, PromotionsPipe,
+    MemberPipePipe, MemberByPhonePipe,
+
   ],
   bootstrap: [AppComponent]
 })

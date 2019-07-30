@@ -1,7 +1,7 @@
 import { PrinterServiceService } from './../../services/printer-service.service';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog } from '@angular/material';
 import { Cart } from 'src/app/interfaces/cart';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { PaymentType } from 'src/app/interfaces/paymentType';
 import { environment } from '../../../environments/environment';
 import { QrBankResponseData } from 'src/app/interfaces/qrBankResponseData';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+import { MembersComponent } from '../members/members.component';
 
 declare var $: any;
 declare var deepstream: any;
@@ -27,7 +28,7 @@ declare var swal: any;
 })
 export class PaymentCashComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data, private printerService: PrinterServiceService, private backendService: BackendServiceService) {
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data, private printerService: PrinterServiceService, private backendService: BackendServiceService, private dialog: MatDialog) {
     this.username = data.username;
     this.ticketsRef = db.collection<Ticket>('tickets', ref => {
       return ref.where('used', '==', false).orderBy('ticket', 'asc');
@@ -61,7 +62,7 @@ export class PaymentCashComponent implements OnInit {
     });
   }
   username: string;
-
+  members: any;
   paymentBtnDisabled = false;
 
   orderForm: FormGroup;
@@ -457,5 +458,8 @@ export class PaymentCashComponent implements OnInit {
         this._tickets = tickets;
       });
     });
+  }
+  openMember() {
+    const dialogRef = this.dialog.open(MembersComponent, { width: '800px' });
   }
 }

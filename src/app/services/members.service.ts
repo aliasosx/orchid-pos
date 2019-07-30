@@ -11,15 +11,15 @@ export class MembersService {
   backendUrlMember = environment.backendMemberUrl.url;
 
   async getMemberById(id) {
-    return this._http.get('memberById/' + id);
+    return this._http.get(this.backendUrlMember + 'memberById/' + id);
   }
   async getMemberByPhone(phone) {
-    return this._http.get('memberByPhone/' + phone);
+    return this._http.get(this.backendUrlMember + 'memberByPhone/' + phone);
   }
   async getMemberByCardNo(cardNo) {
-    return this._http.get('memberByCard/' + cardNo);
+    return this._http.get(this.backendUrlMember + 'memberByCard/' + cardNo);
   }
   async getMembers() {
-    return this._http.get('members');
+    return this._http.get(this.backendUrlMember + 'members');
   }
 }

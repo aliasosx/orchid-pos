@@ -15,19 +15,22 @@
     <div class="row">
       <div class="col">
         <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
+          <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
               <tr>
                 <th>cardNo</th>
                 <th>Member Name</th>
                 <th>Mobile no</th>
+                <th class="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let member of members">
-                <td class="text-left">{{ member.cardNo }}</td>
-                <td class="text-left">{{ member.fullname }}</td>
-                <td class="text-left">{{ member.mobile }}</td>
+              <tr *ngFor="let member of members| memberPipe: cards | memberByPhone: phone">
+                <td class="text-left align-middle">{{ member.cardNo }}</td>
+                <td class="text-left align-middle">{{ member.fullname }}</td>
+                <td class="text-left align-middle">{{ member.mobile }}</td>
+                <td class="text-center align-middle">
+                  <button mat-button color="warn" (click)="selectMember()">Choose</button></td>
               </tr>
             </tbody>
           </table>

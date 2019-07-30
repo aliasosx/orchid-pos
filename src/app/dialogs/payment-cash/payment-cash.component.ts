@@ -59,11 +59,13 @@ export class PaymentCashComponent implements OnInit {
       status: new FormControl('processing'),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       cashloadId: new FormControl(),
+      memberId: new FormControl(),
     });
   }
   username: string;
   members: any;
   paymentBtnDisabled = false;
+  member: any;
 
   orderForm: FormGroup;
   ticketsRef: AngularFirestoreCollection<Ticket>;
@@ -461,5 +463,9 @@ export class PaymentCashComponent implements OnInit {
   }
   openMember() {
     const dialogRef = this.dialog.open(MembersComponent, { width: '800px' });
+    this.dialogRef.afterClosed().subscribe(member => {
+      this.member = member;
+      this.orderForm.get('memberId').setValue(member.mId);
+    });
   }
 }

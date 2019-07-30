@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MembersService } from 'src/app/services/members.service';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-members',
@@ -8,7 +9,7 @@ import { MembersService } from 'src/app/services/members.service';
 })
 export class MembersComponent implements OnInit {
 
-  constructor(private memberService: MembersService) {
+  constructor(private memberService: MembersService, private dialogRef: MatDialogRef<MembersComponent>) {
     this.loadMembers();
   }
   cards: any;
@@ -25,5 +26,7 @@ export class MembersComponent implements OnInit {
       });
     });
   }
-
+  selectMember(member) {
+    this.dialogRef.close(member);
+  }
 }

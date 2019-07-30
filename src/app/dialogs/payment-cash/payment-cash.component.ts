@@ -60,6 +60,7 @@ export class PaymentCashComponent implements OnInit {
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       cashloadId: new FormControl(),
       memberId: new FormControl(),
+      memberName: new FormControl(),
     });
   }
   username: string;
@@ -463,9 +464,16 @@ export class PaymentCashComponent implements OnInit {
   }
   openMember() {
     const dialogRef = this.dialog.open(MembersComponent, { width: '800px' });
-    this.dialogRef.afterClosed().subscribe(member => {
+    dialogRef.afterClosed().subscribe(member => {
+      if(!member) {
+        this.orderForm.get('memberId').setValue('');
+        this.orderForm.get('memberName').setValue('');
+        return;
+      };
       this.member = member;
-      this.orderForm.get('memberId').setValue(member.mId);
+      console.log(member);
+      this.orderForm.get('memberId').setValue(member['mId']);
+      this.orderForm.get('memberName').setValue( member['cardNo'] +'|'+member['fullname'] + '|' + member['mobile']);
     });
   }
 }

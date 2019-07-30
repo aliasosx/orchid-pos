@@ -21,12 +21,13 @@ export class MembersComponent implements OnInit {
   loadMembers() {
     this.memberService.getMembers().then(r => {
       r.subscribe(members => {
-        console.log(members);
+        // onsole.log(members);
         this.members = members;
       });
     });
   }
   selectMember(member) {
+    console.log(member);
     this.dialogRef.close(member);
   }
 }

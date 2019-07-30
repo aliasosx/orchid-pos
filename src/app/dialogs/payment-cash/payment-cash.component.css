@@ -12,3 +12,7 @@
 .hidden {
   display: none;
 }
+.memberTxt {
+  cursor: pointer;
+  font-family: 'Courier New', 'Courier', 'monospace','phetsarath ot';
+}

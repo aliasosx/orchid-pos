@@ -16,6 +16,6 @@ export const environment = {
     url: 'https://www.letter-p.info:3000/'
   },
   backendMemberUrl: {
-    url: 'http://localhost:8000/api/v1/'
+    url: 'https://www.letter-p.info:8000/api/v1/'
   }
 };

@@ -14,5 +14,8 @@ export const environment = {
   backendUrl: {
     // url: 'https://us-central1-letterp-inventory.cloudfunctions.net/api/'
     url: 'https://www.letter-p.info:3000/'
+  },
+  backendMemberUrl: {
+    url: 'http://localhost:8000/api/v1/'
   }
 };

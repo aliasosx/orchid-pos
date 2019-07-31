@@ -39,6 +39,7 @@ export class PosComponent implements OnInit {
       router.navigateByUrl('login');
     }
     this.checkOpenCashBal();
+    this.loadDiscs();
   }
   private user: Observable<firebase.User>;
   username_info: any;
@@ -47,6 +48,7 @@ export class PosComponent implements OnInit {
   FoodCategories: Observable<any[]>;
 
   username: string = localStorage.getItem('username');
+
 
   foodsRef: AngularFirestoreCollection<Food>;
   // foods: Observable<any[]>;
@@ -67,6 +69,7 @@ export class PosComponent implements OnInit {
 
   foodTypes: any;
   foods: any;
+  discs: any;
 
   searchFoodName: any;
   selectedCate: any;
@@ -82,7 +85,6 @@ export class PosComponent implements OnInit {
       this.totalCalculation();
       if (localStorage.getItem('cart')) {
         this.virtualCart = JSON.parse(localStorage.getItem('cart'));
-        // console.log(this.virtualCart);
       }
     } else {
       this.snackbar.open('Internet connection issue !!', 'OK', { duration: 2000 });
@@ -195,18 +197,18 @@ export class PosComponent implements OnInit {
             this.virtualCart[i].quantity += 1;
             this.virtualCart[i].total = this.virtualCart[i].quantity * this.virtualCart[i].price;
             index = 1;
-            this.checkPromotion(food.id, this.virtualCart[i].quantity, this.virtualCart[i]);
+            // this.checkPromotion(food.id, this.virtualCart[i].quantity, this.virtualCart[i]);
             break;
           }
         }
         if (index === -1) {
           this.virtualCart.push(food);
-          this.checkPromotion(food.id, 1, food);
+          // this.checkPromotion(food.id, 1, food);
         }
         this.totalCalculation();
       } else if (this.virtualCart.length === 0) {
         this.virtualCart.push(food);
-        this.checkPromotion(food.id, 1, food);
+        // this.checkPromotion(food.id, 1, food);
         this.totalCalculation();
       }
       localStorage.setItem('cart', JSON.stringify(this.virtualCart));
@@ -252,7 +254,7 @@ export class PosComponent implements OnInit {
               if (item.foodId === cart.foodId && item.subfoodId === cart.subfoodId) {
                 item['quantity'] = q;
                 item['total'] = (q * item.price);
-                this.checkPromotion(item.foodId, q, item);
+                // this.checkPromotion(item.foodId, q, item);
                 cartBuffers.push(item);
               } else {
                 cartBuffers.push(item);
@@ -261,7 +263,7 @@ export class PosComponent implements OnInit {
               if (item.foodId === cart.foodId) {
                 item['quantity'] = q;
                 item['total'] = (q * item.price);
-                this.checkPromotion(item.foodId, q, item);
+                // this.checkPromotion(item.foodId, q, item);
                 cartBuffers.push(item);
               } else {
                 cartBuffers.push(item);
@@ -316,9 +318,6 @@ export class PosComponent implements OnInit {
   }
   openPaymentCash() {
     if (this.total > 0 && this.username) {
-      // console.log(this.username);
-      // console.log('before send to payment');
-      // console.log(this.virtualCart);
       const dialogCashRef = this.dialog.open(PaymentCashComponent, {
         width: '800px',
         data: {
@@ -458,6 +457,68 @@ export class PosComponent implements OnInit {
         });
       });
     });
-
+  }
+  loadDiscs() {
+    this.backendServices.getDiscs().then(r => {
+      r.subscribe(discs => {
+        this.discs = discs;
+      });
+    });
+  }
+  discSelected(discId, cart) {
+    this.backendServices.getDiscById(discId).then(r => {
+      r.subscribe(disc => {
+        if (disc['length'] > 0) {
+          if (cart) {
+            let items = [];
+            const cartBuffers = [];
+            items = JSON.parse(localStorage.getItem('cart'));
+            items.forEach(item => {
+              if (item.foodId === cart.foodId) {
+                item['orgPrice'] = item['price'];
+                item['orgCost'] = item['cost'];
+                item['disc'] = disc[0].disc_name;
+                item['price'] = item['price'] + disc[0].price;
+                item['cost'] = item['cost'] + disc[0].cost;
+                item['total'] = item['price'] * item['quantity'];
+                item['sign'] = disc[0].sign;
+                cartBuffers.push(item);
+              } else {
+                cartBuffers.push(item);
+              }
+            });
+            if (cartBuffers.length > 0) {
+              localStorage.setItem('cart', JSON.stringify(cartBuffers));
+              this.totalCalculation();
+              this.loadCurrentCartStat();
+            }
+          } else {
+            return;
+          }
+        } else {
+          let items = [];
+          const cartBuffers = [];
+          items = JSON.parse(localStorage.getItem('cart'));
+          items.forEach(item => {
+            if (item.foodId === cart.foodId) {
+              item['disc'] = '';
+              item['disc_price'] = 0;
+              item['price'] = item['orgPrice'];
+              item['cost'] = item['orgCost'];
+              item['total'] = item['price'] * item['quantity'];
+              item['sign'] = 'N';
+              cartBuffers.push(item);
+            } else {
+              cartBuffers.push(item);
+            }
+          });
+          if (cartBuffers.length > 0) {
+            localStorage.setItem('cart', JSON.stringify(cartBuffers));
+          }
+          this.totalCalculation();
+          this.loadCurrentCartStat();
+        }
+      });
+    });
   }
 }

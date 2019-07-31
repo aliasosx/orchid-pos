@@ -2,7 +2,7 @@
   <mat-card class="col col-md-12">
     <mat-card-content>
       <div class="row">
-        <div class="col col-md-7 col-sm-12">
+        <div class="col col-md-6 col-sm-12">
           <div class="row mb-2">
             <div class="col col-md-6">
               <input type="text" class="form-control" placeholder="ຄົ້ນຫາ ຕາມຊື່ອາຫານ" [(ngModel)]="searchFoodName">
@@ -53,7 +53,7 @@
             </div>
           </div>
         </div>
-        <div class="col col-md-5 col-sm-12">
+        <div class="col col-md-6 col-sm-12">
           <mat-card class="mainPaymentDiv">
             <mat-card-title>ອາຫານທີ່ເລຶອກໄວ້ </mat-card-title>
             <mat-divider></mat-divider>
@@ -62,9 +62,10 @@
                 <mat-list-item>
                   <div class="row" style="width: 100%;">
                     <div class="col col-sm-12 col-md-3 text-left font-weight-bold">ອາຫານ</div>
-                    <div class="col col-sm-12 col-md-2 text-right font-weight-bold">ຈຳນວນ</div>
+                    <div class="col col-sm-12 col-md-2 text-left font-weight-bold">ຈານ</div>
+                    <div class="col col-sm-12 col-md-1 text-right font-weight-bold">ຈຳນວນ</div>
                     <div class="col col-sm-12 col-md-2 text-right font-weight-bold">ລາຄາ</div>
-                    <div class="col col-sm-12 col-md-2 text-right font-weight-bold">ລວມ</div>
+                    <div class="col col-sm-12 col-md-1 text-right font-weight-bold">ລວມ</div>
                     <div class="col col-sm-12 col-md-2 text-center font-weight-bold">ຂໍ້ຄວາມ</div>
                     <div class="col col-sm-12 col-md-1 text-right font-weight-bold">ຈັດການ</div>
                   </div>
@@ -73,15 +74,30 @@
                 <div class="listDiv">
                   <mat-list-item *ngFor="let cart of virtualCart">
                     <div class="row" style="width: 100%;">
-                      <div class="col col-sm-12 col-md-3 text-left text-nowrap">{{ cart.food }} {{ cart.subFood }}</div>
-                      <div class="col col-sm-12 col-md-2 text-right" style="cursor: pointer;"
+                      <div class="col col-sm-12 col-md-3 text-left align-middle">{{ cart.food }}
+                        {{ cart.subFood }} <span class="badge badge-pill badge-danger"
+                          style="font-size: 14px;">{{ cart.disc }}</span>
+                      </div>
+                      <div class="col col-sm-12 col-md-2 text-left text-nowrap align-middle">
+                        <div class="form-row">
+                          <select class="form-control" (change)="discSelected($event.target.value, cart)">
+                            <option value="-1">ເລືອກ</option>
+                            <option value="-1">ປົກກະຕິ</option>
+                            <option value="{{ disc.id }}" *ngFor="let disc of discs">
+                              {{ disc.disc_name }}
+                            </option>
+                          </select>
+                        </div>
+
+                      </div>
+                      <div class="col col-sm-12 col-md-1 text-right align-middle" style="cursor: pointer;"
                         (click)="openQuantity(cart)">
                         {{ cart.quantity | number }}
                       </div>
-                      <div class="col col-sm-12 col-md-2 text-right">{{ cart.price | number }}</div>
-                      <div class="col col-sm-12 col-md-2 text-right"> {{ cart.total | number }}</div>
-                      <div class="col col-sm-12 col-md-2 text-left">{{ cart.note }}</div>
-                      <div class="col col-sm-12 col-md-1 text-center">
+                      <div class="col col-sm-12 col-md-2 text-right align-middle">{{ cart.price | number }}</div>
+                      <div class="col col-sm-12 col-md-1 text-right align-middle"> {{ cart.total | number }}</div>
+                      <div class="col col-sm-12 col-md-2 text-left align-middle">{{ cart.note }}</div>
+                      <div class="col col-sm-12 col-md-1 text-center align-middle">
                         <img src="../../../assets/icons/baseline-note-24px.svg"
                           style="position: absolute; right:30px; cursor: pointer;" (click)="addnote(cart)">
                         <img src="../../../assets/icons/baseline-delete-24px.svg"

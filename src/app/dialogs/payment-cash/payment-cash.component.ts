@@ -106,12 +106,22 @@ export class PaymentCashComponent implements OnInit {
   }
   async loadInitialData() {
     let c = await this.generateQRDate();
+
     let a = await this.data.cart.forEach(element => {
       element['done'] = false;
       element['food_category'] = 'NA';
+      if (element['disc']) {
+        element['food'] = element['food'] + '-' + element['disc'];
+        element['food_name_en'] = element['food_name_en'] + '-' + element['sign'];
+      } else {
+        element['food'] = element['food'];
+        element['food_name_en'] = element['food_name_en'];
+      }
       // element['kitchen'] = 'NA';
       this.foodList.push(element);
     });
+
+
     this.paymentTypes = await this.paymentTypesRef.snapshotChanges().pipe(map(change => {
       return change.map(a => {
         const data = a.payload.doc.data();
@@ -176,6 +186,7 @@ export class PaymentCashComponent implements OnInit {
                   total_price: food.total,
                   total_cost: food.cost * food.quantity,
                   note: food.note,
+                  memberId: this.orderForm.get('memberId').value,
                 };
                 let c = await this.backendService.createOrderDetail(orderDetail).then(async (resp_orderDetail) => {
                   resp_orderDetail.subscribe((y) => {
@@ -243,7 +254,8 @@ export class PaymentCashComponent implements OnInit {
                   price: food.price,
                   quantity: food.quantity,
                   total_price: food.total,
-                  total_cost: food.cost * food.quantity
+                  total_cost: food.cost * food.quantity,
+                  memberId: this.orderForm.get('memberId').value,
                 };
                 let c = await this.backendService.createOrderDetail(orderDetail).then(async (resp_orderDetail) => {
                   resp_orderDetail.subscribe((y) => {
@@ -305,7 +317,8 @@ export class PaymentCashComponent implements OnInit {
                   price: food.price,
                   quantity: food.quantity,
                   total_price: food.total,
-                  total_cost: food.cost * food.quantity
+                  total_cost: food.cost * food.quantity,
+                  memberId: this.orderForm.get('memberId').value,
                 };
                 let c = await this.backendService.createOrderDetail(orderDetail).then(async (resp_orderDetail) => {
                   resp_orderDetail.subscribe((y) => {
@@ -465,15 +478,15 @@ export class PaymentCashComponent implements OnInit {
   openMember() {
     const dialogRef = this.dialog.open(MembersComponent, { width: '800px' });
     dialogRef.afterClosed().subscribe(member => {
-      if(!member) {
+      if (!member) {
         this.orderForm.get('memberId').setValue('');
         this.orderForm.get('memberName').setValue('');
         return;
-      };
+      }
       this.member = member;
-      console.log(member);
       this.orderForm.get('memberId').setValue(member['mId']);
-      this.orderForm.get('memberName').setValue( member['cardNo'] +'|'+member['fullname'] + '|' + member['mobile']);
+      this.orderForm.get('memberName').setValue(member['cardNo'] + '|' + member['fullname'] + '|' + member['mobile']);
+      console.log(member);
     });
   }
 }

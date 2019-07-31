@@ -93,6 +93,9 @@ export class BackendServiceService {
   async getDiscs() {
     return this._http.get(this.backendService + 'discs', this.httpOptions);
   }
+  async getDiscById(id) {
+    return this._http.get(this.backendService + 'discById/' + id, this.httpOptions);
+  }
 
   async getCommonFoodsList() {
     return this._http.get(this.backendService + 'foodscommonlist', this.httpOptions);

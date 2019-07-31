@@ -3,10 +3,14 @@ export interface Cart {
   food: string;
   subFood?: string;
   subfoodId: string;
+  orgPrice?: number;
   price: number;
   quantity: number;
   total: number;
   note?: string;
   createdAt: Date;
   users: string;
+  disc?: string;
+  sign?: string;
+  orgCost?: number;
 }

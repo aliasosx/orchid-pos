@@ -13,30 +13,29 @@
           <div class="lead">ຍອດຂາຍຕາມ ຄົວ</div>
         </div>
         <div class="card-body">
-          <div class="row">
-            <div class="col col-md-2">
-              <label for="fromDate" class="lead">ວັນທີ </label>
-              <form [formGroup]="dateFrom">
-                <div class="input-group mb-1">
-                  <input type="date" class="form-control" formControlName="initDate">
-                </div>
-              </form>
-            </div>
-            <div class="col col-md-2">
-              <label for="fromDate"></label>
-              <div class="input-group mb-1">
-                <button mat-raised-button color="primary" (click)="loadReport()"
-                  style="margin-top: 18px;width: 200px;">Submit</button>
+          <form [formGroup]="dateFrom">
+            <div class="form-row">
+              <div class="col col-md-2">
+                <input type="date" class="form-control" id="startDate" placeholder="Start Date"
+                  formControlName="initDate">
+              </div>
+              <div class="col col-md-2">
+                <input type="date" class="form-control" id="endDate" placeholder="End Date" formControlName="endDate">
+              </div>
+              <div class="col col-md-2">
+                <button mat-raised-button color="primary" (click)="loadReport()" style="width: 200px;">Submit</button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <div class="mainReportDetail" [ngClass]="viewReport">
         <div class="card">
           <div class="card-header">
             <div class="lead ">
-              ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ {{ startDate | date: 'dd-MMM-yyyy' }}
+              ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ <span class="font-weight-bold"
+                style="color: greenyellow;">{{ startDate | date: 'dd-MMM-yyyy' }}</span> ຫາ
+              <span class="font-weight-bold" style="color: greenyellow;">{{ endDate | date: 'dd-MMM-yyyy' }}</span>
             </div>
           </div>
           <div class="card-body">
@@ -46,7 +45,7 @@
                   <div class="card-header h4">
                     ຍອດຂາຍຕາມອາຫານ
                   </div>
-                  <div class="card-body">
+                  <div class="card-body" style="max-height: 50vh;overflow: auto;">
                     <div class="table-responsive">
                       <table class="table table-bordered table-hover" style="margin: 0;">
                         <thead class="thead-light">
@@ -65,7 +64,8 @@
                           <tr>
                             <td class="text-center h6" colspan="2">ລວມ</td>
                             <td class="text-right h6">{{ countItem | number }}</td>
-                            <td class="text-right h6">{{ grandTotal | number }}</td>
+                            <td class="text-right h6"><span class="font-weight-bold">{{ grandTotal | number }}</span>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -78,7 +78,7 @@
                   <div class="card-header h4">
                     ລາຍຈ່າຍ
                   </div>
-                  <div class="card-body">
+                  <div class="card-body" style="max-height: 30vh;overflow: auto;">
                     <div class="table-responsive">
                       <ng-container *ngIf="paymentSummary; else noPayment">
                         <table class="table table-bordered table-hover" style="margin: 0;">

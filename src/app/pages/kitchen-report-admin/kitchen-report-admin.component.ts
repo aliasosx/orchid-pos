@@ -23,6 +23,7 @@ export class KitchenReportAdminComponent implements OnInit {
   grandTotal = 0;
   countItem = 0;
   startDate: Date;
+  endDate: Date;
   foodList: any[] = [];
 
   netPayment = 0;
@@ -32,16 +33,18 @@ export class KitchenReportAdminComponent implements OnInit {
   ngOnInit() {
     this.dateFrom = new FormGroup({
       initDate: new FormControl(new Date()),
+      endDate: new FormControl(new Date())
     });
     this.startDate = this.dateFrom.get('initDate').value;
     this.loadReport();
   }
   async loadReport() {
     this.startDate = this.dateFrom.get('initDate').value;
+    this.endDate = this.dateFrom.get('endDate').value;
     // console.log('OK');
     this.paymentCount = 0;
     this.paymentSummary = 0;
-    this.be.reportsKitchenAdmin(this.dateFrom.get('initDate').value, '', 'Food').then(rsp => {
+    this.be.reportsKitchenAdmin(this.dateFrom.get('initDate').value, this.dateFrom.get('endDate').value, 'Food').then(rsp => {
       this.foodList = [];
       let _total = 0;
       let _count = 0;

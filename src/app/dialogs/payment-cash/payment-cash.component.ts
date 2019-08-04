@@ -497,12 +497,24 @@ export class PaymentCashComponent implements OnInit {
     if (cardNo.length === 5) {
       this.memberService.getMemberByCardNo(cardNo).then(r => {
         r.subscribe(member => {
-          if (member['length'] === 0) { this.showMember = 'hidden'; return; }
-          this.member = member[0];
-          this.showMember = '';
-          const m = member[0];
-          this.orderForm.get('memberId').setValue(m['mId']);
-          this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
+          if (member['length'] === 0) {
+            this.showMember = '';
+            this.memberService.getMemberByCardNo('99999').then(rx => {
+              rx.subscribe(memberDefault => {
+                this.member = memberDefault[0];
+                this.showMember = '';
+                const m = memberDefault[0];
+                this.orderForm.get('memberId').setValue(m['mId']);
+                this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
+              });
+            });
+          } else {
+            this.member = member[0];
+            this.showMember = '';
+            const m = member[0];
+            this.orderForm.get('memberId').setValue(m['mId']);
+            this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
+          }
         });
       });
     } else if (cardNo.length === 0) {
@@ -521,7 +533,6 @@ export class PaymentCashComponent implements OnInit {
   initializeMember() {
     this.memberService.getMemberByCardNo('99999').then(r => {
       r.subscribe(member => {
-        if (!member) { this.showMember = 'hidden'; return; }
         this.member = member[0];
         this.showMember = '';
         const m = member[0];

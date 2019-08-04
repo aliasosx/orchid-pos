@@ -15,6 +15,9 @@
             <div class="alert alert-success text-center" role="alert" [ngClass]="showAlert">
               ຈ່າຍເງິນສຳເລັດຈາກ ທ່ານ<p class="text-center" *ngIf="bankDataResponse">{{ bankDataResponse.name }}</p>
             </div>
+            <div class="alert alert-warning text-left" role="alert" [ngClass]="showMember" *ngIf="member">
+              <p><strong>ທ່ານ {{ member.fullname }} , ເບິໂທ {{ member.mobile }}</strong></p>
+            </div>
           </mat-card-content>
         </mat-card>
       </div>
@@ -29,10 +32,18 @@
               </div>
               <mat-divider></mat-divider>
               <div class="form-row">
+                <!--
                 <div class="form-group col-md-12" style="margin-top: 10px;">
                   <input type="text" class="form-control" placeholder="ເລືອກສະມາຊິກ (ຖ້າມີ)"
                     (click)="openMember()" readonly formControlName="memberName">
                 </div>
+                -->
+                <div class="form-group col-md-12" style="margin-top: 10px;">
+                  <input type="text" maxlength="5" class="form-control" placeholder="enter card no ..."
+                    (keyup)="cardNoSelected($event.target.value)">
+                </div>
+
+
                 <div class="form-group col-md-12" style="margin-top: 10px;">
                   <label for="ticket">Ticket</label>
                   <select class="form-control" id="ticket" required formControlName="ticket" required

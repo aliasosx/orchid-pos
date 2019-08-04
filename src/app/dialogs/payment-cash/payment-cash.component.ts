@@ -15,6 +15,7 @@ import { environment } from '../../../environments/environment';
 import { QrBankResponseData } from 'src/app/interfaces/qrBankResponseData';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { MembersComponent } from '../members/members.component';
+import { MembersService } from 'src/app/services/members.service';
 
 declare var $: any;
 declare var deepstream: any;
@@ -28,7 +29,7 @@ declare var swal: any;
 })
 export class PaymentCashComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data, private printerService: PrinterServiceService, private backendService: BackendServiceService, private dialog: MatDialog) {
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data, private printerService: PrinterServiceService, private backendService: BackendServiceService, private dialog: MatDialog, private memberService: MembersService) {
     this.username = data.username;
     this.ticketsRef = db.collection<Ticket>('tickets', ref => {
       return ref.where('used', '==', false).orderBy('ticket', 'asc');
@@ -62,11 +63,14 @@ export class PaymentCashComponent implements OnInit {
       memberId: new FormControl(),
       memberName: new FormControl(),
     });
+    this.initializeMember();
   }
   username: string;
   members: any;
   paymentBtnDisabled = false;
   member: any;
+  showMember = 'hidden';
+  customerResponseDate = '';
 
   orderForm: FormGroup;
   ticketsRef: AngularFirestoreCollection<Ticket>;
@@ -487,6 +491,43 @@ export class PaymentCashComponent implements OnInit {
       this.orderForm.get('memberId').setValue(member['mId']);
       this.orderForm.get('memberName').setValue(member['cardNo'] + '|' + member['fullname'] + '|' + member['mobile']);
       console.log(member);
+    });
+  }
+  cardNoSelected(cardNo) {
+    if (cardNo.length === 5) {
+      this.memberService.getMemberByCardNo(cardNo).then(r => {
+        r.subscribe(member => {
+          if (member['length'] === 0) { this.showMember = 'hidden'; return; }
+          this.member = member[0];
+          this.showMember = '';
+          const m = member[0];
+          this.orderForm.get('memberId').setValue(m['mId']);
+          this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
+        });
+      });
+    } else if (cardNo.length === 0) {
+      this.memberService.getMemberByCardNo('99999').then(r => {
+        r.subscribe(member => {
+          if (!member) { this.showMember = 'hidden'; return; }
+          this.member = member[0];
+          this.showMember = '';
+          const m = member[0];
+          this.orderForm.get('memberId').setValue(m['mId']);
+          this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
+        });
+      });
+    }
+  }
+  initializeMember() {
+    this.memberService.getMemberByCardNo('99999').then(r => {
+      r.subscribe(member => {
+        if (!member) { this.showMember = 'hidden'; return; }
+        this.member = member[0];
+        this.showMember = '';
+        const m = member[0];
+        this.orderForm.get('memberId').setValue(m['mId']);
+        this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
+      });
     });
   }
 }

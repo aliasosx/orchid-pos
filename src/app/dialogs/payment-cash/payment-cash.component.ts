@@ -468,7 +468,9 @@ export class PaymentCashComponent implements OnInit {
         'items': this.items_Print,
         'grandTotal': this.data.total,
         'recieved': this.orderForm.get('recieved').value,
-        'change': this.orderForm.get('change').value
+        'change': this.orderForm.get('change').value,
+        'memberName': this.member.memberName,
+        'currentPoint': this.member.memberPoints
       };
       console.log(printData);
       const c = await this.printerService.print_local(printData).then(res => {

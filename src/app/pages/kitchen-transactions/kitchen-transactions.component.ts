@@ -36,7 +36,7 @@ export class KitchenTransactionsComponent implements OnInit {
   }
   async loadReport() {
     this.startDate = this.dateFrom.get('initDate').value;
-    this.be.reportsKitchenAdmin(this.dateFrom.get('initDate').value, '', 'Food').then(rsp => {
+    this.be.reportsKitchenAdmin(this.dateFrom.get('initDate').value, this.dateFrom.get('initDate').value, 'Food').then(rsp => {
       this.foodList = [];
       let _total = 0;
       let _count = 0;

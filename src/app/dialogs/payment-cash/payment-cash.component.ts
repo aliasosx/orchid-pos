@@ -64,6 +64,7 @@ export class PaymentCashComponent implements OnInit {
       memberName: new FormControl(),
     });
     this.member = this.data.member;
+
     this.orderForm.get('memberId').setValue(this.data.member.memberId);
     this.showMember = '';
   }
@@ -106,6 +107,7 @@ export class PaymentCashComponent implements OnInit {
     this.loadData();
     this.loadAvailableTicket();
     this.checkPaymentCash('CASH');
+    console.log(this.member);
   }
   async loadData() {
     // this.snackbar.open('Loading data...', 'OK', { duration: 1000 });
@@ -469,7 +471,7 @@ export class PaymentCashComponent implements OnInit {
         'grandTotal': this.data.total,
         'recieved': this.orderForm.get('recieved').value,
         'change': this.orderForm.get('change').value,
-        'memberName': this.member.memberName,
+        'cardNo': this.member.cardNo,
         'currentPoint': this.member.memberPoints
       };
       console.log(printData);

@@ -356,6 +356,7 @@ export class PosComponent implements OnInit {
           username: this.username,
           member: {
             memberId: this.member.mId,
+            cardNo: this.member.cardNo,
             memberName: this.member.fullname,
             memberPoints: this.beforePoints
           }
@@ -366,8 +367,7 @@ export class PosComponent implements OnInit {
           this.loadCurrentCartStat();
           this.totalCalculation();
           this.setMemberStaticDefault();
-          this.memberInput.nativeElement.value = '';
-          this.memberInput.nativeElement.focus();
+          this.clearCardValue();
           this.snackbar.open('Order completed', 'ok', { duration: 1000 });
 
         } else {

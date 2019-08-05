@@ -36,7 +36,6 @@
                   </div>
                 </ng-container>
 
-
                 <div class="pricetag">
                   <span class="h5" *ngIf="food.isParent === 0; else choosePrice">{{ food.price | number}}</span>
                   <ng-template #choosePrice>
@@ -55,7 +54,25 @@
         </div>
         <div class="col col-md-6 col-sm-12">
           <mat-card class="mainPaymentDiv">
-            <mat-card-title>ອາຫານທີ່ເລຶອກໄວ້ </mat-card-title>
+            <div class="row mb-1">
+              <div class="col align-middle">
+                <span *ngIf="member" style="font-size: 24px; color: #AF0506; font-weight: bolder;">ທ່ານ
+                  {{ member.fullname }} ,
+                  {{ beforePoints | number }} ຄະແນນ</span>
+              </div>
+              <div class="col  align-middle">
+                <div class="form-row">
+                  <div class="input-group mt-1">
+                    <input type="text" maxlength="5" class="form-control" #memberInput placeholder="enter card no ..."
+                      (keyup)="cardNoSelected($event.target.value)">
+                    <div class="input-group-append">
+                      <button mat-stroked-button color="warn" (click)="clearCardValue()" class="mr-1">Clear</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <mat-divider></mat-divider>
             <mat-card-content>
               <mat-list>

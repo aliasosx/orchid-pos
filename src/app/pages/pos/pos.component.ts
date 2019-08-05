@@ -3,7 +3,7 @@ import { Food } from 'src/app/interfaces/food';
 import { Observable } from 'rxjs';
 import { FoodCategory } from './../../interfaces/foodCategory';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { SubfoodsComponent } from 'src/app/dialogs/subfoods/subfoods.component';
 import { Cart } from 'src/app/interfaces/cart';
@@ -15,6 +15,8 @@ import { User } from 'src/app/interfaces/user';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { CouponAddPosComponent } from 'src/app/dialogs/coupon-add-pos/coupon-add-pos.component';
 import { PromotionsService } from 'src/app/services/promotions.service';
+import { MembersService } from 'src/app/services/members.service';
+import { FormGroup, FormControl } from '@angular/forms';
 
 declare var swal: any;
 
@@ -24,9 +26,11 @@ declare var swal: any;
   styleUrls: ['./pos.component.css']
 })
 export class PosComponent implements OnInit {
+  @ViewChild('memberInput')
+  memberInput: any;
 
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router, private backendServices: BackendServiceService, private promotionService: PromotionsService) {
+  constructor(private db: AngularFirestore, private dialog: MatDialog, private snackbar: MatSnackBar, private _firebaseAuth: AngularFireAuth, private router: Router, private backendServices: BackendServiceService, private promotionService: PromotionsService, private memberService: MembersService) {
     this.user = _firebaseAuth.authState;
     this.foodsRef = db.collection<Food>('foods');
     this.foodCategoriesRef = db.collection<FoodCategory>('food_categories', ref => {
@@ -77,6 +81,13 @@ export class PosComponent implements OnInit {
   promotions: any;
   groupCounting = 0;
 
+
+  member: any;
+  showMember = 'hidden';
+  beforePoints = 0;
+  afterPoints = 0;
+  orderForm: FormGroup;
+
   ngOnInit() {
 
     if (this.username) {
@@ -89,6 +100,17 @@ export class PosComponent implements OnInit {
     } else {
       this.snackbar.open('Internet connection issue !!', 'OK', { duration: 2000 });
     }
+
+    this.orderForm = new FormGroup({
+      memberId: new FormControl(),
+      memberName: new FormControl()
+    });
+    if (localStorage.getItem('memberInfo')) {
+      this.cardNoSelected(JSON.parse(localStorage.getItem('memberInfo')).cardNo);
+    } else {
+      this.initializeMember();
+    }
+    this.memberInput.nativeElement.focus();
   }
 
   loadFoodTypes() {
@@ -154,7 +176,6 @@ export class PosComponent implements OnInit {
         if (item.id === food.id) {
           items.splice(index, 1);
         } else {
-          // cartBuffers.push(item);
         }
       });
       if (items.length > 0) {
@@ -175,8 +196,17 @@ export class PosComponent implements OnInit {
       items.forEach(item => {
         this.total += item.total;
       });
-      // this.loadCurrentCartStat();
+      if (!this.member) {
+        this.loadCurrentPoint(16, this.total);
+      } else {
+        this.loadCurrentPoint(this.member['mId'], this.total);
+      }
     } else {
+      if (!this.member) {
+        this.loadCurrentPoint(16, this.total);
+      } else {
+        this.loadCurrentPoint(this.member['mId'], this.total);
+      }
       return;
     }
   }
@@ -323,14 +353,23 @@ export class PosComponent implements OnInit {
         data: {
           cart: this.virtualCart,
           total: this.total,
-          username: this.username
+          username: this.username,
+          member: {
+            memberId: this.member.mId,
+            memberName: this.member.fullname,
+            memberPoints: this.beforePoints
+          }
         }
       });
       dialogCashRef.afterClosed().subscribe(res => {
         if (res) {
           this.loadCurrentCartStat();
           this.totalCalculation();
+          this.setMemberStaticDefault();
+          this.memberInput.nativeElement.value = '';
+          this.memberInput.nativeElement.focus();
           this.snackbar.open('Order completed', 'ok', { duration: 1000 });
+
         } else {
           this.loadCurrentCartStat();
           this.totalCalculation();
@@ -371,7 +410,7 @@ export class PosComponent implements OnInit {
     const dialogRef = this.dialog.open(CouponAddPosComponent, { width: '600px' });
   }
   checkPromotion(foodId, quantity, food) {
-    // console.log(food);
+
     this.promotionService.getpromotionsByFoodId(foodId).then(r => {
       r.subscribe(promotions => {
         this.promotions = promotions;
@@ -520,5 +559,91 @@ export class PosComponent implements OnInit {
         }
       });
     });
+  }
+  cardNoSelected(cardNo) {
+    if (cardNo.length === 5) {
+      const memberInfo = {
+        cardNo: cardNo,
+      };
+      localStorage.setItem('memberInfo', JSON.stringify(memberInfo));
+
+      this.memberService.getMemberByCardNo(cardNo).then(r => {
+        r.subscribe(member => {
+          if (member['length'] === 0) {
+            this.showMember = '';
+            this.memberService.getMemberByCardNo('99999').then(rx => {
+              rx.subscribe(memberDefault => {
+                this.member = memberDefault[0];
+                this.showMember = '';
+                const m = memberDefault[0];
+                this.orderForm.get('memberId').setValue(m['mId']);
+                this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
+                this.loadCurrentPoint(m['mId'], this.total);
+              });
+            });
+          } else {
+            this.member = member[0];
+            this.showMember = '';
+            const m = member[0];
+            this.orderForm.get('memberId').setValue(m['mId']);
+            this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
+            this.loadCurrentPoint(m['mId'], this.total);
+          }
+        });
+      });
+    } else if (cardNo.length === 0) {
+      const memberInfo = {
+        cardNo: '99999',
+      };
+      localStorage.setItem('memberInfo', JSON.stringify(memberInfo));
+      this.memberService.getMemberByCardNo('99999').then(r => {
+        r.subscribe(member => {
+          if (!member) { this.showMember = 'hidden'; return; }
+          this.member = member[0];
+          this.showMember = '';
+          const m = member[0];
+          this.orderForm.get('memberId').setValue(m['mId']);
+          this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
+          this.loadCurrentPoint(m['mId'], this.total);
+        });
+      });
+    }
+  }
+
+  setMemberStaticDefault() {
+    const memberInfo = {
+      cardNo: '99999',
+    };
+    localStorage.setItem('memberInfo', JSON.stringify(memberInfo));
+  }
+
+  initializeMember() {
+    const memberInfo = {
+      cardNo: '99999',
+    };
+    localStorage.setItem('memberInfo', JSON.stringify(memberInfo));
+    this.memberService.getMemberByCardNo('99999').then(r => {
+      r.subscribe(member => {
+        this.member = member[0];
+        this.showMember = '';
+        const m = member[0];
+        this.orderForm.get('memberId').setValue(m['mId']);
+        this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
+        this.loadCurrentPoint(m['mId'], this.total);
+      });
+    });
+  }
+  async loadCurrentPoint(memberId, total_price) {
+    if (!total_price) { total_price = 0; }
+    await this.memberService.getCurrentPoint(memberId, total_price).then(r => {
+      r.subscribe(pointMaster => {
+        this.beforePoints = pointMaster[0].points;
+        console.log(pointMaster);
+      });
+    });
+  }
+  clearCardValue() {
+    this.memberInput.nativeElement.value = '';
+    this.initializeMember();
   }
 }

@@ -22,4 +22,7 @@ export class MembersService {
   async getMembers() {
     return this._http.get(this.backendUrlMember + 'members');
   }
+  async getCurrentPoint(memberId, totalPrice) {
+    return this._http.get(this.backendUrlMember + 'pointByMemberId/' + memberId + '/' + totalPrice);
+  }
 }

@@ -27,7 +27,8 @@ export class KitchenReportAdminComponent implements OnInit {
   foodList: any[] = [];
 
   netPayment = 0;
-
+  paymentSummaries: any;
+  totalPaymentSumm = 0;
   dateFrom: FormGroup;
 
   ngOnInit() {
@@ -72,6 +73,12 @@ export class KitchenReportAdminComponent implements OnInit {
             _paymentTotal += parseInt(element.amount, 10);
             _paymentCount += parseInt(element.quantity, 10);
           });
+        });
+
+        this.paymentSummaries = r['summary_payment'];
+        this.totalPaymentSumm = 0;
+        r['summary_payment'].forEach(paymentSumm => {
+          this.totalPaymentSumm += paymentSumm['Amount'];
         });
 
         this.grandTotal = _total;

@@ -127,6 +127,7 @@ export class PurchaseGridComponent implements OnInit {
     this.db.collection('purchaseBuffers').doc(id).delete();
   }
   updateItemQuantity(id, quantity, cost) {
+    console.log(this.purchaseForm.get('dest_amount').value);
     const data = {
       quantity: quantity,
       total: quantity * parseInt(this.purchaseForm.get('dest_amount').value, 10),

@@ -117,7 +117,7 @@
                       <td class="text-right align-middle">
                         <input type="number" class="form-control text-right" id="txtQuantity"
                           style="max-width: 80px;padding:0"
-                          (change)="updateItemQuantity(item.id, $event.target.value, item.cost)"
+                          (input)="updateItemQuantity(item.id, $event.target.value, item.cost)"
                           value="{{ item.quantity  }}">
                       </td>
                       <td class="text-right align-middle">{{ item.total |number }}</td>

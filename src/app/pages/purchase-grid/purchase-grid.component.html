@@ -1,20 +1,24 @@
 <div>
   <div class="row mt-2">
-    <div class="col col-md-6 col-sm-12">
+    <div class="col col-md-5 col-sm-12">
       <div class="card">
         <div class="card-body">
           <div class="form-group row">
-            <div class="col-md-4">
+            <div class="col-md-3">
+              <input type="text" #barcodeTxtSearch class="form-control" placeholder="barcode" (input)="onBarcodeRead()"
+                [(ngModel)]="barcode">
+            </div>
+            <div class="col-md-3">
               <input type="text" class="form-control" placeholder="ຄົ້ນຫາຕາມຊື່" [(ngModel)]="productName">
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <select class="form-control" id="productCategories" [(ngModel)]="selectedCate">
                 <option value="0">ທັງໝົດ</option>
                 <option value="{{cat.id}}" *ngFor="let cat of productCategories">{{ cat.product_category_name }}
                 </option>
               </select>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <button mat-flat-button color="primary" (click)="openAddNewProd()">ເພິ່ມລາຍການໃໝ່</button>
             </div>
           </div>
@@ -23,7 +27,8 @@
       <div class="card mt-1">
         <div class="card-body">
           <div class="row" style="max-height: 72vh;overflow: auto;">
-            <ng-container *ngFor="let product of products | productCatPipe: selectedCate | purchaseSearch: productName">
+            <ng-container
+              *ngFor="let product of products | productCatPipe: selectedCate | purchaseSearch: productName|productByBarcode: barcode">
               <div class="col mb-1">
                 <div class="card" style="width: 10rem;cursor: pointer;" (click)="takePurchase(product)">
                   <div class="card-body">
@@ -44,7 +49,7 @@
         </div>
       </div>
     </div>
-    <div class="col col-md-6  col-sm-12">
+    <div class="col col-md-7  col-sm-12">
       <form [formGroup]="purchaseForm">
         <div class="card">
           <div class="card-body" style="max-height: 75vh; ;overflow: auto;">
@@ -60,7 +65,7 @@
                 <div class="form-group row">
                   <label for="staticEmail" class="col-sm-3 col-form-label">ວັນທີ່ຊື້</label>
                   <div class="col-sm-9">
-                    <input type="date" class="form-control" value="new Date()" formControlName="purchaseDate" required>
+                    <input type="date" class="form-control" formControlName="purchaseDate" required>
                   </div>
                 </div>
               </div>
@@ -91,14 +96,15 @@
                           formControlName="src_amount" style="max-width:100px;padding:0" value="{{ item.src_amount }}"
                           (change)="updateItemCost(item.id, item.quantity, $event.target.value)">
                       </td>
+
                       <td class="text-right align-middle">
-                        <select class="form-control" id="src_currency"
-                          (change)="CurrnecySelected($event.target.value, item.src_amount, item.id, item.quantity)">
-                          <option value="" disabled>Choose</option>
+                        <select class="form-control" id="src_currency" formControlName="src_currency"
+                          (change)="CurrnecySelected(item.src_amount, item.id, item.quantity)">
                           <option *ngFor="let currency of currencies" value="{{ currency.id }}">
                             {{ currency.currency_name }}</option>
                         </select>
                       </td>
+
                       <td class="text-right align-middle">
                         <input type="number" class="form-control text-right" id="rate_conversion"
                           style="max-width:100px;padding:0" value="{{ item.rate_conversion}}"
@@ -116,8 +122,8 @@
                       </td>
                       <td class="text-right align-middle">{{ item.total |number }}</td>
                       <td class="text-center align-middle">
-                        <img src="../../../assets/icons/baseline-delete-24px.svg" style="cursor: pointer;"
-                          (click)="removeItem(item.id)">
+                        <img src="../../../assets/icons/baseline-delete-24px.svg"
+                          style="cursor: pointer;color: darkred;" (click)="removeItem(item.id)">
                       </td>
                     </tr>
                   </tbody>

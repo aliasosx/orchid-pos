@@ -461,5 +461,8 @@ export class BackendServiceService {
   async getCurrency(id) {
     return this._http.get(this.backendService + 'currency/' + id, this.httpOptions);
   }
+  async getProductByBarcode(barcode) {
+    return this._http.get(this.backendService + 'productByBarcode/' + barcode, this.httpOptions);
+  }
 }
 

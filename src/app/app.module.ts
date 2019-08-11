@@ -120,6 +120,7 @@ import { PromotionRoleComponent } from './dialogs/promotion-role/promotion-role.
 import { MembersComponent } from './dialogs/members/members.component';
 import { MemberPipePipe } from './pipes/member-pipe.pipe';
 import { MemberByPhonePipe } from './pipes/member-by-phone.pipe';
+import { ProductByBarcodePipe } from './pipes/product-by-barcode.pipe';
 
 @NgModule({
   declarations: [
@@ -219,6 +220,7 @@ import { MemberByPhonePipe } from './pipes/member-by-phone.pipe';
     MembersComponent,
     MemberPipePipe,
     MemberByPhonePipe,
+    ProductByBarcodePipe,
 
 
   ],

@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { StockServicesService } from 'src/app/services/stock-services.service';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
@@ -9,10 +9,9 @@ import { MatDialog } from '@angular/material';
 import { AddProductsComponent } from 'src/app/dialogs/add-products/add-products.component';
 import { PurchaseBuffer } from 'src/app/interfaces/purchaseBuffer';
 import { Observable } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 declare var swal: any;
-
-
 
 @Component({
   selector: 'app-purchase-grid',
@@ -20,9 +19,10 @@ declare var swal: any;
   styleUrls: ['./purchase-grid.component.css']
 })
 export class PurchaseGridComponent implements OnInit {
-
+  @ViewChild('barcodeTxtSearch')
+  barcodeTxt: any;
   // tslint:disable-next-line: max-line-length
-  constructor(private stockService: StockServicesService, private backendService: BackendServiceService, private dialog: MatDialog, private db: AngularFirestore) {
+  constructor(private stockService: StockServicesService, private backendService: BackendServiceService, private dialog: MatDialog, private db: AngularFirestore, private datePipe: DatePipe) {
     this.purchaseBufferRef = db.collection<PurchaseBuffer>('purchaseBuffers');
   }
   searchForm: FormGroup;
@@ -37,17 +37,16 @@ export class PurchaseGridComponent implements OnInit {
   itemList = 0;
   purchaseForm: FormGroup;
   currencies: any;
+  barcode: any;
 
   ngOnInit() {
-
     this.purchaseForm = new FormGroup({
-      purchaseDate: new FormControl(new Date()),
+      purchaseDate: new FormControl(this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
       src_amount: new FormControl(),
       src_currency: new FormControl(),
       dest_amount: new FormControl(),
       rate_conversion: new FormControl(),
     });
-
     this.loadProductCategories();
     this.loadProducts();
     this.loadCurrencies();
@@ -60,6 +59,7 @@ export class PurchaseGridComponent implements OnInit {
         return purchases;
       });
     }));
+    this.barcodeTxt.nativeElement.focus();
   }
   async loadProductCategories() {
     this.stockService.getProductCategories().then(rsp => {
@@ -92,7 +92,7 @@ export class PurchaseGridComponent implements OnInit {
           swal({
             text: 'ສິນຄ້ານີ້ ມີໃນ ລາຍການແລ້ວ ກະລຸນາເລື່ອກ ອັນໃໝ່',
             icon: 'error',
-            timer: 2000
+            timer: 3000
           });
         });
       } else if (this.purchaseForm.valid) {
@@ -112,6 +112,7 @@ export class PurchaseGridComponent implements OnInit {
           userId: JSON.parse(localStorage.getItem('usrObj')).id,
         };
         this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
+          this.purchaseForm.get('src_currency').value(purchase_data.src_currency);
         });
       } else {
         swal({
@@ -221,11 +222,14 @@ export class PurchaseGridComponent implements OnInit {
       r.subscribe(currencies => this.currencies = currencies);
     });
   }
-  async CurrnecySelected(e, src_amount, id, quantity) {
+  async CurrnecySelected(src_amount, id, quantity) {
+    // console.log(e);
+    const e = this.purchaseForm.get('src_currency').value;
+    console.log(e);
     if (e) {
       this.backendService.getCurrency(e).then(r => {
         r.subscribe(async (conversion_rate) => {
-          console.log(conversion_rate);
+          // console.log(conversion_rate);
           const data = {
             rate_conversion: conversion_rate[0].rate,
             dest_amount: src_amount * conversion_rate[0].rate,
@@ -243,5 +247,17 @@ export class PurchaseGridComponent implements OnInit {
     let s = num + '';
     while (s.length < size) { s = '0' + s; }
     return s;
+  }
+  onBarcodeRead() {
+    // console.log(this.barcode);
+    if (this.barcode.length > 10) {
+      this.backendService.getProductByBarcode(this.barcode).then(r => {
+        r.subscribe(product => {
+          if (product[0]) {
+            this.takePurchase(product[0]);
+          }
+        });
+      });
+    }
   }
 }

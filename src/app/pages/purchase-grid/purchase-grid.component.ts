@@ -1,6 +1,5 @@
 import { map } from 'rxjs/operators';
-import { AngularFirestoreCollection } from '@angular/fire/firestore';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { StockServicesService } from 'src/app/services/stock-services.service';
@@ -23,7 +22,9 @@ export class PurchaseGridComponent implements OnInit {
   barcodeTxt: any;
   // tslint:disable-next-line: max-line-length
   constructor(private stockService: StockServicesService, private backendService: BackendServiceService, private dialog: MatDialog, private db: AngularFirestore, private datePipe: DatePipe) {
-    this.purchaseBufferRef = db.collection<PurchaseBuffer>('purchaseBuffers');
+    this.purchaseBufferRef = db.collection<PurchaseBuffer>('purchaseBuffers', ref => {
+      return ref.where('userId', '==', JSON.parse(localStorage.getItem('usrObj')).id);
+    });
   }
   searchForm: FormGroup;
   productCategories: any;
@@ -83,7 +84,7 @@ export class PurchaseGridComponent implements OnInit {
   async takePurchase(product) {
     // console.log(product);
     const cart = this.db.collection<PurchaseBuffer>('purchaseBuffers');
-    cart.ref.where('productId', '==', product.id).get().then(r => {
+    cart.ref.where('productId', '==', product.id).where('userId', '==', JSON.parse(localStorage.getItem('usrObj')).id).get().then(r => {
       // console.log(r.docs.length);
       if (r.docs.length > 0) {
         this.itemList = r.docs.length;
@@ -169,9 +170,6 @@ export class PurchaseGridComponent implements OnInit {
     };
     this.db.collection('purchaseBuffers').doc(item.id).update(data);
   }
-
-
-
   caculateGrandTotal(total) {
 
   }

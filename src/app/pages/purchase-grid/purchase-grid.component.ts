@@ -102,7 +102,7 @@ export class PurchaseGridComponent implements OnInit {
           product_name: product.product_name,
           src_amount: product.cost,
           src_currency: 2,
-          dest_amount: 0,
+          dest_amount: product.cost * 1,
           rate_conversion: 1,
           cost: product.cost,
           quantity: 1,
@@ -112,7 +112,7 @@ export class PurchaseGridComponent implements OnInit {
           userId: JSON.parse(localStorage.getItem('usrObj')).id,
         };
         this.db.collection('purchaseBuffers').add(purchase_data).then(rsp => {
-          this.purchaseForm.get('src_currency').value(purchase_data.src_currency);
+          // this.purchaseForm.get('src_currency').value(purchase_data.src_currency);
         });
       } else {
         swal({
@@ -126,26 +126,54 @@ export class PurchaseGridComponent implements OnInit {
   removeItem(id) {
     this.db.collection('purchaseBuffers').doc(id).delete();
   }
-  updateItemQuantity(id, quantity, cost) {
-    console.log(this.purchaseForm.get('dest_amount').value);
+
+  updateItemQuantity(item, quantity) {
     const data = {
       quantity: quantity,
-      total: quantity * parseInt(this.purchaseForm.get('dest_amount').value, 10),
+      total: quantity * parseInt(item.dest_amount, 10),
     };
-    this.db.collection('purchaseBuffers').doc(id).update(data);
+    this.db.collection('purchaseBuffers').doc(item.id).update(data);
   }
-  updateItemCost(id, quantity, cost, src_amount?, src_currency?) {
+
+  updateItemCost(item, cost) {
+    const data = {
+      cost: cost,
+      total: parseInt(item.quantity, 10) * parseInt(cost, 10) * parseInt(item.rate_conversion, 10),
+    };
+
+    this.db.collection('purchaseBuffers').doc(item.id).update(data);
+  }
+  updateItemCostByRate(item, rate) {
+    const data = {
+      rate_conversion: rate,
+      dest_amount: parseInt(item.src_amount, 10) * parseInt(rate, 10),
+      total: parseInt(item.quantity, 10) * parseInt(item.src_amount, 10) * parseInt(rate, 10),
+    };
+
+    this.db.collection('purchaseBuffers').doc(item.id).update(data);
+  }
+
+  updateItemSrcAmount(item, src_amount) {
     const data = {
       src_amount: src_amount,
-      src_currency: src_currency,
-      cost: cost,
-      quantity: quantity,
-      total: quantity * parseInt(this.purchaseForm.get('dest_amount').value, 10),
+      dest_amount: src_amount * parseInt(item.rate_conversion, 10),
+      total: parseInt(item.quantity, 10) * parseInt(src_amount, 10) * parseInt(item.rate_conversion, 10),
     };
-    this.db.collection('purchaseBuffers').doc(id).update(data);
+
+    this.db.collection('purchaseBuffers').doc(item.id).update(data);
   }
+  updateItemDestAmount(item, dest_amount) {
+    const data = {
+      dest_amount: parseInt(dest_amount, 10),
+      total: parseInt(item.quantity, 10) * dest_amount,
+    };
+    this.db.collection('purchaseBuffers').doc(item.id).update(data);
+  }
+
+
+
   caculateGrandTotal(total) {
-    console.log(total);
+
   }
   savePurchase() {
     swal({
@@ -223,9 +251,9 @@ export class PurchaseGridComponent implements OnInit {
       r.subscribe(currencies => this.currencies = currencies);
     });
   }
-  async CurrnecySelected(src_amount, id, quantity) {
-    // console.log(e);
-    const e = this.purchaseForm.get('src_currency').value;
+  async CurrnecySelected(e, src_amount, id, quantity) {
+    console.log(e);
+    // const e = this.purchaseForm.get('src_currency').value;
     console.log(e);
     if (e) {
       this.backendService.getCurrency(e).then(r => {

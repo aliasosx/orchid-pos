@@ -514,11 +514,25 @@ export class PosComponent implements OnInit {
             items = JSON.parse(localStorage.getItem('cart'));
             items.forEach(item => {
               if (item.foodId === cart.foodId) {
-                item['orgPrice'] = item['price'];
-                item['orgCost'] = item['cost'];
-                item['disc'] = disc[0].disc_name;
-                item['price'] = item['price'] + disc[0].price;
-                item['cost'] = item['cost'] + disc[0].cost;
+                if (disc[0].multiplier === 1) {
+                  item['orgPrice'] = item['price'];
+                  item['orgCost'] = item['cost'];
+                  item['disc'] = disc[0].disc_name;
+                  item['price'] = (item['price'] + disc[0].price) * disc[0].multiplier;
+                  item['cost'] = (item['cost'] + disc[0].cost) * disc[0].multiplier;
+                } else if (disc[0].multiplier === 0) {
+                  item['disc'] = disc[0].disc_name;
+                  item['orgPrice'] = item['orgPrice'];
+                  item['orgCost'] = item['orgCost'];
+                  item['price'] = 0;
+                  item['cost'] = 0;
+                } else if (item['price'] === 0 && disc[0].multiplier === 1) {
+                  item['orgPrice'] = item['orgPrice'];
+                  item['orgCost'] = item['orgCost'];
+                  item['disc'] = disc[0].disc_name;
+                  item['price'] = (item['price'] + disc[0].price) * disc[0].multiplier;
+                  item['cost'] = (item['cost'] + disc[0].cost) * disc[0].multiplier;
+                }
                 item['total'] = item['price'] * item['quantity'];
                 item['sign'] = disc[0].sign;
                 cartBuffers.push(item);
@@ -638,7 +652,7 @@ export class PosComponent implements OnInit {
     await this.memberService.getCurrentPoint(memberId, total_price).then(r => {
       r.subscribe(pointMaster => {
         this.beforePoints = pointMaster[0].points;
-        console.log(pointMaster);
+        // console.log(pointMaster);
       });
     });
   }

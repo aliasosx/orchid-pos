@@ -26,8 +26,19 @@
                     </thead>
                     <tbody>
                       <td class="align-middle text-center display-4" [attr.rowspan]="order.food.length + 1"
-                        style="width: 10px;">
-                        {{ order.ticket }}</td>
+                        style="width: 30px;">
+                        {{ order.ticket }}
+                        <hr>
+                        <div class="h4 text-danger text-nowrap"
+                          *ngIf="order.deriveryDescription === 'GoTeddy'; else normalOne">
+                          <div class="alert alert-danger" role="alert">
+                            <strong>{{ order.deriveryDescription }}</strong>
+                          </div>
+                        </div>
+                        <ng-template #normalOne>
+                          <p class="h4  text-nowrap">{{ order.deriveryDescription }}</p>
+                        </ng-template>
+                      </td>
                       <tr *ngFor="let food of order.food">
                         <td class="text-left h5 text-nowrap" style="width: 400px;">{{ food.food }}</td>
                         <td class="text-center" style="width: 20px;">{{ food.quantity |number }}</td>

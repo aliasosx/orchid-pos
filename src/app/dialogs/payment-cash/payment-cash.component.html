@@ -68,6 +68,16 @@
                     </div>
                   </mat-card-content>
                 </mat-card>
+
+                <mat-card class="col col-md-12">
+                  <mat-card-content>
+                    <label for="Derivery">Derivery <span class="text-danger">(If non select will use in-house as
+                        default)</span></label>
+                    <select class="form-control" id="Derivery" required formControlName="deriveryId" required
+                      (change)="deriveryProviderSelectChange($event)">
+                      <option value="{{ d.id }}" *ngFor="let d of deriveries">{{ d.deriveryChannelName }}</option>
+                    </select> </mat-card-content>
+                </mat-card>
                 <div class="form-group col-md-12" style="margin-top: 10px;">
                   <button mat-flat-button color="warn" style="width: 100%; height: 50px;" (click)="paymentProcess()"
                     [disabled]="paymentBtnDisabled">ຈ່າຍ</button>

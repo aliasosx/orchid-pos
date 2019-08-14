@@ -464,5 +464,8 @@ export class BackendServiceService {
   async getProductByBarcode(barcode) {
     return this._http.get(this.backendService + 'productByBarcode/' + barcode, this.httpOptions);
   }
+  async getDeriveries() {
+    return this._http.get(this.backendService + 'deriveries/', this.httpOptions);
+  }
 }
 

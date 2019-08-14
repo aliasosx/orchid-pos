@@ -16,6 +16,7 @@
             <th scope="col" class="text-center">ຍອດລວມ</th>
             <th scope="col" class="text-center">ປະເພດການຈ່າຍ</th>
             <th scope="col" class="text-center">ສະຖານະ</th>
+            <th scope="col" class="text-center">ການສົ່ງ</th>
             <th scope="col" class="text-center">ລາຍການອາຫານ</th>
             <th scope="col" class="text-center">ຈັດການ</th>
           </tr>
@@ -35,51 +36,64 @@
             <td class="text-center align-middle" style="width: 80px;" *ngIf="order.status=='processing'">
               <img src="../../../assets/icons/lg.dual-gear-loading-icon.gif" style="max-width: 30px;cursor: pointer;">
             </td>
+            <td class="text-center align-middle" style="width: 100px;">
+              <mat-chip-list>
+                <mat-chip color="accent" selected *ngIf="order.deriveryDescription === 'GoTeddy'; else normalOrder">
+                  {{ order.deriveryDescription }}
+                </mat-chip>
+                <ng-template #normalOrder>
+                  <mat-chip color="primary" selected>
+                    {{ order.deriveryDescription }}
+                  </mat-chip>
+                </ng-template>
+              </mat-chip-list>
+            </td>
 
             <td class="align-middle">
               <table class="table table-hover">
                 <thead class="thead-light">
-            <th scope="col" class="text-center">ອາຫານ</th>
-            <th scope="col" class="text-center">ຈຳນວນ</th>
-            <th scope="col" class="text-center">ຄຳສັ່ງເພີ່ມເຕີມ</th>
-            <th scope="col" class="text-center">ສົ່ງແລ້ວ</th>
-            </thead>
-        <tbody>
-          <tr *ngFor="let food of order.food">
-            <td class="text-left align-middle">{{ food.food }}</td>
-            <td class="text-center align-middle">{{ food.quantity | number }}</td>
-            <td class="text-center align-middle" style="color: red; font-weight: bold;" *ngIf="food.note; else noNote">
-              {{ food.note }}</td>
-            <ng-template #noNote>
-              <td class="text-center align-middle" style="color: red; font-weight: bold;"></td>
-            </ng-template>
-            <td class="text-center align-middle" *ngIf="food.done == true; else undone">
-              <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
-                style="max-width: 20px;cursor: pointer;" (click)="updateFoodDone(order,food)">
+                  <th scope="col" class="text-center">ອາຫານ</th>
+                  <th scope="col" class="text-center">ຈຳນວນ</th>
+                  <th scope="col" class="text-center">ຄຳສັ່ງເພີ່ມເຕີມ</th>
+                  <th scope="col" class="text-center">ສົ່ງແລ້ວ</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let food of order.food">
+                    <td class="text-left align-middle">{{ food.food }}</td>
+                    <td class="text-center align-middle">{{ food.quantity | number }}</td>
+                    <td class="text-center align-middle" style="color: red; font-weight: bold;"
+                      *ngIf="food.note; else noNote">
+                      {{ food.note }}</td>
+                    <ng-template #noNote>
+                      <td class="text-center align-middle" style="color: red; font-weight: bold;"></td>
+                    </ng-template>
+                    <td class="text-center align-middle" *ngIf="food.done == true; else undone">
+                      <img mat-raised-button src="../../../assets/icons/Check_green_icon.svg.png"
+                        style="max-width: 20px;cursor: pointer;" (click)="updateFoodDone(order,food)">
+                    </td>
+                    <ng-template #undone>
+                      <td class="text-center align-middle">
+                        <img mat-raised-button src="../../../assets/icons/baseline-remove-24px.svg"
+                          style="max-width: 20px; cursor: pointer;" (click)="updateFoodDone(order,food)">
+                      </td>
+                    </ng-template>
+                  </tr>
+                </tbody>
+              </table>
             </td>
-            <ng-template #undone>
-              <td class="text-center align-middle">
-                <img mat-raised-button src="../../../assets/icons/baseline-remove-24px.svg"
-                  style="max-width: 20px; cursor: pointer;" (click)="updateFoodDone(order,food)">
-              </td>
-            </ng-template>
+            <td class="text-center align-middle" style="width: 180px;">
+              <div class="row">
+                <div class="col col-sm-12 col-md-6">
+                  <button mat-raised-button color="primary" (click)="markOrderComplete(order)">ສົ່ງແລ້ວ</button>
+                </div>
+                <div class="col col-sm-12 col-md-6">
+                  <button mat-raised-button color="warn" (click)="markOrderCancel(order)">ຍົກເລິກ</button>
+                </div>
+              </div>
+
+            </td>
           </tr>
         </tbody>
-      </table>
-      </td>
-      <td class="text-center align-middle" style="width: 180px;">
-        <div class="row">
-          <div class="col col-sm-12 col-md-6">
-            <button mat-raised-button color="primary" (click)="markOrderComplete(order)">ສົ່ງແລ້ວ</button>
-          </div>
-          <div class="col col-sm-12 col-md-6">
-            <button mat-raised-button color="warn" (click)="markOrderCancel(order)">ຍົກເລິກ</button>
-          </div>
-        </div>
-
-      </td>
-      </tr>
-      </tbody>
       </table>
     </div>
   </mat-card-content>

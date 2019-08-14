@@ -62,10 +62,13 @@ export class PaymentCashComponent implements OnInit {
       cashloadId: new FormControl(),
       memberId: new FormControl(),
       memberName: new FormControl(),
+      deriveryId: new FormControl(1),
+      deriveryDescription: new FormControl(),
     });
     this.member = this.data.member;
 
     this.orderForm.get('memberId').setValue(this.data.member.memberId);
+    this.orderForm.get('deriveryDescription').setValue(this.deriveryDescription);
     this.showMember = '';
   }
   username: string;
@@ -80,7 +83,8 @@ export class PaymentCashComponent implements OnInit {
   tickets: Observable<any[]>;
   ticketSelected: number;
   foodList: any = [];
-
+  deriveries: any;
+  deriveryDescription = 'inplace';
   paymentTypesRef: AngularFirestoreCollection<PaymentType>;
   paymentTypes: Observable<any[]>;
   showPaymentCash = 'hidden';
@@ -107,7 +111,8 @@ export class PaymentCashComponent implements OnInit {
     this.loadData();
     this.loadAvailableTicket();
     this.checkPaymentCash('CASH');
-    console.log(this.member);
+    this.loadDeriveries();
+    // console.log(this.member);
   }
   async loadData() {
     // this.snackbar.open('Loading data...', 'OK', { duration: 1000 });
@@ -500,5 +505,17 @@ export class PaymentCashComponent implements OnInit {
       this.orderForm.get('memberName').setValue(member['cardNo'] + '|' + member['fullname'] + '|' + member['mobile']);
       console.log(member);
     });
+  }
+  loadDeriveries() {
+    this.backendService.getDeriveries().then(r => {
+      r.subscribe(deriveries => {
+        this.deriveries = deriveries;
+      });
+    });
+  }
+  deriveryProviderSelectChange($event) {
+    this.deriveryDescription = $event.target.options[$event.target.options.selectedIndex].text;
+    this.orderForm.get('deriveryDescription').setValue($event.target.options[$event.target.options.selectedIndex].text);
+    console.log(this.deriveryDescription);
   }
 }

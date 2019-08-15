@@ -40,6 +40,8 @@ export class ViewFoodComponent implements OnInit {
       discId: new FormControl(),
       price: new FormControl(),
       cost: new FormControl(),
+      deriveryCost: new FormControl(0),
+      deriveryPrice: new FormControl(0),
       kitchenId: new FormControl(),
       updatedBy: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       enabled: new FormControl(true),
@@ -52,7 +54,7 @@ export class ViewFoodComponent implements OnInit {
     });
     // Load startup
 
-    // console.log(this.data);
+    console.log(this.data);
 
     if (this.data.pFood) {
       this.masterFood = true;

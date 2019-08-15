@@ -31,7 +31,9 @@
                   <th scope="col" class="text-center">ອາຫານ</th>
                   <th scope="col" class="text-center">ອາຫານ ພາສາອັງກິດ</th>
                   <th scope="col" class="text-center">ຕົ້ນທືນ</th>
+                  <th scope="col" class="text-center">ຕົ້ນທືນຈັດສົ່ງ</th>
                   <th scope="col" class="text-center">ລາຄາຂາຍ</th>
+                  <th scope="col" class="text-center">ລາຄາຂາຍຈັດສົ່ງ</th>
                   <th scope="col" class="text-center">ສະກຸນ</th>
                   <th scope="col" class="text-center">ຈານ</th>
                   <th scope="col" class="text-center">ໝວດ</th>
@@ -52,7 +54,11 @@
                   <td class="text-left align-middle h6" style="max-width: 100px;">{{ commonfood.food_name }}</td>
                   <td class="text-left align-middle h6" style="max-width: 100px;">{{ commonfood.food_name_en }}</td>
                   <td class="text-right align-middle" style="max-width: 50px;">{{ commonfood.cost |number }}</td>
+                  <td class="text-right align-middle" style="max-width: 50px;">{{ commonfood.deriveryCost |number }}
+                  </td>
                   <td class="text-right align-middle" style="max-width: 50px;">{{ commonfood.price |number }}</td>
+                  <td class="text-right align-middle" style="max-width: 50px;">{{ commonfood.deriveryPrice |number }}
+                  </td>
                   <td class="text-center align-middle" style="max-width: 10px;">{{ commonfood.currency_name }}</td>
                   <td class="text-center align-middle" style="max-width: 10px;">{{ commonfood.disc_name }}</td>
                   <td class="text-center align-middle" style="max-width: 50 px;">{{ commonfood.foodTypeName }}</td>
@@ -132,43 +138,43 @@
                   <td class="text-center align-middle">
                     <table class="table" (click)="openViewExtendedFood(parentFood)">
                       <thead class="thead-dark">
-                  <th>ລາຍການຍ່ອຍ</th>
-                  <th>ຕົ້ນທືນ</th>
-                  <th>ລາຄາຂາຍ</th>
-                  </thead>
-              <tbody>
-                <tr *ngFor="let sFood of parentFood.sFood">
-                  <td class="text-left align-middle">
-                    {{ sFood.subFoodName }}
+                        <th>ລາຍການຍ່ອຍ</th>
+                        <th>ຕົ້ນທືນ</th>
+                        <th>ລາຄາຂາຍ</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let sFood of parentFood.sFood">
+                          <td class="text-left align-middle">
+                            {{ sFood.subFoodName }}
+                          </td>
+                          <td class="text-right align-middle">
+                            {{ sFood.cost |number }}
+                          </td>
+                          <td class="text-right align-middle">
+                            {{ sFood.price |number }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </td>
-                  <td class="text-right align-middle">
-                    {{ sFood.cost |number }}
+
+                  <td class="text-center align-middle" *ngIf="parentFood.pFood.enabled; else unEnabled">
+                    <img src="../../../assets/icons/Check_green_icon.svg.png" (click)="toggleEnaledPFood(parentFood)"
+                      style="max-width: 20px;cursor: pointer;">
                   </td>
-                  <td class="text-right align-middle">
-                    {{ sFood.price |number }}
+                  <ng-template #unEnabled>
+                    <td class="text-center align-middle">
+                      <img src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;"
+                        (click)="toggleEnaledPFood(parentFood)">
+                    </td>
+                  </ng-template>
+                  <td class="text-center align-middle">
+                    <img src="../../../assets/icons/baseline-delete-24px.svg" style="max-width: 20px;cursor: pointer;"
+                      (click)="deleteFood(parentFood)">
                   </td>
+
                 </tr>
               </tbody>
-            </table>
-            </td>
-
-            <td class="text-center align-middle" *ngIf="parentFood.pFood.enabled; else unEnabled">
-              <img src="../../../assets/icons/Check_green_icon.svg.png" (click)="toggleEnaledPFood(parentFood)"
-                style="max-width: 20px;cursor: pointer;">
-            </td>
-            <ng-template #unEnabled>
-              <td class="text-center align-middle">
-                <img src="../../../assets/icons/cancel.svg" style="max-width: 20px;cursor: pointer;"
-                  (click)="toggleEnaledPFood(parentFood)">
-              </td>
-            </ng-template>
-            <td class="text-center align-middle">
-              <img src="../../../assets/icons/baseline-delete-24px.svg" style="max-width: 20px;cursor: pointer;"
-                (click)="deleteFood(parentFood)">
-            </td>
-
-            </tr>
-            </tbody>
             </table>
           </div>
         </div>

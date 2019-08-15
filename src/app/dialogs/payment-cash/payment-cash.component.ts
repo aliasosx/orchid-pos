@@ -202,6 +202,7 @@ export class PaymentCashComponent implements OnInit {
                   total_cost: food.cost * food.quantity,
                   note: food.note,
                   memberId: this.orderForm.get('memberId').value,
+                  paymentCode: this.orderForm.get('deriveryDescription').value,
                 };
                 let c = await this.backendService.createOrderDetail(orderDetail).then(async (resp_orderDetail) => {
                   resp_orderDetail.subscribe((y) => {
@@ -271,6 +272,7 @@ export class PaymentCashComponent implements OnInit {
                   total_price: food.total,
                   total_cost: food.cost * food.quantity,
                   memberId: this.orderForm.get('memberId').value,
+                  paymentCode: this.orderForm.get('deriveryDescription').value,
                 };
                 let c = await this.backendService.createOrderDetail(orderDetail).then(async (resp_orderDetail) => {
                   resp_orderDetail.subscribe((y) => {
@@ -334,6 +336,7 @@ export class PaymentCashComponent implements OnInit {
                   total_price: food.total,
                   total_cost: food.cost * food.quantity,
                   memberId: this.orderForm.get('memberId').value,
+                  paymentCode: this.orderForm.get('deriveryDescription').value,
                 };
                 let c = await this.backendService.createOrderDetail(orderDetail).then(async (resp_orderDetail) => {
                   resp_orderDetail.subscribe((y) => {

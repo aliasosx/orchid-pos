@@ -39,39 +39,41 @@
   </div>
   <mat-divider></mat-divider>
 </div>
-<div>
-  <table class="table table-bordered">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col" class="text-center">#</th>
-        <th scope="col" class="text-center">ອາຫານ</th>
-        <th scope="col" class="text-center">ຈຳນວນ</th>
-        <th scope="col" class="text-center">ລາຄາ</th>
-        <th scope="col" class="text-center">ລວມ</th>
-        <th scope="col" class="text-center">ຜູ້ຂາຍ</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let food of foods ; let i = index">
-        <td class="text-center">{{ i+1 }}</td>
-        <td class="text-left">{{ food.food }}</td>
-        <td class="text-center">{{ food.quantity | number }}</td>
-        <td class="text-right">{{ food.price | number }}</td>
-        <td class="text-right">{{ food.total | number }}</td>
-        <td class="text-center">{{ food.username  }}</td>
-      </tr>
+<div style="max-height: 50vh;overflow: auto;">
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col" class="text-center">#</th>
+          <th scope="col" class="text-center">ອາຫານ</th>
+          <th scope="col" class="text-center">ຈຳນວນ</th>
+          <th scope="col" class="text-center">ລາຄາ</th>
+          <th scope="col" class="text-center">ລວມ</th>
+          <th scope="col" class="text-center">ຜູ້ຂາຍ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let food of foods ; let i = index">
+          <td class="text-center">{{ i+1 }}</td>
+          <td class="text-left">{{ food.food }}</td>
+          <td class="text-center">{{ food.quantity | number }}</td>
+          <td class="text-right">{{ food.price | number }}</td>
+          <td class="text-right">{{ food.total | number }}</td>
+          <td class="text-center">{{ food.username  }}</td>
+        </tr>
 
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="4" class="text-center">
-          ລວມຍອດບິນ
-        </td>
-        <td class="text-right">
-          {{ data.grandtotal | number }}
-        </td>
-        <td colspan="2"></td>
-      </tr>
-    </tfoot>
-  </table>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" class="text-center">
+            ລວມຍອດບິນ
+          </td>
+          <td class="text-right">
+            {{ data.grandtotal | number }}
+          </td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 </div>

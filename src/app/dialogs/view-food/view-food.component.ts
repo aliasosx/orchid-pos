@@ -54,7 +54,7 @@ export class ViewFoodComponent implements OnInit {
     });
     // Load startup
 
-    console.log(this.data);
+    // console.log(this.data);
 
     if (this.data.pFood) {
       this.masterFood = true;
@@ -81,6 +81,8 @@ export class ViewFoodComponent implements OnInit {
           // console.log(food);
           food['cost'] = 0;
           food['price'] = 0;
+          food['deriveryCost'] = this.data.deriveryCost;
+          food['deriveryPrice'] = this.data.deriveryPrice;
           let m = await this.addFoodForm.setValue(food);
           this.photoSrc = await food['food_photo'];
           let c = await this.loadFoodTranx(this.data.fid);

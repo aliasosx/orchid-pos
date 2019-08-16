@@ -1,13 +1,13 @@
 <h1 mat-dialog-title>ອາຫານ</h1>
 <form [formGroup]="addFoodForm">
-  <div class="row">
-    <div class="col col-md-4">
+  <div class="row" style="max-height: 80vh;overflow: auto;">
+    <div class="col col-md-4 col-sm-12">
       <img [src]="photoSrc" (click)="fileinput.click()" class="photoDiv shadow p-3 mb-5 bg-white">
       <input type="file" (change)="uploadPhoto($event.target.files)" #fileinput style="display: none;">
       <mat-progress-bar color="primary" mode="determinate" [value]="progressBarValue">
       </mat-progress-bar>
     </div>
-    <div class="col col-md-8">
+    <div class="col col-md-8 col-sm-12">
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="id">ລະຫັດອາຫານ</label>

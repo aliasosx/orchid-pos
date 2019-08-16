@@ -271,7 +271,9 @@ export class BackendServiceService {
     };
     return this._http.post(this.backendService + 'reportsRevByFoodsByDateRange', reportDt, this.httpOptions);
   }
-
+  async getTransactionsByOrderId(orderId) {
+    return this._http.get(this.backendService + 'transactionsByOrderId/' + orderId, this.httpOptions);
+  }
   async reportsKitchenAdmin(startDt, endDt, kitchen) {
     const reportDt = {
       startDt,

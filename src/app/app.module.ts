@@ -121,6 +121,7 @@ import { MembersComponent } from './dialogs/members/members.component';
 import { MemberPipePipe } from './pipes/member-pipe.pipe';
 import { MemberByPhonePipe } from './pipes/member-by-phone.pipe';
 import { ProductByBarcodePipe } from './pipes/product-by-barcode.pipe';
+import { TransactionsViewComponent } from './dialogs/transactions-view/transactions-view.component';
 
 @NgModule({
   declarations: [
@@ -221,6 +222,7 @@ import { ProductByBarcodePipe } from './pipes/product-by-barcode.pipe';
     MemberPipePipe,
     MemberByPhonePipe,
     ProductByBarcodePipe,
+    TransactionsViewComponent,
 
 
   ],
@@ -294,6 +296,7 @@ import { ProductByBarcodePipe } from './pipes/product-by-barcode.pipe';
     AddPromotionFoodComponent,
     PromotionRoleComponent,
     MembersComponent,
+    TransactionsViewComponent,
   ]
   ,
   providers: [

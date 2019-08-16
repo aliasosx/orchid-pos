@@ -15,6 +15,7 @@ import { Food } from 'src/app/interfaces/food';
 import { PaymentType } from 'src/app/interfaces/paymentType';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { TransactionsViewComponent } from 'src/app/dialogs/transactions-view/transactions-view.component';
 
 @Component({
   selector: 'app-reports',
@@ -101,6 +102,7 @@ export class ReportsComponent implements OnInit {
   revByDateRange: any;
   revByUsersDateRange: any;
   revByKitchenDateRange: any;
+  derivery_provider_totals: any;
   revByFoodTypeDateRange: any;
   revByPaymentDateRange: any;
   revByFoodsDateRange: any;
@@ -111,6 +113,13 @@ export class ReportsComponent implements OnInit {
   endDate: Date;
 
   dateForm: FormGroup;
+
+  deriver_grandtotal = 0;
+  deriver_commission = 0;
+  deriver_costs = 0;
+  deriver_profit = 0;
+  deriver_netprofit = 0;
+  derver_list: any[] = [];
 
   ngOnInit() {
     this.dateForm = new FormGroup({
@@ -144,10 +153,17 @@ export class ReportsComponent implements OnInit {
     this.foodKitchenTotalCost = 0;
     this.totalPaymentDrinkKitchen = 0;
 
+    this.derver_list = [];
+    this.deriver_commission = 0;
+    this.deriver_costs = 0;
+    this.deriver_grandtotal = 0;
+    this.deriver_profit = 0;
+
     this.be.reportRevByKitchenByDateRange(this.startDate, this.endDate).then(rpt => {
       rpt.subscribe(r => {
         this.revByKitchenDateRange = r['reports'];
         this.kitchenPayments = r['payment_reports'];
+        this.derivery_provider_totals = r['derivery_provider_total'];
         r['payment_reports'].forEach(element => {
           if (element.kitchenName === 'Food') {
             this.foodKitchenPaymentSummary += element.amount;
@@ -160,6 +176,14 @@ export class ReportsComponent implements OnInit {
           if (element.kitchenName === 'Food') {
             this.foodKitchenTotalCost += element.total_cost;
           }
+        });
+        r['derivery_provider_total'].forEach(element => {
+          this.deriver_grandtotal += element.grandtotal;
+          this.deriver_commission += element.commission;
+          this.deriver_costs += parseInt(element.costs, 10);
+          this.deriver_netprofit += (element.grandtotal - element.commission);
+          this.deriver_profit += (element.grandtotal - element.commission - element.costs);
+
         });
       });
     });
@@ -209,5 +233,11 @@ export class ReportsComponent implements OnInit {
   toDateEvent(e) {
     this.toDateEnd = new Date(e.target.value);
     this.endDate = this.toDateEnd;
+  }
+  viewTransaction(orderId) {
+    const dialog = this.dialog.open(TransactionsViewComponent, {
+      width: '800px',
+      data: orderId,
+    });
   }
 }

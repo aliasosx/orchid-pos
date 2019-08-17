@@ -69,7 +69,10 @@ export class PurchaseGridComponent implements OnInit {
   }
   async loadProducts() {
     this.backendService.getProducts().then(rsp => {
-      rsp.subscribe(products => this.products = products);
+      rsp.subscribe(products => {
+        this.products = products;
+        console.log(products);
+      });
     });
   }
   openAddNewProd() {

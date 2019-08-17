@@ -9,6 +9,7 @@ import { AddProductsComponent } from 'src/app/dialogs/add-products/add-products.
 import { PurchaseBuffer } from 'src/app/interfaces/purchaseBuffer';
 import { Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { PurchaseQuantityComponent } from 'src/app/dialogs/purchase-quantity/purchase-quantity.component';
 
 declare var swal: any;
 
@@ -39,6 +40,7 @@ export class PurchaseGridComponent implements OnInit {
   purchaseForm: FormGroup;
   currencies: any;
   barcode: any;
+  showTotal = 'hidden';
 
   ngOnInit() {
     this.purchaseForm = new FormGroup({
@@ -71,7 +73,7 @@ export class PurchaseGridComponent implements OnInit {
     this.backendService.getProducts().then(rsp => {
       rsp.subscribe(products => {
         this.products = products;
-        console.log(products);
+        // console.log(products);
       });
     });
   }
@@ -86,6 +88,11 @@ export class PurchaseGridComponent implements OnInit {
   }
   async takePurchase(product) {
     // console.log(product);
+    if (this.grandTotal !== 0) {
+      this.showTotal = '';
+    } else {
+      this.showTotal = 'hidden';
+    }
     const cart = this.db.collection<PurchaseBuffer>('purchaseBuffers');
     cart.ref.where('productId', '==', product.id).where('userId', '==', JSON.parse(localStorage.getItem('usrObj')).id).get().then(r => {
       // console.log(r.docs.length);
@@ -129,6 +136,11 @@ export class PurchaseGridComponent implements OnInit {
   }
   removeItem(id) {
     this.db.collection('purchaseBuffers').doc(id).delete();
+    if (this.grandTotal !== 0) {
+      this.showTotal = '';
+    } else {
+      this.showTotal = 'hidden';
+    }
   }
 
   updateItemQuantity(item, quantity) {
@@ -289,5 +301,18 @@ export class PurchaseGridComponent implements OnInit {
         });
       });
     }
+  }
+  openPurchaseQuantity(item) {
+    const dialog = this.dialog.open(PurchaseQuantityComponent, {
+      width: '400px',
+      data: item,
+    });
+    dialog.afterClosed().subscribe(r => {
+      const data = {
+        quantity: r,
+        total: r * parseInt(item.dest_amount, 10),
+      };
+      this.db.collection('purchaseBuffers').doc(item.id).update(data);
+    });
   }
 }

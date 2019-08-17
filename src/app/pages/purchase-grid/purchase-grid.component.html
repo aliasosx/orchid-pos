@@ -117,8 +117,9 @@
                           (change)="updateItemDestAmount(item, $event.target.value)">
                       </td>
                       <td class="text-right align-middle">
-                        <input type="number" class="form-control text-right" id="txtQuantity"
-                          style="max-width: 80px;padding:0" (change)="updateItemQuantity(item, $event.target.value)"
+                        <input type="number" class="form-control text-right" id="txtQuantity" readonly
+                          style="max-width: 80px;padding:0; cursor: pointer;"
+                          (change)="updateItemQuantity(item, $event.target.value)" (click)="openPurchaseQuantity(item)"
                           value="{{ item.quantity  }}">
                       </td>
                       <td class="text-right align-middle">{{ item.total |number }}</td>
@@ -151,12 +152,12 @@
           </div>
         </div>
       </form>
-      <div class="card mt-1">
+      <div class="card mt-1" [ngClass]="showTotal">
         <div class="card-body">
           <div class="row">
-            <div class="col col-md-8 ">
-              <span class="h4 mr-5 align-top">ຍອດລວມທັງໝົດ</span><span
-                class="display-4 mr-2 text-right">{{ grandTotal | number  }}</span><span
+            <div class="col col-md-8">
+              <span class="h4 mr-5 align-top">ຍອດລວມທັງໝົດ</span>
+              <span class="display-4 mr-auto text-right">{{ grandTotal | number  }}</span><span
                 class="h4 align-buttom">ກິບ</span>
             </div>
             <div class="col col-md-4 text-right">

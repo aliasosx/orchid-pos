@@ -1,0 +1,26 @@
+<form [formGroup]="quantityForm">
+  <h4 class="mat-card-header">
+    Quantity selection
+  </h4>
+  <hr>
+  <div class="form-group ">
+
+    <label for="packs" class="col-md-12 col-form-label">Packs</label>
+    <div class="col-md-12">
+      <input type="number" class="form-control text-right" id="packs" formControlName="packs" (change)="onPackChange()">
+    </div>
+    <label for="qPerpacks" class="col-md-12 col-form-label">Quantity per Pack</label>
+    <div class="col-md-12">
+      <input type="number" class="form-control text-right" id="qPerpacks" formControlName="quantityPerPack"
+        (change)="onPackChange()">
+    </div>
+    <label for="quantity" class="col-md-12 col-form-label">Quantity</label>
+    <div class="col-md-12">
+      <input type="number" class="form-control text-right" id="quantity" readonly formControlName="quantity">
+    </div>
+    <hr>
+    <div class="col-md-12">
+      <button mat-flat-button color="primary" (click)="saveQuantity()" class="form-control">Choose</button>
+    </div>
+  </div>
+</form>

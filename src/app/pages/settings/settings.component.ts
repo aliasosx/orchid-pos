@@ -15,6 +15,7 @@ import { UsersComponent } from 'src/app/dialogs/users/users.component';
 import { StaffBenefitComponent } from 'src/app/dialogs/staff-benefit/staff-benefit.component';
 import { UnitsComponent } from 'src/app/dialogs/units/units.component';
 import { CouponListComponent } from 'src/app/dialogs/coupon-list/coupon-list.component';
+import { DiscountsComponent } from '../discounts/discounts.component';
 
 @Component({
   selector: 'app-settings',
@@ -75,6 +76,11 @@ export class SettingsComponent implements OnInit {
   }
   openCoupon() {
     const dialogRef = this.dialog.open(CouponListComponent, {
+      width: '1024px',
+    });
+  }
+  openDiscount() {
+    const dialogRef = this.dialog.open(DiscountsComponent, {
       width: '1024px',
     });
   }

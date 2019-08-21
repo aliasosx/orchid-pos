@@ -1,0 +1,43 @@
+<p>
+  {{ promocode }} Promotion
+</p>
+<hr>
+<div class="row">
+  <div class="col col-md-3">
+    <p class="h5">{{ promocode }}</p>
+    <p class="text-secondary">{{ promoDiscription }}</p>
+  </div>
+  <div class="col col-md-9">
+    <div class="table-responsive" style="max-height: 80vh;overflow: auto;">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <th scope="col" class="text-center">#</th>
+          <th scope="col" class="text-left">Food</th>
+          <th scope="col" class="text-right">Price</th>
+          <th scope="col" class="text-right">Discount</th>
+          <th scope="col" class="text-right">% Discount</th>
+          <th scope="col" class="text-right">Discount price</th>
+          <th scope="col" class="text-center">Enabled</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of promos; let i = index">
+            <td class="text-center">{{ i+1 }}</td>
+            <td class="text-left">{{ d.food_name }}</td>
+            <td class="text-right">{{ d.price |number }}</td>
+            <td class="text-right">{{ d.discount |number }}</td>
+            <td class="text-right">{{ d.percentageDiscount * 100  |number }} %</td>
+            <td class="text-right">{{ d.discountAmt |number }}</td>
+            <td class="text-center" *ngIf="d.enabled; else disableDiscount"><img
+                src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;">
+            </td>
+            <ng-template #disableDiscount>
+              <td class="text-center">
+                <img src="../../../assets/icons/baseline-remove-24px.svg" style="max-width: 20px;cursor: pointer;">
+              </td>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

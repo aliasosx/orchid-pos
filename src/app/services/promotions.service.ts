@@ -61,4 +61,10 @@ export class PromotionsService {
   async getDiscountDetailById(id) {
     return this._http.get(this.backendService + 'discountsDetailViewById/' + id, this.httpOptions);
   }
+  async getDiscountTranxByDiscountId(id) {
+    return this._http.get(this.backendService + 'discountTranxByDiscountId/' + id, this.httpOptions);
+  }
+  async updateDiscountTranx(id, data) {
+    return this._http.put(this.backendService + 'discountTranx/' + id, data, this.httpOptions);
+  }
 }

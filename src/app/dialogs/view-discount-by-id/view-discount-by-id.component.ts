@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { PromotionsService } from 'src/app/services/promotions.service';
+import { FoodDiscountViewComponent } from '../food-discount-view/food-discount-view.component';
 
 @Component({
   selector: 'app-view-discount-by-id',
@@ -10,7 +11,7 @@ import { PromotionsService } from 'src/app/services/promotions.service';
 export class ViewDiscountByIdComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private dialogRef: MatDialogRef<ViewDiscountByIdComponent>, @Inject(MAT_DIALOG_DATA) public data, private promotionService: PromotionsService) {
+  constructor(private dialogRef: MatDialogRef<ViewDiscountByIdComponent>, @Inject(MAT_DIALOG_DATA) public data, private promotionService: PromotionsService, private dialog: MatDialog) {
     this.loadDiscount();
   }
   promos: any;
@@ -29,5 +30,16 @@ export class ViewDiscountByIdComponent implements OnInit {
       });
     });
   }
-
+  updateFoodDiscount(discountTranxId) {
+    const dialogRefs = this.dialog.open(FoodDiscountViewComponent, {
+      width: '300px',
+      data: discountTranxId,
+    });
+    dialogRefs.afterClosed().subscribe(rs => {
+      if (rs === 'success') {
+        this.loadDiscount();
+      }
+    });
+    return;
+  }
 }

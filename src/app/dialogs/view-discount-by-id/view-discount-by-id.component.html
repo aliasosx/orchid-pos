@@ -22,7 +22,8 @@
         <tbody>
           <tr *ngFor="let d of promos; let i = index">
             <td class="text-center">{{ i+1 }}</td>
-            <td class="text-left">{{ d.food_name }}</td>
+            <td class="text-left" style="cursor: pointer;" (click)="updateFoodDiscount(d.dTranxId)">{{ d.food_name }}
+            </td>
             <td class="text-right">{{ d.price |number }}</td>
             <td class="text-right">{{ d.discount |number }}</td>
             <td class="text-right">{{ d.percentageDiscount * 100  |number }} %</td>

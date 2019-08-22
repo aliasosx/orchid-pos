@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { PromotionsService } from 'src/app/services/promotions.service';
 import { FoodDiscountViewComponent } from '../food-discount-view/food-discount-view.component';
+import { AddPromotionFoodComponent } from '../add-promotion-food/add-promotion-food.component';
 
 @Component({
   selector: 'app-view-discount-by-id',
@@ -26,7 +27,7 @@ export class ViewDiscountByIdComponent implements OnInit {
         this.promos = promos;
         this.promocode = promos[0].discount_code;
         this.promoDiscription = promos[0].discount_description;
-        console.log(promos);
+        // console.log(promos);
       });
     });
   }
@@ -41,5 +42,37 @@ export class ViewDiscountByIdComponent implements OnInit {
       }
     });
     return;
+  }
+  openAddPromotionFood() {
+    const dialogRefs = this.dialog.open(AddPromotionFoodComponent, {
+      width: '400px',
+      data: this.data,
+    });
+    dialogRefs.afterClosed().subscribe(rsp => {
+      this.loadDiscount();
+    });
+  }
+  toggleEnable(id, event) {
+    console.log(id);
+    const enable = !event;
+
+    let _enabled;
+    if (enable === false) {
+      _enabled = 0;
+    } else if (enable === true) {
+      _enabled = 1;
+    }
+
+    const couponTranx = {
+      enabled: _enabled
+    };
+    console.log(couponTranx);
+    this.promotionService.updateDiscountTranx(id, couponTranx).then(rsp => {
+      rsp.subscribe(r => {
+        console.log(r);
+        this.loadDiscount();
+        // this.snackBar.open('Updated', 'OK', { duration: 1000 });
+      });
+    });
   }
 }

@@ -44,7 +44,7 @@ export class PromotionsService {
     return this._http.post(this.backendService + 'promotions', data, this.httpOptions);
   }
   async createPromotionTranx(data) {
-    return this._http.post(this.backendService + 'promotionTranxs', data, this.httpOptions);
+    return this._http.post(this.backendService + 'discountTranx', data, this.httpOptions);
   }
   async getPromotionGroupByGroupId(id) {
     return this._http.get(this.backendService + 'promotionGroupByFoodId/' + id, this.httpOptions);

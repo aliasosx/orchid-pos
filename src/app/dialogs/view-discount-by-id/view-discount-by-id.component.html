@@ -6,6 +6,9 @@
       {{ promoDiscription }}
     </p>
   </div>
+  <div class="col text-right">
+    <button mat-raised-button color="primary" (click)="openAddPromotionFood()">Add new</button>
+  </div>
 </div>
 <hr>
 <div class="row">
@@ -30,12 +33,14 @@
             <td class="text-right">{{ d.discount |number }}</td>
             <td class="text-right">{{ d.percentageDiscount * 100  |number }} %</td>
             <td class="text-right">{{ d.discountAmt |number }}</td>
-            <td class="text-center" *ngIf="d.enabled; else disableDiscount"><img
-                src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;">
+            <td class="text-center" *ngIf="d.dtxEnabled; else disableDiscount"><img
+                src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;"
+                (click)="toggleEnable(d.dTranxId, d.dtxEnabled)">
             </td>
             <ng-template #disableDiscount>
               <td class="text-center">
-                <img src="../../../assets/icons/baseline-remove-24px.svg" style="max-width: 20px;cursor: pointer;">
+                <img src="../../../assets/icons/baseline-remove-24px.svg" style="max-width: 20px;cursor: pointer;"
+                  (click)="toggleEnable(d.dTranxId, d.dtxEnabled)">
               </td>
             </ng-template>
           </tr>

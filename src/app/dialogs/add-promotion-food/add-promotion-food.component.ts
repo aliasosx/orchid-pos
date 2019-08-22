@@ -15,18 +15,28 @@ export class AddPromotionFoodComponent implements OnInit {
   constructor(private backendService: BackendServiceService, private promotionService: PromotionsService, @Inject(MAT_DIALOG_DATA) public data, private dialogRef: MatDialogRef<AddPromotionFoodComponent>) { }
   foods: any;
   foodForms: FormGroup;
+  promotionTranxForm: FormGroup;
   foodTypes: any;
-
+  foodCatName: any;
   ngOnInit() {
-    this.foodForms = new FormGroup({
-      promotion_masterId: new FormControl(this.data.id),
+
+    this.promotionTranxForm = new FormGroup({
+      id: new FormControl(),
+      discountId: new FormControl(this.data.id),
       foodId: new FormControl(),
-      foodTypeId: new FormControl(),
+      subfoodId: new FormControl(),
+      discount: new FormControl(0),
+      percentageDiscount: new FormControl(0),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
+      currencyId: new FormControl(2),
+      createdAt: new FormControl(new Date()),
+      updatedAt: new FormControl(new Date()),
     });
+
+
     this.loadFoods();
     this.loadFoodTypes();
-    console.log(this.data.promotion_type_name.toUpperCase());
+    // console.log(this.data.promotion_type_name.toUpperCase());
   }
   loadFoods() {
     this.backendService.getFoods().then(r => {
@@ -38,12 +48,15 @@ export class AddPromotionFoodComponent implements OnInit {
   loadFoodTypes() {
     this.backendService.getFoodTypes().then(r => {
       r.subscribe(foodTypes => {
+        // console.log(foodTypes);
         this.foodTypes = foodTypes;
       });
     });
   }
   savePromotion() {
-    this.promotionService.createPromotionTranx(this.foodForms.value).then(r => {
+    if (!this.promotionTranxForm.valid) { return; }
+    this.promotionTranxForm.get('percentageDiscount').setValue(parseInt(this.promotionTranxForm.get('percentageDiscount').value, 10) / 100);
+    this.promotionService.createPromotionTranx(this.promotionTranxForm.value).then(r => {
       r.subscribe(promotionTranx => {
         if (promotionTranx['status'] === 'success') {
           this.dialogRef.close('success');

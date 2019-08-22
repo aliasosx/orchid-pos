@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 import { PromotionsService } from 'src/app/services/promotions.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
-import { CouponViewComponent } from 'src/app/dialogs/coupon-view/coupon-view.component';
 import { ViewDiscountByIdComponent } from 'src/app/dialogs/view-discount-by-id/view-discount-by-id.component';
+import { AddDiscountComponent } from 'src/app/dialogs/add-discount/add-discount.component';
 
 @Component({
   selector: 'app-discounts',
@@ -73,5 +73,11 @@ export class DiscountsComponent implements OnInit {
       width: '800px',
       data: discount,
     });
+  }
+  openAddPromotion() {
+    const dialogRef = this.dialog.open(AddDiscountComponent, {
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe(r => this.loadDiscounts());
   }
 }

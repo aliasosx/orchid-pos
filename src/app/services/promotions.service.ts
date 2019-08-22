@@ -41,7 +41,7 @@ export class PromotionsService {
     return this._http.get(this.backendService + 'promotionTypes', this.httpOptions);
   }
   async createPromotion(data) {
-    return this._http.post(this.backendService + 'promotions', data, this.httpOptions);
+    return this._http.post(this.backendService + 'discount', data, this.httpOptions);
   }
   async createPromotionTranx(data) {
     return this._http.post(this.backendService + 'discountTranx', data, this.httpOptions);

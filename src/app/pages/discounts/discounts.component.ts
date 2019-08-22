@@ -70,7 +70,7 @@ export class DiscountsComponent implements OnInit {
   }
   openCouponView(discount) {
     const dialogRef = this.dialog.open(ViewDiscountByIdComponent, {
-      width: '1024px',
+      width: '800px',
       data: discount,
     });
   }

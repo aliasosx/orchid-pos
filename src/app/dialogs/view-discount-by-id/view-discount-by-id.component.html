@@ -1,13 +1,15 @@
-<p>
-  {{ promocode }} Promotion
-</p>
+<div class="row">
+  <span><i class="material-icons">star</i></span>
+  <div class="col align-middle">
+    {{ promocode }} Promotion
+    <p class="text-secondary">
+      {{ promoDiscription }}
+    </p>
+  </div>
+</div>
 <hr>
 <div class="row">
-  <div class="col col-md-3">
-    <p class="h5">{{ promocode }}</p>
-    <p class="text-secondary">{{ promoDiscription }}</p>
-  </div>
-  <div class="col col-md-9">
+  <div class="col">
     <div class="table-responsive" style="max-height: 80vh;overflow: auto;">
       <table class="table table-bordered">
         <thead class="thead-dark">

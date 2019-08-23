@@ -1,5 +1,5 @@
 <div class="topbar-Container" [ngClass]="navBarShow">
-  <mat-toolbar color="primary">
+  <mat-toolbar color="primary" class="navbarStl">
     <mat-toolbar-row>
       <span *ngFor="let RestaurantInfo of RestaurantInfos | async">{{ RestaurantInfo.restaurantName }}
       </span>

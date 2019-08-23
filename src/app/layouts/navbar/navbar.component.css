@@ -11,3 +11,9 @@
 .hidden {
   display: none;
 }
+.navbarStl{
+  background-color: #343A40;
+}
+.mat-flat-button {
+  background-color: #343A40;
+}

@@ -44,10 +44,11 @@ export class PosComponent implements OnInit {
     }
     this.checkOpenCashBal();
     this.loadDiscs();
+    this.loadDeriveries();
   }
   private user: Observable<firebase.User>;
   username_info: any;
-
+  deriveries: any;
   foodCategoriesRef: AngularFirestoreCollection<FoodCategory>;
   FoodCategories: Observable<any[]>;
 
@@ -659,5 +660,12 @@ export class PosComponent implements OnInit {
   clearCardValue() {
     this.memberInput.nativeElement.value = '';
     this.initializeMember();
+  }
+  loadDeriveries() {
+    this.backendServices.getDeriveries().then(r => {
+      r.subscribe(deriveries => {
+        this.deriveries = deriveries;
+      });
+    });
   }
 }

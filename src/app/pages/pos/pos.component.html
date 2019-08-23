@@ -43,10 +43,8 @@
                   </ng-template>
                 </div>
                 <img src="{{ food.food_photo }}" alt="{{ food.food_name }}" class="img-thumbnail itemImg">
-                <div class="title align-middle">
-                  <div class="align-middle">
-                    <span class="font-weight-light h5">{{ food.food_name }}</span>
-                  </div>
+                <div class="title">
+                  <p style="font-size: 1.2em;">{{ food.food_name }}</p>
                 </div>
               </div>
             </div>
@@ -55,21 +53,22 @@
         <div class="col col-md-6 col-sm-12">
           <mat-card class="mainPaymentDiv">
             <div class="row mb-1">
-              <div class="col align-middle">
+              <div class="col col-md-6 align-middle">
                 <span *ngIf="member" style="font-size: 24px; color: #AF0506; font-weight: bolder;">ທ່ານ
                   {{ member.fullname }} ,
                   {{ beforePoints | number }} ຄະແນນ</span>
               </div>
-              <div class="col  align-middle">
-                <div class="form-row">
-                  <div class="input-group mt-1">
-                    <input type="text" maxlength="5" class="form-control" #memberInput placeholder="enter card no ..."
-                      (keyup)="cardNoSelected($event.target.value)">
-                    <div class="input-group-append">
-                      <button mat-stroked-button color="warn" (click)="clearCardValue()" class="mr-1">Clear</button>
-                    </div>
-                  </div>
-                </div>
+              <div class="col col-md-3 align-middle">
+                <input type="text" maxlength="5" class="form-control" #memberInput placeholder="enter card no ..."
+                  (keyup)="cardNoSelected($event.target.value)">
+              </div>
+              <div class="col col-md-3 align-middle">
+                <select class="form-control">
+                  <option value="-1" disabled>ການຈັດສົ່ງ</option>
+                  <option value="{{ d.id }}" *ngFor="let d of deriveries">
+                    {{ d.deriveryChannelName }}
+                  </option>
+                </select>
               </div>
             </div>
 
@@ -89,23 +88,20 @@
                 </mat-list-item>
                 <mat-divider></mat-divider>
                 <div class="listDiv">
-                  <mat-list-item *ngFor="let cart of virtualCart">
-                    <div class="row" style="width: 100%;">
+                  <mat-list-item *ngFor="let cart of virtualCart" class="align-middle">
+                    <div class="row align-middle" style="width: 100%;">
                       <div class="col col-sm-12 col-md-3 text-left align-middle">{{ cart.food }}
                         {{ cart.subFood }} <span class="badge badge-pill badge-danger"
                           style="font-size: 14px;">{{ cart.disc }}</span>
                       </div>
-                      <div class="col col-sm-12 col-md-2 text-left text-nowrap align-middle">
-                        <div class="form-row">
-                          <select class="form-control" (change)="discSelected($event.target.value, cart)">
-                            <option value="-1" disabled>ເລືອກ</option>
-                            <option value="-1">ປົກກະຕິ</option>
-                            <option value="{{ disc.id }}" *ngFor="let disc of discs">
-                              {{ disc.disc_name }}
-                            </option>
-                          </select>
-                        </div>
-
+                      <div class="col col-sm-12 col-md-2 text-left align-middle">
+                        <select class="form-control" (change)="discSelected($event.target.value, cart)">
+                          <option value="-1" disabled>ເລືອກ</option>
+                          <option value="-1">ປົກກະຕິ</option>
+                          <option value="{{ disc.id }}" *ngFor="let disc of discs">
+                            {{ disc.disc_name }}
+                          </option>
+                        </select>
                       </div>
                       <div class="col col-sm-12 col-md-1 text-right align-middle" style="cursor: pointer;"
                         (click)="openQuantity(cart)">
@@ -126,7 +122,8 @@
                   </mat-list-item>
                 </div>
                 <mat-divider></mat-divider>
-                <mat-list-item>
+                <!--
+                  <mat-list-item>
                   <div class="row">
                     <div class="col col-md-9 text-right h5" style="position: absolute; right:150px;">ຍອດລວມ
                     </div>
@@ -134,16 +131,24 @@
                       col col-md-3 text-right h5" style="position: absolute; right:18px;">{{ total | number }}</div>
                   </div>
                 </mat-list-item>
+                -->
+
               </mat-list>
             </mat-card-content>
           </mat-card>
           <mat-card class="paymentCard">
-            <mat-card-title>Payment</mat-card-title>
             <mat-card-content>
               <div class="row">
-                <div class="col col-md-12">
-                  <button mat-flat-button color="primary" style="width: 100%; height: 50px;"
-                    [disabled]="disablePaymentBtn" (click)="openPaymentCash()">Cash</button>
+                <div class="col col-md-9 align-middle">
+                  <span class="h5 text-secondary">ຍອດລວມ</span>
+                  <div class="display-4 text-danger">
+                    {{ total | number }}
+                  </div>
+                </div>
+                <div class="col col-md-3 align-middle">
+                  <button mat-flat-button color="primary"
+                    style="background-color: #15CD72;font-size: 2em;width: 100%;height: 100%;"
+                    [disabled]="disablePaymentBtn" (click)="openPaymentCash()">ຈ່າຍເງິນ</button>
                 </div>
               </div>
             </mat-card-content>

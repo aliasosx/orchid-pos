@@ -17,15 +17,19 @@
   left: 3px;
   opacity: 0.8;
   width: 90%;
-  text-align: center;
-  vertical-align: center;
   height: 60px;
-  background-color: rgb(8, 8, 8);
+  background-color: rgb(21, 19, 24);
   color:white;
   opacity: 0.7;
-  font-weight: bold;
 }
-
+.title p {
+  margin: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+}
 .itemImg {
   object-fit: cover;
 }
@@ -78,4 +82,5 @@
 .mainPaymentDiv {
   min-height: 550px;
 }
+
 

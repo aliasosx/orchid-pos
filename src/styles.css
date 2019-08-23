@@ -2,9 +2,10 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
-
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oxygen&display=swap');
 * {
-   font-family: 'Montserrat',  sans-serif , 'phetsarath-ot';
+   font-family: 'Oxygen',  sans-serif , 'phetsarath ot';
 }
 body, html {
   height: 100%;

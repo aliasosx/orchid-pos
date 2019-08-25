@@ -127,6 +127,7 @@ import { DiscountsComponent } from './pages/discounts/discounts.component';
 import { ViewDiscountByIdComponent } from './dialogs/view-discount-by-id/view-discount-by-id.component';
 import { FoodDiscountViewComponent } from './dialogs/food-discount-view/food-discount-view.component';
 import { AddDiscountComponent } from './dialogs/add-discount/add-discount.component';
+import { DiscSelectionComponent } from './dialogs/disc-selection/disc-selection.component';
 
 @NgModule({
   declarations: [
@@ -233,6 +234,7 @@ import { AddDiscountComponent } from './dialogs/add-discount/add-discount.compon
     ViewDiscountByIdComponent,
     FoodDiscountViewComponent,
     AddDiscountComponent,
+    DiscSelectionComponent,
 
 
   ],
@@ -311,6 +313,8 @@ import { AddDiscountComponent } from './dialogs/add-discount/add-discount.compon
     ViewDiscountByIdComponent,
     FoodDiscountViewComponent,
     AddDiscountComponent,
+    DiscSelectionComponent,
+
   ]
   ,
   providers: [

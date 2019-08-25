@@ -1,0 +1,6 @@
+.itemHover:hover {
+  background: rgb(153, 210, 214);
+  box-shadow: 0 5px 9px 0 rgba(0,0,0,0.08);
+  transition: box-shadow 0.3s ease-in-out;
+  border-radius: 5px;
+}

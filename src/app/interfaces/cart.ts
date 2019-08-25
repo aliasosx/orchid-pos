@@ -5,6 +5,7 @@ export interface Cart {
   subfoodId: string;
   orgPrice?: number;
   price: number;
+  discount: number;
   quantity: number;
   total: number;
   note?: string;

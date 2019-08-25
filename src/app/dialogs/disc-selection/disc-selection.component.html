@@ -1,0 +1,19 @@
+<p class="h5">
+  ເລືອກຈານ
+</p>
+<hr>
+<mat-list>
+  <mat-list-item *ngFor="let d of discs" class="itemHover" style="cursor: pointer;">
+    <div class="row" style="width: 100%;">
+      <div class="col col-md-4 text-left">
+        {{ d.disc_name }}
+      </div>
+      <div class="col col-md-4 text-center">
+        ຈ່າຍເພີ່ມ
+      </div>
+      <div class="col col-md-4 text-right">
+        {{ d.price | number }} ກິບ
+      </div>
+    </div>
+  </mat-list-item>
+</mat-list>

@@ -17,6 +17,7 @@ import { CouponAddPosComponent } from 'src/app/dialogs/coupon-add-pos/coupon-add
 import { PromotionsService } from 'src/app/services/promotions.service';
 import { MembersService } from 'src/app/services/members.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { DiscSelectionComponent } from 'src/app/dialogs/disc-selection/disc-selection.component';
 
 declare var swal: any;
 
@@ -147,26 +148,56 @@ export class PosComponent implements OnInit {
       }
     });
   }
-  foodChoosed(food) {
-    // console.log(food);
-    if (food.isParent === 1) {
-      this.openSubFood(food);
-    } else {
-      const item = {
-        'id': food.id,
-        'foodId': food.id,
-        'food': food.food_name,
-        'food_name_en': food.food_name_en,
-        'food_category': food.food_category,
-        'price': food.price,
-        'cost': food.cost,
-        'quantity': 1,
-        'total': food.price * 1,
-        'username': JSON.parse(localStorage.getItem('usrObj')).username,
-        'kitchen': food.kitchenName,
-      };
-      this.addCartsToDb(item);
-    }
+  async foodChoosed(food) {
+
+    this.promotionService.discountsDetailFoodId(food.id).then(r => {
+      r.subscribe(promotion => {
+        // console.log(promotion);
+        if (promotion[0] && promotion[0].discountAmt) {
+          if (food.isParent === 1) {
+            this.openSubFood(food);
+          } else {
+            const item = {
+              'id': food.id,
+              'foodId': food.id,
+              'food': food.food_name + ' - Pro',
+              'food_name_en': food.food_name_en,
+              'food_category': food.food_category,
+              'price': food.price,
+              'cost': food.cost,
+              'discount': promotion[0].discountAmt,
+              'quantity': 1,
+              'total': (food.price * 1) - promotion[0].discountAmt,
+              'username': JSON.parse(localStorage.getItem('usrObj')).username,
+              'kitchen': food.kitchenName,
+            };
+            this.addCartsToDb(item);
+          }
+          // return promotion[0].discountAmt;
+        } else {
+          console.log('No Promotion');
+          if (food.isParent === 1) {
+            this.openSubFood(food);
+          } else {
+            const item = {
+              'id': food.id,
+              'foodId': food.id,
+              'food': food.food_name,
+              'food_name_en': food.food_name_en,
+              'food_category': food.food_category,
+              'price': food.price,
+              'discount': 0,
+              'cost': food.cost,
+              'quantity': 1,
+              'total': food.price * 1,
+              'username': JSON.parse(localStorage.getItem('usrObj')).username,
+              'kitchen': food.kitchenName,
+            };
+            this.addCartsToDb(item);
+          }
+        }
+      });
+    });
   }
   removeFromlist(food) {
     if (food) {
@@ -284,7 +315,7 @@ export class PosComponent implements OnInit {
             if (item.subfoodId) {
               if (item.foodId === cart.foodId && item.subfoodId === cart.subfoodId) {
                 item['quantity'] = q;
-                item['total'] = (q * item.price);
+                item['total'] = (q * item.price) - item['discount'] * q;
                 // this.checkPromotion(item.foodId, q, item);
                 cartBuffers.push(item);
               } else {
@@ -293,7 +324,7 @@ export class PosComponent implements OnInit {
             } else {
               if (item.foodId === cart.foodId) {
                 item['quantity'] = q;
-                item['total'] = (q * item.price);
+                item['total'] = (q * item.price) - item['discount'] * q;
                 // this.checkPromotion(item.foodId, q, item);
                 cartBuffers.push(item);
               } else {
@@ -665,6 +696,28 @@ export class PosComponent implements OnInit {
     this.backendServices.getDeriveries().then(r => {
       r.subscribe(deriveries => {
         this.deriveries = deriveries;
+      });
+    });
+  }
+  discSelect(food) {
+    const discSelectionDialogRef = this.dialog.open(DiscSelectionComponent, {
+      width: '400px',
+      data: food,
+    });
+    discSelectionDialogRef.afterClosed().subscribe(discSize => {
+      console.log(discSize);
+    });
+  }
+  async getDiscountByFoodId(foodId) {
+    this.promotionService.discountsDetailFoodId(foodId).then(r => {
+      r.subscribe(promotion => {
+        if (promotion) {
+          console.log(promotion[0]);
+          return promotion[0].discountAmt;
+        } else {
+          console.log('No Promotion Found');
+          return 0;
+        }
       });
     });
   }

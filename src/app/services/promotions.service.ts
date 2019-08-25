@@ -67,4 +67,7 @@ export class PromotionsService {
   async updateDiscountTranx(id, data) {
     return this._http.put(this.backendService + 'discountTranx/' + id, data, this.httpOptions);
   }
+  async discountsDetailFoodId(foodId) {
+    return this._http.get(this.backendService + 'discountsDetailFoodId/' + foodId, this.httpOptions);
+  }
 }

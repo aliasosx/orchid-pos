@@ -1,0 +1,69 @@
+<div class="row">
+  <div class="col">
+    <p class="h5">
+      Additional Promotion Food.
+    </p>
+  </div>
+</div>
+<hr>
+<form [formGroup]="additionalForm">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="foodGroup">Group</label>
+      <select class="form-control" id="foodGroup" [(ngModel)]="foodCatName" [ngModelOptions]="{standalone: true}">
+        <option value="" disabled>Choose</option>
+        <option *ngFor="let f of foodTypes" value="{{ f.id }}">{{ f.foodTypeName }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="foodId">ອາຫານ</label>
+      <select class="form-control" id="foodId" formControlName="foodId" required formControlName="foodId" required>
+        <option value="" disabled>Choose</option>
+        <option *ngFor="let food of foods|foodCategoryPipe: foodCatName" value="{{ food.id }}">{{ food.food_name }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="quantity">ຈຳນວນ</label>
+      <input type="number" class="form-control text-right" id="quantity" formControlName="quantity" required>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="cost">ທຶນ</label>
+      <input type="number" class="form-control text-right" id="cost" formControlName="cost" required>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="price">ລາຄາ</label>
+      <input type="number" class="form-control text-right" id="price" formControlName="price" required>
+    </div>
+    <div class="form-group col-md-6">
+      <button mat-raised-button color="primary" style="top:32px;width: 100px;"
+        (click)="addAdditionalFood()">ເພິ່ມ</button>
+    </div>
+  </div>
+</form>
+<hr>
+<div class="row">
+  <div class="table-responsive" style="max-height: 30vh; overflow: auto;">
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <th scope="col" class="text-left">ອາຫານ</th>
+        <th scope="col" class="text-center">ຈຳນວນ</th>
+        <th scope="col" class="text-center">ຕົ້ນທຶນ</th>
+        <th scope="col" class="text-center">ລາຄາ</th>
+        <th scope="col" class="text-center">ລຶບ</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of additionalFoods">
+          <td class="text-left">{{ a.food_name }}</td>
+          <td class="text-right">{{ a.quantity | number }}</td>
+          <td class="text-right">{{ a.cost | number }}</td>
+          <td class="text-right">{{ a.price | number }}</td>
+          <td class="text-center">
+            <img src="../../../assets/icons/baseline-delete-24px.svg" (click)="deleteFood(a.daId)"
+              style="max-width: 20px;cursor: pointer;color: red;">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

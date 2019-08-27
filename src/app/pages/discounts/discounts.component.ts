@@ -4,6 +4,7 @@ import { PromotionsService } from 'src/app/services/promotions.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { ViewDiscountByIdComponent } from 'src/app/dialogs/view-discount-by-id/view-discount-by-id.component';
 import { AddDiscountComponent } from 'src/app/dialogs/add-discount/add-discount.component';
+import { AdditionalFoodsComponent } from 'src/app/dialogs/additional-foods/additional-foods.component';
 
 @Component({
   selector: 'app-discounts',
@@ -77,6 +78,14 @@ export class DiscountsComponent implements OnInit {
   openAddPromotion() {
     const dialogRef = this.dialog.open(AddDiscountComponent, {
       width: '400px',
+    });
+    dialogRef.afterClosed().subscribe(r => this.loadDiscounts());
+  }
+  openAddAdditionalFood(discountId) {
+    console.log(discountId);
+    const dialogRef = this.dialog.open(AdditionalFoodsComponent, {
+      width: '600px',
+      data: discountId
     });
     dialogRef.afterClosed().subscribe(r => this.loadDiscounts());
   }

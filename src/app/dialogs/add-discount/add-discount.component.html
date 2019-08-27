@@ -17,6 +17,12 @@
       <input type="text" id="discount_description" class="form-control" formControlName="discount_description" required>
     </div>
     <div class="form-group col-md-12">
+      <label for="discount_description">Discount Type</label>
+      <select class="form-control" id="discountTypeId" formControlName="discountTypeId">
+        <option value="{{ d.id }}" *ngFor="let d of discountTypes">{{ d.discountTypeCodeDescription }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-12">
       <label for="discount_valid_from">Promotion Date</label>
       <input type="date" id="discount_valid_from" class="form-control" formControlName="discount_valid_from" required>
     </div>

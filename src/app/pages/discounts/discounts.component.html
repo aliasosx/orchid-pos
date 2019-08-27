@@ -15,8 +15,9 @@
       <th scope="col">#</th>
       <th scope="col">Code</th>
       <th scope="col">Discount</th>
-      <th scope="col">Valid from</th>
+      <th scope="col" class="text-nowrap">Valid from</th>
       <th scope="col">Expire</th>
+      <th scope="col" class="text-center">Addition</th>
       <th scope="col" class="text-center">Valid</th>
       <th scope="col" class="text-center">Remove</th>
     </thead>
@@ -26,8 +27,16 @@
           <td class="text-center">{{ i+1 }}</td>
           <td class="text-left" style="cursor: pointer;" (click)="openCouponView(d)">{{ d.discount_code }}</td>
           <td class="text-left">{{ d.discount_description }}</td>
-          <td class="text-left">{{ d.discount_valid_from |date: 'dd-MMM-yy' }}</td>
-          <td class="text-left">{{ d.discount_valid_thru |date: 'dd-MMM-yy' }}</td>
+          <td class="text-left text-nowrap">{{ d.discount_valid_from |date: 'dd-MMM-yy' }}</td>
+          <td class="text-left text-nowrap">{{ d.discount_valid_thru |date: 'dd-MMM-yy' }}</td>
+          <td class="text-left text-nowrap" *ngIf="d.discountTypeId === 3;else additionalFood">
+            <button mat-stroked-button color="warn" disabled>View</button>
+          </td>
+          <ng-template #additionalFood>
+            <td class="text-left text-nowrap">
+              <button mat-stroked-button color="warn" (click)="openAddAdditionalFood(d.id)">View</button>
+            </td>
+          </ng-template>
           <td class="text-center" *ngIf="d.discount_valid; else noValid">
             <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;"
               (click)="toggleValid(d.id, d.discount_valid)">
@@ -53,10 +62,13 @@
         <ng-template>
           <tr class="table-danger">
             <td class="text-center">{{ i+1 }}</td>
-            <td class="text-left" style="cursor: pointer;" (click)="openCouponView(d)">{{ d.discount_code }}</td>
+            <td class="text-left" style="cursor: pointer;" (click)="openCouponView(d)">
+              {{ d.discount_code }}</td>
             <td class="text-left">{{ d.discount_description }}</td>
-            <td class="text-left">{{ d.discount_valid_from |date: 'dd-MMM-yy' }}</td>
-            <td class="text-left">{{ d.discount_valid_thru |date: 'dd-MMM-yy' }}</td>
+            <td class="text-left text-nowrap">{{ d.discount_valid_from |date: 'dd-MMM-yy' }}
+            </td>
+            <td class="text-left text-nowrap">{{ d.discount_valid_thru |date: 'dd-MMM-yy' }}</td>
+            <td class="text-left text-nowrap"></td>
             <td class="text-center" *ngIf="d.discount_valid; else noValid">
               <img src="../../../assets/icons/Check_green_icon.svg.png" style="max-width: 20px;cursor: pointer;"
                 (click)="toggleValid(d.id, d.discount_valid)">

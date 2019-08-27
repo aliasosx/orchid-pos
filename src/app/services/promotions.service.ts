@@ -70,4 +70,19 @@ export class PromotionsService {
   async discountsDetailFoodId(foodId) {
     return this._http.get(this.backendService + 'discountsDetailFoodId/' + foodId, this.httpOptions);
   }
+  async getDiscountTypes() {
+    return this._http.get(this.backendService + 'discountTypes', this.httpOptions);
+  }
+  async createAdditionalFood(data) {
+    return this._http.post(this.backendService + 'createAdditionalFood', data, this.httpOptions);
+  }
+  async getDiscountAdditionalFoodByDiscountId(discountId) {
+    return this._http.get(this.backendService + 'viewAdditionalFoodList/' + discountId, this.httpOptions);
+  }
+  async deleteDiscountAdditionalFoodBy(id) {
+    const cmd = {
+      deleted: 1
+    };
+    return this._http.put(this.backendService + 'deleteAdditionalFood/' + id, cmd, this.httpOptions);
+  }
 }

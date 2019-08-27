@@ -152,7 +152,7 @@ export class PosComponent implements OnInit {
 
     this.promotionService.discountsDetailFoodId(food.id).then(r => {
       r.subscribe(promotion => {
-        // console.log(promotion);
+        console.log(promotion);
         if (promotion[0] && promotion[0].discountAmt) {
           if (food.isParent === 1) {
             this.openSubFood(food);
@@ -174,6 +174,52 @@ export class PosComponent implements OnInit {
             this.addCartsToDb(item);
           }
           // return promotion[0].discountAmt;
+        } else if (promotion[0] && promotion[0].discountTypeId !== 3) {
+          this.promotionService.getDiscountAdditionalFoodByDiscountId(promotion[0].dId).then(r => {
+            r.subscribe(aFood => {
+              if (food.isParent === 1) {
+                this.openSubFood(food);
+              } else {
+                const item = {
+                  'id': food.id,
+                  'foodId': food.id,
+                  'food': food.food_name + ' - Pro',
+                  'food_name_en': food.food_name_en + ' - Pro',
+                  'food_category': food.food_category,
+                  'price': food.price,
+                  'discount': 0,
+                  'cost': food.cost,
+                  'quantity': 1,
+                  'total': food.price * 1,
+                  'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                  'kitchen': food.kitchenName,
+                };
+                this.addCartsToDb(item);
+              }
+              if (aFood) {
+                this.backendServices.getFoodDisplayByFoodId(aFood[0].foodId).then(rf => {
+                  rf.subscribe(a_food => {
+                    const food_add = a_food[0];
+                    const item = {
+                      'id': food_add.id,
+                      'foodId': food_add.id,
+                      'food': food_add.food_name + ' - Pro',
+                      'food_name_en': food_add.food_name_en + ' - Pro',
+                      'food_category': food_add.food_category,
+                      'price': aFood[0].price,
+                      'discount': 0,
+                      'cost': food_add.cost,
+                      'quantity': aFood[0].quantity,
+                      'total': aFood[0].price * aFood[0].quantity,
+                      'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                      'kitchen': food_add.kitchenName,
+                    };
+                    this.addCartsToDb(item);
+                  });
+                });
+              }
+            });
+          });
         } else {
           console.log('No Promotion');
           if (food.isParent === 1) {
@@ -487,8 +533,8 @@ export class PosComponent implements OnInit {
 
     this.backendServices.getFoodById(foodId).then(r => {
       r.subscribe(foodx => {
-        this.promotionService.getPromotionGroupByGroupId(foodx['foodTypeId']).then(r => {
-          r.subscribe(promotionGroup => {
+        this.promotionService.getPromotionGroupByGroupId(foodx['foodTypeId']).then(rs => {
+          rs.subscribe(promotionGroup => {
             this.groupCounting += 1;
             this.promotions = promotionGroup;
 

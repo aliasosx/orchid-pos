@@ -167,9 +167,13 @@ export class BackendServiceService {
   async getSubfoods() {
     return this._http.get(this.backendService + 'subfoods', this.httpOptions);
   }
+  async getFoodDisplayByFoodId(foodId) {
+    return this._http.get(this.backendService + 'foodsDisplayByFoodId/' + foodId, this.httpOptions);
+  }
   async getFoodDisplay() {
     return this._http.get(this.backendService + 'foodsDisplay', this.httpOptions);
   }
+
   async getFoodDisplayById(id) {
     return this._http.get(this.backendService + 'foodsDisplayByType/' + id, this.httpOptions);
   }

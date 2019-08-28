@@ -28,6 +28,7 @@ import { PurchaseGridComponent } from './pages/purchase-grid/purchase-grid.compo
 import { PromotionsComponent } from './pages/promotions/promotions.component';
 import { DynamicsPromotionsComponent } from './pages/dynamics-promotions/dynamics-promotions.component';
 import { DiscountsComponent } from './pages/discounts/discounts.component';
+import { MemberlistsComponent } from './pages/memberlists/memberlists.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -59,6 +60,7 @@ const routes: Routes = [
   { path: 'promotions', component: PromotionsComponent },
   { path: 'dpromotions', component: DynamicsPromotionsComponent },
   { path: 'discounts', component: DiscountsComponent },
+  { path: 'members', component: MemberlistsComponent },
 ];
 
 @NgModule({

@@ -36,6 +36,7 @@
     "pivottable": "^2.23.0",
     "rxjs": "~6.3.3",
     "sweetalert": "^2.1.2",
+    "sweetalert2": "^8.16.3",
     "uuid": "^3.3.2",
     "zone.js": "~0.8.26"
   },

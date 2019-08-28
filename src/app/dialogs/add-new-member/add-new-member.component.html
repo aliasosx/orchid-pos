@@ -1,0 +1,91 @@
+<form [formGroup]="memberForm">
+  <div class="row">
+    <div class="col mt-2">
+      <h4 class="card-title" style="font-family: 'phetsarath ot';">ລົງທະບຽນ ສະມາຊິກ</h4>
+    </div>
+    <div class="col text-right">
+      <img class="img-profile rounded-circle" src="../assets/img/1024px-Circle-icons-profile.svg.png"
+        style="max-width: 50px;cursor: pointer;" matTooltip="Add Photo">
+    </div>
+  </div>
+  <hr>
+
+  <div class="form-row" style="max-height: 65vh;overflow: auto;" style="font-family: 'phetsarath ot';">
+    <div class="form-group col-md-6">
+      <label for="selectCard">ເລກບັດ</label>
+      <select class="form-control" required id="selectCard" formControlName="cardId">
+        <option disabled>--------</option>
+        <option *ngFor="let card of cards" value="{{ card.id }}">{{ card.cardNo }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="txtIdCard">ເລກບັດປະຈຳຕົວ</label>
+      <input type="text" class="form-control" id="txtIdCard" maxlength="14" placeholder="Enter IdCard number ... "
+        formControlName="idCard">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="txtUsrName">ຊື່ຜູ້ໃຊ້</label>
+      <input type="text" class="form-control" id="txtUsrName" placeholder="Enter username ... " required
+        formControlName="userName">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="txtPassword">ລະຫັດຜ່ານ</label>
+      <input type="password" class="form-control" id="txtPassword" placeholder="Enter Password ... " required
+        formControlName="password">
+    </div>
+
+    <div class="form-group col-md-6">
+      <label for="genderRdo">ເພດ</label>
+      <p>
+        <mat-radio-group id="genderRdo" formControlName="gender" id="gender" style="position: relative;top:8px;">
+          <mat-radio-button value="M">ຊາຍ</mat-radio-button>
+          <mat-radio-button value="F">ຍິງ</mat-radio-button>
+        </mat-radio-group>
+      </p>
+
+    </div>
+    <div class=" form-group col-md-6">
+      <label for="emailtxt">ອາຊີບ</label>
+
+      <select class="form-control" formControlName="memberCategoryId">
+        <option value="">-------</option>
+        <option value="{{cat.id}}" *ngFor="let cat  of memberCategories">{{ cat.categoryName }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="txtFullname">ຊື່ ແລະ ນາມສະກຸນ</label>
+      <input type="text" class="form-control" id="txtFullname" placeholder="ໃສ່ ຊື່ ແລະ ນາມສະກຸນ ... "
+        formControlName="fullname">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="txtDOB">ວັນເດືອນປີເກີດ</label>
+      <input type="date" class="form-control" id="txtDOB" placeholder="ວັນເດືອນປີເກີດ ... "
+        formControlName="dateOfBirth">
+    </div>
+
+    <div class="form-group col-md-6">
+      <label for="txtMobile">ເບີໂທລະສັບ</label>
+      <input type="text" class="form-control" id="txtMobile" maxlength="100" formControlName="mobile"
+        placeholder="Enter Mobile phone number ... ">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="txtCurrAddr">ທີ່ຢູ່ປະຈຸບັນ</label>
+      <input type="text" class="form-control" id="txtCurrAddr" maxlength="100"
+        placeholder="ບ້ານ , ເມື່ອງ , ແຂວງ , ປະເທດ" formControlName="currentAddress">
+    </div>
+    <div class="form-group col-md-12">
+      <div class="col col-md-12">
+        <div class="row">
+          <div class="col col-sm-12 col-md-6">
+            <button class="btn btn-primary" (click)="saveMember()" [disabled]="saveBtnDisabled"
+              style="width: 100%;">ລົງທະບຽນ</button></div>
+          <div class="col col-sm-12 col-md-6">
+            <button class="btn btn-outline-danger" (click)="closeDialog()" style="width: 100%;">ປິດ</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-danger" style="width: 100%;" [hidden]="alertHide" *ngIf="errMsg" role="alert">
+      {{ errMsg.message }}
+    </div>
+  </div>
+</form>

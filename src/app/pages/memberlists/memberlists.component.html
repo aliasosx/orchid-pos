@@ -1,0 +1,116 @@
+<div class="row">
+  <div class="col col-md-12">
+    <div class="row">
+      <div class="col col-md-6">
+        <h1 class="h2 mb-4 text-gray-800 mt-2 border-right" style="font-family: 'phetsarath ot';">ການຈັດການ ສະມາຊິກ</h1>
+      </div>
+      <div class="col col-md-6 text-right">
+        <button class="btn btn-danger btn-lg mt-2" (click)="openAddNewMember()" style="font-family: 'phetsarath ot';"><i
+            class="fas fa-id-card mr-2"></i>ລົງທະບຽນ</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row" ແ>
+              <div class="col ">
+                <input type="text" class="form-control" placeholder="ຄົ້ນຫາເລກບັດ ..." [(ngModel)]="memberCardNo">
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="ຄົ້ນຫາດ້ວຍ ເບີໂທ ..." [(ngModel)]="phone">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col">
+        <div class="card">
+          <div class="card-header memberCard h4" style="font-family: 'phetsarath ot';">
+            ສະມາຊິກທັງໝົດ
+          </div>
+          <div class="card-body">
+            <div class="table-responsive" style="max-height: 60vh;">
+              <table class="table table-hover">
+                <thead>
+                  <tr style="font-family: 'phetsarath ot';">
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col">ເລກບັດ</th>
+                    <th scope="col">ຊື່ສະມາຊິກ</th>
+                    <th scope="col">ວັນເດືອນປີເກີດ</th>
+                    <th scope="col">ເລກບັດປະຈຳຕົວ</th>
+                    <th scope="col">ເບີໂທລະສັບ</th>
+                    <th scope="col" class="text-left">ອາຊີບ</th>
+                    <th scope="col" class="text-left">ລະດັບ</th>
+                    <th scope="col" class="text-right">ຄະແນນ</th>
+                    <th scope="col" class="text-left">ວັນທີ່ລົງທະບຽນ</th>
+                    <th scope="col">ສະຖານະ</th>
+                    <th scope="col" class="text-center">ຈັດການ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let member of members|memberPipe: memberCardNo|memberByPhone:phone;let i = index">
+                    <td class="text-center align-middle">{{ i + 1 }}</td>
+                    <td class="text-left align-middle">{{ member.cardNo }}</td>
+                    <td class="text-left align-middle" (click)="viewMemberInfo(member.mId,member.cardNo)"
+                      style="cursor: pointer;">
+                      <img class="img-profile rounded-circle" [src]="member.photo" style="max-width: 35px;">
+                      <span class="ml-2" style="font-family: 'phetsarath ot'"><span
+                          *ngIf="member.gender==='Mr';else female">ທ້າວ</span>
+                        <ng-template #female>
+                          <span>ນາງ</span>
+                        </ng-template>. {{ member.fullname }}
+                      </span>
+                    </td>
+                    <td class="text-left align-middle">{{ member.dateOfBirth | date:'dd-MMM-yyyy' }}</td>
+                    <td class="text-left align-middle">{{ member.idCard }}</td>
+                    <td class="text-left align-middle">{{ member.mobile }}</td>
+                    <td class="text-left align-middle" style="font-family: 'phetsarath ot'">{{ member.categoryName }}
+                    </td>
+                    <td class="text-left align-middle">{{ member.levelName }}</td>
+                    <td class="text-right align-middle" style="cursor: pointer;" matTooltip="ກວດສອບຄະແນນ"
+                      matTooltipPosition="right" (click)="viewTopTenTransactions(member.mId,member.points)">
+                      {{ member.points | number }}</td>
+                    <td class="text-left align-middle">{{ member.createdAt | date: 'dd-MMM-yyyy' }}</td>
+                    <td class="text-left align-middle" *ngIf="member.enabled;else inActive">
+                      <i class="fas fa-circle" style="color: #10C369;"></i><span class="ml-1"
+                        (click)="toggleActive(member)" style="cursor: pointer;">Active</span>
+                    </td>
+                    <ng-template #inActive>
+                      <td class="text-left align-middle">
+                        <i class="fas fa-circle" style="color: #FF5A5B;"></i>
+                        <span class="ml-1" (click)="toggleActive(member)" style="cursor: pointer;">Suspended</span>
+                      </td>
+                    </ng-template>
+                    <td class="text-center align-middle">
+                      <div class="row" style="max-width: 200px;">
+                        <div class="col col-md-6 text-right">
+                          <button mat-raised-button color="warn" style="font-family: 'phetsarath OT';margin: 0;"
+                            (click)="closeCardDialog(member.mId)">ປິດບັດ</button>
+                        </div>
+                        <div class="col col-md-6 text-left">
+                          <button mat-raised-button color="primary" *ngIf="member.points > 0;else reward"
+                            style="font-family: 'phetsarath OT';margin: 0;"
+                            (click)="openRewardUse(member)">ແລກລາງວັນ</button>
+                          <ng-template #reward>
+                            <button mat-raised-button color="primary" style="font-family: 'phetsarath OT';margin: 0;"
+                              disabled="true" (click)="openRewardUse(member)">ແລກລາງວັນ</button>
+                          </ng-template>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

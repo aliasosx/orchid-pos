@@ -9,6 +9,8 @@ export class BackendServiceService {
 
   constructor(private _http: HttpClient) { }
   backendService = environment.backendUrl.url;
+  backendServiceMember = environment.backendMemberUrl.url;
+
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -473,5 +475,49 @@ export class BackendServiceService {
   async getDeriveries() {
     return this._http.get(this.backendService + 'deriveries/', this.httpOptions);
   }
+  // Member
+  async getMemberShow() {
+    return this._http.get(this.backendServiceMember + 'membersShow', this.httpOptions);
+  }
+  async getDisplayCards() {
+    return this._http.get(this.backendServiceMember + 'cards', this.httpOptions);
+  }
+  async getCardsAvailable() {
+    return this._http.get(this.backendServiceMember + 'cardsAvailable', this.httpOptions);
+  }
+  async saveMember(member) {
+    return this._http.post(this.backendServiceMember + 'member', member, this.httpOptions);
+  }
+  async updateMember(id, member) {
+    return this._http.put(this.backendServiceMember + 'member/' + id, member, this.httpOptions);
+  }
+  async getFoodPoints() {
+    return this._http.get(this.backendServiceMember + 'foodPoints', this.httpOptions);
+  }
+  async getTopTransactionsByMemberId(memberId) {
+    return this._http.get(this.backendServiceMember + 'memberTopTransactions/' + memberId, this.httpOptions);
+  }
+  async getMemberById(memberId) {
+    return this._http.get(this.backendServiceMember + 'member/' + memberId, this.httpOptions);
+  }
+  async getCategories() {
+    return this._http.get(this.backendServiceMember + 'categories', this.httpOptions);
+  }
+  async getCardById(id) {
+    return this._http.get(this.backendServiceMember + 'card/' + id, this.httpOptions);
+  }
+  async getRewards() {
+    return this._http.get(this.backendServiceMember + 'rewards/', this.httpOptions);
+  }
+  async updateRewards(id, data) {
+    return this._http.put(this.backendServiceMember + 'reward/' + id, data, this.httpOptions);
+  }
+  async createReward(data) {
+    return this._http.post(this.backendServiceMember + 'reward', data, this.httpOptions);
+  }
+  async getRewardById(id) {
+    return this._http.get(this.backendServiceMember + 'rewardById/' + id, this.httpOptions);
+  }
+
 }
 

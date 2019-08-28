@@ -1,0 +1,23 @@
+.sidebar {
+  min-height: 81vh;
+  min-width: 21vw;
+}
+.titleDiv {
+  border: 2px;
+}
+.top-card {
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,121,105,1) 45%, rgba(0,212,255,1) 100%);
+}
+.border-header {
+  border-width: 5px !important;
+}
+.memberCard {
+  color: white;
+  background-color: rgb(22, 22, 22);
+  max-height: 60vh;
+}
+td {
+  color: rgb(48, 51, 58);
+}
+

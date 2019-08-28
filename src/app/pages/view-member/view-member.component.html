@@ -1,0 +1,75 @@
+<form [formGroup]="memberForm">
+  <div class="row" style="font-family: 'phetsarath ot';">
+    <div class="col mt-2">
+      <h4 class="card-title">ຂໍ້ມູນສະມາຊຶກ</h4>
+    </div>
+    <div class="col text-right">
+      <img class="img-profile rounded-circle" [src]="memberPhoto" style="max-width: 50px;cursor: pointer;"
+        matTooltip="ເພີ່ມຮູບ">
+    </div>
+  </div>
+  <hr>
+  <div class="row" [ngClass]="showMemberForm" style="font-family: phetsarath OT;">
+    <div class="col col-md-12">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="txtCardNo">ເລກບັດ ສະມາຊິກ</label>
+          <input type="text" class="form-control" id="txtCardNo" maxlength="5" placeholder="ເລັກບັດ ສະມາຊິກ ... "
+            readOnly #CardNo>
+        </div>
+        <div class=" form-group col-md-6">
+          <label for="txtIdCard">ເລກບັດ ປະຈຳຕົວ</label>
+          <input type="text" class="form-control" id="txtIdCard" maxlength="50" placeholder="ເລກບັດ ປະຈຳຕົວ ... "
+            formControlName="idCard">
+        </div>
+        <div class=" form-group col-md-6">
+          <label for="gender">ເພດ</label>
+          <p class="mt-1">
+            <mat-radio-group formControlName="gender" id="gender">
+              <mat-radio-button value="M">ທ້າວ</mat-radio-button>
+              <mat-radio-button class="ml-4" value="F">ນາງ</mat-radio-button>
+            </mat-radio-group>
+          </p>
+
+        </div>
+        <div class=" form-group col-md-6">
+          <label for="txtFullname">ຊື່ ແລະ ນາມສະກຸນ</label>
+          <input type="text" class="form-control" id="txtFullname" maxlength="50" placeholder="ຊື່ ແລະ ນາມສະກຸນ ... "
+            formControlName="fullname">
+        </div>
+        <div class=" form-group col-md-6">
+          <label for="dobTxt">ວັນ ເດືອນ ປີ ເກີດ</label>
+          <input type="date" class="form-control" id="dobTxt" formControlName="dateOfBirth">
+        </div>
+        <div class=" form-group col-md-6">
+          <label for="txtMobile">ເບີໂທລະສັບ</label>
+          <input type="text" class="form-control" id="txtMobile" maxlength="50" placeholder="ເບີໂທລະສັບ ... "
+            formControlName="mobile">
+        </div>
+        <div class=" form-group col-md-6">
+          <label for="emailtxt">ອິເມວ</label>
+          <input type="email" class="form-control" id="emailtxt" maxlength="50" placeholder="ອິເມວ ... "
+            formControlName="email">
+        </div>
+        <div class=" form-group col-md-6">
+          <label for="txtAddress">ທີ່ຢູ່ປະຈຸບັນ</label>
+          <input type="text" class="form-control" id="txtAddress" maxlength="255" placeholder="ທີ່ຢູ່ປະຈຸບັນ ... "
+            formControlName="currentAddress">
+        </div>
+        <div class=" form-group col-md-6">
+          <label for="selectCat">ອາຊິບ</label>
+          <select class="form-control" formControlName="memberCategoryId" id="selectCat">
+            <option value="">-------</option>
+            <option value="{{cat.id}}" *ngFor="let cat  of memberCategories">{{ cat.categoryName }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col col-md-12 text-right">
+      <button mat-flat-button color="primary" style="width: 100px;" class="ml-1" (click)="saveMember()">ບັນທຶກ</button>
+    </div>
+  </div>
+</form>

@@ -19,7 +19,7 @@ import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
   // tslint:disable-next-line: max-line-length
-  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule, MatInputModule, MatExpansionModule, MatTableModule, MatPaginatorModule, MatChipsModule,
+  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule, MatInputModule, MatExpansionModule, MatTableModule, MatPaginatorModule, MatChipsModule, MatRadioModule,
 } from '@angular/material';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -129,6 +129,9 @@ import { FoodDiscountViewComponent } from './dialogs/food-discount-view/food-dis
 import { AddDiscountComponent } from './dialogs/add-discount/add-discount.component';
 import { DiscSelectionComponent } from './dialogs/disc-selection/disc-selection.component';
 import { AdditionalFoodsComponent } from './dialogs/additional-foods/additional-foods.component';
+import { MemberlistsComponent } from './pages/memberlists/memberlists.component';
+import { ViewMemberComponent } from './pages/view-member/view-member.component';
+import { AddNewMemberComponent } from './dialogs/add-new-member/add-new-member.component';
 
 @NgModule({
   declarations: [
@@ -237,8 +240,9 @@ import { AdditionalFoodsComponent } from './dialogs/additional-foods/additional-
     AddDiscountComponent,
     DiscSelectionComponent,
     AdditionalFoodsComponent,
-
-
+    MemberlistsComponent,
+    ViewMemberComponent,
+    AddNewMemberComponent,
   ],
   imports: [
     BrowserModule,
@@ -254,7 +258,7 @@ import { AdditionalFoodsComponent } from './dialogs/additional-foods/additional-
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
     MatMenuModule, MatTooltipModule, MatStepperModule, MatInputModule, MatExpansionModule, MatTableModule, MatPaginatorModule,
-    MatChipsModule,
+    MatChipsModule, MatRadioModule,
     HttpClientModule,
   ],
   entryComponents: [
@@ -317,7 +321,8 @@ import { AdditionalFoodsComponent } from './dialogs/additional-foods/additional-
     AddDiscountComponent,
     DiscSelectionComponent,
     AdditionalFoodsComponent,
-
+    ViewMemberComponent,
+    AddNewMemberComponent,
   ]
   ,
   providers: [

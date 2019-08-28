@@ -518,6 +518,9 @@ export class BackendServiceService {
   async getRewardById(id) {
     return this._http.get(this.backendServiceMember + 'rewardById/' + id, this.httpOptions);
   }
+  async createRewardTranx(data) {
+    return this._http.post(this.backendServiceMember + 'rewardTranx', data, this.httpOptions);
+  }
 
 }
 

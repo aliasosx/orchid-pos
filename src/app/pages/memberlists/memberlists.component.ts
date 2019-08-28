@@ -3,6 +3,7 @@ import { ViewMemberComponent } from './../view-member/view-member.component';
 import { MatDialog } from '@angular/material';
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
+import { MemberRedimComponent } from 'src/app/dialogs/member-redim/member-redim.component';
 
 @Component({
   selector: 'app-memberlists',
@@ -55,7 +56,13 @@ export class MemberlistsComponent implements OnInit {
 
   }
   openRewardUse(member) {
-
+    const dialogRef = this.dialog.open(MemberRedimComponent, {
+      width: '400px',
+      data: member
+    });
+    dialogRef.afterClosed().subscribe(r => {
+      this.getMemberShow();
+    });
   }
   openAddNewMember() {
     const dialogRef = this.dialog.open(AddNewMemberComponent, {
@@ -66,4 +73,5 @@ export class MemberlistsComponent implements OnInit {
       this.getMemberShow();
     });
   }
+
 }

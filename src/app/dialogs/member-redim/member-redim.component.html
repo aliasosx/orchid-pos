@@ -1,0 +1,41 @@
+<form [formGroup]="rewardTrans">
+  <div class="row" style="font-family: 'phetsarath ot';">
+    <div class="col mt-2">
+      <h4 class="card-title">ການແລກຄະແນນ </h4>
+      <h5 class="text-secondary">ທ່ານ {{ data.fullname }} , ມີ {{ data.points | number }} ຄະແນນ</h5>
+    </div>
+  </div>
+  <hr>
+  <div class="row" [ngClass]="showRedimForm" style="font-family: phetsarath OT;">
+    <div class="col col-md-12">
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="rewardsSelect">ລາຍການແລກ</label>
+          <select class="form-control" id="rewardsSelect" (change)="selectedReward($event.target.value)"
+            formControlName="rewardId">
+            <option value="" disabled>-- select --</option>
+            <option value="{{ r.id }}" *ngFor="let r of rewards">{{ r.rewardDescriptions }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-12">
+          <span class="h5 text-primary" *ngIf="remainigPoint >= 0; else notEnough">ຄະແນນທີ່ຍັງເຫຼືອຫຼັງຈາກແລກ
+            {{ remainigPoint | number}}
+            ຄະແນນ</span>
+          <ng-template #notEnough>
+            <span class="h5 text-danger">ຄະແນນຂອງທ່ານບໍ່ພຽງພໍ</span>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col text-left">
+      <button mat-button color="warn" style="width: 150px;">ຍົກເລິກ</button>
+    </div>
+    <div class="col text-right">
+      <button mat-flat-button color="warn" [disabled]="btnSaveDisable" style="width: 150px;"
+        (click)="saveRedim()">ແລກ</button>
+    </div>
+  </div>
+</form>

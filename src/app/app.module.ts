@@ -132,6 +132,7 @@ import { AdditionalFoodsComponent } from './dialogs/additional-foods/additional-
 import { MemberlistsComponent } from './pages/memberlists/memberlists.component';
 import { ViewMemberComponent } from './pages/view-member/view-member.component';
 import { AddNewMemberComponent } from './dialogs/add-new-member/add-new-member.component';
+import { MemberRedimComponent } from './dialogs/member-redim/member-redim.component';
 
 @NgModule({
   declarations: [
@@ -243,6 +244,7 @@ import { AddNewMemberComponent } from './dialogs/add-new-member/add-new-member.c
     MemberlistsComponent,
     ViewMemberComponent,
     AddNewMemberComponent,
+    MemberRedimComponent,
   ],
   imports: [
     BrowserModule,
@@ -323,6 +325,7 @@ import { AddNewMemberComponent } from './dialogs/add-new-member/add-new-member.c
     AdditionalFoodsComponent,
     ViewMemberComponent,
     AddNewMemberComponent,
+    MemberRedimComponent,
   ]
   ,
   providers: [

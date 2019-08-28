@@ -20,4 +20,10 @@
 td {
   color: rgb(48, 51, 58);
 }
+.activeDiv {
+  border-left: 5px solid #10C369;
+}
+.suspendedDiv {
+  border-left: 5px solid #FF5A5B;
+}
 

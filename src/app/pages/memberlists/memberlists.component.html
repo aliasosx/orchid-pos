@@ -49,7 +49,7 @@
                     <th scope="col" class="text-right">ຄະແນນ</th>
                     <th scope="col" class="text-left">ວັນທີ່ລົງທະບຽນ</th>
                     <th scope="col">ສະຖານະ</th>
-                    <th scope="col" class="text-center">ຈັດການ</th>
+                    <th scope="col" class="text-left">ຈັດການ</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -88,15 +88,12 @@
                       </td>
                     </ng-template>
                     <td class="text-center align-middle">
-                      <div class="row" style="max-width: 200px;">
-                        <div class="col col-md-6 text-right">
-                          <button mat-raised-button color="warn" style="font-family: 'phetsarath OT';margin: 0;"
-                            (click)="closeCardDialog(member.mId)">ປິດບັດ</button>
-                        </div>
-                        <div class="col col-md-6 text-left">
+                      <div class="row text-nowrap">
+                        <div class="col col-md-6 text-center">
                           <button mat-raised-button color="primary" *ngIf="member.points > 0;else reward"
-                            style="font-family: 'phetsarath OT';margin: 0;"
+                            style="font-family: 'phetsarath OT';margin: 0;" class="mr-1"
                             (click)="openRewardUse(member)">ແລກລາງວັນ</button>
+                          <button mat-raised-button color="primary">ປະຫວັດແລກ</button>
                           <ng-template #reward>
                             <button mat-raised-button color="primary" style="font-family: 'phetsarath OT';margin: 0;"
                               disabled="true" (click)="openRewardUse(member)">ແລກລາງວັນ</button>

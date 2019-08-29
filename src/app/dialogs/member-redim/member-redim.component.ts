@@ -28,6 +28,7 @@ export class MemberRedimComponent implements OnInit {
       points: new FormControl(this.data.points),
       used: new FormControl(),
       remarks: new FormControl('Reward redim module'),
+      userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
     });
   }
   getRewards() {
@@ -44,6 +45,7 @@ export class MemberRedimComponent implements OnInit {
           this.remainigPoint = this.data.points - reward[0].points;
           if (this.remainigPoint > 0) {
             this.rewardTrans.get('used').setValue(reward[0].points);
+            this.rewardTrans.get('remarks').setValue('Reward redim from ' + reward[0].rewardDescriptions);
             this.btnSaveDisable = false;
           } else {
             this.btnSaveDisable = true;

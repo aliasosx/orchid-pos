@@ -1,0 +1,32 @@
+<div class="row" style="font-family: 'phetsarath ot';">
+  <div class="col mt-2">
+    <h4 class="card-title">ປະຫວັດການແລກຄະແນນ</h4>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="table-responsive" style="max-height: 60vh;overflow: auto;">
+    <table class="table table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr style="text-transform: capitalize;">
+          <th scope="col" class="text-center">#</th>
+          <th scope="col" class="text-left">Reward</th>
+          <th scope="col" class="text-center">Points</th>
+          <th scope="col" class="text-center">Used</th>
+          <th scope="col" class="text-center">Current</th>
+          <th scope="col" class="text-left">Redim Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of rewardHistories;let i = index;">
+          <td class="text-center">{{ i+1 }}</td>
+          <td class="text-left">{{ r.rewardDescriptions }}</td>
+          <td class="text-right">{{ r.points |number }}</td>
+          <td class="text-right">{{ r.used * (-1) |number }}</td>
+          <td class="text-right">{{ r.currentPoints |number }}</td>
+          <td class="text-left">{{ r.createdAt |date: 'dd-MMM-yyyy HH:mm:ss' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

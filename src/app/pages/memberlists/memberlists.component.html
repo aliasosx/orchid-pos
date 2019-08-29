@@ -78,7 +78,7 @@
                       {{ member.points | number }}</td>
                     <td class="text-left align-middle">{{ member.createdAt | date: 'dd-MMM-yyyy' }}</td>
                     <td class="text-left align-middle " *ngIf="member.enabled;else inActive">
-                      <i class="fas fa-circle " style="color: #10C369;"></i><span class="ml-1"
+                      <i class="material-icons" style="color: #10C369;">check_circle</i><span class="ml-1"
                         (click)="toggleActive(member)" style="cursor: pointer;">Active</span>
                     </td>
                     <ng-template #inActive>
@@ -90,10 +90,10 @@
                     <td class="text-center align-middle">
                       <div class="row text-nowrap">
                         <div class="col col-md-6 text-center">
-                          <button mat-raised-button color="primary" *ngIf="member.points > 0;else reward"
-                            style="font-family: 'phetsarath OT';margin: 0;" class="mr-1"
-                            (click)="openRewardUse(member)">ແລກລາງວັນ</button>
-                          <button mat-raised-button color="primary">ປະຫວັດແລກ</button>
+                          <button mat-raised-button color="primary" *ngIf="member.points > 0;else reward" style="font-family: 'phetsarath OT';margin: 0;background-color: #7f0000
+                            " (click)="openRewardUse(member)">ແລກລາງວັນ</button>
+                          <button mat-raised-button color="primary" class="ml-1"
+                            (click)="openRedimHistory(member)">ປະຫວັດແລກ</button>
                           <ng-template #reward>
                             <button mat-raised-button color="primary" style="font-family: 'phetsarath OT';margin: 0;"
                               disabled="true" (click)="openRewardUse(member)">ແລກລາງວັນ</button>

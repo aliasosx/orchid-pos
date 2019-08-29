@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 import { MemberRedimComponent } from 'src/app/dialogs/member-redim/member-redim.component';
+import { RedimHistoryComponent } from 'src/app/dialogs/redim-history/redim-history.component';
 
 @Component({
   selector: 'app-memberlists',
@@ -50,7 +51,24 @@ export class MemberlistsComponent implements OnInit {
 
   }
   toggleActive(member) {
+    // console.log(member);
+    let _enabled;
+    if (member.enabled === 1) {
+      _enabled = 0;
+    } else if (member.enabled === 0) {
+      _enabled = 1;
+    }
 
+    let json_active = {
+      enabled: _enabled
+    };
+    this.backendServices.updateMember(member.mId, json_active).then(r => {
+      r.subscribe(members => {
+        if (members['status'] !== 'error') {
+          this.getMemberShow();
+        }
+      });
+    });
   }
   closeCardDialog(id) {
 
@@ -70,6 +88,16 @@ export class MemberlistsComponent implements OnInit {
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe(member => {
+      this.getMemberShow();
+    });
+  }
+  openRedimHistory(member) {
+    if (member.points === 0) { return; }
+    const dialogRef = this.dialog.open(RedimHistoryComponent, {
+      width: '1024px',
+      data: member.mId,
+    });
+    dialogRef.afterClosed().subscribe(r => {
       this.getMemberShow();
     });
   }

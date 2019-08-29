@@ -521,6 +521,9 @@ export class BackendServiceService {
   async createRewardTranx(data) {
     return this._http.post(this.backendServiceMember + 'rewardTranx', data, this.httpOptions);
   }
+  async getRewardUsedHistories(memberId) {
+    return this._http.get(this.backendServiceMember + 'rewaredUsedHistories/' + memberId, this.httpOptions);
+  }
 
 }
 

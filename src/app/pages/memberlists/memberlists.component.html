@@ -48,7 +48,7 @@
                     <th scope="col" class="text-left">ລະດັບ</th>
                     <th scope="col" class="text-right">ຄະແນນ</th>
                     <th scope="col" class="text-left">ວັນທີ່ລົງທະບຽນ</th>
-                    <th scope="col">ສະຖານະ</th>
+                    <th scope="col" class="text-center">ສະຖານະ</th>
                     <th scope="col" class="text-left">ຈັດການ</th>
                   </tr>
                 </thead>
@@ -77,14 +77,14 @@
                       matTooltipPosition="right" (click)="viewTopTenTransactions(member.mId,member.points)">
                       {{ member.points | number }}</td>
                     <td class="text-left align-middle">{{ member.createdAt | date: 'dd-MMM-yyyy' }}</td>
-                    <td class="text-left align-middle " *ngIf="member.enabled;else inActive">
-                      <i class="material-icons" style="color: #10C369;">check_circle</i><span class="ml-1"
-                        (click)="toggleActive(member)" style="cursor: pointer;">Active</span>
+                    <td class="text-center align-middle " *ngIf="member.enabled;else inActive">
+                      <img src="../../../assets/icons/Check_green_icon.svg.png" (click)="toggleActive(member)"
+                        style="width: 20px;cursor: pointer;">
                     </td>
                     <ng-template #inActive>
-                      <td class="text-left align-middle">
-                        <i class="fas fa-circle " style="color: #FF5A5B;"></i>
-                        <span class="ml-1" (click)="toggleActive(member)" style="cursor: pointer;">Suspended</span>
+                      <td class="text-center align-middle">
+                        <img src="../../../assets/icons/cancel.svg" (click)="toggleActive(member)"
+                          style="width: 20px;cursor: pointer;">
                       </td>
                     </ng-template>
                     <td class="text-center align-middle">

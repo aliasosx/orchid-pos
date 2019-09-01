@@ -470,6 +470,7 @@ export class PaymentCashComponent implements OnInit {
   }
   // Thermal printer module
   async print_thermal(ticket, paymentType) {
+
     if (ticket) {
       const printData = {
         'staff': localStorage.getItem('username'),
@@ -482,6 +483,16 @@ export class PaymentCashComponent implements OnInit {
         'cardNo': this.member.cardNo,
         'currentPoint': this.member.memberPoints
       };
+      const alerts = {
+        message: printData,
+        chat: {
+          'id': 568566499,
+          'first_name': 'Pedt',
+          'username': 'soulisack',
+          'type': 'private'
+        }
+      };
+      this.sendMessage(alerts);
       console.log(printData);
       const c = await this.printerService.print_local(printData).then(res => {
         console.log(res);
@@ -520,5 +531,13 @@ export class PaymentCashComponent implements OnInit {
     this.deriveryDescription = $event.target.options[$event.target.options.selectedIndex].text;
     this.orderForm.get('deriveryDescription').setValue($event.target.options[$event.target.options.selectedIndex].text);
     console.log(this.deriveryDescription);
+  }
+  sendMessage(alerts) {
+    this.backendService.sendMessage(alerts).then(r => {
+      r.subscribe(rsp => {
+        this.snackbar.open('Alert Send', 'OK', { duration: 3000 });
+      });
+    });
+    return;
   }
 }

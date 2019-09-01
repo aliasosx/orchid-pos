@@ -524,6 +524,10 @@ export class BackendServiceService {
   async getRewardUsedHistories(memberId) {
     return this._http.get(this.backendServiceMember + 'rewaredUsedHistories/' + memberId, this.httpOptions);
   }
+  // Alert
+  async sendMessage(alerts) {
+    return this._http.post(this.backendServiceMember + 'send', alerts, this.httpOptions);
+  }
 
 }
 

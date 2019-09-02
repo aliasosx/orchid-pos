@@ -145,7 +145,7 @@
                     <th scope="col" class="text-center">ລວມ</th>
                     <th scope="col" class="text-center">ຂໍ້ຄວາມ</th>
                     <th scope="col" class="text-center">ຈັດການ</th>
-                  </thead>
+                  </thead>`
                   <tbody>
                     <tr *ngFor="let cart of virtualCart">
                       <td class="text-left">{{ cart.food }}</td>
@@ -153,7 +153,7 @@
                       <td class="text-right" style="cursor: pointer;" (click)="openQuantity(cart)">
                         {{ cart.quantity | number }}</td>
                       <td class="text-right">{{ cart.price | number }}</td>
-                      <td class="text-right">{{ cart.discount | number }}</td>
+                      <td class="text-right">{{ cart.total_discount | number }}</td>
                       <td class="text-right">{{ cart.total | number }}</td>
                       <td class="text-left">{{ cart.note }}</td>
                       <td class="text-center">

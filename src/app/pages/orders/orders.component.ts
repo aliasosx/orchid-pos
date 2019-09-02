@@ -232,6 +232,17 @@ export class OrdersComponent implements OnInit {
                             this.updateUserActivity('Make order Cancel by Order ID ' + order.orderId);
                             this.snackbarRef.open('Order has been canceled', 'ok', { duration: 1000 });
                             let c = await this.releaseTicket(order.ticket);
+                            const alerts = {
+                              // tslint:disable-next-line: max-line-length
+                              message: 'Order Canceled by: ' + this.username + ' ,Invoice No: ' + order.invoiceno + ' Amount: ' + order.grandtotal + ' , Payment: ' + order.paymentType + ' , Reson: ' + remark + ' At: ' + new Date(),
+                              chat: {
+                                'id': 568566499,
+                                'first_name': 'Pedt',
+                                'username': 'soulisack',
+                                'type': 'private'
+                              }
+                            };
+                            this.sendMessage(alerts);
                           });
                         }
                       }
@@ -409,7 +420,7 @@ export class OrdersComponent implements OnInit {
                         createdAt: new Date(),
                         orderId: order.id,
                         username: this.username,
-                      }
+                      };
                       let n = await this.db.collection<StockHistory>('stockHistories').add(stockhist).then(() => {
                         this.snackbarRef.open('Stock history added for ' + order.id, 'ok', { duration: 1000 });
                       });
@@ -441,5 +452,13 @@ export class OrdersComponent implements OnInit {
         }
       });
     });
+  }
+  sendMessage(alerts) {
+    this.backendService.sendMessage(alerts).then(r => {
+      r.subscribe(rsp => {
+        this.snackbarRef.open('Alert Send', 'OK', { duration: 3000 });
+      });
+    });
+    return;
   }
 }

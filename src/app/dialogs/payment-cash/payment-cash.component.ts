@@ -484,7 +484,8 @@ export class PaymentCashComponent implements OnInit {
         'currentPoint': this.member.memberPoints
       };
       const alerts = {
-        message: printData,
+        // tslint:disable-next-line: max-line-length
+        message: 'Order created total Amount ' + printData.grandTotal + ' Kip , On ' + printData.terminal + ' By ' + printData.staff + ' at ' + new Date(),
         chat: {
           'id': 568566499,
           'first_name': 'Pedt',

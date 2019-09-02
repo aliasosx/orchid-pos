@@ -23,6 +23,8 @@ export class FoodDiscountViewComponent implements OnInit {
       userId: new FormControl(),
       currencyId: new FormControl(),
       percentageDiscount: new FormControl(),
+      cond: new FormControl(),
+      enabled: new FormControl(),
       createdAt: new FormControl(),
       updatedAt: new FormControl(new Date()),
     });

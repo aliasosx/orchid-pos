@@ -7,6 +7,7 @@ export interface Cart {
   price: number;
   discount: number;
   quantity: number;
+  total_discount: number;
   total: number;
   note?: string;
   createdAt: Date;

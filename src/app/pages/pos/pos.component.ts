@@ -167,6 +167,7 @@ export class PosComponent implements OnInit {
               'cost': food.cost,
               'discount': promotion[0].discountAmt,
               'quantity': 1,
+              'total_discount': promotion[0].discountAmt,
               'total': (food.price * 1) - promotion[0].discountAmt,
               'username': JSON.parse(localStorage.getItem('usrObj')).username,
               'kitchen': food.kitchenName,
@@ -190,6 +191,7 @@ export class PosComponent implements OnInit {
                   'discount': 0,
                   'cost': food.cost,
                   'quantity': 1,
+                  'total_discount': promotion[0].discountAmt,
                   'total': food.price * 1,
                   'username': JSON.parse(localStorage.getItem('usrObj')).username,
                   'kitchen': food.kitchenName,
@@ -210,6 +212,7 @@ export class PosComponent implements OnInit {
                       'discount': 0,
                       'cost': food_add.cost,
                       'quantity': aFood[0].quantity,
+                      'total_discount': promotion[0].discountAmt,
                       'total': aFood[0].price * aFood[0].quantity,
                       'username': JSON.parse(localStorage.getItem('usrObj')).username,
                       'kitchen': food_add.kitchenName,
@@ -235,6 +238,7 @@ export class PosComponent implements OnInit {
               'discount': 0,
               'cost': food.cost,
               'quantity': 1,
+              'total_discount': 0,
               'total': food.price * 1,
               'username': JSON.parse(localStorage.getItem('usrObj')).username,
               'kitchen': food.kitchenName,
@@ -303,7 +307,9 @@ export class PosComponent implements OnInit {
         for (let i = 0; i < this.virtualCart.length; i++) {
           if (this.virtualCart[i].foodId === food.foodId && this.virtualCart[i].subfoodId === food.subfoodId) {
             this.virtualCart[i].quantity += 1;
-            this.virtualCart[i].total = this.virtualCart[i].quantity * this.virtualCart[i].price;
+            this.virtualCart[i].total_discount = this.virtualCart[i].discount * this.virtualCart[i].quantity;
+            // tslint:disable-next-line: max-line-length
+            this.virtualCart[i].total = this.virtualCart[i].quantity * this.virtualCart[i].price - this.virtualCart[i].total_discount;
             index = 1;
             // this.checkPromotion(food.id, this.virtualCart[i].quantity, this.virtualCart[i]);
             break;

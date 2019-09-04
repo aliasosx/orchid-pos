@@ -94,6 +94,8 @@ export class ViewFoodComponent implements OnInit {
           // console.log(food);
           food['cost'] = 0;
           food['price'] = 0;
+          food['deriveryCost'] = 0;
+          food['deriveryPrice'] = 0;
           let m = await this.addFoodForm.setValue(food);
           this.photoSrc = await food['food_photo'];
           let c = await this.loadFoodTranx(this.data.pFood.fid);

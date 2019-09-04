@@ -367,6 +367,7 @@ export class PosComponent implements OnInit {
             if (item.subfoodId) {
               if (item.foodId === cart.foodId && item.subfoodId === cart.subfoodId) {
                 item['quantity'] = q;
+                item['total_discount'] = item['discount'] * q;
                 item['total'] = (q * item.price) - item['discount'] * q;
                 // this.checkPromotion(item.foodId, q, item);
                 cartBuffers.push(item);

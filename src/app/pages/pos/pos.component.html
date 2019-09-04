@@ -150,7 +150,7 @@
                     <tr *ngFor="let cart of virtualCart">
                       <td class="text-left">{{ cart.food }}</td>
                       <td class="text-left" style="cursor: pointer;" (click)="discSelect(cart)">{{ cart.disc }}</td>
-                      <td class="text-right" style="cursor: pointer;" (click)="openQuantity(cart)">
+                      <td class="text-right" style="cursor: pointer;">
                         {{ cart.quantity | number }}</td>
                       <td class="text-right">{{ cart.price | number }}</td>
                       <td class="text-right">{{ cart.total_discount | number }}</td>

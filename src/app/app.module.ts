@@ -19,7 +19,7 @@ import {
   MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule,
   MatCardModule, MatFormFieldModule, MatProgressBarModule,
   // tslint:disable-next-line: max-line-length
-  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule, MatInputModule, MatExpansionModule, MatTableModule, MatPaginatorModule, MatChipsModule, MatRadioModule,
+  MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule, MatMenuModule, MatTooltipModule, MatInputModule, MatExpansionModule, MatTableModule, MatPaginatorModule, MatChipsModule, MatRadioModule, MatButtonToggleModule, MatSlideToggleModule,
 } from '@angular/material';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -262,7 +262,7 @@ import { RedimHistoryComponent } from './dialogs/redim-history/redim-history.com
     MatToolbarModule, MatIconModule, MatButtonModule, MatDialogModule, MatCardModule, MatFormFieldModule, MatProgressBarModule,
     MatSnackBarModule, MatStepperModule, MatTabsModule, MatDividerModule, MatListModule, MatDatepickerModule, MatNativeDateModule,
     MatMenuModule, MatTooltipModule, MatStepperModule, MatInputModule, MatExpansionModule, MatTableModule, MatPaginatorModule,
-    MatChipsModule, MatRadioModule,
+    MatChipsModule, MatRadioModule, MatButtonToggleModule, MatSlideToggleModule,
     HttpClientModule,
   ],
   entryComponents: [

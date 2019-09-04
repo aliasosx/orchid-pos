@@ -58,82 +58,18 @@
                   {{ member.fullname }} ,
                   {{ beforePoints | number }} ຄະແນນ</span>
               </div>
-              <div class="col col-md-3 align-middle">
+              <div class="col col-md-5 align-middle">
                 <input type="text" maxlength="5" class="form-control" #memberInput placeholder="enter card no ..."
                   (keyup)="cardNoSelected($event.target.value)">
               </div>
-              <div class="col col-md-3 align-middle">
-                <select class="form-control">
-                  <option value="-1" disabled>ການຈັດສົ່ງ</option>
-                  <option value="{{ d.id }}" *ngFor="let d of deriveries">
-                    {{ d.deriveryChannelName }}
-                  </option>
-                </select>
+              <div class="col col-md-1 align-middle text-right mt-2">
+                <mat-slide-toggle color="warn" [(ngModel)]="deriveryOption" (change)="deriverChange($event.checked)">
+                </mat-slide-toggle>
               </div>
             </div>
 
             <mat-divider></mat-divider>
             <mat-card-content>
-              <!--
-
-
-              <mat-list>
-                <mat-list-item style="width: 100%;">
-                  <div class="row" style="width: 100%;">
-                    <div class="col col-sm-12 col-md-2 text-left font-weight-bold">ອາຫານ</div>
-                    <div class="col col-sm-12 col-md-1 text-right font-weight-bold">ຈຳນວນ</div>
-                    <div class="col col-sm-12 col-md-2 text-right font-weight-bold">ລາຄາ</div>
-                    <div class="col col-sm-12 col-md-1 text-right font-weight-bold">ສ່ວນລຸດ</div>
-                    <div class="col col-sm-12 col-md-1 text-right font-weight-bold">ລວມ</div>
-                    <div class="col col-sm-12 col-md-2 text-center font-weight-bold">ຂໍ້ຄວາມ</div>
-                    <div class="col col-sm-12 col-md-1 text-right font-weight-bold">ຈັດການ</div>
-                  </div>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-                <div class="listDiv">
-                  <mat-list-item *ngFor="let cart of virtualCart" class="align-middle"
-                    style="width: 100%;min-height: 100px;vertical-align: middle;">
-                    <div class="row" style="width: 100%;">
-                      <div class="col col-sm-12 col-md-2 text-left align-middle" style="cursor: pointer;"
-                        (click)="discSelect()">{{ cart.food }}
-                        {{ cart.subFood }} <span class="badge badge-pill badge-danger"
-                          style="font-size: 14px;">{{ cart.disc }}</span>
-                      </div>
-
-                      <div class="col col-sm-12 col-md-1 text-right align-middle" style="cursor: pointer;"
-                        (click)="openQuantity(cart)">
-                        {{ cart.quantity | number }}
-                      </div>
-                      <div class="col col-sm-12 col-md-2 text-right align-middle">{{ cart.price | number }}</div>
-                      <div class="col col-sm-12 col-md-1 text-right align-middle">0</div>
-                      <div class="col col-sm-12 col-md-1 text-right align-middle"> {{ cart.total | number }}</div>
-                      <div class="col col-sm-12 col-md-2 text-left align-middle">{{ cart.note }}</div>
-                      <div class="col col-sm-12 col-md-1 text-center align-middle">
-                        <img src="../../../assets/icons/baseline-note-24px.svg"
-                          style="position: absolute; right:30px; cursor: pointer;" (click)="addnote(cart)">
-                        <img src="../../../assets/icons/baseline-delete-24px.svg"
-                          style="position: absolute; right:1px; cursor: pointer;" (click)="removeFromlist(cart)">
-                        <img src="../../../assets/icons/baseline-confirmation_number-24px.svg"
-                          style="position: absolute; right:-28px; cursor: pointer;" (click)="addCoupon()">
-                      </div>
-                    </div>
-                  </mat-list-item>
-                </div>
-                <mat-divider></mat-divider>
-
-                  <mat-list-item>
-                  <div class="row">
-                    <div class="col col-md-9 text-right h5" style="position: absolute; right:150px;">ຍອດລວມ
-                    </div>
-                    <div class="
-                      col col-md-3 text-right h5" style="position: absolute; right:18px;">{{ total | number }}</div>
-                  </div>
-                </mat-list-item>
-
-
-              </mat-list>
-              -->
-
               <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                   <thead style="font-weight: bolder;" class="thead-dark">

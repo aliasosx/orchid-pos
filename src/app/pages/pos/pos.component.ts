@@ -62,6 +62,8 @@ export class PosComponent implements OnInit {
   cartsRef: AngularFirestoreCollection<Cart>;
   carts: Observable<any[]>;
 
+  deriveryOption = false;
+
   foodCartList: any = [];
   itemSelected: any = [];
   total = 0;
@@ -112,6 +114,17 @@ export class PosComponent implements OnInit {
     } else {
       this.initializeMember();
     }
+    if (JSON.parse(localStorage.getItem('derivery'))) {
+      this.deriveryOption = JSON.parse(localStorage.getItem('derivery'));
+      if (JSON.parse(localStorage.getItem('derivery')) === true) {
+        swal({
+          title: 'ທ່ານໄດ້ເລືອກຮູບແບບ ການຈັດສົ່ງ',
+          text: 'ກະລຸນາກວດສອບ ຮູບແບບແບບການຈັດສົ່ງ ລາຄາຈະແຕກຕ່າງຈາກປົກກະຕິ',
+          icon: 'warning',
+          timer: 5000,
+        });
+      }
+    }
     this.memberInput.nativeElement.focus();
   }
 
@@ -126,6 +139,7 @@ export class PosComponent implements OnInit {
   loadFoodPage() {
     this.backendServices.getFoodDisplay().then(foods => {
       foods.subscribe(fd => {
+        // console.log(fd);
         this.foods = fd;
       });
     });
@@ -149,105 +163,212 @@ export class PosComponent implements OnInit {
     });
   }
   async foodChoosed(food) {
+    // Start Choose Food
 
-    this.promotionService.discountsDetailFoodId(food.id).then(r => {
-      r.subscribe(promotion => {
-        console.log(promotion);
-        if (promotion[0] && promotion[0].discountAmt) {
-          if (food.isParent === 1) {
-            this.openSubFood(food);
-          } else {
-            const item = {
-              'id': food.id,
-              'foodId': food.id,
-              'food': food.food_name + ' - Pro',
-              'food_name_en': food.food_name_en,
-              'food_category': food.food_category,
-              'price': food.price,
-              'cost': food.cost,
-              'discount': promotion[0].discountAmt,
-              'quantity': 1,
-              'total_discount': promotion[0].discountAmt,
-              'total': (food.price * 1) - promotion[0].discountAmt,
-              'username': JSON.parse(localStorage.getItem('usrObj')).username,
-              'kitchen': food.kitchenName,
-            };
-            this.addCartsToDb(item);
-          }
-          // return promotion[0].discountAmt;
-        } else if (promotion[0] && promotion[0].discountTypeId !== 3) {
-          this.promotionService.getDiscountAdditionalFoodByDiscountId(promotion[0].dId).then(r => {
-            r.subscribe(aFood => {
-              if (food.isParent === 1) {
-                this.openSubFood(food);
-              } else {
-                const item = {
-                  'id': food.id,
-                  'foodId': food.id,
-                  'food': food.food_name + ' - Pro',
-                  'food_name_en': food.food_name_en + ' - Pro',
-                  'food_category': food.food_category,
-                  'price': food.price,
-                  'discount': 0,
-                  'cost': food.cost,
-                  'quantity': 1,
-                  'total_discount': promotion[0].discountAmt,
-                  'total': food.price * 1,
-                  'username': JSON.parse(localStorage.getItem('usrObj')).username,
-                  'kitchen': food.kitchenName,
-                };
-                this.addCartsToDb(item);
-              }
-              if (aFood) {
-                this.backendServices.getFoodDisplayByFoodId(aFood[0].foodId).then(rf => {
-                  rf.subscribe(a_food => {
-                    const food_add = a_food[0];
-                    const item = {
-                      'id': food_add.id,
-                      'foodId': food_add.id,
-                      'food': food_add.food_name + ' - Pro',
-                      'food_name_en': food_add.food_name_en + ' - Pro',
-                      'food_category': food_add.food_category,
-                      'price': aFood[0].price,
-                      'discount': 0,
-                      'cost': food_add.cost,
-                      'quantity': aFood[0].quantity,
-                      'total_discount': promotion[0].discountAmt,
-                      'total': aFood[0].price * aFood[0].quantity,
-                      'username': JSON.parse(localStorage.getItem('usrObj')).username,
-                      'kitchen': food_add.kitchenName,
-                    };
-                    this.addCartsToDb(item);
+    if (this.deriveryOption === false) {
+      this.promotionService.discountsDetailFoodId(food.id).then(r => {
+        r.subscribe(promotion => {
+          // console.log(promotion);
+          if (promotion[0] && promotion[0].discountAmt) {
+            if (food.isParent === 1) {
+              this.openSubFood(food);
+            } else {
+              const item = {
+                'id': food.id,
+                'foodId': food.id,
+                'food': food.food_name + ' - Pro',
+                'food_name_en': food.food_name_en,
+                'food_category': food.food_category,
+                'price': food.price,
+                'cost': food.cost,
+                'discount': promotion[0].discountAmt,
+                'quantity': 1,
+                'total_discount': promotion[0].discountAmt,
+                'total': (food.price * 1) - promotion[0].discountAmt,
+                'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                'kitchen': food.kitchenName,
+              };
+              this.addCartsToDb(item);
+            }
+            // return promotion[0].discountAmt;
+          } else if (promotion[0] && promotion[0].discountTypeId !== 3) {
+            this.promotionService.getDiscountAdditionalFoodByDiscountId(promotion[0].dId).then(r => {
+              r.subscribe(aFood => {
+                if (food.isParent === 1) {
+                  this.openSubFood(food);
+                } else {
+                  const item = {
+                    'id': food.id,
+                    'foodId': food.id,
+                    'food': food.food_name + ' - Pro',
+                    'food_name_en': food.food_name_en + ' - Pro',
+                    'food_category': food.food_category,
+                    'price': food.price,
+                    'discount': 0,
+                    'cost': food.cost,
+                    'quantity': 1,
+                    'total_discount': promotion[0].discountAmt,
+                    'total': food.price * 1,
+                    'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                    'kitchen': food.kitchenName,
+                  };
+                  this.addCartsToDb(item);
+                }
+                if (aFood) {
+                  this.backendServices.getFoodDisplayByFoodId(aFood[0].foodId).then(rf => {
+                    rf.subscribe(a_food => {
+                      const food_add = a_food[0];
+                      const item = {
+                        'id': food_add.id,
+                        'foodId': food_add.id,
+                        'food': food_add.food_name + ' - Pro',
+                        'food_name_en': food_add.food_name_en + ' - Pro',
+                        'food_category': food_add.food_category,
+                        'price': aFood[0].price,
+                        'discount': 0,
+                        'cost': food_add.cost,
+                        'quantity': aFood[0].quantity,
+                        'total_discount': promotion[0].discountAmt,
+                        'total': aFood[0].price * aFood[0].quantity,
+                        'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                        'kitchen': food_add.kitchenName,
+                      };
+                      this.addCartsToDb(item);
+                    });
                   });
-                });
-              }
+                }
+              });
             });
-          });
-        } else {
-          console.log('No Promotion');
-          if (food.isParent === 1) {
-            this.openSubFood(food);
           } else {
-            const item = {
-              'id': food.id,
-              'foodId': food.id,
-              'food': food.food_name,
-              'food_name_en': food.food_name_en,
-              'food_category': food.food_category,
-              'price': food.price,
-              'discount': 0,
-              'cost': food.cost,
-              'quantity': 1,
-              'total_discount': 0,
-              'total': food.price * 1,
-              'username': JSON.parse(localStorage.getItem('usrObj')).username,
-              'kitchen': food.kitchenName,
-            };
-            this.addCartsToDb(item);
+            console.log('No Promotion');
+            if (food.isParent === 1) {
+              this.openSubFood(food);
+            } else {
+              const item = {
+                'id': food.id,
+                'foodId': food.id,
+                'food': food.food_name,
+                'food_name_en': food.food_name_en,
+                'food_category': food.food_category,
+                'price': food.price,
+                'discount': 0,
+                'cost': food.cost,
+                'quantity': 1,
+                'total_discount': 0,
+                'total': food.price * 1,
+                'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                'kitchen': food.kitchenName,
+              };
+              this.addCartsToDb(item);
+            }
           }
-        }
+        });
       });
-    });
+    } else if (this.deriveryOption === true) {
+      // Derivery Price Swap
+      this.promotionService.discountsDetailFoodId(food.id).then(r => {
+        r.subscribe(promotion => {
+          // console.log(promotion);
+          if (promotion[0] && promotion[0].discountAmt) {
+            if (food.isParent === 1) {
+              this.openSubFood(food);
+            } else {
+              const item = {
+                'id': food.id,
+                'foodId': food.id,
+                'food': food.food_name + ' - Pro',
+                'food_name_en': food.food_name_en,
+                'food_category': food.food_category,
+                'price': food.deriveryPrice,
+                'cost': food.deriveryCost,
+                'discount': promotion[0].discountAmt,
+                'quantity': 1,
+                'total_discount': promotion[0].discountAmt,
+                'total': (food.deriveryPrice * 1) - promotion[0].discountAmt,
+                'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                'kitchen': food.kitchenName,
+              };
+
+              this.addCartsToDb(item);
+            }
+            // return promotion[0].discountAmt;
+          } else if (promotion[0] && promotion[0].discountTypeId !== 3) {
+            this.promotionService.getDiscountAdditionalFoodByDiscountId(promotion[0].dId).then(r => {
+              r.subscribe(aFood => {
+                if (food.isParent === 1) {
+                  this.openSubFood(food);
+                } else {
+                  const item = {
+                    'id': food.id,
+                    'foodId': food.id,
+                    'food': food.food_name + ' - Pro',
+                    'food_name_en': food.food_name_en + ' - Pro',
+                    'food_category': food.food_category,
+                    'price': food.deriveryPrice,
+                    'cost': food.deriveryCost,
+                    'discount': 0,
+                    'quantity': 1,
+                    'total_discount': promotion[0].discountAmt,
+                    'total': food.deriveryPrice * 1,
+                    'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                    'kitchen': food.kitchenName,
+                  };
+                  this.addCartsToDb(item);
+                }
+                if (aFood) {
+                  this.backendServices.getFoodDisplayByFoodId(aFood[0].foodId).then(rf => {
+                    rf.subscribe(a_food => {
+                      const food_add = a_food[0];
+                      const item = {
+                        'id': food_add.id,
+                        'foodId': food_add.id,
+                        'food': food_add.food_name + ' - Pro',
+                        'food_name_en': food_add.food_name_en + ' - Pro',
+                        'food_category': food_add.food_category,
+                        'price': aFood[0].price,
+                        'discount': 0,
+                        'cost': food_add.cost,
+                        'quantity': aFood[0].quantity,
+                        'total_discount': promotion[0].discountAmt,
+                        'total': aFood[0].price * aFood[0].quantity,
+                        'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                        'kitchen': food_add.kitchenName,
+                      };
+                      this.addCartsToDb(item);
+                    });
+                  });
+                }
+              });
+            });
+          } else {
+            console.log('No Promotion');
+            if (food.isParent === 1) {
+              this.openSubFood(food);
+            } else {
+              const item = {
+                'id': food.id,
+                'foodId': food.id,
+                'food': food.food_name,
+                'food_name_en': food.food_name_en,
+                'food_category': food.food_category,
+                'price': food.deriveryPrice,
+                'cost': food.deriveryCost,
+                'discount': 0,
+                'quantity': 1,
+                'total_discount': 0,
+                'total': food.deriveryPrice * 1,
+                'username': JSON.parse(localStorage.getItem('usrObj')).username,
+                'kitchen': food.kitchenName,
+              };
+              this.addCartsToDb(item);
+            }
+          }
+        });
+      });
+    }
+
+
+    // End Food Select
   }
   removeFromlist(food) {
     if (food) {
@@ -772,6 +893,29 @@ export class PosComponent implements OnInit {
           return 0;
         }
       });
+    });
+  }
+  deriverChange(e) {
+    swal({
+      title: 'ແນ່ໃຈບໍ່ວ່າຕ້ອງການປ່ຽນ',
+      text: 'ການປ່ຽນຮູບແບບການສົ້ງ ຈະຕ້ອງໄດ້ ລົບລາຍການທີ້ເລຶອກໄວ້ອອກໝົດ',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((result) => {
+      if (result) {
+        localStorage.removeItem('cart');
+        this.deriveryOption = e;
+        this.virtualCart = [];
+        this.totalCalculation();
+        localStorage.setItem('derivery', JSON.stringify(this.deriveryOption));
+      } else {
+        this.deriveryOption = !e;
+        localStorage.setItem('derivery', JSON.stringify(this.deriveryOption));
+      }
+    }).catch(() => {
+      this.deriveryOption = !e;
+      return;
     });
   }
 }

@@ -125,6 +125,7 @@ export class PaymentCashComponent implements OnInit {
     let a = await this.data.cart.forEach(element => {
       element['done'] = false;
       element['food_category'] = 'NA';
+      element['price'] = element['price'] - element['discount'];
       if (element['disc']) {
         element['food'] = element['food'] + '-' + element['disc'];
         element['food_name_en'] = element['food_name_en'] + '-' + element['sign'];
@@ -170,10 +171,10 @@ export class PaymentCashComponent implements OnInit {
       this.items_Print.push({
         'food_name': item.food_name_en.substring(0, 15),
         'quantity': item.quantity,
-        'total': (item.quantity * item.price)
+        'total': (item.quantity * item.price) - (item.total_discount)
       });
     });
-    // console.log(this.items_Print);
+    console.log(this.items_Print);
   }
 
   paymentProcess() {
@@ -196,7 +197,7 @@ export class PaymentCashComponent implements OnInit {
                   subfoodId: food.subfoodId,
                   foodName: food.food,
                   cost: food.cost,
-                  price: food.price,
+                  price: food.price - food.discount,
                   quantity: food.quantity,
                   total_price: food.total,
                   total_cost: food.cost * food.quantity,
@@ -204,6 +205,7 @@ export class PaymentCashComponent implements OnInit {
                   memberId: this.orderForm.get('memberId').value,
                   paymentCode: this.orderForm.get('deriveryDescription').value,
                 };
+                // console.log(orderDetail);
                 let c = await this.backendService.createOrderDetail(orderDetail).then(async (resp_orderDetail) => {
                   resp_orderDetail.subscribe((y) => {
                     console.log('Order detail posted id ' + y['id']);
@@ -267,7 +269,7 @@ export class PaymentCashComponent implements OnInit {
                   subfoodId: food.subfoodId,
                   foodName: food.food,
                   cost: food.cost,
-                  price: food.price,
+                  price: food.price - food.discount,
                   quantity: food.quantity,
                   total_price: food.total,
                   total_cost: food.cost * food.quantity,
@@ -331,7 +333,7 @@ export class PaymentCashComponent implements OnInit {
                   subfoodId: food.subfoodId,
                   foodName: food.food,
                   cost: food.cost,
-                  price: food.price,
+                  price: food.price - food.discount,
                   quantity: food.quantity,
                   total_price: food.total,
                   total_cost: food.cost * food.quantity,

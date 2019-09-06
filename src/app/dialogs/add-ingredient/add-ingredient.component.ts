@@ -34,8 +34,8 @@ export class AddIngredientComponent implements OnInit {
       packPrice: new FormControl(0),
       supplierId: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
-      enabled: new FormControl(),
-      deleted: new FormControl(),
+      enabled: new FormControl(1),
+      deleted: new FormControl(0),
       createdAt: new FormControl(),
       updatedAt: new FormControl()
     });

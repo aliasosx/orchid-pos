@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { BomService } from 'src/app/services/bom.service';
 import { MatDialog } from '@angular/material';
 import { AddIngredientComponent } from 'src/app/dialogs/add-ingredient/add-ingredient.component';
+import { AddIngredientCategoryComponent } from 'src/app/dialogs/add-ingredient-category/add-ingredient-category.component';
+import { AddRecipeComponent } from 'src/app/dialogs/add-recipe/add-recipe.component';
 
 @Component({
   selector: 'app-ingredients',
@@ -27,7 +29,7 @@ export class IngredientsComponent implements OnInit {
   }
   openAddIngredient() {
     const dialogRef = this.dialog.open(AddIngredientComponent, {
-      width: '400px',
+      width: '600px',
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadIngredients();
@@ -35,10 +37,26 @@ export class IngredientsComponent implements OnInit {
   }
   openIngredient(id) {
     const ing = this.dialog.open(AddIngredientComponent, {
-      width: '400px',
+      width: '600px',
       data: id
     });
     ing.afterClosed().subscribe(() => {
+      this.loadIngredients();
+    });
+  }
+  openIngredientType() {
+    const dialogRef = this.dialog.open(AddIngredientCategoryComponent, {
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadIngredients();
+    });
+  }
+  openRecips() {
+    const dialogRef = this.dialog.open(AddRecipeComponent, {
+      width: '800px',
+    });
+    dialogRef.afterClosed().subscribe(() => {
       this.loadIngredients();
     });
   }

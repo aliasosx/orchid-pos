@@ -136,6 +136,8 @@ import { MemberRedimComponent } from './dialogs/member-redim/member-redim.compon
 import { RedimHistoryComponent } from './dialogs/redim-history/redim-history.component';
 import { IngredientsComponent } from './pages/ingredients/ingredients.component';
 import { AddIngredientComponent } from './dialogs/add-ingredient/add-ingredient.component';
+import { AddIngredientCategoryComponent } from './dialogs/add-ingredient-category/add-ingredient-category.component';
+import { AddRecipeComponent } from './dialogs/add-recipe/add-recipe.component';
 
 @NgModule({
   declarations: [
@@ -251,6 +253,8 @@ import { AddIngredientComponent } from './dialogs/add-ingredient/add-ingredient.
     RedimHistoryComponent,
     IngredientsComponent,
     AddIngredientComponent,
+    AddIngredientCategoryComponent,
+    AddRecipeComponent,
   ],
   imports: [
     BrowserModule,
@@ -334,6 +338,8 @@ import { AddIngredientComponent } from './dialogs/add-ingredient/add-ingredient.
     MemberRedimComponent,
     RedimHistoryComponent,
     AddIngredientComponent,
+    AddIngredientCategoryComponent,
+    AddRecipeComponent,
   ]
   ,
   providers: [

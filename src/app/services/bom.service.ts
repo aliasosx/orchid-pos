@@ -45,16 +45,25 @@ export class BomService {
   async getIngredientsShow() {
     return this._http.get(this.backendService + 'ingredientsShow', this.httpOptions);
   }
+  async getIngredients() {
+    return this._http.get(this.backendService + 'ingredients', this.httpOptions);
+  }
   async getIngredientTypes() {
     return this._http.get(this.backendService + 'ingredientTypes', this.httpOptions);
   }
   async createIngredient(ingredient) {
     return this._http.post(this.backendService + 'ingredient', ingredient, this.httpOptions);
   }
+  async createIngredientType(ingredientType) {
+    return this._http.post(this.backendService + 'ingredientType', ingredientType, this.httpOptions);
+  }
   async getIngredientById(id) {
     return this._http.get(this.backendService + 'ingredientById/' + id, this.httpOptions);
   }
   async updateIngredient(id, data) {
     return this._http.put(this.backendService + 'ingredient/' + id, data, this.httpOptions);
+  }
+  async createRecipe(recipe) {
+    return this._http.post(this.backendService + 'recipe', recipe, this.httpOptions);
   }
 }

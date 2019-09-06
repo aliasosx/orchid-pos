@@ -13,8 +13,14 @@
       </div>
       <div class="col col-md-8 col-sm-12" style="top: 10px;">
         <div class="text-right">
-          <button mat-fab color="primary" class="mr-1" style="background-color: #00BFA5" (click)="openAddIngredient()">
+          <button mat-fab color="primary" class="mr-2" style="background-color: #00BFA5" (click)="openAddIngredient()">
             <mat-icon>add</mat-icon>
+          </button>
+          <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1" (click)="openIngredientType()">
+            <mat-icon>category</mat-icon>
+          </button>
+          <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1" (click)="openRecips()">
+            <mat-icon>build</mat-icon>
           </button>
         </div>
       </div>
@@ -22,7 +28,7 @@
     </div>
     <mat-tab-group style="max-height: 72vh;overflow: auto;">
 
-      <mat-tab label="Products">
+      <mat-tab label="ວັດຖຸດິບຫຼັກ">
         <div class="table-responsive">
           <table class="table table-bordered product_detail table-hover">
             <thead class="thead-dark">
@@ -36,6 +42,7 @@
                 <th scope="col" class="text-center">ຈຳນວນຕໍ່ແກັດ</th>
                 <th scope="col" class="text-center">ລາຄາຕໍ່ແກັດ</th>
                 <th scope="col" class="text-center">ວັນທີ່ສ້າງ</th>
+                <th scope="col" class="text-center">ໝາຍເຫດ</th>
                 <th scope="col" class="text-center">ນຳໃຊ້</th>
                 <th scope="col" class="text-center">ຈັດການ</th>
               </tr>
@@ -48,10 +55,11 @@
                 <td class="text-center">{{ item.ingredientTypeName }}</td>
                 <td class="text-center">{{ item.unit_name }}</td>
                 <td class="text-right">{{ item.unitPrice | number }} ກີບ</td>
-                <td class="text-right">{{ item.quantityPerUnit | number }}</td>
-                <td class="text-right">{{ item.unitPerPack | number }}</td>
+                <td class="text-right">{{ item.quantityPerUnit | number }} {{ item.unit_name }}</td>
+                <td class="text-right">{{ item.unitPerPack | number }} {{ item.unit_name }}</td>
                 <td class="text-right">{{ item.packPrice | number }} ກີບ</td>
                 <td class="text-center">{{ item.createdAt | date: 'dd-MMM-yyyy' }}</td>
+                <td class="text-left">{{ item.remarks }}</td>
                 <td class="text-center" *ngIf="item.enabled; else disabledItem">
                   <div class="cell text-center">
                     <span>
@@ -83,6 +91,12 @@
             </tbody>
           </table>
         </div>
+      </mat-tab>
+      <mat-tab label="ສ່ວນປະກອບອາຫານ">
+
+      </mat-tab>
+      <mat-tab label="ຍອດໃນສາງປະຈຸບັນ">
+
       </mat-tab>
     </mat-tab-group>
   </mat-card-content>

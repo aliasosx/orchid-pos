@@ -42,4 +42,19 @@ export class BomService {
   async duplicateItemAdd(info) {
     return this._http.post(this.backendService + 'duplicateItemAdd', info, this.httpOptions);
   }
+  async getIngredientsShow() {
+    return this._http.get(this.backendService + 'ingredientsShow', this.httpOptions);
+  }
+  async getIngredientTypes() {
+    return this._http.get(this.backendService + 'ingredientTypes', this.httpOptions);
+  }
+  async createIngredient(ingredient) {
+    return this._http.post(this.backendService + 'ingredient', ingredient, this.httpOptions);
+  }
+  async getIngredientById(id) {
+    return this._http.get(this.backendService + 'ingredientById/' + id, this.httpOptions);
+  }
+  async updateIngredient(id, data) {
+    return this._http.put(this.backendService + 'ingredient/' + id, data, this.httpOptions);
+  }
 }

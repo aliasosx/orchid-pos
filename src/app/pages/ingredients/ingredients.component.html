@@ -13,12 +13,9 @@
       </div>
       <div class="col col-md-8 col-sm-12" style="top: 10px;">
         <div class="text-right">
-          <button mat-raised-button color="primary" class="mr-1" (click)="openAddNewDialog()">ເພີ່ມລາຍການ</button>
-          <button mat-raised-button color="primary" style="width: 103px;" class="mr-1"
-            (click)="reloadProduct()">ຣິໂຫລດ</button>
-          <button mat-raised-button color="primary" style="width: 103px;" class="mr-1"
-            routerLink="/purchases">ຊື່ສິນຄ້າເຂົ້າ</button>
-          <button mat-raised-button color="primary" routerLink="/stocks">ຈັດການ stock</button>
+          <button mat-fab color="primary" class="mr-1" style="background-color: #00BFA5" (click)="openAddIngredient()">
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
       </div>
 
@@ -27,56 +24,63 @@
 
       <mat-tab label="Products">
         <div class="table-responsive">
-          <table class="table table-bordered product_detail">
+          <table class="table table-bordered product_detail table-hover">
             <thead class="thead-dark">
               <tr>
-                <th scope="col" class="text-center" style="width: 30px;">ລະຫັດ</th>
-                <th scope="col" class="text-left">ລະຫັດບາໂຄດ</th>
-                <th scope="col" class="text-center">ລະຫັດອາຫານ</th>
-                <th scope="col" class="text-center">ຊື່ສິນຄ້າ</th>
+                <th scope="col" class="text-center">#</th>
+                <th scope="col" class="text-center">ຊື່ວັດຖຸດິບ</th>
                 <th scope="col" class="text-center">ປະເພດ</th>
-                <th scope="col" class="text-center">ຕົ້ນທຶນ</th>
-                <th scope="col" class="text-center">ຍອດຕໍ່າສຸດ</th>
                 <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
+                <th scope="col" class="text-center">ລາຄາຕໍ່ໜ່ວຍ</th>
+                <th scope="col" class="text-center">ຈຳນວນຕໍ່ໜ່ວຍ</th>
                 <th scope="col" class="text-center">ຈຳນວນຕໍ່ແກັດ</th>
-                <th scope="col" class="text-center">ຍອດປະຈຸບັນ</th>
-                <th scope="col" class="text-center">ຜູ້ສະໜອງ</th>
-                <th scope="col" class="text-center">ເຂົ້າສາງວັນທີ</th>
+                <th scope="col" class="text-center">ລາຄາຕໍ່ແກັດ</th>
+                <th scope="col" class="text-center">ວັນທີ່ສ້າງ</th>
+                <th scope="col" class="text-center">ນຳໃຊ້</th>
                 <th scope="col" class="text-center">ຈັດການ</th>
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let product of productsShow | product: searchProduct ; let i = index">
-                <tr [ngClass]="{'table-danger': product.currentQuantity == 0 || product.minimum >
-              product.currentQuantity }">
-                  <td class="text-center align-middle" (click)="updateProduct(product)" style="cursor: pointer">
-                    {{ product.pid }}</td>
-                  <td class="text-left align-middle">{{ product.barcode }}</td>
-                  <td class="text-center align-middle" *ngIf="product.foodId; else nonFoodId">{{ product.foodId }}</td>
-                  <ng-template #nonFoodId>
-                    <td class="text-center align-middle">N/A</td>
-                  </ng-template>
-                  <td class="text-left align-middle ">{{ product.product_name }}</td>
-                  <td class="text-left align-middle">{{ product.category_name }}</td>
-                  <td class="text-right align-middle">{{ product.cost |number }}</td>
-                  <td class="text-right align-middle">{{ product.minimum |number }}</td>
-                  <td class="text-center align-middle">{{ product.unit_name }}</td>
-                  <td class="text-center align-middle">{{ product.quantityPerPack | number }}</td>
-                  <td class="text-center align-middle">{{ product.currentQuantity | number }}</td>
-                  <td class="text-left align-middle">{{ product.supplier_name }}</td>
-                  <td class="text-center align-middle">{{ product.createdAt |date }}</td>
-                  <td class="text-center align-middle text-nowrap" style="width: 230px;">
-                    <button mat-raised-button color="primary" class="mr-1"
-                      (click)="openProductLink(product)">Link</button>
-                    <button mat-raised-button color="accent" (click)="updateProduct(product)">ແກ້ໄຂ</button>
-                    <button mat-raised-button color="warn" class="ml-1" (click)="deleteProduct(product)">ລືບ</button>
-                  </td>
-                </tr>
-              </ng-container>
-            </tbody>
-            <tfoot class="thead-light">
+              <tr *ngFor="let item of ingredients; let i = index;">
+                <td class="text-center">{{ i+1 }}</td>
+                <td class="text-left" (click)="openIngredient(item.ingredientId)" style="cursor: pointer;">
+                  {{ item.ingredientName }}</td>
+                <td class="text-center">{{ item.ingredientTypeName }}</td>
+                <td class="text-center">{{ item.unit_name }}</td>
+                <td class="text-right">{{ item.unitPrice | number }} ກີບ</td>
+                <td class="text-right">{{ item.quantityPerUnit | number }}</td>
+                <td class="text-right">{{ item.unitPerPack | number }}</td>
+                <td class="text-right">{{ item.packPrice | number }} ກີບ</td>
+                <td class="text-center">{{ item.createdAt | date: 'dd-MMM-yyyy' }}</td>
+                <td class="text-center" *ngIf="item.enabled; else disabledItem">
+                  <div class="cell text-center">
+                    <span>
+                      <i class="material-icons" style="color: #00BFA5;cursor: pointer;">
+                        check_circle
+                      </i>
+                    </span>
+                    <span class="ml-1">Active</span>
+                  </div>
 
-            </tfoot>
+                </td>
+                <ng-template #disabledItem>
+                  <td class="text-center">
+                    <div class="cell text-center">
+                      <span>
+                        <i class="material-icons" style="color: #C60001;cursor: pointer;">
+                          cancel
+                        </i>
+                      </span>
+                      <span class="ml-1">Deactive</span>
+                    </div>
+                  </td>
+                </ng-template>
+                <td class="text-center"><i class="material-icons mr-2" style="cursor: pointer;"
+                    (click)="openIngredient(item.ingredientId)">edit</i><i class="material-icons"
+                    style="cursor: pointer; color: #C60001;">delete</i>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </mat-tab>

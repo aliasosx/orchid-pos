@@ -135,6 +135,7 @@ import { AddNewMemberComponent } from './dialogs/add-new-member/add-new-member.c
 import { MemberRedimComponent } from './dialogs/member-redim/member-redim.component';
 import { RedimHistoryComponent } from './dialogs/redim-history/redim-history.component';
 import { IngredientsComponent } from './pages/ingredients/ingredients.component';
+import { AddIngredientComponent } from './dialogs/add-ingredient/add-ingredient.component';
 
 @NgModule({
   declarations: [
@@ -249,6 +250,7 @@ import { IngredientsComponent } from './pages/ingredients/ingredients.component'
     MemberRedimComponent,
     RedimHistoryComponent,
     IngredientsComponent,
+    AddIngredientComponent,
   ],
   imports: [
     BrowserModule,
@@ -331,6 +333,7 @@ import { IngredientsComponent } from './pages/ingredients/ingredients.component'
     AddNewMemberComponent,
     MemberRedimComponent,
     RedimHistoryComponent,
+    AddIngredientComponent,
   ]
   ,
   providers: [

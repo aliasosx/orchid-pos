@@ -14,3 +14,8 @@
 .product_detail {
   margin-top: 10px;
 }
+.cell {
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
+}

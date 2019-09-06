@@ -1,3 +1,4 @@
+import { IngredientsComponent } from './pages/ingredients/ingredients.component';
 import { BalancesComponent } from './pages/balances/balances.component';
 import { KitchenReportsComponent } from './pages/kitchen-reports/kitchen-reports.component';
 import { PosComponent } from './pages/pos/pos.component';
@@ -61,6 +62,7 @@ const routes: Routes = [
   { path: 'dpromotions', component: DynamicsPromotionsComponent },
   { path: 'discounts', component: DiscountsComponent },
   { path: 'members', component: MemberlistsComponent },
+  { path: 'ingredients', component: IngredientsComponent },
 ];
 
 @NgModule({

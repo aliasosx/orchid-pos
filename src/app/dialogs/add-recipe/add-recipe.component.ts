@@ -52,6 +52,7 @@ export class AddRecipeComponent implements OnInit {
   }
   loadIngredients() {
     this.bomService.getIngredients().then(r => {
+      // console.log(this.ingredients);
       r.subscribe(ingredients => this.ingredients = ingredients);
     });
   }

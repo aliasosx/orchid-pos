@@ -25,6 +25,7 @@ export class AddIngredientComponent implements OnInit {
   ngOnInit() {
     this.ingredientForm = new FormGroup({
       id: new FormControl(),
+      refno: new FormControl(),
       ingredientName: new FormControl(),
       ingredientTypeId: new FormControl(),
       quantityPerUnit: new FormControl(0),
@@ -34,6 +35,7 @@ export class AddIngredientComponent implements OnInit {
       packPrice: new FormControl(0),
       supplierId: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
+      remarks: new FormControl(),
       enabled: new FormControl(1),
       deleted: new FormControl(0),
       createdAt: new FormControl(),

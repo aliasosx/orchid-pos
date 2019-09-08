@@ -6,6 +6,7 @@ import { AddIngredientCategoryComponent } from 'src/app/dialogs/add-ingredient-c
 import { AddRecipeComponent } from 'src/app/dialogs/add-recipe/add-recipe.component';
 import { IngredientTakeOffComponent } from 'src/app/dialogs/ingredient-take-off/ingredient-take-off.component';
 import { IngredientTakeInComponent } from 'src/app/dialogs/ingredient-take-in/ingredient-take-in.component';
+import { ViewIngredientHistoryComponent } from 'src/app/dialogs/view-ingredient-history/view-ingredient-history.component';
 
 @Component({
   selector: 'app-ingredients',
@@ -103,5 +104,13 @@ export class IngredientsComponent implements OnInit {
       this.loadAllInit();
     });
   }
-
+  viewHistory(item) {
+    const dialogRef = this.dialog.open(ViewIngredientHistoryComponent, {
+      width: '900px',
+      data: item,
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadAllInit();
+    });
+  }
 }

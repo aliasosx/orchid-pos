@@ -129,7 +129,8 @@
                 <td class="text-left align-middle">{{ item.updateFrom }}</td>
                 <td class="text-left align-middle">{{ item.updatedAt | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
                 <td class="text-left align-middle">{{ item.username }}</td>
-                <td class="text-center align-middle"> <button mat-button color="primary">History</button></td>
+                <td class="text-center align-middle"> <button mat-button color="primary"
+                    (click)="viewHistory(item)">History</button></td>
               </tr>
             </tbody>
           </table>

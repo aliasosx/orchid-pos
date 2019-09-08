@@ -17,7 +17,10 @@ export class IngredientTakeInComponent implements OnInit {
   ingredientStockChangeTypes: any;
   units: any;
   btnDisabled = false;
+  currencies: any;
+
   ngOnInit() {
+    console.log(this.data);
     this.purchaseForm = new FormGroup({
       refno: new FormControl(this.backendService.padding(Math.floor(Math.random() * 60000000000) + 1, 12)),
       changeHistoryId: new FormControl(2),
@@ -25,12 +28,17 @@ export class IngredientTakeInComponent implements OnInit {
       prevQuantity: new FormControl(this.data.currentQuantity),
       usedQuantity: new FormControl(0),
       currentQuantity: new FormControl(),
+      src_price: new FormControl(this.data.unitPrice),
+      src_currCodeId: new FormControl(2),
+      exchange_rate: new FormControl(1),
+      convertedAmount: new FormControl(),
       remarks: new FormControl(),
       userId: new FormControl(this.backendService.getUserId()),
       unitId: new FormControl(this.data.unitId),
     });
     this.loadIngredientChangeTypes();
     this.loadUnits();
+    this.loadCurrencies();
   }
   loadInitData() {
     this.purchaseForm.get('prevQuantity').setValue(this.data.currentQuantity);
@@ -49,6 +57,20 @@ export class IngredientTakeInComponent implements OnInit {
       });
     });
   }
+  public loadCurrencies() {
+    this.backendService.getCurrencies().then(r => {
+      r.subscribe(curr => this.currencies = curr);
+    });
+  }
+  public getCurrencyRate(currencyId) {
+    this.backendService.getCurrency(currencyId).then(r => {
+      r.subscribe(rate => {
+        this.purchaseForm.get('exchange_rate').setValue(rate[0].rate);
+        // tslint:disable-next-line: max-line-length
+        this.purchaseForm.get('convertedAmount').setValue(this.purchaseForm.get('exchange_rate').value * this.purchaseForm.get('usedQuantity').value * this.purchaseForm.get('src_price').value);
+      });
+    });
+  }
   savePurchase() {
     if (this.purchaseForm.valid) {
       this.btnDisabled = true;
@@ -64,5 +86,13 @@ export class IngredientTakeInComponent implements OnInit {
       this.btnDisabled = false;
       return;
     }
+  }
+  onQuantityChanged() {
+    // tslint:disable-next-line: max-line-length
+    this.purchaseForm.get('convertedAmount').setValue(this.purchaseForm.get('exchange_rate').value * this.purchaseForm.get('usedQuantity').value * this.purchaseForm.get('src_price').value);
+  }
+  onPriceChanged() {
+    // tslint:disable-next-line: max-line-length
+    this.purchaseForm.get('convertedAmount').setValue(this.purchaseForm.get('exchange_rate').value * this.purchaseForm.get('usedQuantity').value * this.purchaseForm.get('src_price').value);
   }
 }

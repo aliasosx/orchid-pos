@@ -1,0 +1,8 @@
+<form [formGroup]="currencyForm">
+  <label class="currCodeId">ສະກຸນເງິນ</label>
+  <select class="form-control" id="currCodeId" formControlName="currCodeId"
+    (change)="changeCurrency($event.target.value)">
+    <option value="" disabled>-- Choose --</option>
+    <option value="{{ c.id }}" *ngFor="let c of allCurrencies">{{ c.currency_name }}</option>
+  </select>
+</form>

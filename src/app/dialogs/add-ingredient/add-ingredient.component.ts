@@ -17,6 +17,7 @@ export class AddIngredientComponent implements OnInit {
     this.loadSupplier();
     this.loadUnits();
     this.loadKitchen();
+    this.loadCurrencies();
   }
   ingredientForm: FormGroup;
   ingredientTypes: any;
@@ -24,6 +25,8 @@ export class AddIngredientComponent implements OnInit {
   units: any;
   disabledBtn = false;
   kitchens: any;
+  currencies: any;
+  rate = 1;
 
   ngOnInit() {
     this.ingredientForm = new FormGroup({
@@ -40,6 +43,11 @@ export class AddIngredientComponent implements OnInit {
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       remarks: new FormControl(),
       currentQuantity: new FormControl(0),
+      srcUnitPrice: new FormControl(),
+      srcUnitCurrCodeId: new FormControl(2),
+      srcPackPrice: new FormControl(),
+      srcPackCurrCodeId: new FormControl(2),
+      exchangeRate: new FormControl(),
       enabled: new FormControl(1),
       deleted: new FormControl(0),
       createdAt: new FormControl(),
@@ -73,6 +81,11 @@ export class AddIngredientComponent implements OnInit {
   loadUnits() {
     this.backendService.getUnit().then(r => {
       r.subscribe(units => this.units = units);
+    });
+  }
+  loadCurrencies() {
+    this.backendService.getCurrencies().then(r => {
+      r.subscribe(curr => this.currencies = curr);
     });
   }
   createIngredient() {
@@ -109,6 +122,34 @@ export class AddIngredientComponent implements OnInit {
   loadKitchen() {
     this.backendService.getKitchens().then(r => {
       r.subscribe(k => this.kitchens = k);
+    });
+  }
+  changeCurrUnitPrice(e) {
+    this.getCurrencyRate(e);
+  }
+  changeCurrPack(e) {
+    this.getCurrencyRate(e);
+  }
+  srcAmountChange() {
+    // tslint:disable-next-line: max-line-length
+    this.ingredientForm.get('unitPrice').setValue(this.rate * this.ingredientForm.get('quantityPerUnit').value * this.ingredientForm.get('srcUnitPrice').value);
+  }
+  srcPackAmountChange() {
+    console.log(this.ingredientForm.value);
+    // tslint:disable-next-line: max-line-length
+    this.ingredientForm.get('packPrice').setValue(this.rate * this.ingredientForm.get('srcPackPrice').value);
+  }
+  getCurrencyRate(currencyId) {
+    this.backendService.getCurrency(currencyId).then(r => {
+      r.subscribe(rate => {
+        this.rate = rate[0].rate;
+        this.ingredientForm.get('exchangeRate').setValue(rate[0].rate);
+        // console.log(this.rate);
+        // tslint:disable-next-line: max-line-length
+        this.ingredientForm.get('unitPrice').setValue(this.rate * this.ingredientForm.get('quantityPerUnit').value * this.ingredientForm.get('srcUnitPrice').value);
+        // tslint:disable-next-line: max-line-length
+        this.ingredientForm.get('packPrice').setValue(this.rate * this.ingredientForm.get('srcPackPrice').value);
+      });
     });
   }
 }

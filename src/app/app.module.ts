@@ -140,6 +140,8 @@ import { AddIngredientCategoryComponent } from './dialogs/add-ingredient-categor
 import { AddRecipeComponent } from './dialogs/add-recipe/add-recipe.component';
 import { IngredientTakeOffComponent } from './dialogs/ingredient-take-off/ingredient-take-off.component';
 import { IngredientTakeInComponent } from './dialogs/ingredient-take-in/ingredient-take-in.component';
+import { ViewIngredientHistoryComponent } from './dialogs/view-ingredient-history/view-ingredient-history.component';
+import { CurrenciesComponent } from './shared/currencies/currencies.component';
 
 @NgModule({
   declarations: [
@@ -259,6 +261,8 @@ import { IngredientTakeInComponent } from './dialogs/ingredient-take-in/ingredie
     AddRecipeComponent,
     IngredientTakeOffComponent,
     IngredientTakeInComponent,
+    ViewIngredientHistoryComponent,
+    CurrenciesComponent,
   ],
   imports: [
     BrowserModule,
@@ -346,6 +350,8 @@ import { IngredientTakeInComponent } from './dialogs/ingredient-take-in/ingredie
     AddRecipeComponent,
     IngredientTakeOffComponent,
     IngredientTakeInComponent,
+    ViewIngredientHistoryComponent,
+    CurrenciesComponent,
   ]
   ,
   providers: [

@@ -23,26 +23,54 @@
             <option value="{{ t.id }}" *ngFor="let t of units">{{ t.unit_name }}</option>
           </select>
         </div>
-        <div class="form-group col-md-6">
-          <label for="unitPrice">ລາຄາຕໍ່ໜ່ວຍ</label>
-          <input type="number" class="form-control text-right" id="unitPrice" formControlName="unitPrice" required>
-        </div>
-      </div>
-      <div class="form-row">
         <div class="form-group col col-md-6">
           <label for="quantityPerUnit">ຈຳນວນຕໍ່ໜ່ວຍ</label>
           <input type="number" class="form-control text-right" id="quantityPerUnit" formControlName="quantityPerUnit"
-            required>
+            (keyup)="srcAmountChange()" required>
         </div>
-        <div class="form-group col col-md-6">
-          <label for="unitPerPack">ຈຳນວນຕໍ່ແກັດ</label>
-          <input type="number" class="form-control text-right" id="unitPerPack" formControlName="unitPerPack" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="srcUnitPrice">ລາຄາຕໍ່ໜ່ວຍ</label>
+          <input type="number" class="form-control text-right" id="srcUnitPrice" formControlName="srcUnitPrice"
+            (keyup)="srcAmountChange()" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="srcUnitCurrCodeId">ສະກຸນເງິນ</label>
+          <select class="form-control" id="srcUnitCurrCodeId" formControlName="srcUnitCurrCodeId" required
+            (change)="changeCurrUnitPrice($event.target.value)">
+            <option value="">-- Choose --</option>
+            <option value="{{ c.id }}" *ngFor="let c of currencies">{{ c.currency_name }}</option>
+          </select>
         </div>
       </div>
 
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="unitPrice">ລາຄາຕໍ່ໜ່ວຍ (ກິບ)</label>
+          <input type="number" class="form-control text-right" id="unitPrice" formControlName="unitPrice" required>
+        </div>
+
+      </div>
+
+
+
+
       <div class="form-row">
         <div class="form-group col col-md-6">
-          <label for="packPrice">ລາຄາຕໍ່ແກັດ</label>
+          <label for="unitPerPack">ຈຳນວນຕໍ່ແກັດ</label>
+          <input type="number" class="form-control text-right" id="unitPerPack" formControlName="unitPerPack" required
+            (keyup)="srcPackAmountChange()">
+        </div>
+        <div class="form-group col col-md-6">
+          <label for="srcPackPrice">ລາຄາຕໍ່ແກັດ</label>
+          <input type="number" class="form-control text-right" id="srcPackPrice" (keyup)="srcPackAmountChange()">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col col-md-6">
+          <label for="packPrice">ລາຄາຕໍ່ແກັດ (ກີບ)</label>
           <input type="number" class="form-control text-right" id="packPrice" formControlName="packPrice" required>
         </div>
         <div class="form-group col col-md-6">
@@ -51,6 +79,9 @@
             required>
         </div>
       </div>
+
+
+
       <div class="form-row">
         <div class="form-group col col-md-6">
           <label for="kitchenId">ຫ້ອງຄົວ</label>
@@ -69,7 +100,7 @@
       </div>
       <hr>
     </form>
-    <div class="col col-md-12 text-right">
+    <div class="col col-md-6 text-right">
       <button mat-flat-button color="primary" class="mb-1" [disabled]="disabledBtn"
         style="background-color: #00BFA5;width: 100px;" (click)="createIngredient()">ບັນທຶກ</button>
     </div>

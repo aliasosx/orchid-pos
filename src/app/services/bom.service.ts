@@ -79,4 +79,7 @@ export class BomService {
   async createIngredientChangeHistory(data) {
     return this._http.post(this.backendService + 'ingredientStockChangeHistory', data, this.httpOptions);
   }
+  async getIngredientStockChangeById(id) {
+    return this._http.get(this.backendService + 'ingredientStocksChangeById/' + id, this.httpOptions);
+  }
 }

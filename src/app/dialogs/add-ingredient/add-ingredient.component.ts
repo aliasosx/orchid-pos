@@ -133,7 +133,7 @@ export class AddIngredientComponent implements OnInit {
   }
   srcAmountChange() {
     // tslint:disable-next-line: max-line-length
-    this.ingredientForm.get('unitPrice').setValue(this.rate * this.ingredientForm.get('quantityPerUnit').value * this.ingredientForm.get('srcUnitPrice').value);
+    this.ingredientForm.get('unitPrice').setValue(this.rate * this.ingredientForm.get('srcUnitPrice').value);
   }
   srcPackAmountChange() {
     // tslint:disable-next-line: max-line-length
@@ -146,7 +146,7 @@ export class AddIngredientComponent implements OnInit {
         this.ingredientForm.get('exchangeRate').setValue(rate[0].rate);
         // console.log(this.rate);
         // tslint:disable-next-line: max-line-length
-        this.ingredientForm.get('unitPrice').setValue(this.rate * this.ingredientForm.get('quantityPerUnit').value * this.ingredientForm.get('srcUnitPrice').value);
+        this.ingredientForm.get('unitPrice').setValue(this.rate * this.ingredientForm.get('srcUnitPrice').value);
         // tslint:disable-next-line: max-line-length
         this.ingredientForm.get('packPrice').setValue(this.rate * this.ingredientForm.get('srcPackPrice').value);
       });

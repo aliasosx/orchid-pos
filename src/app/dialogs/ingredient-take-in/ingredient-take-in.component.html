@@ -1,0 +1,32 @@
+<p class="h4">
+  ຊື້ <span style="font-weight: bolder;color: #C60001;">{{ data.ingredientName }} </span>
+</p>
+<hr>
+<form [formGroup]="purchaseForm">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label class="changeHistoryId">ປະເພດ</label>
+      <select class="form-control" id="changeHistoryId" disabled formControlName="changeHistoryId">
+        <option value="" disabled>-- Choose --</option>
+        <option value="{{ s.id }}" *ngFor="let s of ingredientStockChangeTypes">{{ s.changeName }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label class="usedQuantity">ຈຳນວນ</label>
+      <input type="number" class="form-control text-right" formControlName="usedQuantity" required>
+    </div>
+    <div class="form-group col-md-4">
+      <label class="unitId">ຫົວໜ່ວຍ</label>
+      <select class="form-control" id="unitId" disabled formControlName="unitId">
+        <option value="" disabled>-- Choose --</option>
+        <option value="{{ u.id }}" *ngFor="let u of units">{{ u.unit_name }}</option>
+      </select>
+    </div>
+  </div>
+</form>
+<hr>
+<div class="row">
+  <div class="col col-md-12">
+    <button mat-flat-button color="primary" (click)="savePurchase()" [disabled]="btnDisabled">Save</button>
+  </div>
+</div>

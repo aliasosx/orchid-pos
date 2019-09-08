@@ -529,5 +529,13 @@ export class BackendServiceService {
     return this._http.post(this.backendServiceMember + 'send', alerts, this.httpOptions);
   }
 
+  padding(num: number, size: number) {
+    let s = num + '';
+    while (s.length < size) { s = '0' + s; }
+    return s;
+  }
+  getUserId() {
+    return JSON.parse(localStorage.getItem('usrObj')).id;
+  }
 }
 

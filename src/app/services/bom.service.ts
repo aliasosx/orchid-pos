@@ -66,4 +66,17 @@ export class BomService {
   async createRecipe(recipe) {
     return this._http.post(this.backendService + 'recipe', recipe, this.httpOptions);
   }
+  // Stock
+  async getIngredientStockDisplay() {
+    return this._http.get(this.backendService + 'ingredientStocksDisplay', this.httpOptions);
+  }
+  async getIngredientStockChangeDisplay() {
+    return this._http.get(this.backendService + 'ingredientStocksChangeDisplay', this.httpOptions);
+  }
+  async getIngredientStockChangeTypes() {
+    return this._http.get(this.backendService + 'ingredientStockChangeTypes', this.httpOptions);
+  }
+  async createIngredientChangeHistory(data) {
+    return this._http.post(this.backendService + 'ingredientStockChangeHistory', data, this.httpOptions);
+  }
 }

@@ -6,12 +6,7 @@
   </mat-card-header>
   <mat-card-content>
     <div class="row">
-      <div class="col col-md-4 col-sm-12">
-        <div class="col col-sm-12 col-md-12">
-          <input type="text" class="form-control" placeholder="ຄົ້ນຫາ..." [(ngModel)]="searchIngredients">
-        </div>
-      </div>
-      <div class="col col-md-8 col-sm-12" style="top: 10px;">
+      <div class="col col-md-12 col-sm-12" style="top: 10px;">
         <div class="text-right">
           <button mat-fab color="primary" class="mr-2" style="background-color: #00BFA5" (click)="openAddIngredient()">
             <mat-icon>add</mat-icon>
@@ -22,12 +17,19 @@
           <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1" (click)="openRecips()">
             <mat-icon>build</mat-icon>
           </button>
+          <!--
+             <button mat-fab color="primary" class="mr-2" style="background-color: #00BFA5" (click)="openIngredientBuy()">
+            <mat-icon>undo</mat-icon>
+          </button>
+          <button mat-fab color="primary" class="mr-2" style="background-color: #800000"
+            (click)="openIngredientTakeOff()">
+            <mat-icon>redo</mat-icon>
+          </button>
+          -->
         </div>
       </div>
-
     </div>
     <mat-tab-group style="max-height: 72vh;overflow: auto;">
-
       <mat-tab label="ວັດຖຸດິບຫຼັກ">
         <div class="table-responsive">
           <table class="table table-bordered product_detail table-hover">
@@ -41,6 +43,7 @@
                 <th scope="col" class="text-center">ຈຳນວນຕໍ່ໜ່ວຍ</th>
                 <th scope="col" class="text-center">ຈຳນວນຕໍ່ແກັດ</th>
                 <th scope="col" class="text-center">ລາຄາຕໍ່ແກັດ</th>
+                <th scope="col" class="text-center">ຈຳນວນປະຈຸບັນ</th>
                 <th scope="col" class="text-center">ວັນທີ່ສ້າງ</th>
                 <th scope="col" class="text-center">ໝາຍເຫດ</th>
                 <th scope="col" class="text-center">ນຳໃຊ້</th>
@@ -50,7 +53,8 @@
             <tbody>
               <tr *ngFor="let item of ingredients; let i = index;">
                 <td class="text-center">{{ i+1 }}</td>
-                <td class="text-left" (click)="openIngredient(item.ingredientId)" style="cursor: pointer;">
+                <td class="text-left" style="cursor: pointer;font-weight: bolder;font-size: 16px;"
+                  (click)="openIngredient(item.ingredientId)">
                   {{ item.ingredientName }}</td>
                 <td class="text-center">{{ item.ingredientTypeName }}</td>
                 <td class="text-center">{{ item.unit_name }}</td>
@@ -58,6 +62,7 @@
                 <td class="text-right">{{ item.quantityPerUnit | number }} {{ item.unit_name }}</td>
                 <td class="text-right">{{ item.unitPerPack | number }} {{ item.unit_name }}</td>
                 <td class="text-right">{{ item.packPrice | number }} ກີບ</td>
+                <td class="text-right">{{ item.currentQuantity | number }} {{ item.unit_name }}</td>
                 <td class="text-center">{{ item.createdAt | date: 'dd-MMM-yyyy' }}</td>
                 <td class="text-left">{{ item.remarks }}</td>
                 <td class="text-center" *ngIf="item.enabled; else disabledItem">
@@ -83,20 +88,52 @@
                     </div>
                   </td>
                 </ng-template>
-                <td class="text-center"><i class="material-icons mr-2" style="cursor: pointer;"
-                    (click)="openIngredient(item.ingredientId)">edit</i><i class="material-icons"
-                    style="cursor: pointer; color: #C60001;">delete</i>
+                <td class="text-center">
+                  <i class="material-icons mr-2" style="cursor: pointer;color: #00BFA5;"
+                    (click)="openIngredientBuy(item)">add_circle</i>
+                  <i class="material-icons mr-2" style="cursor: pointer;"
+                    (click)="openIngredient(item.ingredientId)">edit</i>
+                  <i class="material-icons mr-2" style="cursor: pointer; color: #C60001;"
+                    (click)="openIngredientTakeOff(item)">remove_circle</i>
+                  <i class="material-icons" style="cursor: pointer; color: #C60001;">delete</i>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </mat-tab>
-      <mat-tab label="ສ່ວນປະກອບອາຫານ">
-
-      </mat-tab>
       <mat-tab label="ຍອດໃນສາງປະຈຸບັນ">
-
+        <div class="table-responsive">
+          <table class="table table-bordered product_detail table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col" class="text-center">#</th>
+                <th scope="col" class="text-center">ຊື່ວັດຖຸດິບ</th>
+                <th scope="col" class="text-center">ຍອດຍົກມາ</th>
+                <th scope="col" class="text-center">ນຳໃຊ້</th>
+                <th scope="col" class="text-center">ຍອດໃນສາງປະຈຸບັນ</th>
+                <th scope="col" class="text-center">ນຳໃຊ້ຈາກ</th>
+                <th scope="col" class="text-center">ວັນທີ່ປ່ຽນແປງ</th>
+                <th scope="col" class="text-center">ແກ້ໄຂໂດຍ</th>
+                <th scope="col" class="text-center">ຈັດການ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of stocks; let i = index;" class="align-middle">
+                <td class="text-center align-middle">{{ i+1 }}</td>
+                <td class="text-left align-middle" style="cursor: pointer;font-weight: bolder;font-size: 16px;">
+                  {{ item.ingredientName }}</td>
+                <td class="text-right align-middle">{{ item.prevQuantity | number }} {{ item.unit_name }}</td>
+                <td class="text-right align-middle">{{ item.usedQuantiry | number }} {{ item.unit_name }}</td>
+                <td class="text-right align-middle">{{ item.currentQuantity | number }} {{ item.unit_name }}</td>
+                <td class="text-left align-middle">{{ item.updateFrom }}</td>
+                <td class="text-left align-middle">{{ item.updatedAt | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+                <td class="text-left align-middle">{{ item.username }}</td>
+                <td class="text-center align-middle"> <button mat-button color="primary">History</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </mat-tab>
     </mat-tab-group>
   </mat-card-content>

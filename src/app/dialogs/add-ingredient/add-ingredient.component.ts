@@ -16,16 +16,19 @@ export class AddIngredientComponent implements OnInit {
     this.loadIngredientTypes();
     this.loadSupplier();
     this.loadUnits();
+    this.loadKitchen();
   }
   ingredientForm: FormGroup;
   ingredientTypes: any;
   vendors: any;
   units: any;
   disabledBtn = false;
+  kitchens: any;
+
   ngOnInit() {
     this.ingredientForm = new FormGroup({
       id: new FormControl(),
-      refno: new FormControl(),
+      refno: new FormControl(this.backendService.padding(Math.floor(Math.random() * 60000000000) + 1, 12)),
       ingredientName: new FormControl(),
       ingredientTypeId: new FormControl(),
       quantityPerUnit: new FormControl(0),
@@ -36,16 +39,19 @@ export class AddIngredientComponent implements OnInit {
       supplierId: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       remarks: new FormControl(),
+      currentQuantity: new FormControl(0),
       enabled: new FormControl(1),
       deleted: new FormControl(0),
       createdAt: new FormControl(),
-      updatedAt: new FormControl()
+      updatedAt: new FormControl(),
+      kitchenId: new FormControl(),
     });
 
     if (this.ingredienId) {
       this.bomService.getIngredientById(this.ingredienId).then(r => {
         r.subscribe(ingredient => {
           if (ingredient) {
+            console.log(ingredient);
             this.ingredientForm.setValue(ingredient[0]);
           }
         });
@@ -99,5 +105,10 @@ export class AddIngredientComponent implements OnInit {
       this.disabledBtn = false;
       return;
     }
+  }
+  loadKitchen() {
+    this.backendService.getKitchens().then(r => {
+      r.subscribe(k => this.kitchens = k);
+    });
   }
 }

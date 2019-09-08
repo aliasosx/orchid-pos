@@ -138,6 +138,8 @@ import { IngredientsComponent } from './pages/ingredients/ingredients.component'
 import { AddIngredientComponent } from './dialogs/add-ingredient/add-ingredient.component';
 import { AddIngredientCategoryComponent } from './dialogs/add-ingredient-category/add-ingredient-category.component';
 import { AddRecipeComponent } from './dialogs/add-recipe/add-recipe.component';
+import { IngredientTakeOffComponent } from './dialogs/ingredient-take-off/ingredient-take-off.component';
+import { IngredientTakeInComponent } from './dialogs/ingredient-take-in/ingredient-take-in.component';
 
 @NgModule({
   declarations: [
@@ -255,6 +257,8 @@ import { AddRecipeComponent } from './dialogs/add-recipe/add-recipe.component';
     AddIngredientComponent,
     AddIngredientCategoryComponent,
     AddRecipeComponent,
+    IngredientTakeOffComponent,
+    IngredientTakeInComponent,
   ],
   imports: [
     BrowserModule,
@@ -340,6 +344,8 @@ import { AddRecipeComponent } from './dialogs/add-recipe/add-recipe.component';
     AddIngredientComponent,
     AddIngredientCategoryComponent,
     AddRecipeComponent,
+    IngredientTakeOffComponent,
+    IngredientTakeInComponent,
   ]
   ,
   providers: [

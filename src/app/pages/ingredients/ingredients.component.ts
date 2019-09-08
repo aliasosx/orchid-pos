@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material';
 import { AddIngredientComponent } from 'src/app/dialogs/add-ingredient/add-ingredient.component';
 import { AddIngredientCategoryComponent } from 'src/app/dialogs/add-ingredient-category/add-ingredient-category.component';
 import { AddRecipeComponent } from 'src/app/dialogs/add-recipe/add-recipe.component';
+import { IngredientTakeOffComponent } from 'src/app/dialogs/ingredient-take-off/ingredient-take-off.component';
+import { IngredientTakeInComponent } from 'src/app/dialogs/ingredient-take-in/ingredient-take-in.component';
 
 @Component({
   selector: 'app-ingredients',
@@ -17,8 +19,17 @@ export class IngredientsComponent implements OnInit {
   }
   searchIngredients: any;
   ingredients: any;
+  stocks: any;
+  stocksChanges: any;
+
   ngOnInit() {
+    this.loadAllInit();
+  }
+
+  loadAllInit() {
     this.loadIngredients();
+    this.loadStockChangeDisplay();
+    this.loadStockDisplay();
   }
   loadIngredients() {
     this.bomService.getIngredientsShow().then(r => {
@@ -27,12 +38,26 @@ export class IngredientsComponent implements OnInit {
       });
     });
   }
+  loadStockDisplay() {
+    this.bomService.getIngredientStockDisplay().then(r => {
+      r.subscribe(stocks => {
+        this.stocks = stocks;
+      });
+    });
+  }
+  loadStockChangeDisplay() {
+    this.bomService.getIngredientStockChangeDisplay().then(r => {
+      r.subscribe(stocks => {
+        this.stocksChanges = stocks;
+      });
+    });
+  }
   openAddIngredient() {
     const dialogRef = this.dialog.open(AddIngredientComponent, {
       width: '600px',
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.loadIngredients();
+      this.loadAllInit();
     });
   }
   openIngredient(id) {
@@ -41,7 +66,7 @@ export class IngredientsComponent implements OnInit {
       data: id
     });
     ing.afterClosed().subscribe(() => {
-      this.loadIngredients();
+      this.loadAllInit();
     });
   }
   openIngredientType() {
@@ -49,7 +74,7 @@ export class IngredientsComponent implements OnInit {
       width: '400px',
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.loadIngredients();
+      this.loadAllInit();
     });
   }
   openRecips() {
@@ -57,7 +82,25 @@ export class IngredientsComponent implements OnInit {
       width: '800px',
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.loadIngredients();
+      this.loadAllInit();
+    });
+  }
+  openIngredientTakeOff(item) {
+    const dialogRef = this.dialog.open(IngredientTakeOffComponent, {
+      width: '800px',
+      data: item,
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadAllInit();
+    });
+  }
+  openIngredientBuy(ingredient) {
+    const dialogRef = this.dialog.open(IngredientTakeInComponent, {
+      width: '800px',
+      data: ingredient,
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadAllInit();
     });
   }
 

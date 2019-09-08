@@ -46,6 +46,20 @@
           <input type="number" class="form-control text-right" id="packPrice" formControlName="packPrice" required>
         </div>
         <div class="form-group col col-md-6">
+          <label for="currentQuantity">ຈຳນວນປະຈຸບັນ</label>
+          <input type="number" class="form-control text-right" id="currentQuantity" formControlName="currentQuantity"
+            required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col col-md-6">
+          <label for="kitchenId">ຫ້ອງຄົວ</label>
+          <select class="form-control" id="kitchenId" formControlName="kitchenId" required>
+            <option value="" disabled>-- Choose --</option>
+            <option value="{{ k.id }}" *ngFor="let k of kitchens">{{ k.kitchenName }}</option>
+          </select>
+        </div>
+        <div class="form-group col col-md-6">
           <label for="supplierId">ຊື້ຈາກ</label>
           <select class="form-control" id="supplierId" formControlName="supplierId" required>
             <option value="" disabled>-- Choose --</option>

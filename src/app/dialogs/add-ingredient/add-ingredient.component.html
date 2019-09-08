@@ -45,7 +45,6 @@
         </div>
       </div>
 
-
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="unitPrice">ລາຄາຕໍ່ໜ່ວຍ (ກິບ)</label>
@@ -53,9 +52,6 @@
         </div>
 
       </div>
-
-
-
 
       <div class="form-row">
         <div class="form-group col col-md-6">
@@ -65,7 +61,8 @@
         </div>
         <div class="form-group col col-md-6">
           <label for="srcPackPrice">ລາຄາຕໍ່ແກັດ</label>
-          <input type="number" class="form-control text-right" id="srcPackPrice" (keyup)="srcPackAmountChange()">
+          <input type="number" class="form-control text-right" id="srcPackPrice" formControlName="srcPackPrice"
+            (keyup)="srcPackAmountChange()">
         </div>
       </div>
       <div class="form-row">
@@ -79,9 +76,6 @@
             required>
         </div>
       </div>
-
-
-
       <div class="form-row">
         <div class="form-group col col-md-6">
           <label for="kitchenId">ຫ້ອງຄົວ</label>
@@ -100,7 +94,7 @@
       </div>
       <hr>
     </form>
-    <div class="col col-md-6 text-right">
+    <div class="col col-md-12 text-right">
       <button mat-flat-button color="primary" class="mb-1" [disabled]="disabledBtn"
         style="background-color: #00BFA5;width: 100px;" (click)="createIngredient()">ບັນທຶກ</button>
     </div>

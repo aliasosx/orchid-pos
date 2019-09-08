@@ -129,13 +129,13 @@ export class AddIngredientComponent implements OnInit {
   }
   changeCurrPack(e) {
     this.getCurrencyRate(e);
+    this.ingredientForm.get('srcPackCurrCodeId').setValue(e);
   }
   srcAmountChange() {
     // tslint:disable-next-line: max-line-length
     this.ingredientForm.get('unitPrice').setValue(this.rate * this.ingredientForm.get('quantityPerUnit').value * this.ingredientForm.get('srcUnitPrice').value);
   }
   srcPackAmountChange() {
-    console.log(this.ingredientForm.value);
     // tslint:disable-next-line: max-line-length
     this.ingredientForm.get('packPrice').setValue(this.rate * this.ingredientForm.get('srcPackPrice').value);
   }

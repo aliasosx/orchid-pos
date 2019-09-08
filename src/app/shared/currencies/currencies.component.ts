@@ -13,12 +13,11 @@ export class CurrenciesComponent implements OnInit {
   constructor(private bomService: BomService, private backendService: BackendServiceService) { }
   allCurrencies: any;
   currencyForm: FormGroup;
-  @Input('selectedCurrId') id: number;
 
   @Output() add = new EventEmitter<any>();
   ngOnInit() {
     this.currencyForm = new FormGroup({
-      currCodeId: new FormControl(this.id)
+      currCodeId: new FormControl()
     });
     this.loadCurrencies();
   }
@@ -27,7 +26,7 @@ export class CurrenciesComponent implements OnInit {
       r.subscribe(curr => this.allCurrencies = curr);
     });
   }
-  changeCurrency() {
+  changeCurrency(e) {
     this.add.emit(this.currencyForm.get('currCodeId').value);
   }
 }

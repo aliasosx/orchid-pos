@@ -30,6 +30,7 @@ import { PromotionsComponent } from './pages/promotions/promotions.component';
 import { DynamicsPromotionsComponent } from './pages/dynamics-promotions/dynamics-promotions.component';
 import { DiscountsComponent } from './pages/discounts/discounts.component';
 import { MemberlistsComponent } from './pages/memberlists/memberlists.component';
+import { IngredientPurchaseComponent } from './pages/ingredient-purchase/ingredient-purchase.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -63,6 +64,7 @@ const routes: Routes = [
   { path: 'discounts', component: DiscountsComponent },
   { path: 'members', component: MemberlistsComponent },
   { path: 'ingredients', component: IngredientsComponent },
+  { path: 'ingredientPurchase', component: IngredientPurchaseComponent },
 ];
 
 @NgModule({

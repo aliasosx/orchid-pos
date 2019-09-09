@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col col-md-12">
+
+  </div>
+</div>
+<div class="row mt-1 mb-2">
+  <div class="col col-md-5">
+    <div class="card">
+      <div class="card-header">
+        items
+      </div>
+      <div class="card-body">
+        <div class="row" style="max-height: 72vh;overflow: auto;">
+          <div class="col col-md-3 mb-1" *ngFor="let item of items" style="cursor: pointer;" (click)="addItemToCart(item)" >
+            <div class="card">
+              <div class="card-body">
+                <p class="text-nowrap">{{ item.ingredientName }}</p>
+                <p style="color: orangered;font-weight: bolder;">{{ item.unitPrice | number }} ກີບ</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col col-md-7">
+    <div class="card">
+      <div class="card-header">
+        Receipt
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <th scope="col">#</th>
+              <th scope="col">ວັດຖຸດິບ</th>
+              <th scope="col">ຈຳນວນ</th>
+              <th scope="col">ລາຄາ</th>
+              <th scope="col">ເງິນ</th>
+              <th scope="col">ລວມຍອດ</th>
+              <th scope="col">ຈັດການ</th>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

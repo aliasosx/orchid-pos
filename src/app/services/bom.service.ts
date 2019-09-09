@@ -82,4 +82,7 @@ export class BomService {
   async getIngredientStockChangeById(id) {
     return this._http.get(this.backendService + 'ingredientStocksChangeById/' + id, this.httpOptions);
   }
+  async getIngredientPurchasegrid() {
+    return this._http.get(this.backendService + 'ingredientGrid', this.httpOptions);
+  }
 }

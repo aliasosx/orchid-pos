@@ -18,6 +18,7 @@ export class AddIngredientComponent implements OnInit {
     this.loadUnits();
     this.loadKitchen();
     this.loadCurrencies();
+    this.loadIngredientPackUnit();
   }
   ingredientForm: FormGroup;
   ingredientTypes: any;
@@ -27,6 +28,7 @@ export class AddIngredientComponent implements OnInit {
   kitchens: any;
   currencies: any;
   rate = 1;
+  packUnits: any;
 
   ngOnInit() {
     this.ingredientForm = new FormGroup({
@@ -53,6 +55,7 @@ export class AddIngredientComponent implements OnInit {
       createdAt: new FormControl(),
       updatedAt: new FormControl(),
       kitchenId: new FormControl(),
+      packUnitId: new FormControl(1),
     });
 
     if (this.ingredienId) {
@@ -67,6 +70,11 @@ export class AddIngredientComponent implements OnInit {
     } else {
       return;
     }
+  }
+  loadIngredientPackUnit() {
+    this.bomService.getIngredientPackUnit().then(r => {
+      r.subscribe(packs => this.packUnits = packs);
+    });
   }
   loadIngredientTypes() {
     this.bomService.getIngredientTypes().then(r => {

@@ -38,6 +38,7 @@
                 <th scope="col" class="text-center">ຈຳນວນຕໍ່ໜ່ວຍ</th>
                 <th scope="col" class="text-center">ຈຳນວນຕໍ່ແກັດ</th>
                 <th scope="col" class="text-center">ລາຄາຕໍ່ແກັດ</th>
+                <th scope="col" class="text-center">ບັນຈຸ</th>
                 <th scope="col" class="text-center">ຈຳນວນປະຈຸບັນ</th>
                 <th scope="col" class="text-center">ວັນທີ່ສ້າງ</th>
                 <th scope="col" class="text-center">ໝາຍເຫດ</th>
@@ -57,6 +58,7 @@
                 <td class="text-right">{{ item.quantityPerUnit | number }} {{ item.unit_name }}</td>
                 <td class="text-right">{{ item.unitPerPack | number }} {{ item.unit_name }}</td>
                 <td class="text-right">{{ item.packPrice | number }} ກີບ</td>
+                <td class="text-center">{{ item.packUnitName  }}</td>
                 <td class="text-right">{{ item.currentQuantity | number }} {{ item.unit_name }}</td>
                 <td class="text-center">{{ item.createdAt | date: 'dd-MMM-yyyy' }}</td>
                 <td class="text-left">{{ item.remarks }}</td>

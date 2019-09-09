@@ -50,14 +50,20 @@
           <label for="unitPrice">ລາຄາຕໍ່ໜ່ວຍ (ກິບ)</label>
           <input type="number" class="form-control text-right" id="unitPrice" formControlName="unitPrice" required>
         </div>
-
-      </div>
-
-      <div class="form-row">
         <div class="form-group col col-md-6">
           <label for="unitPerPack">ຈຳນວນຕໍ່ແກັດ</label>
           <input type="number" class="form-control text-right" id="unitPerPack" formControlName="unitPerPack" required
             (keyup)="srcPackAmountChange()">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col col-md-6">
+          <label for="packUnitId">ແພັກ</label>
+          <select class="form-control" id="packUnitId" formControlName="packUnitId" required>
+            <option value="">-- Choose --</option>
+            <option value="{{ c.id }}" *ngFor="let c of packUnits">{{ c.packUnitName }}</option>
+          </select>
         </div>
         <div class="form-group col col-md-6">
           <label for="srcPackPrice">ລາຄາຕໍ່ແກັດ</label>

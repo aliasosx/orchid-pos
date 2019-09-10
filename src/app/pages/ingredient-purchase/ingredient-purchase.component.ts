@@ -1,3 +1,4 @@
+import { IngredientPriceSelectComponent } from './../../dialogs/ingredient-price-select/ingredient-price-select.component';
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 import { BomService } from 'src/app/services/bom.service';
@@ -15,7 +16,7 @@ export class IngredientPurchaseComponent implements OnInit {
   constructor(private bomSercice: BomService, private backendService: BackendServiceService, private dialog: MatDialog) { }
   items: any;
   listItems: any;
-
+  grandTotal = 0;
   cart = [];
   ngOnInit() {
     this.loadItems();
@@ -43,24 +44,8 @@ export class IngredientPurchaseComponent implements OnInit {
     } else {
       buffer = [];
       buffer = JSON.parse(localStorage.getItem('ingredientCart'));
-      /*
-      buffer.forEach(el => {
-        console.log('Looping');
-        if (item['ingId'] === el['ingId']) {
-          swal({
-            title: 'ບໍ່ສາມາດເພິ່ມລາຍການຊໍ້າໄດ້',
-            text: 'ກະລຸນາ ປ່ຽນແປງຈຳນວນແທນການກົດຊໍ້າ',
-            icon: 'error',
-            timer: 5000,
-          });
-          return;
-        }
-      });
-      */
       let dup = false;
       for (let i = 0; i < buffer.length; i++) {
-        console.log(buffer[i].ingId + ' && ' + item['ingId']);
-
         if (item['ingId'] === buffer[i].ingId) {
           swal({
             title: 'ບໍ່ສາມາດເພິ່ມລາຍການຊໍ້າໄດ້',
@@ -81,6 +66,12 @@ export class IngredientPurchaseComponent implements OnInit {
   }
   loadItemsToList() {
     this.listItems = JSON.parse(localStorage.getItem('ingredientCart'));
+    this.grandTotal = 0;
+    if (this.listItems) {
+      this.listItems.forEach(element => {
+        this.grandTotal += element['total'];
+      });
+    }
     // console.log(this.listItems);
   }
   openQuantity(item) {
@@ -126,5 +117,16 @@ export class IngredientPurchaseComponent implements OnInit {
       this.loadItemsToList();
     }
     return;
+  }
+  openIngredientPriceSelect(item) {
+    const dialogRef = this.dialog.open(IngredientPriceSelectComponent, {
+      width: '600px',
+      data: item
+    });
+    dialogRef.afterClosed().subscribe(rsp => {
+      if (rsp) {
+        console.log(rsp);
+      }
+    });
   }
 }

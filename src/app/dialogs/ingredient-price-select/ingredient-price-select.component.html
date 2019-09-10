@@ -1,0 +1,43 @@
+<p class="h4">
+  Price input
+</p>
+<hr>
+<form [formGroup]="priceForm">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label class="srcUnitPrice">ລາຄາຕໍ່ໜ່ວຍ</label>
+      <input type="number" class="form-control text-right" formControlName="srcUnitPrice">
+    </div>
+    <div class="form-group col-md-4">
+      <label class="srcUnitCurrCodeId">ສະກຸນເງິນ</label>
+      <select class="form-control" id="srcUnitCurrCodeId" formControlName="srcUnitCurrCodeId">
+        <option value="" disabled>-- Choose --</option>
+        <option value="{{ s.id }}" *ngFor="let s of currencies">{{ s.currency_name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label class="unitPrice">ລາຄາຕໍ່ໜ່ວຍ (ກີບ)</label>
+      <input type="number" class="form-control text-right" formControlName="unitPrice">
+    </div>
+    <div class="form-group col-md-4">
+      <label class="srcPackPrice">ລາຄາຕໍ່ແກັດ</label>
+      <input type="number" class="form-control text-right" formControlName="srcPackPrice">
+    </div>
+    <div class="form-group col-md-4">
+      <label class="srcPackCurrCodeId">ສະກຸນເງິນ</label>
+      <select class="form-control" id="srcPackCurrCodeId" formControlName="srcPackCurrCodeId">
+        <option value="" disabled>-- Choose --</option>
+        <option value="{{ s.id }}" *ngFor="let s of currencies">{{ s.currency_name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label class="packPrice">ລາຄາຕໍ່ແກັດ (ກີບ)</label>
+      <input type="number" class="form-control text-right" formControlName="packPrice">
+    </div>
+  </div>
+  <div class="row text-right">
+    <div class="col col-md-12">
+      <button mat-stroked-button color="primary" (click)="saveAmount()">Save</button>
+    </div>
+  </div>
+</form>

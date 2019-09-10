@@ -97,6 +97,7 @@ export class AddIngredientComponent implements OnInit {
     });
   }
   createIngredient() {
+    this.ingredientForm.get('srcPackCurrCodeId').setValue(this.ingredientForm.get('srcUnitCurrCodeId').value);
     if (this.ingredientForm.valid) {
       this.disabledBtn = true;
       if (this.ingredienId) {

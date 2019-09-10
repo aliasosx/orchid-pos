@@ -30,13 +30,15 @@
         Receipt
       </div>
       <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive" style="min-height: 50vh;max-height: 50vh;overflow: auto;">
           <table class="table table-hover table-bordered">
             <thead class="thead-dark">
               <th scope="col" class="text-center">#</th>
               <th scope="col" class="text-center">ວັດຖຸດິບ</th>
               <th scope="col" class="text-center">ຈຳນວນ</th>
               <th scope="col" class="text-center">ລາຄາ</th>
+              <th scope="col" class="text-center">ຈຳນວນ ແກັດ</th>
+              <th scope="col" class="text-center">ລາຄາ ແກັດ</th>
               <th scope="col" class="text-center">ເງິນ</th>
               <th scope="col" class="text-center">ລວມຍອດ (ກີບ)</th>
               <th scope="col" class="text-center">ຈັດການ</th>
@@ -45,14 +47,18 @@
               <tr *ngFor="let item of listItems; let i = index">
                 <td class="text-center">{{ i+1 }}</td>
                 <td class="text-left">{{ item.ingredientName }}</td>
-                <td class="text-right" (click)="openQuantity(item)">{{ item.quantity | number }} {{ item.unit_name }}
+                <td class="text-right" style="cursor: pointer;" (click)="openQuantity(item)">
+                  {{ item.quantity | number }} {{ item.unit_name }}
                 </td>
-                <td class="text-right">{{ item.unitPrice | number }}</td>
+                <td class="text-right" style="cursor: pointer;" (click)="openIngredientPriceSelect(item)">
+                  {{ item.unitPrice | number }}</td>
+                <td class="text-right">{{ item.unitPerPack | number }}</td>
+                <td class="text-right">{{ item.packPrice | number }}</td>
                 <td class="text-center">{{ item.currency_name }}</td>
                 <td class="text-right">{{ item.total |number }}</td>
                 <td class="text-center">
                   <span>
-                    <i class="material-icons" style="color: #C60001;cursor: pointer;" (click)="removeItem(item)">
+                    <i class="material-icons" style="color: #CC0000;cursor: pointer;" (click)="removeItem(item)">
                       cancel
                     </i>
                   </span>
@@ -63,5 +69,24 @@
         </div>
       </div>
     </div>
+    <div class="card mt-1">
+      <div class="card-body">
+        <div class="row">
+          <div class="col col-md-6">
+            <div class="row">
+              <div class="col col-md-12"><span style="font-size: 25px">Total payment </span></div>
+              <div class="col col-md-12 text-right"> <span
+                  class="display-4 text-danger">{{ grandTotal | number }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col col-md-6 text-right">
+            <button mat-flat-button color="primary"
+              style="height: 100px;width: 200px;background-color: #58AD6A;font-size: 18px;">Pay</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

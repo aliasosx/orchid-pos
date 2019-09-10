@@ -143,6 +143,7 @@ import { IngredientTakeInComponent } from './dialogs/ingredient-take-in/ingredie
 import { ViewIngredientHistoryComponent } from './dialogs/view-ingredient-history/view-ingredient-history.component';
 import { CurrenciesComponent } from './shared/currencies/currencies.component';
 import { IngredientPurchaseComponent } from './pages/ingredient-purchase/ingredient-purchase.component';
+import { IngredientPriceSelectComponent } from './dialogs/ingredient-price-select/ingredient-price-select.component';
 
 @NgModule({
   declarations: [
@@ -265,6 +266,7 @@ import { IngredientPurchaseComponent } from './pages/ingredient-purchase/ingredi
     ViewIngredientHistoryComponent,
     CurrenciesComponent,
     IngredientPurchaseComponent,
+    IngredientPriceSelectComponent,
   ],
   imports: [
     BrowserModule,
@@ -354,6 +356,7 @@ import { IngredientPurchaseComponent } from './pages/ingredient-purchase/ingredi
     IngredientTakeInComponent,
     ViewIngredientHistoryComponent,
     CurrenciesComponent,
+    IngredientPriceSelectComponent,
   ]
   ,
   providers: [

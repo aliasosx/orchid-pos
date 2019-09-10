@@ -2,8 +2,9 @@ import { IngredientPriceSelectComponent } from './../../dialogs/ingredient-price
 import { BackendServiceService } from './../../services/common/backend-service.service';
 import { Component, OnInit } from '@angular/core';
 import { BomService } from 'src/app/services/bom.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddQuantityComponent } from 'src/app/dialogs/add-quantity/add-quantity.component';
+import { FormGroup, FormControl } from '@angular/forms';
 declare var swal: any;
 
 @Component({
@@ -13,12 +14,30 @@ declare var swal: any;
 })
 export class IngredientPurchaseComponent implements OnInit {
 
-  constructor(private bomSercice: BomService, private backendService: BackendServiceService, private dialog: MatDialog) { }
+  // tslint:disable-next-line: max-line-length
+  constructor(private bomSercice: BomService, private backendService: BackendServiceService, private dialog: MatDialog, private snackbar: MatSnackBar) { }
   items: any;
   listItems: any;
   grandTotal = 0;
   cart = [];
+  purchaseForm: FormGroup;
   ngOnInit() {
+    this.purchaseForm = new FormGroup({
+      refno: new FormControl(this.backendService.padding(Math.floor(Math.random() * 600000000000) + 1, 12)),
+      changeHistoryId: new FormControl(2),
+      ingredientId: new FormControl(),
+      prevQuantity: new FormControl(),
+      usedQuantity: new FormControl(0),
+      currentQuantity: new FormControl(),
+      src_price: new FormControl(),
+      src_currCodeId: new FormControl(2),
+      exchange_rate: new FormControl(1),
+      convertedAmount: new FormControl(),
+      remarks: new FormControl(),
+      userId: new FormControl(this.backendService.getUserId()),
+      unitId: new FormControl(),
+    });
+
     this.loadItems();
     this.loadItemsToList();
   }
@@ -34,7 +53,7 @@ export class IngredientPurchaseComponent implements OnInit {
     let buffer = [];
     this.cart = [];
     // console.log(buffer);
-    item['refno'] = this.backendService.padding(Math.floor(Math.random() * 60000000000) + 1, 12);
+    item['refno'] = this.backendService.padding(Math.floor(Math.random() * 600000000000) + 1, 12);
     item['quantity'] = 1;
     item['total'] = item['quantity'] * item['unitPrice'];
     this.cart.push(item);
@@ -70,6 +89,7 @@ export class IngredientPurchaseComponent implements OnInit {
     if (this.listItems) {
       this.listItems.forEach(element => {
         this.grandTotal += element['total'];
+
       });
     }
     // console.log(this.listItems);
@@ -125,7 +145,72 @@ export class IngredientPurchaseComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(rsp => {
       if (rsp) {
-        console.log(rsp);
+        let cardTmp = JSON.parse(localStorage.getItem('ingredientCart'));
+        let buffer = [];
+        if (cardTmp.length === 1) {
+          rsp[0].total = rsp[0].unitPrice * rsp[0].quantity;
+          localStorage.setItem('ingredientCart', JSON.stringify(rsp));
+          this.loadItemsToList();
+        } else {
+          cardTmp.forEach(element => {
+            if (element.refno !== rsp[0].refno) {
+              buffer.push(element);
+            } else {
+              rsp[0].total = rsp[0].unitPrice * rsp[0].quantity;
+              buffer.push(rsp[0]);
+            }
+          });
+          localStorage.setItem('ingredientCart', JSON.stringify(buffer));
+          this.loadItemsToList();
+        }
+        this.loadItemsToList();
+      }
+    });
+  }
+  savePurchase() {
+    swal({
+      title: 'ທ່ານແນ່ໃຈບໍວ່າ ລາຍການຊື້ຖືກຕ້ອງ',
+      text: 'ກະລຸນາ ກວດສອບຂໍ້ມູນໃຫ້ຖືກຕ້ອງ',
+      icon: 'info',
+      timer: 10000,
+      buttons: true,
+      dangerMode: true,
+    }).then(r => {
+      if (r) {
+        const items = JSON.parse(localStorage.getItem('ingredientCart'));
+        if (items.length > 0) {
+          items.forEach(el => {
+            console.log(el);
+            this.purchaseForm.get('refno').setValue(el['refno']);
+            this.purchaseForm.get('ingredientId').setValue(el['ingId']);
+            this.purchaseForm.get('prevQuantity').setValue(el['currentQuantity']);
+            this.purchaseForm.get('usedQuantity').setValue(el['quantity']);
+            this.purchaseForm.get('currentQuantity').setValue(parseFloat(el['currentQuantity']) + parseFloat(el['quantity']));
+            this.purchaseForm.get('src_price').setValue(el['srcUnitPrice']);
+            this.purchaseForm.get('src_currCodeId').setValue(el['srcUnitCurrCodeId']);
+            this.purchaseForm.get('exchange_rate').setValue(el['rate']);
+            this.purchaseForm.get('convertedAmount').setValue(parseFloat(el['unitPrice']) * parseFloat(el['quantity']));
+            this.purchaseForm.get('remarks').setValue('Order Ingredient');
+            this.purchaseForm.get('unitId').setValue(el['unitId']);
+            console.log(' Process ordering ');
+            this.bomSercice.createIngredientChangeHistory(this.purchaseForm.value).then(rx => {
+              rx.subscribe(rsp => {
+                if (rsp['status'] === 'success') {
+                  // this.snackbar.open('Purchase ' + el['ingredientName'] + ' Purchased');
+                  localStorage.removeItem('ingredientCart');
+                  this.loadItemsToList();
+                  swal({
+                    icon: 'success',
+                    title: 'ການສັ່ງຊື້ ສຳເລັດ',
+                    timer: 2000,
+                  });
+                }
+              });
+            });
+          });
+        }
+      } else {
+        return;
       }
     });
   }

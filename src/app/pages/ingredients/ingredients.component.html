@@ -86,13 +86,11 @@
                   </td>
                 </ng-template>
                 <td class="text-center">
-                  <i class="material-icons mr-2" style="cursor: pointer;color: #00BFA5;"
-                    (click)="openIngredientBuy(item)">add_circle</i>
                   <i class="material-icons mr-2" style="cursor: pointer;"
                     (click)="openIngredient(item.ingredientId)">edit</i>
                   <i class="material-icons mr-2" style="cursor: pointer; color: #C60001;"
-                    (click)="openIngredientTakeOff(item)">remove_circle</i>
-                  <i class="material-icons" style="cursor: pointer; color: #C60001;">delete</i>
+                    (click)="openIngredientTakeOff(item)">exit_to_app</i>
+                  <i class="material-icons" style="cursor: pointer; color: #C60001;">delete_outline</i>
                 </td>
               </tr>
             </tbody>
@@ -124,10 +122,11 @@
                 <td class="text-right align-middle">{{ item.usedQuantiry | number }} {{ item.unit_name }}</td>
                 <td class="text-right align-middle">{{ item.currentQuantity | number }} {{ item.unit_name }}</td>
                 <td class="text-left align-middle">{{ item.updateFrom }}</td>
-                <td class="text-left align-middle">{{ item.updatedAt | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
+                <td class="text-left align-middle">{{ item.updatedAt | date: 'dd-MMM-yyyy HH:mm:ss' }}</td>
                 <td class="text-left align-middle">{{ item.username }}</td>
                 <td class="text-center align-middle"> <button mat-button color="primary"
-                    (click)="viewHistory(item)">History</button></td>
+                    (click)="viewHistory(item)">History</button> | <button mat-button color="warn">Adjust</button>
+                </td>
               </tr>
             </tbody>
           </table>

@@ -7,22 +7,24 @@
     <thead class="thead-dark">
       <tr>
         <th scope="col" class="text-center">#</th>
+        <th scope="col" class="text-center">ວັນທີ່</th>
         <th scope="col" class="text-center">ຍອດຍົກມາ</th>
         <th scope="col" class="text-center">ນຳໃຊ້</th>
         <th scope="col" class="text-center">ຍອດໃນສາງປະຈຸບັນ</th>
         <th scope="col" class="text-center">ນຳໃຊ້ຈາກ</th>
-        <th scope="col" class="text-center">ວັນທີ່ປ່ຽນແປງ</th>
         <th scope="col" class="text-center">ແກ້ໄຂໂດຍ</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of stockHistories; let i = index">
-        <td class="text-center align-middle">{{ i+1 }}</td>
+        <td class="text-center align-middle"
+          [ngStyle]="{'border-right': item.sign === 'C'? '':'5px solid rgb(177, 5, 5)'}">
+          {{ i+1 }}</td>
+        <td class="text-left align-middle">{{ item.updatedAt | date: 'dd-MMM-yyyy HH:mm:ss' }}</td>
         <td class="text-right align-middle">{{ item.prevQuantity | number }} {{ item.unit_name }}</td>
         <td class="text-right align-middle">{{ item.usedQuantity | number }} {{ item.unit_name }}</td>
         <td class="text-right align-middle">{{ item.currentQuantity | number }} {{ item.unit_name }}</td>
         <td class="text-left align-middle">{{ item.changeName }}</td>
-        <td class="text-left align-middle">{{ item.updatedAt | date: 'dd-MMM-yyyy H:mm:ss' }}</td>
         <td class="text-left align-middle">{{ item.username }}</td>
       </tr>
     </tbody>

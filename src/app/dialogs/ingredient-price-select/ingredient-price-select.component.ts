@@ -18,6 +18,7 @@ export class IngredientPriceSelectComponent implements OnInit {
   ngOnInit() {
     this.priceForm = new FormGroup({
       ingId: new FormControl(),
+      unitId: new FormControl(),
       srcUnitPrice: new FormControl(),
       srcUnitCurrCodeId: new FormControl(),
       unitPrice: new FormControl(),
@@ -33,6 +34,7 @@ export class IngredientPriceSelectComponent implements OnInit {
       unitPerPack: new FormControl(),
       unit_name: new FormControl(),
       total: new FormControl(),
+      currentQuantity: new FormControl(),
     });
     this.priceForm.setValue(this.data);
     this.loadCurrencies();
@@ -42,9 +44,17 @@ export class IngredientPriceSelectComponent implements OnInit {
       r.subscribe(curr => this.currencies = curr);
     });
   }
+  srcUnitPriceChange(value) {
+    this.priceForm.get('unitPrice').setValue(value);
+  }
+  srcPackPrice(value) {
+    this.priceForm.get('packPrice').setValue(value);
+  }
   saveAmount() {
     if (this.priceForm.valid) {
-      this.dialogRef.close(this.priceForm.value);
+      const buffer = [];
+      buffer.push(this.priceForm.value);
+      this.dialogRef.close(buffer);
     } else {
       return;
     }

@@ -13,7 +13,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class IngredientTakeOffComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private bomService: BomService, @Inject(MAT_DIALOG_DATA) public data, private backendService: BackendServiceService, private dialogRef: MatDialogRef<IngredientTakeInComponent>) { }
+  constructor(private bomService: BomService, @Inject(MAT_DIALOG_DATA) public data, private backendService: BackendServiceService, public dialogRef: MatDialogRef<IngredientTakeInComponent>) { }
   purchaseForm: FormGroup;
   ingredientStockChangeTypes: any;
   units: any;
@@ -26,7 +26,11 @@ export class IngredientTakeOffComponent implements OnInit {
       prevQuantity: new FormControl(this.data.currentQuantity),
       usedQuantity: new FormControl(0),
       currentQuantity: new FormControl(),
-      remarks: new FormControl(),
+      convertedAmount: new FormControl(0),
+      src_price: new FormControl(0),
+      src_currCodeId: new FormControl(2),
+      exchange_rate: new FormControl(1),
+      remarks: new FormControl('Ingredient take off'),
       userId: new FormControl(this.backendService.getUserId()),
       unitId: new FormControl(this.data.unitId),
     });

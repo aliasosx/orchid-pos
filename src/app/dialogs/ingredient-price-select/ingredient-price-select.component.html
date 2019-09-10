@@ -6,7 +6,8 @@
   <div class="form-row">
     <div class="form-group col-md-4">
       <label class="srcUnitPrice">ລາຄາຕໍ່ໜ່ວຍ</label>
-      <input type="number" class="form-control text-right" formControlName="srcUnitPrice">
+      <input type="number" class="form-control text-right" formControlName="srcUnitPrice"
+        (keyup)="srcUnitPriceChange($event.target.value)">
     </div>
     <div class="form-group col-md-4">
       <label class="srcUnitCurrCodeId">ສະກຸນເງິນ</label>
@@ -21,7 +22,8 @@
     </div>
     <div class="form-group col-md-4">
       <label class="srcPackPrice">ລາຄາຕໍ່ແກັດ</label>
-      <input type="number" class="form-control text-right" formControlName="srcPackPrice">
+      <input type="number" class="form-control text-right" formControlName="srcPackPrice"
+        (keyup)="srcPackPrice($event.target.value)">
     </div>
     <div class="form-group col-md-4">
       <label class="srcPackCurrCodeId">ສະກຸນເງິນ</label>

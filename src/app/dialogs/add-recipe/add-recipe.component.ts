@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BomService } from 'src/app/services/bom.service';
 import { MatDialogRef } from '@angular/material';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormsModule } from '@angular/forms';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 
 @Component({
@@ -25,20 +25,28 @@ export class AddRecipeComponent implements OnInit {
   foodType: any;
   ingredients: any;
   subfoods: any;
+  recipeBuffer = [];
+  recipeList: any;
+  selectedIngredient: any;
+  disabledText = false;
 
   ngOnInit() {
     this.recipeForm = new FormGroup({
+      recipeName: new FormControl(),
       subfoodId: new FormControl(),
       foodId: new FormControl(),
       ingredientId: new FormControl(),
+      ingredientName: new FormControl(),
       quantity: new FormControl(),
       unitId: new FormControl(),
+      unitName: new FormControl(),
       descriptions: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       enabled: new FormControl(1),
-      createdAt: new FormControl(),
-      updatedAt: new FormControl()
+      createdAt: new FormControl(new Date()),
+      updatedAt: new FormControl(new Date())
     });
+    this.loadTempIngredients();
   }
   loadFoodName() {
     this.backendService.getFoods().then(r => {
@@ -59,6 +67,47 @@ export class AddRecipeComponent implements OnInit {
   loadSubFoods() {
     this.backendService.getSubfoods().then(r => {
       r.subscribe(subfoods => this.subfoods = subfoods);
+    });
+  }
+  loadTempIngredients() {
+    if (JSON.parse(localStorage.getItem('recipes'))) {
+      this.recipeList = JSON.parse(localStorage.getItem('recipes'));
+      this.recipeForm.get('recipeName').setValue(JSON.parse(localStorage.getItem('recipeName')));
+      this.disabledText = true;
+    }
+  }
+  addIngredient() {
+    if (this.recipeForm.valid) {
+      console.log(this.recipeForm.value);
+      const buffer = [];
+      if (this.recipeList) {
+        buffer.push(this.recipeList);
+        buffer.push(this.recipeForm.value);
+        localStorage.setItem('recipes', JSON.stringify(buffer));
+      } else {
+        buffer.push(this.recipeForm.value);
+        localStorage.setItem('recipeName', JSON.stringify(this.recipeForm.get('recipeName').value));
+        localStorage.setItem('recipes', JSON.stringify(buffer));
+      }
+      this.loadTempIngredients();
+    } else {
+      console.log('Form invalid');
+    }
+  }
+  getIngredientById(id) {
+    this.bomService.getIngredientById(id).then(r => {
+      r.subscribe(ingredient => {
+        this.recipeForm.get('ingredientName').setValue(ingredient[0].ingredientName);
+        this.recipeForm.get('unitId').setValue(ingredient[0].unitId);
+        this.getUnitNameById(ingredient[0].unitId);
+      });
+    });
+  }
+  getUnitNameById(unitId) {
+    this.backendService.getUnitById(unitId).then(r => {
+      r.subscribe(unit => {
+        this.recipeForm.get('unitName').setValue(unit['unit_name']);
+      });
     });
   }
 }

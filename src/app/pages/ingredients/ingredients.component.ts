@@ -113,4 +113,9 @@ export class IngredientsComponent implements OnInit {
       this.loadAllInit();
     });
   }
+  openAddRecipe() {
+    const dialogRef = this.dialog.open(AddRecipeComponent, {
+      width: '800px',
+    });
+  }
 }

@@ -3,6 +3,10 @@
   <div mat-dialog-content>
     <div class="form-row">
       <div class="form-group col-md-4">
+        <label class="recipeName">ຊື່ອາຫານ</label>
+        <input type="text" class="form-control" id="recipeName" formControlName="recipeName" [disabled]="disabledText">
+      </div>
+      <div class="form-group col-md-4">
         <label class="foodIdType">ປະເພດອາຫານ</label>
         <select class="form-control" id="foodIdType" [(ngModel)]="foodType" [ngModelOptions]="{standalone: true}">
           <option value="" disabled>-- Choose --</option>
@@ -27,7 +31,8 @@
       </div>
       <div class="form-group col-md-4">
         <label class="ingredientId">ວັດຖຸດິບ</label>
-        <select class="form-control" id="ingredientId" formControlName="ingredientId">
+        <select class="form-control" id="ingredientId" formControlName="ingredientId"
+          (change)="getIngredientById($event.target.value)">
           <option value="" disabled>-- Choose --</option>
           <option value="{{ i.id }}" *ngFor="let i of ingredients">{{ i.ingredientName }}</option>
         </select>
@@ -37,10 +42,12 @@
         <label class="quantity">ຈຳນວນ</label>
         <input type="number" class="form-control text-right" id="quantity" formControlName="quantity">
       </div>
-      <div class="form-group col-md-4">
-        <button mat-flat-button color="primary" class="mt-4"
-          style="width: 80px;position: relative;top:8px;">Add</button>
+
+      <div class="col col-md-12 text-right">
+        <button mat-flat-button color="primary" (click)="addIngredient()" class="mr-2">Add</button>
+        <button mat-flat-button color="warn">Create</button>
       </div>
+
     </div>
   </div>
 </form>
@@ -51,7 +58,21 @@
       <th scope="col" class="text-center">#</th>
       <th scope="col" class="text-left">ສ່ວນປະກອບ</th>
       <th scope="col" class="text-center">ຈຳນວນ</th>
+      <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
       <th scope="col" class="text-left">ໝາຍເຫດ</th>
+      <th scope="col" class="text-left">ການຈັດການ</th>
     </thead>
+    <tbody>
+      <tr *ngFor="let item of recipeList; let i = index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td class="text-left">{{ item.ingredientName }}</td>
+        <td class="text-right">{{ item.quantity | number }}</td>
+        <td class="text-center">{{ item.unitName }}</td>
+        <td class="text-left">{{ item.remarks }}</td>
+        <td class="text-center">
+          <i class="material-icons" style="cursor: pointer; color: #C60001;">delete_outline</i>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </div>

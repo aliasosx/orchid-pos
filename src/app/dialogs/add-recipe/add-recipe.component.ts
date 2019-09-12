@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BomService } from 'src/app/services/bom.service';
 import { MatDialogRef } from '@angular/material';
-import { FormGroup, FormControl, FormsModule } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
-
+declare var swal: any;
 @Component({
   selector: 'app-add-recipe',
   templateUrl: './add-recipe.component.html',
@@ -26,14 +26,15 @@ export class AddRecipeComponent implements OnInit {
   ingredients: any;
   subfoods: any;
   recipeBuffer = [];
-  recipeList: any;
+  recipeList: any[];
   selectedIngredient: any;
   disabledText = false;
 
   ngOnInit() {
     this.recipeForm = new FormGroup({
+      recipeMasterId: new FormControl(),
       recipeName: new FormControl(),
-      subfoodId: new FormControl(),
+      subfoodId: new FormControl(16),
       foodId: new FormControl(),
       ingredientId: new FormControl(),
       ingredientName: new FormControl(),
@@ -74,16 +75,31 @@ export class AddRecipeComponent implements OnInit {
       this.recipeList = JSON.parse(localStorage.getItem('recipes'));
       this.recipeForm.get('recipeName').setValue(JSON.parse(localStorage.getItem('recipeName')));
       this.disabledText = true;
+    } else {
+      this.recipeList = null;
     }
   }
   addIngredient() {
     if (this.recipeForm.valid) {
-      console.log(this.recipeForm.value);
       const buffer = [];
+      let dup = -1;
       if (this.recipeList) {
-        buffer.push(this.recipeList);
-        buffer.push(this.recipeForm.value);
-        localStorage.setItem('recipes', JSON.stringify(buffer));
+        this.recipeList.forEach(element => {
+          if (element.ingredientId === this.recipeForm.get('ingredientId').value) {
+            swal({
+              title: 'ບໍ່ສາມາດເອົາວັດຖຸດິບຊໍ້າກັນໄດ້',
+              icon: 'error',
+              timer: 3000,
+            });
+            dup = 1;
+          } else {
+            if (dup === -1) {
+              buffer.push(element);
+              buffer.push(this.recipeForm.value);
+              localStorage.setItem('recipes', JSON.stringify(buffer));
+            }
+          }
+        });
       } else {
         buffer.push(this.recipeForm.value);
         localStorage.setItem('recipeName', JSON.stringify(this.recipeForm.get('recipeName').value));
@@ -107,6 +123,49 @@ export class AddRecipeComponent implements OnInit {
     this.backendService.getUnitById(unitId).then(r => {
       r.subscribe(unit => {
         this.recipeForm.get('unitName').setValue(unit['unit_name']);
+      });
+    });
+  }
+  removeItem(item) {
+    let tmp = [];
+    let clean = -1;
+    if (item) {
+      this.recipeList.forEach(element => {
+        if (element.ingredientId !== item.ingredientId) {
+          tmp.push(element);
+          clean = 1;
+        }
+      });
+      if (clean === 1) {
+        localStorage.setItem('recipes', JSON.stringify(tmp));
+        this.loadTempIngredients();
+      } else if (clean === -1) {
+        console.log('Remove last item');
+        localStorage.removeItem('recipes');
+        this.loadTempIngredients();
+      }
+
+    }
+    this.loadTempIngredients();
+  }
+  saveRecipe() {
+    this.bomService.createRecipeMaster(this.recipeForm.value).then(r => {
+      r.subscribe(recipeMaster => {
+        console.log(recipeMaster);
+        if (recipeMaster['id'] > 0) {
+          this.recipeList.forEach(element => {
+            this.recipeForm.get('recipeMasterId').setValue(recipeMaster['id']);
+            this.recipeForm.get('foodId').setValue(element['foodId']);
+            this.recipeForm.get('quantity').setValue(element['quantity']);
+            this.recipeForm.get('descriptions').setValue(element['descriptions']);
+            this.recipeForm.get('ingredientId').setValue(element['ingredientId']);
+            this.bomService.createRecipe(this.recipeForm.value).then(rx => {
+              rx.subscribe(rsp => {
+                console.log(rsp);
+              });
+            });
+          });
+        }
       });
     });
   }

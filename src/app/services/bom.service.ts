@@ -64,7 +64,10 @@ export class BomService {
     return this._http.put(this.backendService + 'ingredient/' + id, data, this.httpOptions);
   }
   async createRecipe(recipe) {
-    return this._http.post(this.backendService + 'recipe', recipe, this.httpOptions);
+    return this._http.post(this.backendService + 'createRecipe', recipe, this.httpOptions);
+  }
+  async createRecipeMaster(recipe) {
+    return this._http.post(this.backendService + 'createRecipeMaster', recipe, this.httpOptions);
   }
   // Stock
   async getIngredientStockDisplay() {
@@ -88,4 +91,5 @@ export class BomService {
   async getIngredientPackUnit() {
     return this._http.get(this.backendService + 'packUnit', this.httpOptions);
   }
+
 }

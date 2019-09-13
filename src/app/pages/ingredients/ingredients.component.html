@@ -228,7 +228,92 @@
         </div>
       </mat-tab>
       <mat-tab label="Ingredient Usage">
+        <form [formGroup]="dateForm">
+          <div class="row mt-2">
+            <div class="col col-md-2">
+              <label class="startDate">ເລີ່ມ</label>
+              <input type="date" class="form-control" id="startDate" formControlName="startDate">
+            </div>
+            <div class="col col-md-2">
+              <label class="endDate">ຮອດ</label>
+              <input type="date" class="form-control" id="endDate" formControlName="endDate">
+            </div>
+            <div class="col col-md-2">
+              <button mat-flat-button color="primary" style="top:30px;" (click)="loadReports()">ລາຍງານ</button>
+            </div>
+          </div>
+        </form>
+        <ng-container *ngIf="reports">
 
+          <div class="row mt-2">
+            <div class="col col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  ອາຫານແຍກຍ່ອຍ
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-bordered product_detail table-hover">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col" class="text-center">#</th>
+                          <th scope="col" class="text-center">ວັດຖຸດິບຫຼັກ</th>
+                          <th scope="col" class="text-center">ອາຫານ</th>
+                          <th scope="col" class="text-center">ວັດຖຸດິບ ຕໍ່ ຈານ</th>
+                          <th scope="col" class="text-center">ຍອດຂາຍ</th>
+                          <th scope="col" class="text-center">ວັດຖຸດິບ ຕໍ່ ຍອດຂາຍ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let report of reports.childFoodReports;let i = index;">
+                          <td class="text-center align-middle">{{ i+1 }}</td>
+                          <td class="text-left align-middle">{{ report.ingredientName }}</td>
+                          <td class="text-left align-middle">{{ report.foodName }}</td>
+                          <td class="text-right align-middle">{{ report.unitPerDisc |number }} gram(s)</td>
+                          <td class="text-right align-middle">{{ report.disc_quantity |number }} ຈານ</td>
+                          <td class="text-right align-middle">{{ report.InGrams |number }} gram(s)</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  ອາຫານ
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-bordered product_detail table-hover">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col" class="text-center">#</th>
+                          <th scope="col" class="text-center">ວັດຖຸດິບຫຼັກ</th>
+                          <th scope="col" class="text-center">ອາຫານ</th>
+                          <th scope="col" class="text-center">ວັດຖຸດິບ ຕໍ່ ຈານ</th>
+                          <th scope="col" class="text-center">ຍອດຂາຍ</th>
+                          <th scope="col" class="text-center">ວັດຖຸດິບ ຕໍ່ ຍອດຂາຍ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let report of reports.nonChildFoodReports;let i = index;">
+                          <td class="text-center align-middle">{{ i+1 }}</td>
+                          <td class="text-left align-middle">{{ report.ingredientName }}</td>
+                          <td class="text-left align-middle">{{ report.foodName }}</td>
+                          <td class="text-right align-middle">{{ report.unitPerDisc |number }} gram(s)</td>
+                          <td class="text-right align-middle">{{ report.disc_quantity |number }} ຈານ</td>
+                          <td class="text-right align-middle">{{ report.InGrams |number }} gram(s)</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </mat-tab>
     </mat-tab-group>
   </mat-card-content>

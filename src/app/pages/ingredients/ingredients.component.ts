@@ -8,6 +8,10 @@ import { IngredientTakeOffComponent } from 'src/app/dialogs/ingredient-take-off/
 import { IngredientTakeInComponent } from 'src/app/dialogs/ingredient-take-in/ingredient-take-in.component';
 import { ViewIngredientHistoryComponent } from 'src/app/dialogs/view-ingredient-history/view-ingredient-history.component';
 
+import { from } from 'rxjs';
+import { groupBy, mergeMap, toArray } from 'rxjs/operators';
+import { FormGroup, FormControl } from '@angular/forms';
+
 @Component({
   selector: 'app-ingredients',
   templateUrl: './ingredients.component.html',
@@ -24,10 +28,17 @@ export class IngredientsComponent implements OnInit {
   stocksChanges: any;
   recipeMasters: any;
   recipes: any;
-
+  reports: any;
   recipesList = [];
+  groupByIngredient: any;
+
+  dateForm: FormGroup;
 
   ngOnInit() {
+    this.dateForm = new FormGroup({
+      startDate: new FormControl(new Date()),
+      endDate: new FormControl(new Date())
+    });
     this.loadAllInit();
   }
 
@@ -36,6 +47,7 @@ export class IngredientsComponent implements OnInit {
     this.loadStockChangeDisplay();
     this.loadStockDisplay();
     this.loadRecipes();
+    this.loadReports();
   }
   loadIngredients() {
     this.bomService.getIngredientsShow().then(r => {
@@ -58,7 +70,20 @@ export class IngredientsComponent implements OnInit {
       });
     });
   }
+  loadReports() {
+    this.bomService.getReports(this.dateForm.value).then(r => {
+      r.subscribe(reports => {
+        this.reports = reports;
+        console.log(reports);
 
+        // Group by
+        const report = from(reports['nonChildFoodReports']);
+        this.groupByIngredient = report.pipe(
+          groupBy(rp => rp['ingredientName']), mergeMap(group => group.pipe(toArray()))
+        );
+      });
+    });
+  }
   loadRecipes() {
     this.recipesList = [];
     this.bomService.getRecipesMasters().then(r => {
@@ -78,7 +103,7 @@ export class IngredientsComponent implements OnInit {
         }
       });
     });
-    console.log(this.recipesList);
+    // console.log(this.recipesList);
   }
 
   openAddIngredient() {

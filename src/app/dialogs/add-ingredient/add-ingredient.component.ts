@@ -49,7 +49,9 @@ export class AddIngredientComponent implements OnInit {
       srcUnitCurrCodeId: new FormControl(2),
       srcPackPrice: new FormControl(),
       srcPackCurrCodeId: new FormControl(2),
-      exchangeRate: new FormControl(),
+      exchangeRate: new FormControl(1),
+      grams: new FormControl(),
+      currentUnitGrams: new FormControl(),
       enabled: new FormControl(1),
       deleted: new FormControl(0),
       createdAt: new FormControl(),
@@ -98,6 +100,13 @@ export class AddIngredientComponent implements OnInit {
   }
   createIngredient() {
     this.ingredientForm.get('srcPackCurrCodeId').setValue(this.ingredientForm.get('srcUnitCurrCodeId').value);
+    if (parseInt(this.ingredientForm.get('unitId').value, 10) === 2) {
+      this.ingredientForm.get('grams').setValue(this.ingredientForm.get('unitPerPack').value * 1000);
+      this.ingredientForm.get('currentUnitGrams').setValue(this.ingredientForm.get('currentQuantity').value * 1000);
+    } else if (parseInt(this.ingredientForm.get('unitId').value, 10) === 1) {
+      this.ingredientForm.get('grams').setValue(this.ingredientForm.get('unitPerPack').value);
+      this.ingredientForm.get('currentUnitGrams').setValue(this.ingredientForm.get('currentQuantity').value);
+    }
     if (this.ingredientForm.valid) {
       this.disabledBtn = true;
       if (this.ingredienId) {

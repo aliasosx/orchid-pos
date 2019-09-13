@@ -22,7 +22,10 @@ export class IngredientsComponent implements OnInit {
   ingredients: any;
   stocks: any;
   stocksChanges: any;
-  recipesDisplay: any;
+  recipeMasters: any;
+  recipes: any;
+
+  recipesList = [];
 
   ngOnInit() {
     this.loadAllInit();
@@ -57,12 +60,25 @@ export class IngredientsComponent implements OnInit {
   }
 
   loadRecipes() {
-    this.bomService.getRecipesDisplay().then(r => {
-      r.subscribe(recipes => {
-        console.log(recipes);
-        this.recipesDisplay = recipes;
+    this.recipesList = [];
+    this.bomService.getRecipesMasters().then(r => {
+      r.subscribe(recipeMasters => {
+        if (recipeMasters) {
+          this.recipeMasters = recipeMasters;
+          this.recipeMasters.forEach(recipeMaster => {
+            this.bomService.getRecipeByRecipesMasters(recipeMaster['rmId']).then(rx => {
+              rx.subscribe(recipe => {
+                this.recipesList.push({
+                  recipeMaster: recipeMaster,
+                  recipe: recipe,
+                });
+              });
+            });
+          });
+        }
       });
     });
+    console.log(this.recipesList);
   }
 
   openAddIngredient() {

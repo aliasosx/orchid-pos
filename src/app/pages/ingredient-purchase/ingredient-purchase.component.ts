@@ -192,6 +192,7 @@ export class IngredientPurchaseComponent implements OnInit {
             this.purchaseForm.get('convertedAmount').setValue(parseFloat(el['unitPrice']) * parseFloat(el['quantity']));
             this.purchaseForm.get('remarks').setValue('Order Ingredient');
             this.purchaseForm.get('unitId').setValue(el['unitId']);
+
             console.log(' Process ordering ');
             this.bomSercice.createIngredientChangeHistory(this.purchaseForm.value).then(rx => {
               rx.subscribe(rsp => {

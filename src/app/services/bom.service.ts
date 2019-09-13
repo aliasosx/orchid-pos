@@ -91,5 +91,7 @@ export class BomService {
   async getIngredientPackUnit() {
     return this._http.get(this.backendService + 'packUnit', this.httpOptions);
   }
-
+  async getRecipesDisplay() {
+    return this._http.get(this.backendService + 'recipesDisplay', this.httpOptions);
+  }
 }

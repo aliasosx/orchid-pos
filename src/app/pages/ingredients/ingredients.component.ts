@@ -22,6 +22,7 @@ export class IngredientsComponent implements OnInit {
   ingredients: any;
   stocks: any;
   stocksChanges: any;
+  recipesDisplay: any;
 
   ngOnInit() {
     this.loadAllInit();
@@ -31,6 +32,7 @@ export class IngredientsComponent implements OnInit {
     this.loadIngredients();
     this.loadStockChangeDisplay();
     this.loadStockDisplay();
+    this.loadRecipes();
   }
   loadIngredients() {
     this.bomService.getIngredientsShow().then(r => {
@@ -53,6 +55,13 @@ export class IngredientsComponent implements OnInit {
       });
     });
   }
+
+  loadRecipes() {
+    this.bomService.getRecipesDisplay().then(r => {
+      r.subscribe(recipes => this.recipesDisplay = recipes);
+    });
+  }
+
   openAddIngredient() {
     const dialogRef = this.dialog.open(AddIngredientComponent, {
       width: '600px',
@@ -116,6 +125,9 @@ export class IngredientsComponent implements OnInit {
   openAddRecipe() {
     const dialogRef = this.dialog.open(AddRecipeComponent, {
       width: '800px',
+    });
+    dialogRef.afterClosed().subscribe(r => {
+      this.loadAllInit();
     });
   }
 }

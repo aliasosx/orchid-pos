@@ -135,6 +135,31 @@
           </table>
         </div>
       </mat-tab>
+      <mat-tab label="Recipes">
+        <div class="table-responsive">
+          <table class="table table-bordered product_detail table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col" class="text-center">#</th>
+                <th scope="col" class="text-center">recipe Name</th>
+                <th scope="col" class="text-center">ຍອດຍົກມາ</th>
+                <th scope="col" class="text-center">ນຳໃຊ້</th>
+                <th scope="col" class="text-center">ຍອດໃນສາງປະຈຸບັນ</th>
+                <th scope="col" class="text-center">ນຳໃຊ້ຈາກ</th>
+                <th scope="col" class="text-center">ວັນທີ່ປ່ຽນແປງ</th>
+                <th scope="col" class="text-center">ແກ້ໄຂໂດຍ</th>
+                <th scope="col" class="text-center">ຈັດການ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of recipesDisplay; let i = index">
+                <td class="text-center align-middle">{{ i+1 }}</td>
+                <td class="text-left align-middle">{{ r.recipeName }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-tab>
     </mat-tab-group>
   </mat-card-content>
 </mat-card>

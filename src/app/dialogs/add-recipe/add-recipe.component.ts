@@ -39,7 +39,7 @@ export class AddRecipeComponent implements OnInit {
       ingredientId: new FormControl(),
       ingredientName: new FormControl(),
       quantity: new FormControl(),
-      unitId: new FormControl(),
+      unitId: new FormControl(1),
       unitName: new FormControl(),
       descriptions: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
@@ -95,11 +95,11 @@ export class AddRecipeComponent implements OnInit {
           } else {
             if (dup === -1) {
               buffer.push(element);
-              buffer.push(this.recipeForm.value);
-              localStorage.setItem('recipes', JSON.stringify(buffer));
             }
           }
         });
+        buffer.push(this.recipeForm.value);
+        localStorage.setItem('recipes', JSON.stringify(buffer));
       } else {
         buffer.push(this.recipeForm.value);
         localStorage.setItem('recipeName', JSON.stringify(this.recipeForm.get('recipeName').value));
@@ -114,8 +114,8 @@ export class AddRecipeComponent implements OnInit {
     this.bomService.getIngredientById(id).then(r => {
       r.subscribe(ingredient => {
         this.recipeForm.get('ingredientName').setValue(ingredient[0].ingredientName);
-        this.recipeForm.get('unitId').setValue(ingredient[0].unitId);
-        this.getUnitNameById(ingredient[0].unitId);
+        this.recipeForm.get('unitId').setValue(1);
+        this.getUnitNameById(1);
       });
     });
   }
@@ -166,6 +166,9 @@ export class AddRecipeComponent implements OnInit {
             });
           });
         }
+        localStorage.removeItem('recipes');
+        localStorage.removeItem('recipeName');
+        this.dialogRef.close('success');
       });
     });
   }

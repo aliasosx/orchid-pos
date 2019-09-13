@@ -12,7 +12,7 @@
             <mat-icon>add</mat-icon>
           </button>
           <button mat-fab color="primary" class="mr-2" style="background-color: #00BFA5" (click)="loadAllInit()">
-            <mat-icon>refresh</mat-icon>
+            <mat-icon>autorenew</mat-icon>
           </button>
           <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1" (click)="openIngredientType()">
             <mat-icon>category</mat-icon>
@@ -26,6 +26,9 @@
           </button>
           <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1" (click)="openAddRecipe()">
             <mat-icon>bubble_chart</mat-icon>
+          </button>
+          <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1" (click)="openAddRecipe()">
+            <mat-icon>playlist_add_check</mat-icon>
           </button>
         </div>
       </div>
@@ -223,6 +226,9 @@
             </tbody>
           </table>
         </div>
+      </mat-tab>
+      <mat-tab label="Ingredient Foods">
+
       </mat-tab>
     </mat-tab-group>
   </mat-card-content>

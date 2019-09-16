@@ -13,11 +13,14 @@ export class AddIngredientCategoryComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<AddIngredientCategoryComponent>, private bomService: BomService) { }
   ingredientTypesForm: FormGroup;
   disabledBtn = false;
+  ingredientTypes: any;
+
   ngOnInit() {
     this.ingredientTypesForm = new FormGroup({
       ingredientTypeName: new FormControl(),
       descriptions: new FormControl(),
     });
+    this.getIngredientTypes();
   }
   createIngredientType() {
     if (this.ingredientTypesForm.valid) {
@@ -29,5 +32,12 @@ export class AddIngredientCategoryComponent implements OnInit {
         });
       });
     }
+  }
+  getIngredientTypes() {
+    this.bomService.getIngredientTypes().then(r => {
+      r.subscribe(ingredientTypes => {
+        this.ingredientTypes = ingredientTypes;
+      });
+    });
   }
 }

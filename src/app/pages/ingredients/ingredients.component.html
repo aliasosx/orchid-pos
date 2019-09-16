@@ -27,7 +27,7 @@
           <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1" (click)="openAddRecipe()">
             <mat-icon>bubble_chart</mat-icon>
           </button>
-          <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1" (click)="openAddRecipe()">
+          <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1">
             <mat-icon>playlist_add_check</mat-icon>
           </button>
         </div>
@@ -45,12 +45,10 @@
                 <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
                 <th scope="col" class="text-center">ລາຄາຕໍ່ໜ່ວຍ</th>
                 <th scope="col" class="text-center">ຈຳນວນຕໍ່ໜ່ວຍ</th>
-                <th scope="col" class="text-center">ຈຳນວນ gram</th>
                 <th scope="col" class="text-center">ຈຳນວນຕໍ່ແກັດ</th>
                 <th scope="col" class="text-center">ລາຄາຕໍ່ແກັດ</th>
                 <th scope="col" class="text-center">ບັນຈຸ</th>
                 <th scope="col" class="text-center">ຈຳນວນປະຈຸບັນ</th>
-                <th scope="col" class="text-center">Gram</th>
                 <th scope="col" class="text-center">ວັນທີ່ສ້າງ</th>
                 <th scope="col" class="text-center">ໝາຍເຫດ</th>
                 <th scope="col" class="text-center">ນຳໃຊ້</th>
@@ -67,15 +65,12 @@
                 <td class="text-center">{{ item.unit_name }}</td>
                 <td class="text-right">{{ item.unitPrice | number }} ກີບ</td>
                 <td class="text-right">{{ item.quantityPerUnit | number }} {{ item.unit_name }}</td>
-                <td class="text-right"><span class="text-danger font-weight-bold">{{ item.grams | number }}</span>
-                  gram(s)</td>
-                <td class="text-right">{{ item.unitPerPack | number }} {{ item.packUnitName }}</td>
+
+                <td class="text-right">{{ item.unitPerPack | number }} {{ item.unit_name }}</td>
                 <td class="text-right">{{ item.packPrice | number }} ກີບ</td>
                 <td class="text-center">{{ item.packUnitName  }}</td>
                 <td class="text-right">{{ item.currentQuantity | number }} {{ item.unit_name }}</td>
-                <td class="text-right"><span
-                    class="text-danger font-weight-bold">{{ item.currentUnitGrams | number }}</span> gram(s)
-                </td>
+
                 <td class="text-center">{{ item.createdAt | date: 'dd-MMM-yyyy' }}</td>
                 <td class="text-left">{{ item.remarks }}</td>
                 <td class="text-center" *ngIf="item.enabled; else disabledItem">
@@ -123,7 +118,6 @@
                 <th scope="col" class="text-center">ຍອດຍົກມາ</th>
                 <th scope="col" class="text-center">ນຳໃຊ້</th>
                 <th scope="col" class="text-center">ຍອດໃນສາງປະຈຸບັນ</th>
-                <th scope="col" class="text-center">Gram(s)</th>
                 <th scope="col" class="text-center">ນຳໃຊ້ຈາກ</th>
                 <th scope="col" class="text-center">ວັນທີ່ປ່ຽນແປງ</th>
                 <th scope="col" class="text-center">ແກ້ໄຂໂດຍ</th>
@@ -138,7 +132,6 @@
                 <td class="text-right align-middle">{{ item.prevQuantity | number }} {{ item.unit_name }}</td>
                 <td class="text-right align-middle">{{ item.usedQuantiry | number }} {{ item.unit_name }}</td>
                 <td class="text-right align-middle">{{ item.currentQuantity | number }} {{ item.unit_name }}</td>
-                <td class="text-right align-middle">{{ item.currentQuantityGrams | number }} gram(s)</td>
                 <td class="text-left align-middle">{{ item.updateFrom }}</td>
                 <td class="text-left align-middle">{{ item.updatedAt | date: 'dd-MMM-yyyy HH:mm:ss' }}</td>
                 <td class="text-left align-middle">{{ item.username }}</td>
@@ -169,7 +162,8 @@
             <tbody>
               <tr *ngFor="let r of recipesList; let i = index">
                 <td class="text-center align-middle">{{ i+1 }}</td>
-                <td class="text-left align-middle">{{ r.recipeMaster.recipeName }}</td>
+                <td class="text-left align-middle" (click)="updateRecipe(r)" style="cursor: pointer;">
+                  {{ r.recipeMaster.recipeName }}</td>
                 <td class="text-left align-middle">{{ r.recipeMaster.food_name }}</td>
                 <td class="text-left align-middle">{{ r.recipeMaster.subFoodName }}</td>
                 <td class="text-right align-middle">{{ r.recipeMaster.cost | number }}</td>
@@ -227,7 +221,7 @@
           </table>
         </div>
       </mat-tab>
-      <mat-tab label="Ingredient Usage">
+      <mat-tab disabled label="Ingredient Usage">
         <form [formGroup]="dateForm">
           <div class="row mt-2">
             <div class="col col-md-2">
@@ -262,6 +256,7 @@
                           <th scope="col" class="text-center">ວັດຖຸດິບ ຕໍ່ ຈານ</th>
                           <th scope="col" class="text-center">ຍອດຂາຍ</th>
                           <th scope="col" class="text-center">ວັດຖຸດິບ ຕໍ່ ຍອດຂາຍ</th>
+                          <th scope="col" class="text-center">ຍອດເຫຼືອ</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -272,6 +267,7 @@
                           <td class="text-right align-middle">{{ report.unitPerDisc |number }} gram(s)</td>
                           <td class="text-right align-middle">{{ report.disc_quantity |number }} ຈານ</td>
                           <td class="text-right align-middle">{{ report.InGrams |number }} gram(s)</td>
+                          <td class="text-right align-middle">{{ report.remaining |number }} gram(s)</td>
                         </tr>
                       </tbody>
                     </table>
@@ -314,6 +310,58 @@
             </div>
           </div>
         </ng-container>
+      </mat-tab>
+      <mat-tab label="Reports">
+
+        <div class="col mt-2">
+          <form [formGroup]="dateForm">
+            <div class="row">
+
+              <div class="col col-md-2">
+                <label class="startDate">ເລີ່ມ</label>
+                <input type="date" class="form-control" id="startDate" formControlName="startDate">
+              </div>
+              <div class="col col-md-2">
+                <label class="endDate">ຮອດ</label>
+                <input type="date" class="form-control" id="endDate" formControlName="endDate">
+              </div>
+              <div class="col col-md-2">
+                <button mat-flat-button color="primary" style="top:30px;" (click)="loadReports()">ລາຍງານ</button>
+              </div>
+
+            </div>
+          </form>
+          <div class="row mt-2">
+            <div class="col col-md-6">
+              <div class="table-responsive">
+                <table class="table table-bordered product_detail table-hover">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" class="text-center">#</th>
+                      <th scope="col" class="text-center">ວັດຖຸດິບຫຼັກ</th>
+                      <th scope="col" class="text-center">ຍອດຍົກມາ</th>
+                      <th scope="col" class="text-center">ເບີກອອກ</th>
+                      <th scope="col" class="text-center">ຍອດໃນສາງປະຈຸບັນ</th>
+                      <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
+                      <th scope="col" class="text-center">ຜູ້ເບີກ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let report of reports.currentStateReports;let i = index;">
+                      <td class="text-center align-middle">{{ i+1 }}</td>
+                      <td class="text-left align-middle">{{ report.ingredientName }}</td>
+                      <td class="text-right align-middle">{{ report.prevQuantity | number }}</td>
+                      <td class="text-right align-middle">{{ report.usedQuantiry |number }}</td>
+                      <td class="text-right align-middle">{{ report.currentQuantity |number }}</td>
+                      <td class="text-center align-middle">{{ report.unit_name }}</td>
+                      <td class="text-left align-middle">{{ report.username }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </mat-tab>
     </mat-tab-group>
   </mat-card-content>

@@ -74,13 +74,6 @@ export class IngredientsComponent implements OnInit {
     this.bomService.getReports(this.dateForm.value).then(r => {
       r.subscribe(reports => {
         this.reports = reports;
-        console.log(reports);
-
-        // Group by
-        const report = from(reports['nonChildFoodReports']);
-        this.groupByIngredient = report.pipe(
-          groupBy(rp => rp['ingredientName']), mergeMap(group => group.pipe(toArray()))
-        );
       });
     });
   }
@@ -125,7 +118,7 @@ export class IngredientsComponent implements OnInit {
   }
   openIngredientType() {
     const dialogRef = this.dialog.open(AddIngredientCategoryComponent, {
-      width: '400px',
+      width: '600px',
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadAllInit();
@@ -172,6 +165,19 @@ export class IngredientsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(r => {
       this.loadAllInit();
+    });
+  }
+  updateRecipe(item) {
+    const dialogRef = this.dialog.open(AddRecipeComponent, {
+      width: '800px',
+      data: item,
+    });
+    dialogRef.afterClosed().subscribe(rf => {
+      if (rf === 'success') {
+        this.loadAllInit();
+      }
+      localStorage.removeItem('recipes');
+      localStorage.removeItem('recipeName');
     });
   }
 }

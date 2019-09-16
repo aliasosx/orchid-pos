@@ -19,3 +19,42 @@
     </div>
   </div>
 </form>
+
+<div class="table-responsive mt-2" style="max-height: 50vh;overflow: auto;">
+  <table class="table table-bordered product_detail table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col" class="text-center">#</th>
+        <th scope="col" class="text-center">ປະເພດ</th>
+        <th scope="col" class="text-center">ອະທິບາຍ</th>
+        <th scope="col" class="text-center"></th>
+        <th scope="col" class="text-center"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ingredient of ingredientTypes;let i = index;">
+        <td class="text-center align-middle">{{ i+1 }}</td>
+        <td class="text-left align-middle">{{ ingredient.ingredientTypeName }}</td>
+        <td class="text-left align-middle">{{ ingredient.descriptions }}</td>
+        <td class="text-right align-middle" *ngIf="ingredient.enabled; else nonEnabled">
+          <span>
+            <i class="material-icons" style="color: #00BFA5;cursor: pointer;">
+              check_circle
+            </i>
+          </span>
+        </td>
+        <ng-template #nonEnabled>
+          <td>
+            <span>
+              <i class="material-icons" style="color: #C60001;cursor: pointer;">
+                cancel
+              </i>
+            </span>
+          </td>
+        </ng-template>
+        <td class="text-center align-middle"><i class="material-icons"
+            style="cursor: pointer; color: #C60001;">delete_outline</i></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

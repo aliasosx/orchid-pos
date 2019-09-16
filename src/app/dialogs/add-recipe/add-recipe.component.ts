@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { BomService } from 'src/app/services/bom.service';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 declare var swal: any;
@@ -12,7 +12,7 @@ declare var swal: any;
 export class AddRecipeComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
-  constructor(private bomService: BomService, private dialogRef: MatDialogRef<AddRecipeComponent>, private backendService: BackendServiceService) {
+  constructor(private bomService: BomService, private dialogRef: MatDialogRef<AddRecipeComponent>, private backendService: BackendServiceService, @Inject(MAT_DIALOG_DATA) public data) {
     this.loadFoodName();
     this.loadFoodType();
     this.loadIngredients();
@@ -29,6 +29,8 @@ export class AddRecipeComponent implements OnInit {
   recipeList: any[];
   selectedIngredient: any;
   disabledText = false;
+
+  btnText = 'Create';
 
   ngOnInit() {
     this.recipeForm = new FormGroup({
@@ -47,6 +49,14 @@ export class AddRecipeComponent implements OnInit {
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date())
     });
+    if (this.data) {
+      console.log(this.data);
+      this.btnText = 'Update';
+      localStorage.setItem('recipeName', JSON.stringify(this.data.recipeMaster.recipeName));
+      localStorage.setItem('recipes', JSON.stringify(this.data.recipe));
+      this.recipeForm.get('foodId').setValue(this.data.recipeMaster.foodId);
+      this.loadTempIngredients();
+    }
     this.loadTempIngredients();
   }
   loadFoodName() {

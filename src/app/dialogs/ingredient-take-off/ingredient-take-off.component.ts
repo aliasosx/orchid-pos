@@ -27,15 +27,16 @@ export class IngredientTakeOffComponent implements OnInit {
       usedQuantity: new FormControl(0),
       currentQuantity: new FormControl(),
       convertedAmount: new FormControl(0),
-      src_price: new FormControl(0),
+      src_price: new FormControl(this.data.unitPrice),
       src_currCodeId: new FormControl(2),
       exchange_rate: new FormControl(1),
-      remarks: new FormControl('Ingredient take off'),
+      remarks: new FormControl(),
       userId: new FormControl(this.backendService.getUserId()),
       unitId: new FormControl(this.data.unitId),
     });
     this.loadIngredientChangeTypes();
     this.loadUnits();
+    console.log(this.data);
   }
   loadInitData() {
     this.purchaseForm.get('prevQuantity').setValue(this.data.currentQuantity);

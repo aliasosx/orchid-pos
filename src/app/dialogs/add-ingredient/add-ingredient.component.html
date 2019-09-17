@@ -28,7 +28,6 @@
             <option value="{{ t.id }}" *ngFor="let t of units">{{ t.unit_name }}</option>
           </select>
         </div>
-
       </div>
 
       <div class="form-row">
@@ -60,6 +59,12 @@
             <option value="" disabled>-- Choose --</option>
             <option value="{{ t.id }}" *ngFor="let t of vendors">{{ t.vendorName }}</option>
           </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col col-md-12">
+          <label for="remarks">ອະທີບາຍ</label>
+          <input type="text" class="form-control text-left" id="remarks" formControlName="remarks" required>
         </div>
       </div>
       <hr>

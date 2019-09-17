@@ -49,6 +49,7 @@
                 <th scope="col" class="text-center">ລາຄາຕໍ່ແກັດ</th>
                 <th scope="col" class="text-center">ບັນຈຸ</th>
                 <th scope="col" class="text-center">ຈຳນວນປະຈຸບັນ</th>
+                <th scope="col" class="text-center">ຈຳນວນແກັດ</th>
                 <th scope="col" class="text-center">ວັນທີ່ສ້າງ</th>
                 <th scope="col" class="text-center">ໝາຍເຫດ</th>
                 <th scope="col" class="text-center">ນຳໃຊ້</th>
@@ -57,24 +58,32 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of ingredients; let i = index;">
-                <td class="text-center">{{ i+1 }}</td>
-                <td class="text-left" style="cursor: pointer;font-weight: bolder;font-size: 16px;"
+                <td class="text-center align-middle">{{ i+1 }}</td>
+                <td class="text-left align-middle" style="cursor: pointer;font-weight: bolder;font-size: 16px;"
                   (click)="openIngredient(item.ingredientId)">
                   {{ item.ingredientName }}</td>
-                <td class="text-center">{{ item.ingredientTypeName }}</td>
-                <td class="text-center">{{ item.unit_name }}</td>
-                <td class="text-right">{{ item.unitPrice | number }} ກີບ</td>
-                <td class="text-right">{{ item.quantityPerUnit | number }} {{ item.unit_name }}</td>
+                <td class="text-center align-middle">{{ item.ingredientTypeName }}</td>
+                <td class="text-center align-middle">{{ item.unit_name }}</td>
+                <td class="text-right align-middle">{{ item.unitPrice | number }} ກີບ</td>
+                <td class="text-right align-middle">{{ item.quantityPerUnit | number }} {{ item.unit_name }}</td>
 
-                <td class="text-right">{{ item.unitPerPack | number }} {{ item.unit_name }}</td>
-                <td class="text-right">{{ item.packPrice | number }} ກີບ</td>
-                <td class="text-center">{{ item.packUnitName  }}</td>
-                <td class="text-right">{{ item.currentQuantity | number }} {{ item.unit_name }}</td>
-
-                <td class="text-center">{{ item.createdAt | date: 'dd-MMM-yyyy' }}</td>
-                <td class="text-left">{{ item.remarks }}</td>
-                <td class="text-center" *ngIf="item.enabled; else disabledItem">
-                  <div class="cell text-center">
+                <td class="text-right align-middle">{{ item.unitPerPack | number }} {{ item.unit_name }}</td>
+                <td class="text-right align-middle">{{ item.packPrice | number }} ກີບ</td>
+                <td class="text-center align-middle">{{ item.packUnitName  }}</td>
+                <td class="text-right align-middle">{{ item.currentQuantity | number }} {{ item.unit_name }}</td>
+                <td class="text-left font-weight-bold text-info align-middle" style="font-size: 16px;"
+                  *ngIf="item.currentQuantity > 0;else nonQuantity">
+                  {{ item.currentQuantity/item.quantityPerUnit | number: '1.0-0' }}
+                  {{ item.packUnitName }}
+                  {{ item.currentQuantity%item.quantityPerUnit | number  }} {{ item.unit_name  }}
+                </td>
+                <ng-template #nonQuantity>
+                  <td class="text-left align-middle"></td>
+                </ng-template>
+                <td class="text-center align-middle">{{ item.createdAt | date: 'dd-MMM-yyyy' }}</td>
+                <td class="text-left align-middle">{{ item.remarks }}</td>
+                <td class="text-center align-middle" *ngIf="item.enabled; else disabledItem">
+                  <div class="cell text-center align-middle">
                     <span>
                       <i class="material-icons" style="color: #00BFA5;cursor: pointer;">
                         check_circle
@@ -85,7 +94,7 @@
 
                 </td>
                 <ng-template #disabledItem>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <div class="cell text-center">
                       <span>
                         <i class="material-icons" style="color: #C60001;cursor: pointer;">
@@ -96,7 +105,7 @@
                     </div>
                   </td>
                 </ng-template>
-                <td class="text-center">
+                <td class="text-center align-middle">
                   <i class="material-icons mr-2" style="cursor: pointer;"
                     (click)="openIngredient(item.ingredientId)">edit</i>
                   <i class="material-icons mr-2" style="cursor: pointer; color: #C60001;"

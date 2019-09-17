@@ -97,6 +97,7 @@ export class IngredientsComponent implements OnInit {
       });
     });
     // console.log(this.recipesList);
+
   }
 
   openAddIngredient() {

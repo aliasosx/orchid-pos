@@ -537,5 +537,11 @@ export class BackendServiceService {
   getUserId() {
     return JSON.parse(localStorage.getItem('usrObj')).id;
   }
+  async getStockReportByProdId(data) {
+    return this._http.post(this.backendService + 'stocktrackingReport', data, this.httpOptions);
+  }
+  async getOrderDetailByOrderId(orderId) {
+    return this._http.get(this.backendService + 'orderDetailByOrderId/' + orderId, this.httpOptions);
+  }
 }
 

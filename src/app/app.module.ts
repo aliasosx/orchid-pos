@@ -144,6 +144,7 @@ import { ViewIngredientHistoryComponent } from './dialogs/view-ingredient-histor
 import { CurrenciesComponent } from './shared/currencies/currencies.component';
 import { IngredientPurchaseComponent } from './pages/ingredient-purchase/ingredient-purchase.component';
 import { IngredientPriceSelectComponent } from './dialogs/ingredient-price-select/ingredient-price-select.component';
+import { StockReviewComponent } from './pages/stock-review/stock-review.component';
 
 @NgModule({
   declarations: [
@@ -267,6 +268,7 @@ import { IngredientPriceSelectComponent } from './dialogs/ingredient-price-selec
     CurrenciesComponent,
     IngredientPurchaseComponent,
     IngredientPriceSelectComponent,
+    StockReviewComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,117 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>
+      <span>Stock Review Tracking By Product</span>
+    </mat-card-title>
+    <mat-card-subtitle>ລາຍງານສະຫຼຸບຍອດຂາຍ</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="stockForm">
+      <div class="row mb-3">
+        <div class="col col-md-2 col-sm-12">
+          <label for="fromDate" class="h5">ເລີ່ມຈາກວັນທີ</label>
+          <div class="input-group mb-1">
+            <input type="date" class="form-control" formControlName="startDate">
+          </div>
+        </div>
+        <div class="col col-md-2  col-sm-12">
+          <label for="fromDate" class="h5">ຮອດວັນທີ</label>
+          <div class="input-group mb-1">
+            <input type="date" class="form-control" formControlName="endDate">
+          </div>
+        </div>
+        <div class="col col-md-2  col-sm-12">
+          <label for="productId" class="h5">Products</label>
+          <select class="form-control" required id="productId" formControlName="productId">
+            <option value="" disabled>-- select one --</option>
+            <option value="{{ p.id }}" *ngFor="let p  of products">{{ p.product_name }}</option>
+          </select>
+        </div>
+        <div class="col col-md-3  col-sm-12">
+          <label for="fromDate"></label>
+          <div class="input-group mb-1">
+            <button mat-raised-button color="warn" style="margin-top: 12px;width: 85px;"
+              (click)="loadReportByRange()">Generate</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <div class="row">
+      <ng-container *ngIf="reports">
+        <div class="col col-md-7">
+          <div class="table-responsive" style="max-height: 65vh;overflow: auto;">
+            <table class="table table-bordered product_detail table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="text-center">#</th>
+                  <th scope="col" class="text-center">ວັນທີ່ເຄື່ອນໄຫວ</th>
+                  <th scope="col" class="text-center">ຍອດຍົກມາ</th>
+                  <th scope="col" class="text-center">ນຳໃຊ້</th>
+                  <th scope="col" class="text-center">ຍອດປະຈຸບັນ</th>
+                  <th scope="col" class="text-center">ແກັດ</th>
+                  <th scope="col" class="text-center">ໝາຍເຫດ</th>
+                  <th scope="col" class="text-center">ລາຍການ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of reports;let i =index;">
+                  <td class="text-center align-middle"
+                    [ngStyle]="{'border-right': item.used_quantity < 0? '5px solid #00AF65':'5px solid #F44336'}">
+                    {{ i+1 }}</td>
+                  <td class="text-left align-middle text-nowrap">{{ item.createdAt | date:'dd-MMM-yyyy HH:mm:ss' }}</td>
+                  <td class="text-right align-middle">{{ item.previous_quantity |number  }}</td>
+                  <td class="text-right align-middle">{{ item.used_quantity | number }}</td>
+                  <td class="text-right align-middle">{{ item.current_quantity| number }}</td>
+                  <td class="text-left align-middle  text-nowrap">
+                    {{ item.current_quantity/item.quantityPerPack| number: '1.0-0' }}
+                    ແກັດ
+                    {{ item.current_quantity%item.quantityPerPack| number: '1.0-0' }} ຫນ່ວຍ
+                  </td>
+                  <td class="text-left align-middle">{{ item.remarks }}</td>
+                  <td class="text-center align-middle" *ngIf="item.orderId; else nonOrder">
+                    <button mat-button color="warn" (click)="getTransactionsByOrderId(item.orderId)">ກວດລາຍການ</button>
+                  </td>
+                  <ng-template #nonOrder>
+                    <td class="text-center align-middle"></td>
+                  </ng-template>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col col-md-5">
+          <ng-container *ngIf="transactions">
+            <div class="table-responsive" style="max-height: 65vh;overflow: auto;">
+              <table class="table table-bordered product_detail table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">ອາຫານ</th>
+                    <th scope="col" class="text-center">ຈຳນວນ</th>
+                    <th scope="col" class="text-center">ລວມ</th>
+                    <th scope="col" class="text-center">ວັນທີ່ເຄື່ອນໄຫວ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let t of transactions; let i = index">
+                    <td class="text-center align-middle">{{ i+1 }}</td>
+                    <td class="text-left align-middle">{{ t.foodName }}</td>
+                    <td class="text-right align-middle">{{ t.quantity | number }}</td>
+                    <td class="text-right align-middle">{{ t.total_price | number }}</td>
+                    <td class="text-left align-middle">{{ t.createdAt | date: 'dd-MMM-yyyy HH:mm:ss' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
+        </div>
+
+
+      </ng-container>
+
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -5,6 +5,7 @@ import { BomService } from 'src/app/services/bom.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddQuantityComponent } from 'src/app/dialogs/add-quantity/add-quantity.component';
 import { FormGroup, FormControl } from '@angular/forms';
+import { AddIngredientComponent } from 'src/app/dialogs/add-ingredient/add-ingredient.component';
 declare var swal: any;
 
 @Component({
@@ -213,6 +214,15 @@ export class IngredientPurchaseComponent implements OnInit {
       } else {
         return;
       }
+    });
+  }
+  openAddIngredient() {
+    const dialogRef = this.dialog.open(AddIngredientComponent, {
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadItems();
+      this.loadItemsToList();
     });
   }
 }

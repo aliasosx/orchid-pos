@@ -9,10 +9,21 @@
       <div class="col col-sm-12 col-md-3">
         <input type="text" class="form-control" placeholder="ຄົ້ນຫາ...">
       </div>
-      <div class="col col-sm-12 col-md-2">
-        <button mat-raised-button color="primary" class="float-left"
-          (click)="openAddExp()">ບັນທຶກລາຍຈ່າຍປະຈຳວັນ</button>
+      <div class="col col-sm-12 col-md-2 mr-2">
+        <div class="row">
+          <div class="col col-md-6">
+            <button mat-raised-button color="primary" class="float-right"
+              (click)="openAddExp()">ບັນທຶກລາຍຈ່າຍປະຈຳວັນ</button>
+          </div>
+          <div class="col col-md-6">
+            <button mat-raised-button color="primary" style="background-color: #AB221D;" class="float-right"
+              (click)="openMaketExp()">ບັນທຶກລາຍ
+              ອອກຕະຫຼາດ</button>
+          </div>
+        </div>
+
       </div>
+
     </div>
     <mat-tab-group style="max-height: 70vh;overflow: auto;">
       <mat-tab label="Records">

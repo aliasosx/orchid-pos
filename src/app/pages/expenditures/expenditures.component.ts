@@ -126,4 +126,7 @@ export class ExpendituresComponent implements OnInit {
       });
     });
   }
+  openMaketExp() {
+
+  }
 }

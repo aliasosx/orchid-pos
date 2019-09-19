@@ -97,6 +97,12 @@ export class BomService {
   async getRecipeByRecipesMasters(id) {
     return this._http.get(this.backendService + 'recipesByRecipeMasterId/' + id, this.httpOptions);
   }
+  async getPackUnitById(id) {
+    return this._http.get(this.backendService + 'packUnitById/' + id, this.httpOptions);
+  }
+  async getPackUnits() {
+    return this._http.get(this.backendService + 'packUnits', this.httpOptions);
+  }
   // Reports
   async getReports(dt) {
     return this._http.post(this.backendService + 'ingredientReports', dt, this.httpOptions);

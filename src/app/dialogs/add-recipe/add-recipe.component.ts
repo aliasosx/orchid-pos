@@ -17,6 +17,7 @@ export class AddRecipeComponent implements OnInit {
     this.loadFoodType();
     this.loadIngredients();
     this.loadSubFoods();
+    this.loadPackUnits();
   }
   recipeForm: FormGroup;
   recipes: any;
@@ -29,8 +30,11 @@ export class AddRecipeComponent implements OnInit {
   recipeList: any[];
   selectedIngredient: any;
   disabledText = false;
-
+  ingredientSelected: any;
   btnText = 'Create';
+  packUnits: any;
+  ings: any;
+  packName = '';
 
   ngOnInit() {
     this.recipeForm = new FormGroup({
@@ -40,12 +44,15 @@ export class AddRecipeComponent implements OnInit {
       foodId: new FormControl(),
       ingredientId: new FormControl(),
       ingredientName: new FormControl(),
+      packQuantity: new FormControl(),
       quantity: new FormControl(),
       unitId: new FormControl(1),
       unitName: new FormControl(),
       descriptions: new FormControl(),
       userId: new FormControl(JSON.parse(localStorage.getItem('usrObj')).id),
       enabled: new FormControl(1),
+      packUnitId: new FormControl(),
+      remark: new FormControl(),
       createdAt: new FormControl(new Date()),
       updatedAt: new FormControl(new Date())
     });
@@ -78,6 +85,11 @@ export class AddRecipeComponent implements OnInit {
   loadSubFoods() {
     this.backendService.getSubfoods().then(r => {
       r.subscribe(subfoods => this.subfoods = subfoods);
+    });
+  }
+  loadPackUnits() {
+    this.bomService.getPackUnits().then(r => {
+      r.subscribe(packs => this.packUnits = packs);
     });
   }
   loadTempIngredients() {
@@ -125,6 +137,11 @@ export class AddRecipeComponent implements OnInit {
       r.subscribe(ingredient => {
         this.recipeForm.get('ingredientName').setValue(ingredient[0].ingredientName);
         this.recipeForm.get('unitId').setValue(1);
+        this.recipeForm.get('packUnitId').setValue(ingredient[0].packUnitId);
+        this.getUnitPackById(ingredient[0].packUnitId);
+        // tslint:disable-next-line: max-line-length
+        this.recipeForm.get('remark').setValue('ໃຊ້ ' + ingredient[0].quantityPerUnit + ' ' + this.recipeForm.get('unitName').value + ' ຕໍ່ ' + this.packName);
+        this.ings = ingredient[0];
         this.getUnitNameById(1);
       });
     });
@@ -133,6 +150,13 @@ export class AddRecipeComponent implements OnInit {
     this.backendService.getUnitById(unitId).then(r => {
       r.subscribe(unit => {
         this.recipeForm.get('unitName').setValue(unit['unit_name']);
+      });
+    });
+  }
+  getUnitPackById(id) {
+    this.bomService.getPackUnitById(id).then(r => {
+      r.subscribe(up => {
+        this.packName = up[0].packUnitName;
       });
     });
   }
@@ -154,7 +178,6 @@ export class AddRecipeComponent implements OnInit {
         localStorage.removeItem('recipes');
         this.loadTempIngredients();
       }
-
     }
     this.loadTempIngredients();
   }
@@ -182,4 +205,8 @@ export class AddRecipeComponent implements OnInit {
       });
     });
   }
+  quantityCalculation() {
+    this.recipeForm.get('quantity').setValue(this.recipeForm.get('packQuantity').value * this.ings['quantityPerUnit']);
+  }
+
 }

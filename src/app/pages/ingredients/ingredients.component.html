@@ -27,9 +27,7 @@
           <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1" (click)="openAddRecipe()">
             <mat-icon>bubble_chart</mat-icon>
           </button>
-          <button mat-fab color="primary" class="mr-2" style="background-color: #9C28B1">
-            <mat-icon>playlist_add_check</mat-icon>
-          </button>
+
         </div>
       </div>
     </div>
@@ -184,17 +182,17 @@
                           <th scope="col" class="text-center">#</th>
                           <th scope="col" class="text-center">ສ່ວນປະກອບ</th>
                           <th scope="col" class="text-center">ຈຳນວນ</th>
-                          <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
-                          <th scope="col" class="text-center">ເນື້ອໃນ</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let item of r.recipe;let j = index">
                           <td class="text-center align-middle">{{ j+1 }}</td>
                           <td class="text-left align-middle">{{ item.ingredientName }}</td>
-                          <td class="text-right align-middle">{{ item.quantity |number }}</td>
-                          <td class="text-center align-middle">{{ item.unit_name}}</td>
-                          <td class="text-left align-middle">{{ item.descriptions}}</td>
+                          <td class="text-left align-middle text-danger" style="font-size: 16px;">
+                            {{ item.Pack |number }}
+                            {{ item.packUnitName }}
+                            {{ item.Unit |number }} {{ item.unit_name }} = {{ item.quantity | number }}
+                            {{ item.unit_name }}</td>
                         </tr>
                       </tbody>
                     </table>

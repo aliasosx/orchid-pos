@@ -33,21 +33,35 @@
         <label class="ingredientId">ວັດຖຸດິບ</label>
         <select class="form-control" id="ingredientId" formControlName="ingredientId"
           (change)="getIngredientById($event.target.value)">
-          <option value="" disabled>-- Choose --</option>
+          <option value="">-- Choose --</option>
           <option value="{{ i.id }}" *ngFor="let i of ingredients">{{ i.ingredientName }}</option>
         </select>
       </div>
 
       <div class="form-group col-md-4">
-        <label class="quantity">ຈຳນວນ</label>
+        <label class="packQuantity">ຈຳນວນ</label>
+        <input type="number" class="form-control text-right" id="packQuantity" formControlName="packQuantity"
+          (keyup)="quantityCalculation()">
+      </div>
+      <div class="form-group col-md-4">
+        <label class="packUnitId">ຫົວໜ່ວຍ</label>
+        <select class="form-control" id="packUnitId" formControlName="packUnitId" disabled>
+          <option value="" disabled>-- Choose --</option>
+          <option value="{{ p.id }}" *ngFor="let p of packUnits">{{ p.packUnitName }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label class="quantity">ຫົວໜ່ວຍ Gram</label>
         <input type="number" class="form-control text-right" id="quantity" formControlName="quantity">
       </div>
-
+      <div class="form-group col-md-4">
+        <label class="remark">ໝາຍເຫດ</label>
+        <input type="text" class="form-control" id="remark" disabled formControlName="remark">
+      </div>
       <div class="col col-md-12 text-right">
         <button mat-flat-button color="primary" (click)="addIngredient()" class="mr-2">Add</button>
         <button mat-flat-button color="warn" (click)="saveRecipe()">{{ btnText }}</button>
       </div>
-
     </div>
   </div>
 </form>

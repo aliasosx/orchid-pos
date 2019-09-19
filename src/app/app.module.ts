@@ -145,6 +145,7 @@ import { CurrenciesComponent } from './shared/currencies/currencies.component';
 import { IngredientPurchaseComponent } from './pages/ingredient-purchase/ingredient-purchase.component';
 import { IngredientPriceSelectComponent } from './dialogs/ingredient-price-select/ingredient-price-select.component';
 import { StockReviewComponent } from './pages/stock-review/stock-review.component';
+import { IngredientReportsComponent } from './pages/ingredient-reports/ingredient-reports.component';
 
 @NgModule({
   declarations: [
@@ -269,6 +270,7 @@ import { StockReviewComponent } from './pages/stock-review/stock-review.componen
     IngredientPurchaseComponent,
     IngredientPriceSelectComponent,
     StockReviewComponent,
+    IngredientReportsComponent,
   ],
   imports: [
     BrowserModule,

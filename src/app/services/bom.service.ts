@@ -107,4 +107,7 @@ export class BomService {
   async getReports(dt) {
     return this._http.post(this.backendService + 'ingredientReports', dt, this.httpOptions);
   }
+  async getIngredientReportsByOrders(dt) {
+    return this._http.post(this.backendService + 'ingredientsReportByOrders', dt, this.httpOptions);
+  }
 }

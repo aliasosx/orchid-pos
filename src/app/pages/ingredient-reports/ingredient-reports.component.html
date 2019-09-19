@@ -1,0 +1,72 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>
+      <span>ລາຍການການນຳໃຊ້ວັດຖຸດິບ</span>
+    </mat-card-title>
+    <mat-card-subtitle>ລາຍງານສະຫຼຸບຍອດຂາຍ</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="stockForm">
+      <div class="row mb-3">
+        <div class="col col-md-2 col-sm-12">
+          <label for="fromDate" class="h5">ເລີ່ມຈາກວັນທີ</label>
+          <div class="input-group mb-1">
+            <input type="date" class="form-control" formControlName="startDate">
+          </div>
+        </div>
+        <div class="col col-md-2  col-sm-12">
+          <label for="fromDate" class="h5">ຮອດວັນທີ</label>
+          <div class="input-group mb-1">
+            <input type="date" class="form-control" formControlName="endDate">
+          </div>
+        </div>
+
+        <div class="col col-md-3  col-sm-12">
+          <label for="fromDate"></label>
+          <div class="input-group mb-1">
+            <button mat-raised-button color="warn" style="margin-top: 12px;width: 85px;"
+              (click)="loadReportByRange()">Generate</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <div class="row">
+      <ng-container *ngIf="reports">
+        <div class="col col-md-7">
+          <div class="table-responsive" style="max-height: 65vh;overflow: auto;">
+            <table class="table table-bordered product_detail table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="text-center">#</th>
+                  <th scope="col" class="text-center">ວັດຖຸດິບ</th>
+                  <th scope="col" class="text-center">ອາຫານ</th>
+                  <th scope="col" class="text-center">ຍອດຂາຍ (ຈານ)</th>
+                  <th scope="col" class="text-center">ນຳໃຊ້ແລ້ວ</th>
+                  <th scope="col" class="text-center">ຍອດຍັງເຫຼືອ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of reports.ingredientReportByOrders;let i =index;">
+                  <td class="text-center align-middle"
+                    [ngStyle]="{'border-right': item.discs > 0? '5px solid #00AF65':'5px solid #F44336'}">
+                    {{ i+1 }}</td>
+                  <td class="text-left align-middle text-nowrap">{{ item.ingredientName }}</td>
+                  <td class="text-left align-middle">{{ item.foodName  }}</td>
+                  <td class="text-left align-middle">{{ item.discs | number }}</td>
+                  <td class="text-left align-middle">{{ item.Pack| number }} pack(s) {{ item.Unit| number }} Unit(s) =
+                    {{ item.ingredientUsage }} Gram(s)
+                  </td>
+                  <td class="text-left align-middle">{{ item.CurrentPacks| number }} pack(s)
+                    {{ item.CurrentUnits| number }} Unit(s)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+  </mat-card-content>
+</mat-card>

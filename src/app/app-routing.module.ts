@@ -32,6 +32,7 @@ import { DiscountsComponent } from './pages/discounts/discounts.component';
 import { MemberlistsComponent } from './pages/memberlists/memberlists.component';
 import { IngredientPurchaseComponent } from './pages/ingredient-purchase/ingredient-purchase.component';
 import { StockReviewComponent } from './pages/stock-review/stock-review.component';
+import { IngredientReportsComponent } from './pages/ingredient-reports/ingredient-reports.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -67,6 +68,7 @@ const routes: Routes = [
   { path: 'ingredients', component: IngredientsComponent },
   { path: 'ingredientPurchase', component: IngredientPurchaseComponent },
   { path: 'stockReview', component: StockReviewComponent },
+  { path: 'ingredientReports', component: IngredientReportsComponent },
 ];
 
 @NgModule({

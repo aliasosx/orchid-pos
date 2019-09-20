@@ -8,9 +8,8 @@ import { IngredientTakeOffComponent } from 'src/app/dialogs/ingredient-take-off/
 import { IngredientTakeInComponent } from 'src/app/dialogs/ingredient-take-in/ingredient-take-in.component';
 import { ViewIngredientHistoryComponent } from 'src/app/dialogs/view-ingredient-history/view-ingredient-history.component';
 
-import { from } from 'rxjs';
-import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
+import { AddIngredientFoodComponent } from 'src/app/dialogs/add-ingredient-food/add-ingredient-food.component';
 
 @Component({
   selector: 'app-ingredients',
@@ -31,7 +30,7 @@ export class IngredientsComponent implements OnInit {
   reports: any;
   recipesList = [];
   groupByIngredient: any;
-
+  ingredientFoodViews: any;
   dateForm: FormGroup;
 
   ngOnInit() {
@@ -48,6 +47,7 @@ export class IngredientsComponent implements OnInit {
     this.loadStockDisplay();
     this.loadRecipes();
     this.loadReports();
+    this.loadIngredientFoodView();
   }
   loadIngredients() {
     this.bomService.getIngredientsShow().then(r => {
@@ -99,7 +99,11 @@ export class IngredientsComponent implements OnInit {
     // console.log(this.recipesList);
 
   }
-
+  loadIngredientFoodView() {
+    this.bomService.getingredientFoodsItemAddViews().then(r => {
+      r.subscribe(ingredientFoods => this.ingredientFoodViews = ingredientFoods);
+    });
+  }
   openAddIngredient() {
     const dialogRef = this.dialog.open(AddIngredientComponent, {
       width: '600px',
@@ -151,6 +155,7 @@ export class IngredientsComponent implements OnInit {
       this.loadAllInit();
     });
   }
+
   viewHistory(item) {
     const dialogRef = this.dialog.open(ViewIngredientHistoryComponent, {
       width: '900px',
@@ -179,6 +184,14 @@ export class IngredientsComponent implements OnInit {
       }
       localStorage.removeItem('recipes');
       localStorage.removeItem('recipeName');
+    });
+  }
+  openIngredientFood() {
+    const dialogRef = this.dialog.open(AddIngredientFoodComponent, {
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(r => {
+      this.loadIngredientFoodView();
     });
   }
 }

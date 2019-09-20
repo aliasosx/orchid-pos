@@ -1,0 +1,95 @@
+<div class="row" style="max-height: 80vh;overflow: auto;">
+  <div class="col col-md-12">
+    <h1 mat-dialog-title>ເພີ່ມວັດຖຸດິບ</h1>
+    <hr>
+    <form [formGroup]="ingredientFoodForm">
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="ingredientId">ວັດຖຸດິບ</label>
+          <select class="form-control" id="ingredientId" formControlName="ingredientId" required
+            (change)="onIngredientSelected($event.target.value)">
+            <option value="" disabled>-- Choose --</option>
+            <option value="{{ i.id }}" *ngFor="let i of ingredients">{{ i.ingredientName }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="foodId">ປະເພດອາຫານ</label>
+          <select class="form-control" id="foodId" required [(ngModel)]="foodType"
+            [ngModelOptions]="{standalone: true}">
+            <option value="" disabled>-- Choose --</option>
+            <option value="{{ ft.id }}" *ngFor="let ft of foodTypes">{{ ft.foodTypeName }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="foodId">ອາຫານ</label>
+          <select class="form-control" id="foodId" formControlName="foodId" required>
+            <option value="">-- Choose --</option>
+            <option value="{{ f.id }}" *ngFor="let f of foods|foodCategoryPipe: foodType">{{ f.food_name }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="subFoodId">ອາຫານເພີ່ມ</label>
+          <select class="form-control" id="subFoodId" formControlName="subFoodId" required>
+            <option value="" disabled>-- Choose --</option>
+            <option value="{{ sf.id }}" *ngFor="let sf of subFoods">{{ sf.subFoodName }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="quantity">ຈຳນວນທີ່ໃຊ້</label>
+          <input type="number" class="form-control text-right" required id="quantity" formControlName="quantity"
+            (keyup)="quantityCalculation()">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="packUnitId">ຫົວໜ່ວຍ</label>
+          <select class="form-control" id="packUnitId" disabled formControlName="packUnitId" required>
+            <option value="" disabled>-- Choose --</option>
+            <option value="{{ p.id }}" *ngFor="let p of packUnits">{{ p.packUnitName }}</option>
+          </select>
+        </div>
+        <!--
+           <div class="form-group col-md-4">
+          <label for="usageDescribe">ຈຳນວນທີ່ໃຊ້ຕົວຈິງ</label>
+          <input type="text" class="form-control text-left" readonly id="usageDescribe" formControlName="usageDescribe">
+          </div>
+        -->
+      </div>
+      <hr>
+      <div class="form-group col-md-12 text-right">
+        <button mat-button color="primary" class="mr-2" (click)="addItem()">ເພີ່ມວັດຖຸດິບ</button>
+        <button mat-flat-button color="warn">ບັນທືກ</button>
+      </div>
+    </form>
+    <hr>
+    <ng-container *ngIf="viewItems">
+      <div class="table-responsive">
+        <table class="table table-bordered product_detail table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col" class="text-center">#</th>
+              <th scope="col" class="text-center">ອາຫານ</th>
+              <th scope="col" class="text-center">ອາຫານເພີ່ມ</th>
+              <th scope="col" class="text-center">ຈຳນວນຕໍ່ໜ່ວຍ</th>
+              <th scope="col" class="text-center">ຫົວໜ່ວຍ</th>
+              <th scope="col" class="text-center">ຈັດການ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of viewItems;let i = index">
+              <td class="text-center">{{ i+1 }}</td>
+              <td class="text-left">{{ item.food_name }}</td>
+              <td class="text-left">{{ item.subFoodName }}</td>
+              <td class="text-right">{{ item.quantity | number }}</td>
+              <td class="text-center">{{ item.packUnitName }}</td>
+              <td class="text-center"><span>
+                  <i class="material-icons" style="color: #C60001;cursor: pointer;">
+                    cancel
+                  </i>
+                </span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+  </div>
+</div>

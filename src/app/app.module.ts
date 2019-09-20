@@ -146,6 +146,7 @@ import { IngredientPurchaseComponent } from './pages/ingredient-purchase/ingredi
 import { IngredientPriceSelectComponent } from './dialogs/ingredient-price-select/ingredient-price-select.component';
 import { StockReviewComponent } from './pages/stock-review/stock-review.component';
 import { IngredientReportsComponent } from './pages/ingredient-reports/ingredient-reports.component';
+import { AddIngredientFoodComponent } from './dialogs/add-ingredient-food/add-ingredient-food.component';
 
 @NgModule({
   declarations: [
@@ -271,6 +272,7 @@ import { IngredientReportsComponent } from './pages/ingredient-reports/ingredien
     IngredientPriceSelectComponent,
     StockReviewComponent,
     IngredientReportsComponent,
+    AddIngredientFoodComponent,
   ],
   imports: [
     BrowserModule,
@@ -361,6 +363,7 @@ import { IngredientReportsComponent } from './pages/ingredient-reports/ingredien
     ViewIngredientHistoryComponent,
     CurrenciesComponent,
     IngredientPriceSelectComponent,
+    AddIngredientFoodComponent,
   ]
   ,
   providers: [

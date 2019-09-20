@@ -110,4 +110,13 @@ export class BomService {
   async getIngredientReportsByOrders(dt) {
     return this._http.post(this.backendService + 'ingredientsReportByOrders', dt, this.httpOptions);
   }
+  async createIngredientFood(data) {
+    return this._http.post(this.backendService + 'ingredientFood', data, this.httpOptions);
+  }
+  async getingredientFoodsItemAddView(id) {
+    return this._http.get(this.backendService + 'ingredientFoodsItemAddView/' + id, this.httpOptions);
+  }
+  async getingredientFoodsItemAddViews() {
+    return this._http.get(this.backendService + 'ingredientFoodsItemAddViews', this.httpOptions);
+  }
 }

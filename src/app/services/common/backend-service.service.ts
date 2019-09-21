@@ -288,6 +288,23 @@ export class BackendServiceService {
     return this._http.post(this.backendService + 'kitchen-report-admin/' + kitchen, reportDt, this.httpOptions);
   }
 
+  async reportsKitchenBySubfoodId(startDt, endDt, kitchen, subFoodId) {
+    const reportDt = {
+      startDt,
+      endDt,
+      subFoodId
+    };
+    return this._http.post(this.backendService + 'getOderBySubfood', reportDt, this.httpOptions);
+  }
+
+  async reportsKitchenAdminBySubfood(startDt, endDt, kitchen) {
+    const reportDt = {
+      startDt,
+      endDt
+    };
+    return this._http.post(this.backendService + 'kitchen-report-admin/' + kitchen, reportDt, this.httpOptions);
+  }
+
   async getSummaryDiaryReport() {
     return this._http.get(this.backendService + 'dashboardDiarySummary', this.httpOptions);
   }

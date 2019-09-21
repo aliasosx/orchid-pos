@@ -26,12 +26,14 @@ export class KitchenTransactionsComponent implements OnInit {
   viewReport = 'hidden';
   totalDiscs = 0;
   dateFrom: FormGroup;
+  reportBySubfoods: any;
+  reportBySubFoodDetails: any;
 
   ngOnInit() {
     this.viewReport = 'hidden';
     this.loadReport();
     this.dateFrom = new FormGroup({
-      initDate: new FormControl(new Date())
+      initDate: new FormControl(new Date()),
     });
   }
   async loadReport() {
@@ -43,6 +45,7 @@ export class KitchenTransactionsComponent implements OnInit {
       rsp.subscribe(r => {
         this.foodsTransactions = r['reports'];
         this.foodList.push(r['reports']);
+        this.reportBySubfoods = r['report_BySubfood'];
         this.foodList.forEach(f => {
           f.forEach(element => {
             _total += parseInt(element.total_cost, 10);
@@ -57,6 +60,12 @@ export class KitchenTransactionsComponent implements OnInit {
           this.viewReport = 'hidden';
         }
       });
+    });
+  }
+  async loadReportBySubFood(subfoodId) {
+    // tslint:disable-next-line: max-line-length
+    this.be.reportsKitchenBySubfoodId(this.dateFrom.get('initDate').value, this.dateFrom.get('initDate').value, 'Food', subfoodId).then(r => {
+      r.subscribe(reportBySubFoodDetails => this.reportBySubFoodDetails = reportBySubFoodDetails);
     });
   }
   async dateEvent(e) {

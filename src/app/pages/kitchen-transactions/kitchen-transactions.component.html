@@ -4,77 +4,115 @@
     <mat-card-title>Reports For Kitchen Admin</mat-card-title>
     <mat-card-subtitle>report by categories</mat-card-subtitle>
   </mat-card-header>
-
-  <mat-card-content>
-
-    <mat-card>
-      <mat-card-content>
-        <div class="row">
-          <div class="col col-md-2">
-            <label for="fromDate">ວັນທີ </label>
-            <form [formGroup]="dateFrom">
-              <div class="input-group mb-1">
-                <input type="date" class="form-control" formControlName="initDate">
-              </div>
-            </form>
-          </div>
-          <div class="col col-md-2">
-            <label for="fromDate"></label>
-            <div class="input-group">
-              <button mat-raised-button color="primary" (click)="loadReport()"
-                style="margin-top: 8px;width: 200px;">ລາຍງານ</button>
-            </div>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
+</mat-card>
+<div class="card mt-2 mb-2">
+  <div class="card-body">
     <div class="row">
-      <div class="col col-md-12 mt-2">
-        <div class="mainReportDetail" [ngClass]="viewReport">
-          <div class="card">
-            <div class="card-header">
-              <div class="h5 font-weight-bold">
-                ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ <span class="font-weight-bold h4 ml-3"
-                  style="color: brown;">{{ startDate | date: 'dd-MMM-yyyy' }}</span>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col col-md-5 col-sm-12">
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table table-bordered table-hover" style="margin: 0;">
-                        <thead class="thead-light">
-                          <th class="text-center h6">#</th>
-                          <th class="text-center h6">ອາຫານ</th>
-                          <th class="text-center h6">ຄຳສັ່ງພິເສດ</th>
-                          <th class="text-center h6">ຈຳນວນ</th>
-                          <th class="text-center h6"></th>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let trx of foodsTransactions ; let i  = index">
-                            <td class="text-center">{{ i+1 }}</td>
-                            <td class="text-left text-nowrap" style="width: 300px;">{{ trx.oFoodName }}</td>
-                            <td class="text-left text-nowrap" style="width: 300px;">{{ trx.note }}</td>
-                            <td class="text-right" style="width: 100px;">{{ trx.quantity |number }}</td>
-                            <td class="text-right">ຈານ</td>
-                          </tr>
-                          <tr>
-                            <td class="text-center h6" colspan="3">ລວມ</td>
-                            <td class="text-right h6">{{ totalDiscs | number }}</td>
-                            <td class="text-center h6"></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div class="col col-md-2">
+        <form [formGroup]="dateFrom">
+          <div class="input-group mb-1">
+            <input type="date" class="form-control" formControlName="initDate">
           </div>
+        </form>
+      </div>
+      <div class="col col-md-2">
+        <label for="fromDate"></label>
+        <div class="input-group">
+          <button mat-raised-button color="primary" (click)="loadReport()"
+            style="margin-top: 9px;width: 200px;">ລາຍງານ</button>
         </div>
       </div>
     </div>
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>
+<div class="mainReportDetail" [ngClass]="viewReport">
+  <div class="card">
+    <div class="card-header">
+      <div class="h5 font-weight-bold">
+        ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ <span class="font-weight-bold h4 ml-3"
+          style="color: brown;">{{ startDate | date: 'dd-MMM-yyyy' }}</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col col-md-4 col-sm-12">
+          <div class="table-responsive" style="max-height: 50vh;overflow: auto;">
+            <table class="table table-bordered table-hover" style="margin: 0;">
+              <thead class="thead-dark">
+                <th class="text-center h6">#</th>
+                <th class="text-center h6">ອາຫານ</th>
+                <th class="text-center h6">ຄຳສັ່ງພິເສດ</th>
+                <th class="text-center h6">ຈຳນວນ</th>
+                <th class="text-center h6"></th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let trx of foodsTransactions ; let i  = index">
+                  <td class="text-center">{{ i+1 }}</td>
+                  <td class="text-left text-nowrap" style="width: 300px;">{{ trx.oFoodName }}</td>
+                  <td class="text-left text-nowrap" style="width: 300px;">{{ trx.note }}</td>
+                  <td class="text-right" style="width: 100px;">{{ trx.quantity |number }}</td>
+                  <td class="text-right">ຈານ</td>
+                </tr>
+                <tr>
+                  <td class="text-center h6" colspan="3">ລວມ</td>
+                  <td class="text-right h6">{{ totalDiscs | number }}</td>
+                  <td class="text-center h6"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <div class="col col-md-3">
+          <div class="table-responsive" style="max-height: 50vh;overflow: auto;">
+            <table class="table table-bordered table-hover" style="margin: 0;">
+              <thead class="thead-dark">
+                <th class="text-center h6">#</th>
+                <th class="text-center h6">ປະເພດອາຫານ</th>
+                <th class="text-center h6">ຈຳນວນ (ຈານ)</th>
+                <th class="text-center h6">ກວດສອບ</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of reportBySubfoods;let i = index">
+                  <td class="text-center align-middle">{{ i+1 }}</td>
+                  <td class="text-left align-middle">{{ item.subFoodName }}</td>
+                  <td class="text-right align-middle">{{ item.discs | number }}</td>
+                  <td class="text-center align-middle"><span (click)="loadReportBySubFood(item.sfId)"
+                      class="text-success" style="cursor: pointer;">Check</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col col-md-5">
+          <ng-container *ngIf="reportBySubFoodDetails">
+            <div class="table-responsive" style="max-height: 50vh;overflow: auto;">
+              <table class="table table-bordered table-hover" style="margin: 0;">
+                <thead class="thead-dark">
+                  <th class="text-center h6">#</th>
+                  <th class="text-center h6">ເວລາ</th>
+                  <th class="text-center h6">invoice no</th>
+                  <th class="text-center h6">ລະຫັດອາຫານ</th>
+                  <th class="text-center h6">ອາຫານ</th>
+                  <th class="text-center h6">ຈຳນວນ</th>
+                  <th class="text-center h6">ຜູ້ຂາຍ</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of reportBySubFoodDetails;let i = index">
+                    <td class="text-center align-middle">{{ i+1 }}</td>
+                    <td class="text-left align-middle">{{ item.orderDate | date: 'HH:mm:ss' }}</td>
+                    <td class="text-left align-middle">{{ item.invoiceno  }}</td>
+                    <td class="text-left align-middle">{{ item.foodKey  }}</td>
+                    <td class="text-left align-middle">{{ item.foodName  }}</td>
+                    <td class="text-right align-middle">{{ item.quantity | number  }}</td>
+                    <td class="text-left align-middle">{{ item.username  }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

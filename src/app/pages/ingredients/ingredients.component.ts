@@ -32,7 +32,8 @@ export class IngredientsComponent implements OnInit {
   groupByIngredient: any;
   ingredientFoodViews: any;
   dateForm: FormGroup;
-
+  ingredientFoodDataFormatted = [];
+  preLoadData: any[] = [];
   ngOnInit() {
     this.dateForm = new FormGroup({
       startDate: new FormControl(new Date()),
@@ -101,7 +102,15 @@ export class IngredientsComponent implements OnInit {
   }
   loadIngredientFoodView() {
     this.bomService.getingredientFoodsItemAddViews().then(r => {
-      r.subscribe(ingredientFoods => this.ingredientFoodViews = ingredientFoods);
+      r.subscribe(ingredientFoods => {
+        this.ingredientFoodViews = ingredientFoods;
+        this.preLoadData.push(ingredientFoods);
+        this.preLoadData.forEach(p => {
+          if (p.length > 0) {
+            console.log(p);
+          }
+        });
+      });
     });
   }
   openAddIngredient() {

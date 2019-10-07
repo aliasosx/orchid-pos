@@ -7,28 +7,34 @@
 </mat-card>
 <div class="card mt-2 mb-2">
   <div class="card-body">
-    <div class="row">
-      <div class="col col-md-2">
-        <form [formGroup]="dateFrom">
-          <div class="input-group mb-1">
+    <form [formGroup]="dateFrom">
+      <div class="col col-md-6">
+        <div class="form-row">
+          <div class="col col-md-4">
             <input type="date" class="form-control" formControlName="initDate">
           </div>
-        </form>
-      </div>
-      <div class="col col-md-2">
-        <div class="input-group">
-          <button mat-raised-button color="primary" (click)="loadReport()" style="width: 200px;">ລາຍງານ</button>
+          <div class="col col-md-4">
+            <input type="date" class="form-control" formControlName="endDate">
+          </div>
+          <div class="col col-md-4">
+            <div>
+              <button mat-raised-button color="primary" (click)="loadReport()">ລາຍງານ</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+
+    </form>
   </div>
 </div>
+
 <div class="mainReportDetail" [ngClass]="viewReport">
   <div class="card">
     <div class="card-header">
       <div class="h5 font-weight-bold">
         ລາຍງານຍອດຂາຍ ຂອງ ວັນທີ <span class="font-weight-bold h4 ml-3"
-          style="color: brown;">{{ startDate | date: 'dd-MMM-yyyy' }}</span>
+          style="color: brown;">{{ startDate | date: 'dd-MMM-yyyy' }}</span> ຫາ
+        <span class="font-weight-bold h4 ml-3" style="color: brown;">{{ endDate | date: 'dd-MMM-yyyy' }}</span>
       </div>
     </div>
     <div class="card-body">
@@ -47,7 +53,7 @@
                 <tr *ngFor="let trx of foodsTransactions ; let i  = index">
                   <td class="text-center">{{ i+1 }}</td>
                   <td class="text-left text-nowrap" style="width: 300px;">{{ trx.oFoodName }}</td>
-                  <td class="text-left text-nowrap" style="width: 300px;">{{ trx.note }}</td>
+                  <td class="text-left " style="width: 300px;">{{ trx.note }}</td>
                   <td class="text-right" style="width: 100px;">{{ trx.quantity |number }}</td>
                   <td class="text-right">ຈານ</td>
                 </tr>
@@ -88,9 +94,8 @@
               <table class="table table-bordered table-hover" style="margin: 0;">
                 <thead class="thead-dark">
                   <th class="text-center h6">#</th>
-                  <th class="text-center h6">ເວລາ</th>
+                  <th class="text-center h6">ວັນທີເວລາ</th>
                   <th class="text-center h6">invoice no</th>
-                  <th class="text-center h6">ລະຫັດອາຫານ</th>
                   <th class="text-center h6">ອາຫານ</th>
                   <th class="text-center h6">ຈຳນວນ</th>
                   <th class="text-center h6">ຜູ້ຂາຍ</th>
@@ -98,9 +103,8 @@
                 <tbody>
                   <tr *ngFor="let item of reportBySubFoodDetails;let i = index">
                     <td class="text-center align-middle">{{ i+1 }}</td>
-                    <td class="text-left align-middle">{{ item.orderDate | date: 'HH:mm:ss' }}</td>
+                    <td class="text-left align-middle">{{ item.orderDate | date: 'dd-MMM-yyyy HH:mm:ss' }}</td>
                     <td class="text-left align-middle">{{ item.invoiceno  }}</td>
-                    <td class="text-left align-middle">{{ item.foodKey  }}</td>
                     <td class="text-left align-middle">{{ item.foodName  }}</td>
                     <td class="text-right align-middle">{{ item.quantity | number  }}</td>
                     <td class="text-left align-middle">{{ item.username  }}</td>

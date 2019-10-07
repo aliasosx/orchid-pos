@@ -22,6 +22,7 @@ export class KitchenTransactionsComponent implements OnInit {
   foodsTransactions: any;
   grandTotal = 0;
   startDate: Date;
+  endDate: Date;
   foodList: any[] = [];
   viewReport = 'hidden';
   totalDiscs = 0;
@@ -34,11 +35,13 @@ export class KitchenTransactionsComponent implements OnInit {
     this.loadReport();
     this.dateFrom = new FormGroup({
       initDate: new FormControl(new Date()),
+      endDate: new FormControl(new Date()),
     });
   }
   async loadReport() {
     this.startDate = this.dateFrom.get('initDate').value;
-    this.be.reportsKitchenAdmin(this.dateFrom.get('initDate').value, this.dateFrom.get('initDate').value, 'Food').then(rsp => {
+    this.endDate = this.dateFrom.get('endDate').value;
+    this.be.reportsKitchenAdmin(this.dateFrom.get('initDate').value, this.dateFrom.get('endDate').value, 'Food').then(rsp => {
       this.foodList = [];
       let _total = 0;
       let _count = 0;

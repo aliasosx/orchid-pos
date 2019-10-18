@@ -176,7 +176,7 @@ export class PosComponent implements OnInit {
               const item = {
                 'id': food.id,
                 'foodId': food.id,
-                'food': food.food_name + ' - Pro',
+                'food': food.food_name,
                 'food_name_en': food.food_name_en,
                 'food_category': food.food_category,
                 'price': food.price,
@@ -200,8 +200,8 @@ export class PosComponent implements OnInit {
                   const item = {
                     'id': food.id,
                     'foodId': food.id,
-                    'food': food.food_name + ' - Pro',
-                    'food_name_en': food.food_name_en + ' - Pro',
+                    'food': food.food_name,
+                    'food_name_en': food.food_name_en,
                     'food_category': food.food_category,
                     'price': food.price,
                     'discount': 0,
@@ -221,8 +221,8 @@ export class PosComponent implements OnInit {
                       const item = {
                         'id': food_add.id,
                         'foodId': food_add.id,
-                        'food': food_add.food_name + ' - Pro',
-                        'food_name_en': food_add.food_name_en + ' - Pro',
+                        'food': food_add.food_name,
+                        'food_name_en': food_add.food_name_en,
                         'food_category': food_add.food_category,
                         'price': aFood[0].price,
                         'discount': 0,
@@ -276,7 +276,7 @@ export class PosComponent implements OnInit {
               const item = {
                 'id': food.id,
                 'foodId': food.id,
-                'food': food.food_name + ' - Pro',
+                'food': food.food_name,
                 'food_name_en': food.food_name_en,
                 'food_category': food.food_category,
                 'price': food.deriveryPrice,
@@ -301,8 +301,8 @@ export class PosComponent implements OnInit {
                   const item = {
                     'id': food.id,
                     'foodId': food.id,
-                    'food': food.food_name + ' - Pro',
-                    'food_name_en': food.food_name_en + ' - Pro',
+                    'food': food.food_name,
+                    'food_name_en': food.food_name_en,
                     'food_category': food.food_category,
                     'price': food.deriveryPrice,
                     'cost': food.deriveryCost,
@@ -322,8 +322,8 @@ export class PosComponent implements OnInit {
                       const item = {
                         'id': food_add.id,
                         'foodId': food_add.id,
-                        'food': food_add.food_name + ' - Pro',
-                        'food_name_en': food_add.food_name_en + ' - Pro',
+                        'food': food_add.food_name,
+                        'food_name_en': food_add.food_name_en,
                         'food_category': food_add.food_category,
                         'price': aFood[0].price,
                         'discount': 0,

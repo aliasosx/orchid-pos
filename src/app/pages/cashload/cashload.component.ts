@@ -27,7 +27,7 @@ export class CashloadComponent implements OnInit {
       router.navigateByUrl('login');
     }
   }
-
+  p: any;
   private user: Observable<firebase.User>;
   username_info: any;
 

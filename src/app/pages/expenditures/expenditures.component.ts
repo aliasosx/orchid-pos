@@ -25,6 +25,8 @@ export class ExpendituresComponent implements OnInit {
   expenditureReportsUser: any;
   totalExpRemark = 0;
   filter: any;
+  p: any;
+
   ngOnInit() {
     this.dateForm = new FormGroup({
       startDate: new FormControl(new Date()),

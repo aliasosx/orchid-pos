@@ -147,7 +147,8 @@ import { IngredientPriceSelectComponent } from './dialogs/ingredient-price-selec
 import { StockReviewComponent } from './pages/stock-review/stock-review.component';
 import { IngredientReportsComponent } from './pages/ingredient-reports/ingredient-reports.component';
 import { AddIngredientFoodComponent } from './dialogs/add-ingredient-food/add-ingredient-food.component';
-
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -290,6 +291,8 @@ import { AddIngredientFoodComponent } from './dialogs/add-ingredient-food/add-in
     MatMenuModule, MatTooltipModule, MatStepperModule, MatInputModule, MatExpansionModule, MatTableModule, MatPaginatorModule,
     MatChipsModule, MatRadioModule, MatButtonToggleModule, MatSlideToggleModule,
     HttpClientModule,
+    NgxPaginationModule,
+    FilterPipeModule,
   ],
   entryComponents: [
     AddFoodComponent,

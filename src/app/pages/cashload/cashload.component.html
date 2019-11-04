@@ -47,7 +47,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let cash of cashloads ; let i = index;">
+                  <tr *ngFor="let cash of cashloads |paginate:{ itemsPerPage: 5, currentPage: p }; let i = index;">
 
                     <td class="text-center align-middle"> {{ i+1 }}</td>
                     <td class="text-left align-middle text-nowrap ">{{ cash.loadDateTime| date: 'dd-MMM-yyyy' }}
@@ -98,7 +98,7 @@
                     </ng-template>
                     <td class="text-left align-middle">{{ cash.closeAuthorizedNameBy }}</td>
                     <td class="text-center align-middle">{{ cash.terminalId }}</td>
-                    <td class="text-left align-middle">{{ cash.note }}</td>
+                    <td class="text-left align-middle" style="max-width:100px;">{{ cash.note }}</td>
                     <td class="text-center align-middle" *ngIf="cash.closed === 1; else nonClose"><button
                         mat-flat-button color="warn" style="width: 100%;" disabled
                         (click)="openCloseBalance(cash)">ປິດ</button>
@@ -119,6 +119,11 @@
                           (click)="removeCashLoad(cash)" style="width: 20px;cursor: pointer;">
                       </td>
                     </ng-template>
+                  </tr>
+                  <tr>
+                    <td colspan="20" class="text-right">
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </td>
                   </tr>
                 </tbody>
               </table>

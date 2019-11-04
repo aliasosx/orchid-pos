@@ -85,7 +85,7 @@ export class CreateExpenditureComponent implements OnInit {
   }
   totalCaculation() {
     // tslint:disable-next-line: max-line-length
-    this.expenditureForm.get('amount').setValue(parseInt(this.expenditureForm.get('quantity').value, 10) * parseInt(this.expenditureForm.get('price').value, 10));
+    this.expenditureForm.get('amount').setValue(this.expenditureForm.get('quantity').value * this.expenditureForm.get('price').value);
   }
   createExpenditure() {
     if (this.expenditureForm.valid) {

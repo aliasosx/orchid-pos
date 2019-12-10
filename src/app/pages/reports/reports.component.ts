@@ -107,6 +107,9 @@ export class ReportsComponent implements OnInit {
   revByPaymentDateRange: any;
   revByFoodsDateRange: any;
 
+  reportByDeriveryProviders: any;
+  reportByDeriveryProviderSummary: any;
+
   reportProcess: string;
 
   startDate: Date;
@@ -209,6 +212,17 @@ export class ReportsComponent implements OnInit {
       });
     });
   }
+
+  async reportByDeriveryProvider() {
+    this.be.getReportByDeriveryProviders(this.startDate, this.endDate).then(rpt => {
+      rpt.subscribe(r => {
+        console.log(r);
+        this.reportByDeriveryProviders = r['reportByProviderTranx'];
+        this.reportByDeriveryProviderSummary = r['reportByProviderSummary'];
+      });
+    });
+  }
+
   async loadReport() {
     if (this.startDate != null && this.endDate != null) {
       this.startDate = this.dateForm.get('startDate').value;
@@ -222,6 +236,7 @@ export class ReportsComponent implements OnInit {
       let f = await this.rptRevByFoodTypeByDateRange();
       let g = await this.rptRevByPaymentByDateRange();
       let h = await this.rptRevByFoodsByDateRange();
+      let i = await this.reportByDeriveryProvider();
       this.reportProcess = '';
     }
   }

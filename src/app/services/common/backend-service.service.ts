@@ -560,5 +560,13 @@ export class BackendServiceService {
   async getOrderDetailByOrderId(orderId) {
     return this._http.get(this.backendService + 'orderDetailByOrderId/' + orderId, this.httpOptions);
   }
+
+  async getReportByDeriveryProviders(startDate, endDate) {
+    const dateRpt = {
+      startDate,
+      endDate
+    };
+    return this._http.post(this.backendService + 'reportByDeriveryProviders', dateRpt, this.httpOptions);
+  }
 }
 

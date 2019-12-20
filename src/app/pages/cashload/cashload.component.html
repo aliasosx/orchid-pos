@@ -47,7 +47,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let cash of cashloads |paginate:{ itemsPerPage: 5, currentPage: p }; let i = index;">
+                  <tr *ngFor="let cash of cashloads ; let i = index;">
 
                     <td class="text-center align-middle"> {{ i+1 }}</td>
                     <td class="text-left align-middle text-nowrap ">{{ cash.loadDateTime| date: 'dd-MMM-yyyy' }}
@@ -120,11 +120,7 @@
                       </td>
                     </ng-template>
                   </tr>
-                  <tr>
-                    <td colspan="20" class="text-right">
-                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
-                    </td>
-                  </tr>
+
                 </tbody>
               </table>
             </div>

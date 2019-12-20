@@ -21,7 +21,7 @@ export class SubfoodsComponent implements OnInit {
   }
   selectedSubfood: string;
   quantitySelected: number;
-
+  deriveryOption = false;
   btnDisable = false;
   pre_subfood: any;
   foodsRef: AngularFirestoreCollection<Food>;
@@ -53,6 +53,10 @@ export class SubfoodsComponent implements OnInit {
     });
     this.extendedFoodList = this.data.food.extendedFoods;
     this.getExtendedFoods();
+
+    if (JSON.parse(localStorage.getItem('derivery'))) {
+      this.deriveryOption = JSON.parse(localStorage.getItem('derivery'));
+    }
   }
   async selectedFood(event) {
     this.selectedSubfood = event.target.options[event.target.options.selectedIndex].text;
@@ -66,22 +70,39 @@ export class SubfoodsComponent implements OnInit {
     const c = await this.be.getSubfoodsById(this.data.food.id).subscribe(sf => {
       sf.forEach(element => {
         if (element.subFoodName === this.selectedSubfood) {
-          // console.log(element.sfId);
-          this.pre_subfood = {
-            food: this.data.food.food_name + ' - ' + this.selectedSubfood,
-            food_name_en: this.data.food.food_name_en,
-            subfoodId: element.sfId,
-            quantity: this.subFoodsForm.get('quantity').value,
-            price: element.price,
-            cost: element.cost,
-            discount: 0,
-            total_discount: 0,
-            total: element.price * this.subFoodsForm.get('quantity').value,
-            kitchen: this.data.food.kitchenName,
-            foodId: element.foodId,
-            food_category: this.data.food.food_category,
-            username: this.data.username,
-          };
+            if(!this.deriveryOption){
+              this.pre_subfood = {
+              food: this.data.food.food_name + ' - ' + this.selectedSubfood,
+              food_name_en: this.data.food.food_name_en,
+              subfoodId: element.sfId,
+              quantity: this.subFoodsForm.get('quantity').value,
+              price: element.price,
+              cost: element.cost,
+              discount: 0,
+              total_discount: 0,
+              total: element.price * this.subFoodsForm.get('quantity').value,
+              kitchen: this.data.food.kitchenName,
+              foodId: element.foodId,
+              food_category: this.data.food.food_category,
+              username: this.data.username,
+            };
+          } else {
+              this.pre_subfood = {
+                food: this.data.food.food_name + ' - ' + this.selectedSubfood,
+                food_name_en: this.data.food.food_name_en,
+                subfoodId: element.sfId,
+                quantity: this.subFoodsForm.get('quantity').value,
+                price: element.deriveryPrice,
+                cost: element.deriveryCost,
+                discount: 0,
+                total_discount: 0,
+                total: element.deriveryPrice * this.subFoodsForm.get('quantity').value,
+                kitchen: this.data.food.kitchenName,
+                foodId: element.foodId,
+                food_category: this.data.food.food_category,
+                username: this.data.username,
+            };
+          }
         }
       });
     });

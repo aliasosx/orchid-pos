@@ -37,7 +37,12 @@
                 </ng-container>
 
                 <div class="pricetag">
-                  <span class="h5" *ngIf="food.isParent === 0; else choosePrice">{{ food.price | number}}</span>
+                  <span class="h5" *ngIf="food.isParent === 0  else choosePrice">
+                    <span class="h5" *ngIf="!deriveryOption; else deriverPriceOption">{{ food.price | number}}</span>
+                    <ng-template #deriverPriceOption>
+                      <span class="h5" style="color: red; font-weight: bolder;">{{ food.deriveryPrice | number}}</span>
+                    </ng-template>
+                  </span>
                   <ng-template #choosePrice>
                     <span class="h4" style="color: rgb(255, 94, 0);">ເລືອກ</span>
                   </ng-template>

@@ -1,21 +1,21 @@
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { Transaction } from './../../interfaces/transaction';
-import { AngularFirestoreCollection } from '@angular/fire/firestore';
-import { MatDialog, MatSnackBar } from '@angular/material';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { User } from 'src/app/interfaces/user';
-import { Kitchen } from 'src/app/interfaces/kitchen';
-import { FoodCategory } from 'src/app/interfaces/foodCategory';
-import { Food } from 'src/app/interfaces/food';
-import { PaymentType } from 'src/app/interfaces/paymentType';
-import { BackendServiceService } from 'src/app/services/common/backend-service.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { Observable } from 'rxjs';
 import { TransactionsViewComponent } from 'src/app/dialogs/transactions-view/transactions-view.component';
+import { Food } from 'src/app/interfaces/food';
+import { FoodCategory } from 'src/app/interfaces/foodCategory';
+import { Kitchen } from 'src/app/interfaces/kitchen';
+import { PaymentType } from 'src/app/interfaces/paymentType';
+import { User } from 'src/app/interfaces/user';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
+
+import { Transaction } from './../../interfaces/transaction';
 
 @Component({
   selector: 'app-reports',
@@ -124,6 +124,10 @@ export class ReportsComponent implements OnInit {
   deriver_netprofit = 0;
   derver_list: any[] = [];
 
+  commision: any;
+  sumCommission = 0;
+
+
   ngOnInit() {
     this.dateForm = new FormGroup({
       startDate: new FormControl(new Date()),
@@ -133,13 +137,17 @@ export class ReportsComponent implements OnInit {
     this.endDate = this.dateForm.get('endDate').value;
   }
   async rptRevByDateRange() {
+    this.sumCommission = 0;
     this.be.reportRevByDateRange(this.startDate, this.endDate).then(rpt => {
       rpt.subscribe(r => {
-        this.revByDateRange = r;
-        this.grandtotalCount = r[0].count;
-        this.grandtotalAmount = r[0].total;
-        this.totalCost = r[0].total_cost;
-        this.netProfit = r[0].profit;
+        this.revByDateRange = r[0]['reports'];
+        // console.log(r);
+        this.grandtotalCount = r[0]['reports'][0].count;
+        this.grandtotalAmount = r[0]['reports'][0].total;
+        this.totalCost = r[0]['reports'][0].total_cost;
+        this.netProfit = r[0]['reports'][0].profit;
+        this.commision = r[0]['commissionReport'];
+        this.sumCommission = r[0]['sumCommissionReport'][0].sumCommission;
       });
     });
   }

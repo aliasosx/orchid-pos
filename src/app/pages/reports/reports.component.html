@@ -15,13 +15,13 @@
             <form [formGroup]="dateForm">
               <div class="row">
                 <div class="col col-md-2 col-sm-12">
-                  <label for="fromDate" class="h5">ເລີ່ມຈາກວັນທີ</label>
+                  <label for="fromDate" class="h6">ເລີ່ມຈາກວັນທີ</label>
                   <div class="input-group mb-1">
                     <input type="date" class="form-control" formControlName="startDate">
                   </div>
                 </div>
                 <div class="col col-md-2  col-sm-12">
-                  <label for="fromDate" class="h5">ຮອດວັນທີ</label>
+                  <label for="fromDate" class="h6">ຮອດວັນທີ</label>
                   <div class="input-group mb-1">
                     <input type="date" class="form-control" formControlName="endDate">
                   </div>
@@ -57,43 +57,55 @@
                     </div>
                     <div class="card-body" style="max-height: 30vh;overflow: auto;">
                       <div class="row">
-                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5"></div>
-                        <div class="col col-md-3 h5"></div>
-                        <div class="col col-md-2 h5 text-nowrap text-right">ຈຳນວນ</div>
-                        <div class="col col-md-6 h5 text-nowrap text-right">ຍອດເງິນ</div>
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h6"></div>
+                        <div class="col col-md-3 h6"></div>
+                        <div class="col col-md-2 h6 text-nowrap text-right">ຈຳນວນ</div>
+                        <div class="col col-md-6 h6 text-nowrap text-right">ຍອດເງິນ</div>
                       </div>
                       <div class="row text-nowrap">
-                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5">1</div>
-                        <div class="col col-md-4 col-sm-12 text-left text-nowrap h5">ຍອດຂາຍ</div>
-                        <div class="col col-md-2 col-sm-12 text-right text-nowrap h5">{{ grandtotalCount | number }}
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h6">1</div>
+                        <div class="col col-md-4 col-sm-12 text-left text-nowrap h6">ຍອດຂາຍ</div>
+                        <div class="col col-md-2 col-sm-12 text-right text-nowrap h6">{{ grandtotalCount | number }}
                         </div>
-                        <div class="col col-md-5 col-sm-12 text-right text-nowrap h5">
+                        <div class="col col-md-5 col-sm-12 text-right text-nowrap h6">
                           {{ grandtotalAmount | number }} ກີບ</div>
                       </div>
-                      <div class="row">
-                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5">2</div>
-                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h5">ຕົ້ນທຶນ</div>
-                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h5">
+                      <div class="row text-danger">
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h6">2</div>
+                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h6">ຕົ້ນທຶນ</div>
+                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h6">
                           {{ totalCost | number }} ກີບ</div>
                       </div>
 
                       <div class="row">
-                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5">3</div>
-                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h5">ກຳໄລສຸທິ (1-2)</div>
-                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h5">
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h6">3</div>
+                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h6">ກຳໄລສຸທິ (1-2)</div>
+                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h6">
                           {{ netProfit | number }} ກີບ</div>
                       </div>
-                      <div class="row">
-                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5">4</div>
-                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h5">ລາຍຈ່າຍ</div>
-                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h5">
+                      <div class="row text-danger">
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h6">4</div>
+                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h6">ລາຍຈ່າຍ</div>
+                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h6">
                           {{ totalPaymentDrinkKitchen | number }} ກີບ</div>
                       </div>
                       <div class="row">
-                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h5">5</div>
-                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h5">ກຳໄລ ຫັກລາຍຈ່າຍ (3-4)</div>
-                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h5">
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h6">5</div>
+                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h6">ກຳໄລ ຫັກລາຍຈ່າຍ (3-4)</div>
+                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h6">
                           {{ netProfit - totalPaymentDrinkKitchen | number }} ກີບ</div>
+                      </div>
+                      <div class="row text-danger" *ngFor="let comm of commision;let i = index">
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h6">{{ i+6 }}</div>
+                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h6">{{ comm.paymentType }}</div>
+                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h6">
+                          {{ comm.commission | number }} ກີບ</div>
+                      </div>
+                      <div class="row">
+                        <div class="col col-md-1 col-sm-12 text-left text-nowrap h6">8</div>
+                        <div class="col col-md-5 col-sm-12 text-left text-nowrap h6">ກຳໄລຫັກ commission (5-6-7)</div>
+                        <div class="col col-md-6 col-sm-12 text-right text-nowrap h6" style="font-weight: bolder;">
+                          {{ netProfit - totalPaymentDrinkKitchen - sumCommission | number}} ກີບ</div>
                       </div>
                     </div>
                   </div>
@@ -107,10 +119,10 @@
                       <div class="row">
                         <div class="col col-md-12" *ngFor="let userTransaction of revByUsersDateRange">
                           <div class="row">
-                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h5 ">
+                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h6 ">
                               {{ userTransaction.username }}
                             </div>
-                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h6 ">
                               {{ userTransaction.total | number }} ກີບ
                             </div>
                           </div>
@@ -129,13 +141,13 @@
                       <div class="row">
                         <div class="col col-md-12" *ngFor="let ksp of kitchenPayments">
                           <div class="row">
-                            <div class="col col-md-4 col-sm-12 text-left text-nowrap h5 ">
+                            <div class="col col-md-4 col-sm-12 text-left text-nowrap h6 ">
                               {{ ksp.kitchenName }}
                             </div>
-                            <div class="col col-md-2 col-sm-12 text-center text-nowrap h5 ">
+                            <div class="col col-md-2 col-sm-12 text-center text-nowrap h6 ">
                               {{ ksp.quantity | number }}
                             </div>
-                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h6 ">
                               {{ ksp.amount | number }}
                             </div>
                           </div>
@@ -152,24 +164,24 @@
                     </div>
                     <div class="card-body">
                       <div class="row">
-                        <div class="col col-md-2 col-sm-12 h5 text-nowrap text-left">ຄົວ</div>
-                        <div class="col col-md-3 col-sm-12 h5 text-nowrap text-right">ຈຳນວນ</div>
-                        <div class="col col-md-3 col-sm-12 h5 text-nowrap text-right">ທຶນ</div>
-                        <div class="col col-md-4 col-sm-12 h5 text-nowrap text-right">ຍອດຂາຍ</div>
+                        <div class="col col-md-2 col-sm-12 h6 text-nowrap text-left">ຄົວ</div>
+                        <div class="col col-md-3 col-sm-12 h6 text-nowrap text-right">ຈຳນວນ</div>
+                        <div class="col col-md-3 col-sm-12 h6 text-nowrap text-right">ທຶນ</div>
+                        <div class="col col-md-4 col-sm-12 h6 text-nowrap text-right">ຍອດຂາຍ</div>
                       </div>
                       <div class="row">
                         <div class="col col-md-12" *ngFor="let kitchenTransaction of revByKitchenDateRange">
                           <div class="row">
-                            <div class="col col-md-2 col-sm-12 text-left text-nowrap h5 ">
+                            <div class="col col-md-2 col-sm-12 text-left text-nowrap h6 ">
                               {{ kitchenTransaction.kitchenName }}
                             </div>
-                            <div class="col col-md-3 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-3 col-sm-12 text-right text-nowrap h6 ">
                               {{ kitchenTransaction.count | number }}
                             </div>
-                            <div class="col col-md-3 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-3 col-sm-12 text-right text-nowrap h6 ">
                               {{ kitchenTransaction.total_cost | number }} ກີບ
                             </div>
-                            <div class="col col-md-4 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-4 col-sm-12 text-right text-nowrap h6 ">
                               {{ kitchenTransaction.total | number }} ກີບ
                             </div>
                           </div>
@@ -189,11 +201,11 @@
                       <div class="row">
                         <div class="col col-md-12">
                           <div class="row">
-                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h5 ">
+                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h6 ">
                               <span class="mr-2">ຕົ້ນທຶນ ຫັກ ລາຍຈ່າຍ</span> ({{ foodKitchenTotalCost | number}} -
                               {{ foodKitchenPaymentSummary | number}}) =
                             </div>
-                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h6 ">
                               <strong>{{ foodKitchenTotalCost - foodKitchenPaymentSummary | number }}</strong>
                               ກິບ
                             </div>
@@ -220,24 +232,24 @@
                     </div>
                     <div class="card-body">
                       <div class="row" style="max-height: 42vh;overflow: auto;">
-                        <div class="col col-md-3 col-sm-12 h5 text-nowrap text-left">ປະເພດອາຫານ</div>
-                        <div class="col col-md-2 col-sm-12 h5 text-nowrap text-right">ຈຳນວນ</div>
-                        <div class="col col-md-3 col-sm-12 h5 text-nowrap text-right">ທຶນ</div>
-                        <div class="col col-md-4 col-sm-12 h5 text-nowrap text-right">ຍອດຂາຍ</div>
+                        <div class="col col-md-3 col-sm-12 h6 text-nowrap text-left">ປະເພດອາຫານ</div>
+                        <div class="col col-md-2 col-sm-12 h6 text-nowrap text-right">ຈຳນວນ</div>
+                        <div class="col col-md-3 col-sm-12 h6 text-nowrap text-right">ທຶນ</div>
+                        <div class="col col-md-4 col-sm-12 h6 text-nowrap text-right">ຍອດຂາຍ</div>
                       </div>
                       <div class="row">
                         <div class="col col-md-12" *ngFor="let foodCategoryTransaction of revByFoodTypeDateRange">
                           <div class="row">
-                            <div class="col col-md-3 col-sm-12 text-left text-nowrap h5 ">
+                            <div class="col col-md-3 col-sm-12 text-left text-nowrap h6 ">
                               {{ foodCategoryTransaction.foodTypeName }}
                             </div>
-                            <div class="col col-md-2 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-2 col-sm-12 text-right text-nowrap h6 ">
                               {{ foodCategoryTransaction.count |number }}
                             </div>
-                            <div class="col col-md-3 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-3 col-sm-12 text-right text-nowrap h6 ">
                               {{ foodCategoryTransaction.total_cost |number }} ກີບ
                             </div>
-                            <div class="col col-md-4 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-4 col-sm-12 text-right text-nowrap h6 ">
                               {{ foodCategoryTransaction.total | number }} ກີບ
                             </div>
                           </div>
@@ -254,16 +266,16 @@
                     </div>
                     <div class="card-body">
                       <div class="row">
-                        <div class="col col-md-6 col-sm-12 h5 text-nowrap text-left">ຊ່ອງທາງການຈ່າຍ</div>
-                        <div class="col col-md-6 col-sm-12 h5 text-nowrap text-right">ຍອດຂາຍ</div>
+                        <div class="col col-md-6 col-sm-12 h6 text-nowrap text-left">ຊ່ອງທາງການຈ່າຍ</div>
+                        <div class="col col-md-6 col-sm-12 h6 text-nowrap text-right">ຍອດຂາຍ</div>
                       </div>
                       <div class="row">
                         <div class="col col-md-12" *ngFor="let paymentsTransaction of revByPaymentDateRange">
                           <div class="row">
-                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h5 ">
+                            <div class="col col-md-6 col-sm-12 text-left text-nowrap h6 ">
                               {{ paymentsTransaction.paymentType }}
                             </div>
-                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-6 col-sm-12 text-right text-nowrap h6 ">
                               {{ paymentsTransaction.total | number }}
                               <span class="ml-3 text-right">ກີບ</span>
                             </div>
@@ -280,25 +292,25 @@
                     </div>
                     <div class="card-body">
                       <div class="row">
-                        <div class="col col-md-4 col-sm-12 h5 text-nowrap text-left">ອາຫານ</div>
-                        <div class="col col-md-2 col-sm-12 h5 text-nowrap text-center">ຈຳນວນ</div>
-                        <div class="col col-md-3 col-sm-12 h5 text-nowrap text-center">ທຶນ</div>
-                        <div class="col col-md-3 col-sm-12 h5 text-nowrap text-center">ຍອດຂາຍ</div>
+                        <div class="col col-md-4 col-sm-12 h6 text-nowrap text-left">ອາຫານ</div>
+                        <div class="col col-md-2 col-sm-12 h6 text-nowrap text-center">ຈຳນວນ</div>
+                        <div class="col col-md-3 col-sm-12 h6 text-nowrap text-center">ທຶນ</div>
+                        <div class="col col-md-3 col-sm-12 h6 text-nowrap text-center">ຍອດຂາຍ</div>
                       </div>
                       <div class="row" style="max-height: 42vh;overflow: auto;">
                         <div class="col col-md-12" *ngFor="let foodsTransaction of revByFoodsDateRange">
                           <div class="row">
-                            <div class="col col-md-4 col-sm-12 text-left text-nowrap h5 ">
+                            <div class="col col-md-4 col-sm-12 text-left text-nowrap h6 ">
                               {{ foodsTransaction.food_name }}
                             </div>
-                            <div class="col col-md-2 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-2 col-sm-12 text-right text-nowrap h6 ">
                               <span class="ml-3 text-right">{{ foodsTransaction.count | number }}</span>
                             </div>
-                            <div class="col col-md-3   col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-3   col-sm-12 text-right text-nowrap h6 ">
                               {{ foodsTransaction.total_cost | number }}
                               <span class="ml-3 text-right">ກີບ</span>
                             </div>
-                            <div class="col col-md-3 col-sm-12 text-right text-nowrap h5 ">
+                            <div class="col col-md-3 col-sm-12 text-right text-nowrap h6 ">
                               {{ foodsTransaction.total | number }}
                               <span class="ml-3 text-right">ກີບ</span>
                             </div>

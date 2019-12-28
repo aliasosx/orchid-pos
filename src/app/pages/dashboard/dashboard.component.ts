@@ -1,18 +1,18 @@
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { Router } from '@angular/router';
-import { BackendServiceService } from 'src/app/services/common/backend-service.service';
-import { Notice } from 'src/app/interfaces/notices';
-import { Message } from 'src/app/interfaces/messages';
-import { FormGroup, FormControl } from '@angular/forms';
-import { Order } from 'src/app/interfaces/order';
 import { CurrencyPipe } from '@angular/common';
-import { Chart } from 'chart.js';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { Chart } from 'chart.js';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ListTransactionsComponent } from 'src/app/dialogs/list-transactions/list-transactions.component';
+import { Message } from 'src/app/interfaces/messages';
+import { Notice } from 'src/app/interfaces/notices';
+import { Order } from 'src/app/interfaces/order';
+import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -61,6 +61,8 @@ export class DashboardComponent implements OnInit {
   dashboardTotalSaleChartData: any;
   dashboardTotalSaleByDate: any[] = [];
 
+  commissionReports: any;
+  sumCommission = 0;
   roleId = JSON.parse(localStorage.getItem('usrObj')).roleId;
 
   noticeRef: AngularFirestoreCollection<Notice>;
@@ -334,6 +336,7 @@ export class DashboardComponent implements OnInit {
     });
   }
   async loadAllDiaryReports() {
+    this.sumCommission = 0;
     this.be.getAllDashboardReports().then(rsp => {
       rsp.subscribe(async (r) => {
         // console.log(r);
@@ -347,6 +350,10 @@ export class DashboardComponent implements OnInit {
         this.statistic_foodType = r[0].statistic_foodType;
         this.statistic_popularTime = r[0].statistic_popularTime;
 
+        this.commissionReports = r[0].commissionReport;
+        r[0].commissionReport.forEach(element => {
+          this.sumCommission += element.commission;
+        });
         await this.loadChart();
         await this.loadChartFoodCat();
         await this.loadPopularReports();

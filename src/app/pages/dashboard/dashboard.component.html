@@ -34,7 +34,6 @@
                     <div class="col col-md-2 h6 text-right text-nowrap" style="margin: 0;">ກິບ</div>
                   </div>
                 </ng-container>
-
               </div>
             </div>
           </div>
@@ -99,16 +98,35 @@
           </div>
 
         </div>
-
-        <div class="row mb-2">
-          <div class="col col-md-6">
-            <mat-card>
-              <mat-card-title class="text-center">ຊ່ວງເວລາທີ່ມິລູກຄ້າເຂົ້າ</mat-card-title>
-              <mat-card-content>
-                <canvas id="canvasPopularTime">{{ chartPopularTime }}</canvas>
-              </mat-card-content>
-            </mat-card>
+        <div class="row">
+          <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-blue order-card">
+              <div class="card-block">
+                <div class="m-b-20 h6">Commission
+                </div>
+                <mat-divider></mat-divider>
+                <br />
+                <ng-container *ngFor="let comm of commissionReports">
+                  <div class="row">
+                    <div class="col col-md-3 h6 text-nowrap" style="cursor: pointer;" [routerLink]="['/ordershistory']"
+                      routerLinkActive="router-link-active">{{ comm.paymentType }}</div>
+                    <div class="col col-md-3 h6 text-right text-nowrap">{{ comm.count | number }}</div>
+                    <div class="col col-md-4 h6 text-right text-nowrap">{{ comm.commission | number }}</div>
+                    <div class="col col-md-2 h6 text-right text-nowrap" style="margin: 0;">ກິບ</div>
+                  </div>
+                </ng-container>
+                <div class="row">
+                  <div class="col col-md-3 h6 text-nowrap" style="cursor: pointer;" [routerLink]="['/ordershistory']"
+                    routerLinkActive="router-link-active">ລວມ</div>
+                  <div class="col col-md-3 h6 text-right text-nowrap"></div>
+                  <div class="col col-md-4 h6 text-right text-nowrap">{{ sumCommission | number }}</div>
+                  <div class="col col-md-2 h6 text-right text-nowrap" style="margin: 0;">ກິບ</div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+        <div class="row mb-2">
           <div class="col col-md-6">
             <mat-card>
               <mat-card-title class="text-center">ຍອດການຂາຍຕາມວັນ</mat-card-title>
@@ -117,8 +135,6 @@
               </mat-card-content>
             </mat-card>
           </div>
-        </div>
-        <div class="row mb-2">
           <div class="col col-md-6">
             <mat-card>
               <mat-card-title class="text-center">ຍອດການຂາຍຕາມປະເພດອາຫານ</mat-card-title>
@@ -128,6 +144,7 @@
             </mat-card>
           </div>
         </div>
+
       </ng-container>
       <ng-container *ngIf="roleId > 1">
         <div class="card">

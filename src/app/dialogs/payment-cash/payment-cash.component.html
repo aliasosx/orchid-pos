@@ -31,6 +31,12 @@
               <div class="display-3 text-center payment-text">
                 {{ data.total | number }} ກິບ
               </div>
+              <div class="row mt-1 text-center">
+                <div class=" col col-md-6" *ngFor="let rate of exchangeRates">
+                  <span class="text-center text-danger h5">{{ data.total / rate.currencyRate | number }}</span>
+                  {{ rate.currencyCode }}
+                </div>
+              </div>
               <mat-divider></mat-divider>
               <div class="form-row">
 

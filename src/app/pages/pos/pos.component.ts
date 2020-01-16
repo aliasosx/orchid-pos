@@ -924,7 +924,6 @@ export class PosComponent implements OnInit {
     this.backendServices.getExchangeRate().then(exch => {
       exch.subscribe(rates => {
         this.exchangeRates = rates;
-        console.log(this.exchangeRates);
       });
     });
   }

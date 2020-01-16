@@ -1,21 +1,20 @@
-import { PrinterServiceService } from './../../services/printer-service.service';
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog } from '@angular/material';
-import { Cart } from 'src/app/interfaces/cart';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FormGroup, FormControl } from '@angular/forms';
-import { Ticket } from 'src/app/interfaces/ticket';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
-import * as uuid from 'uuid';
 import { PaymentType } from 'src/app/interfaces/paymentType';
-import { environment } from '../../../environments/environment';
 import { QrBankResponseData } from 'src/app/interfaces/qrBankResponseData';
+import { Ticket } from 'src/app/interfaces/ticket';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
-import { MembersComponent } from '../members/members.component';
 import { MembersService } from 'src/app/services/members.service';
+import * as uuid from 'uuid';
+
+import { environment } from '../../../environments/environment';
+import { MembersComponent } from '../members/members.component';
+import { PrinterServiceService } from './../../services/printer-service.service';
 
 declare var $: any;
 declare var deepstream: any;
@@ -29,7 +28,7 @@ declare var swal: any;
 })
 export class PaymentCashComponent implements OnInit {
   // tslint:disable-next-line: max-line-length
-  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data, private printerService: PrinterServiceService, private backendService: BackendServiceService, private dialog: MatDialog, private memberService: MembersService) {
+  constructor(private db: AngularFirestore, private dialogRef: MatDialogRef<PaymentCashComponent>, private snackbar: MatSnackBar, public sanitizer: DomSanitizer, private backendServices: BackendServiceService, @Inject(MAT_DIALOG_DATA) public data, private printerService: PrinterServiceService, private backendService: BackendServiceService, private dialog: MatDialog, private memberService: MembersService) {
     this.username = data.username;
     this.ticketsRef = db.collection<Ticket>('tickets', ref => {
       return ref.where('used', '==', false).orderBy('ticket', 'asc');
@@ -70,6 +69,7 @@ export class PaymentCashComponent implements OnInit {
     this.orderForm.get('memberId').setValue(this.data.member.memberId);
     this.orderForm.get('deriveryDescription').setValue(this.deriveryDescription);
     this.showMember = '';
+    this.getExchangeRate();
   }
   username: string;
   members: any;
@@ -77,7 +77,7 @@ export class PaymentCashComponent implements OnInit {
   member: any;
   showMember = 'hidden';
   customerResponseDate = '';
-
+  exchangeRates: any;
   orderForm: FormGroup;
   ticketsRef: AngularFirestoreCollection<Ticket>;
   tickets: Observable<any[]>;
@@ -542,5 +542,12 @@ export class PaymentCashComponent implements OnInit {
       });
     });
     return;
+  }
+  getExchangeRate() {
+    this.backendServices.getExchangeRate().then(exch => {
+      exch.subscribe(rates => {
+        this.exchangeRates = rates;
+      });
+    });
   }
 }

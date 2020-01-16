@@ -1,23 +1,24 @@
-import { AddQuantityComponent } from './../../dialogs/add-quantity/add-quantity.component';
-import { Food } from 'src/app/interfaces/food';
-import { Observable } from 'rxjs';
-import { FoodCategory } from './../../interfaces/foodCategory';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { Observable } from 'rxjs';
+import { AddNoteComponent } from 'src/app/dialogs/add-note/add-note.component';
+import { CouponAddPosComponent } from 'src/app/dialogs/coupon-add-pos/coupon-add-pos.component';
+import { DiscSelectionComponent } from 'src/app/dialogs/disc-selection/disc-selection.component';
+import { PaymentCashComponent } from 'src/app/dialogs/payment-cash/payment-cash.component';
 import { SubfoodsComponent } from 'src/app/dialogs/subfoods/subfoods.component';
 import { Cart } from 'src/app/interfaces/cart';
-import { AddNoteComponent } from 'src/app/dialogs/add-note/add-note.component';
-import { PaymentCashComponent } from 'src/app/dialogs/payment-cash/payment-cash.component';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { Router } from '@angular/router';
+import { Food } from 'src/app/interfaces/food';
 import { User } from 'src/app/interfaces/user';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
-import { CouponAddPosComponent } from 'src/app/dialogs/coupon-add-pos/coupon-add-pos.component';
-import { PromotionsService } from 'src/app/services/promotions.service';
 import { MembersService } from 'src/app/services/members.service';
-import { FormGroup, FormControl } from '@angular/forms';
-import { DiscSelectionComponent } from 'src/app/dialogs/disc-selection/disc-selection.component';
+import { PromotionsService } from 'src/app/services/promotions.service';
+
+import { AddQuantityComponent } from './../../dialogs/add-quantity/add-quantity.component';
+import { FoodCategory } from './../../interfaces/foodCategory';
 
 declare var swal: any;
 
@@ -52,7 +53,7 @@ export class PosComponent implements OnInit {
   deriveries: any;
   foodCategoriesRef: AngularFirestoreCollection<FoodCategory>;
   FoodCategories: Observable<any[]>;
-
+  exchangeRates: any;
   username: string = localStorage.getItem('username');
 
 
@@ -98,6 +99,7 @@ export class PosComponent implements OnInit {
       this.loadFoodTypes();
       this.loadFoodPage();
       this.totalCalculation();
+      this.getExchangeRate();
       if (localStorage.getItem('cart')) {
         this.virtualCart = JSON.parse(localStorage.getItem('cart'));
       }
@@ -916,6 +918,14 @@ export class PosComponent implements OnInit {
     }).catch(() => {
       this.deriveryOption = !e;
       return;
+    });
+  }
+  getExchangeRate() {
+    this.backendServices.getExchangeRate().then(exch => {
+      exch.subscribe(rates => {
+        this.exchangeRates = rates;
+        console.log(this.exchangeRates);
+      });
     });
   }
 }

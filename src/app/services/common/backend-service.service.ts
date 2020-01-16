@@ -1,6 +1,7 @@
-import { environment } from './../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
+import { environment } from './../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -567,6 +568,9 @@ export class BackendServiceService {
       endDate
     };
     return this._http.post(this.backendService + 'reportByDeriveryProviders', dateRpt, this.httpOptions);
+  }
+  async getExchangeRate() {
+    return this._http.get(this.backendService + 'exchangerates', this.httpOptions);
   }
 }
 

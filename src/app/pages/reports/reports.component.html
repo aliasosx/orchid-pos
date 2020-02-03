@@ -396,6 +396,7 @@
               ລາຍຮັບຈາກຊ່ອງທາງ ບໍລິສັດ ຮັບ-ສົ່ງ
             </div>
             <div class="card-body" style="max-height: 80vh;overflow: auto;">
+
               <div class="row">
                 <div class="col col-md-8">
 
@@ -479,9 +480,25 @@
               </div>
             </div>
           </div>
-
+          <mat-card class="mt-2">
+            <mat-card-title>
+              <span class="h4">ລາຍຮັບຈາກຊ່ອງທາງ ບໍລິສັດ ຮັບ-ສົ່ງ ລາຍການຍ່ອຍ</span>
+            </mat-card-title>
+            <mat-card-content>
+              <div class="row">
+                <div class="col col-md-2 col-sm-12">
+                  <div class="input-group mb-1">
+                    <select class="form-control" [(ngModel)]="providers">
+                      <option>ເລືອກບໍລິສັດ ຮັບ-ສົ່ງ</option>
+                      <option value="GOTEDDY">GOTEDDY</option>
+                      <option value="FOOD-PANDA">FOOD PANDA</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
         </div>
-
       </div>
     </div>
   </mat-card-content>

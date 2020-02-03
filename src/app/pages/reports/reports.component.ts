@@ -60,6 +60,8 @@ export class ReportsComponent implements OnInit {
   grandtotalAmount = 0;
   grandtotalCount = 0;
 
+  providers: any;
+
   userTransactions: any[] = [];
   userCountTranx = 0;
   userAmountTranx = 0;

@@ -1,0 +1,44 @@
+<h4>
+  ຍອດຂາຍຕາມປະເພດອາຫານ {{ data.foodTypeName }}
+</h4>
+<mat-dialog-content>
+  <ng-container *ngIf="reports; else loading">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <th>ວັນທີ</th>
+          <th>ເລກບິນ</th>
+          <th>refno</th>
+          <th>ລາຍການອາຫານ</th>
+          <th class="text-right">ຈຳນວນ</th>
+          <th class="text-right">ມູນຄ່າ</th>
+          <th>ຜູ້ຂາຍ</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of reports" style="font-size: 14px;">
+            <td>{{ report.orderDateTime|date: 'dd-MM-yyyy HH:mm:ss' }}</td>
+            <td>{{ report.invoiceno  }}</td>
+            <td>{{ report.refno  }}</td>
+            <td>{{ report.foodName  }}</td>
+            <td class="text-right">{{ report.quantity | number  }}</td>
+            <td class="text-right">{{ report.price | number  }}</td>
+            <td>{{ report.username   }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4" class="text-right">ລວມ</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div class="col col-md-6">
+      <img src="../../../assets/img/ezgif-2-6d0b072c3d3f.gif">
+    </div>
+  </ng-template>
+</mat-dialog-content>

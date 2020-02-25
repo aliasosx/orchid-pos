@@ -572,5 +572,8 @@ export class BackendServiceService {
   async getExchangeRate() {
     return this._http.get(this.backendService + 'exchangerates', this.httpOptions);
   }
+  async getReportByFoodTypeByDate(data) {
+    return this._http.post(this.backendService + 'reportByFoodTypeByDate', data, this.httpOptions);
+  }
 }
 

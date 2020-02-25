@@ -240,7 +240,8 @@
                       <div class="row">
                         <div class="col col-md-12" *ngFor="let foodCategoryTransaction of revByFoodTypeDateRange">
                           <div class="row">
-                            <div class="col col-md-3 col-sm-12 text-left text-nowrap h6 ">
+                            <div class="col col-md-3 col-sm-12 text-left text-nowrap h6 " style="cursor: pointer;"
+                              (click)="loadReportByFoodGroup(foodCategoryTransaction)">
                               {{ foodCategoryTransaction.foodTypeName }}
                             </div>
                             <div class="col col-md-2 col-sm-12 text-right text-nowrap h6 ">

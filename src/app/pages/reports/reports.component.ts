@@ -15,6 +15,9 @@ import { PaymentType } from 'src/app/interfaces/paymentType';
 import { User } from 'src/app/interfaces/user';
 import { BackendServiceService } from 'src/app/services/common/backend-service.service';
 
+import {
+  ReportDetailsByFoodGroupComponent,
+} from '../../dialogs/report-details-by-food-group/report-details-by-food-group.component';
 import { Transaction } from './../../interfaces/transaction';
 
 @Component({
@@ -263,6 +266,18 @@ export class ReportsComponent implements OnInit {
     const dialog = this.dialog.open(TransactionsViewComponent, {
       width: '800px',
       data: orderId,
+    });
+  }
+  loadReportByFoodGroup(data) {
+    const pre_data = {
+      startDate: this.startDate,
+      endDate: this.endDate,
+      foodTypeId: data.foodTypeId,
+      foodTypeName: data.foodTypeName
+    };
+    const dialogRef = this.dialog.open(ReportDetailsByFoodGroupComponent, {
+      width: '900px',
+      data: pre_data
     });
   }
 }

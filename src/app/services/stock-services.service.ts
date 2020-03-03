@@ -1,9 +1,10 @@
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { environment } from './../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Product } from '../interfaces/product';
 import { map } from 'rxjs/operators';
+
+import { Product } from '../interfaces/product';
+import { environment } from './../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -91,5 +92,8 @@ export class StockServicesService {
   }
   async stockEODProcess(id) {
     return this._http.get(this.backendService + 'stockedoprocess/' + id, this.httpOptions);
+  }
+  async getReportGroupByDate(dateRange) {
+    return this._http.post(this.backendService + 'reportGroupByDate', dateRange, this.httpOptions);
   }
 }

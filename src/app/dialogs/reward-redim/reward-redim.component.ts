@@ -33,12 +33,25 @@ export class RewardRedimComponent implements OnInit {
               this.foods = foods;
             });
           });
-
         }
       });
     });
   }
   saveRewards() {
-
+    let food = {
+      'id': new FormControl(this.data.food.id),
+      'food': new FormControl(this.data.food.food_name),
+      'subFood': new FormControl(),
+      'cost': new FormControl(),
+      'discount': new FormControl(0),
+      'total_discount': new FormControl(0),
+      'price': new FormControl(0),
+      'quantity': new FormControl(1),
+      'total': new FormControl(0),
+      'username': new FormControl(this.data.username),
+      'kitchen': new FormControl(),
+      'foodId': new FormControl(this.data.food.id),
+      'food_category': new FormControl(),
+    };
   }
 }

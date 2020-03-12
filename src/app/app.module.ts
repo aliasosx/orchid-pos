@@ -95,6 +95,7 @@ import { RedimHistoryComponent } from './dialogs/redim-history/redim-history.com
 import {
   ReportDetailsByFoodGroupComponent,
 } from './dialogs/report-details-by-food-group/report-details-by-food-group.component';
+import { RewardRedimComponent } from './dialogs/reward-redim/reward-redim.component';
 import { StaffBenefitComponent } from './dialogs/staff-benefit/staff-benefit.component';
 import { StockEODAddComponent } from './dialogs/stock-eodadd/stock-eodadd.component';
 import { StockhistoryComponent } from './dialogs/stockhistory/stockhistory.component';
@@ -294,6 +295,7 @@ import { CurrenciesComponent } from './shared/currencies/currencies.component';
     IngredientReportsComponent,
     AddIngredientFoodComponent,
     ReportDetailsByFoodGroupComponent,
+    RewardRedimComponent,
   ],
   imports: [
     BrowserModule,
@@ -388,6 +390,7 @@ import { CurrenciesComponent } from './shared/currencies/currencies.component';
     IngredientPriceSelectComponent,
     AddIngredientFoodComponent,
     ReportDetailsByFoodGroupComponent,
+    RewardRedimComponent,
   ]
   ,
   providers: [

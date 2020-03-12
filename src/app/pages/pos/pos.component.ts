@@ -17,6 +17,7 @@ import { BackendServiceService } from 'src/app/services/common/backend-service.s
 import { MembersService } from 'src/app/services/members.service';
 import { PromotionsService } from 'src/app/services/promotions.service';
 
+import { RewardRedimComponent } from '../../dialogs/reward-redim/reward-redim.component';
 import { AddQuantityComponent } from './../../dialogs/add-quantity/add-quantity.component';
 import { FoodCategory } from './../../interfaces/foodCategory';
 
@@ -853,14 +854,62 @@ export class PosComponent implements OnInit {
         this.orderForm.get('memberName').setValue(m['cardNo'] + '|' + m['fullname'] + '|' + m['mobile']);
         this.loadCurrentPoint(m['mId'], this.total);
       });
+    }, (err) => {
+      swal({
+        title: 'Membership backend cannot connect',
+        text: 'Please contact admin ' + err,
+        icon: 'warning',
+      });
     });
   }
+
+  async checkReward(memberId, points) {
+    let rewards: any;
+    let stringRewards = '';
+    let i = 1;
+    if (memberId !== 16) {
+      this.memberService.checkRewardByPoint(points).then(r => {
+        r.subscribe(rw => {
+          rewards = rw;
+
+          if (rewards.length > 0) {
+            rewards.forEach(el => {
+              stringRewards += i + '. ' + el.rewardDescriptions + ' \n ';
+              i++;
+            });
+
+            swal({
+              text: 'ລູກຄ້າ ມີ ' + points + ' ຄະແນນ ສາມາດແລກ ລາງວັນໄດ້ ດັ່ງນິ້ \n' + stringRewards,
+              icon: 'warning',
+              buttons: true,
+              dangerMode: false,
+            }).then((result) => {
+              if (result) {
+                const dialogRef = this.dialog.open(RewardRedimComponent, {
+                  width: '600px',
+                  data: rewards
+                });
+              } else {
+                console.log('Rejected');
+              }
+            }).catch(() => {
+
+              return;
+            });
+
+
+          }
+        });
+      });
+    }
+  }
+
   async loadCurrentPoint(memberId, total_price) {
     if (!total_price) { total_price = 0; }
     await this.memberService.getCurrentPoint(memberId, total_price).then(r => {
       r.subscribe(pointMaster => {
         this.beforePoints = pointMaster[0].points;
-        // console.log(pointMaster);
+        this.checkReward(memberId, pointMaster[0].points);
       });
     });
   }

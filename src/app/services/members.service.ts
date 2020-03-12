@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -17,7 +18,11 @@ export class MembersService {
     return this._http.get(this.backendUrlMember + 'memberByPhone/' + phone);
   }
   async getMemberByCardNo(cardNo) {
-    return this._http.get(this.backendUrlMember + 'memberByCard/' + cardNo);
+    try {
+      return this._http.get(this.backendUrlMember + 'memberByCard/' + cardNo);
+    } catch (err) {
+      return;
+    }
   }
   async getMembers() {
     return this._http.get(this.backendUrlMember + 'members');
@@ -25,4 +30,14 @@ export class MembersService {
   async getCurrentPoint(memberId, totalPrice) {
     return this._http.get(this.backendUrlMember + 'pointByMemberId/' + memberId + '/' + totalPrice);
   }
+  async checkRewardByPoint(totalPrice) {
+    return this._http.get(this.backendUrlMember + 'checkRewardByPoint/' + totalPrice);
+  }
+  async getRewardById(id) {
+    return this._http.get(this.backendUrlMember + 'rewardsById/' + id);
+  }
+  async getRewardFoodByFoodTypeId(id, price) {
+    return this._http.get(this.backendUrlMember + 'foodRewardByFoodTypeId/' + id + '/' + price);
+  }
+
 }
